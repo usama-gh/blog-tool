@@ -1,0 +1,14 @@
+.root :global(.react-tweet-theme) :is(p, li) {
+  font-weight: 700;
+  font-size: 33px;
+}
+
+.root :global(.react-tweet-theme) :is(p, img) {
+  margin: 0;
+}
+
+.root :global(.react-tweet-theme) a {
+  font-size: 33px;
+  text-decoration: underline;
+  color: rgba(100, 116, 139, 1)
+}
