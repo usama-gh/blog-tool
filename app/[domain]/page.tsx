@@ -27,8 +27,7 @@ export default async function SiteHomePage({
       <div className="h-full bg-gradient-to-b from-white to-[#F4F8FF] dark:bg-black dark:bg-none">
         <div className="ease left-0 right-0 top-0 z-30 flex w-full transition-all duration-150 dark:bg-black dark:text-white">
           <div className="mx-auto mt-[76px] md:w-2/6">
-            <Link
-              href="/"
+            <div
               className="m-auto flex w-full flex-col items-center justify-center"
             >
               <div className="h-84 w-84 mb-5 overflow-hidden rounded-full align-middle">
@@ -60,7 +59,7 @@ export default async function SiteHomePage({
                 {data.description}
               </p>
               <SocialLinks linksData={data.links}/>
-            </Link>
+            </div>
           </div>
         </div>
 
