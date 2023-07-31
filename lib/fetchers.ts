@@ -82,8 +82,9 @@ export async function getPostData(domain: string, slug: string) {
 
       if (!data) return null;
 
-      const [mdxSource, adjacentPosts] = await Promise.all([
+      const [mdxSource, slidesMdxSource, adjacentPosts] = await Promise.all([
         getMdxSource(data.content!),
+        getSlidesMdxSource(data.slides!),
         prisma.post.findMany({
           where: {
             site: subdomain ? { subdomain } : { customDomain: domain },
@@ -107,6 +108,7 @@ export async function getPostData(domain: string, slug: string) {
       return {
         ...data,
         mdxSource,
+        slidesMdxSource,
         adjacentPosts,
       };
     },
@@ -131,4 +133,22 @@ async function getMdxSource(postContents: string) {
   });
 
   return mdxSource;
+}
+
+async function getSlidesMdxSource(slides: string) {
+  // transforms links like <link> to [link](link) as MDX doesn't support <link> syntax
+  // https://mdxjs.com/docs/what-is-mdx/#markdown
+  const slidesArr = JSON.parse(slides);
+  let slidesMdxSource: any = [];
+  slidesArr.forEach( async (slide: string) => {
+    const content = slide?.replaceAll(/<(https?:\/\/\S+)>/g, "[$1]($1)") ?? "";
+    // Serialize the content string into MDX
+    const mdxSource = await serialize(content, {
+      mdxOptions: {
+        remarkPlugins: [replaceTweets, () => replaceExamples(prisma)],
+      },
+    });
+    slidesMdxSource.push(mdxSource)
+  });
+  return slidesMdxSource;
 }

@@ -162,6 +162,17 @@ export const updateSite = withSiteAuth(
             ...(blurhash && { imageBlurhash: blurhash }),
           },
         });
+      } else if(key === "links"){
+        const formDataObj: any = {};
+        formData.forEach((value, key) => (formDataObj[key] = value));
+        response = await prisma.site.update({
+          where: {
+            id: site.id,
+          },
+          data: {
+            links: JSON.stringify(formDataObj)
+          },
+        });
       } else {
         response = await prisma.site.update({
           where: {

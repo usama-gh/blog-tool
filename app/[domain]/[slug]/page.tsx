@@ -75,7 +75,7 @@ export default async function SitePostPage({
         </div>
         <p className="font-semibold text-lg text-gray-400">{toDateString(data.createdAt, "short")}</p>
       </div>
-      <Carousel data={data}></Carousel>
+      <Carousel data={data} siteData={siteData}></Carousel>
     </>
   );
 }

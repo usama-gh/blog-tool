@@ -23,6 +23,8 @@ interface Props {
   post: any;
   setData: Dispatch<SetStateAction<PostWithSite>>;
   updateSlides: any;
+  slides: Array<string>,
+  slideData: string
 }
 
 export const EditorContents = (props: Props) => {
@@ -51,8 +53,9 @@ export const EditorContents = (props: Props) => {
         // complete(e.editor.storage.markdown.getMarkdown());
         va.track("Autocomplete Shortcut Used");
       } else {
-        console.log(e.editor.storage.markdown.getMarkdown())
-        // props.updateSlides('update', Number(props.index), e.editor.storage.markdown.getMarkdown())
+        console.log(props.data)
+        props.setData({ ...props.data, slides: JSON.stringify([...props.slides]) })
+        props.updateSlides('update', Number(props.index), e.editor.storage.markdown.getMarkdown())
       }
     },
   });
@@ -133,8 +136,9 @@ export const EditorContents = (props: Props) => {
 
   // Hydrate the editor with the content
   useEffect(() => {
-    if (editor && props.post?.content && !hydrated) {
-      editor.commands.setContent(props.post.content);
+    if (editor && props.slideData && !hydrated) {
+      console.log(props.slideData)
+      editor.commands.setContent(props.slideData);
       setHydrated(true);
     }
   }, [editor, props.post, hydrated]);
