@@ -5,19 +5,8 @@ import { placeholderBlurhash, toDateString } from "@/lib/utils";
 import BlogCard from "@/components/blog-card";
 import { getPostsForSite, getSiteData } from "@/lib/fetchers";
 import Image from "next/image";
-import {
-  Facebook,
-  GithubIcon,
-  InstagramIcon,
-  LinkIcon,
-  LinkedinIcon,
-  MailIcon,
-  MessageCircleIcon,
-  SendIcon,
-  TwitterIcon,
-  YoutubeIcon,
-} from "lucide-react";
-import { FacebookIcon } from "lucide-react";
+
+import SocialLinks from "@/components/social-links";
 
 export default async function SiteHomePage({
   params,
@@ -28,8 +17,6 @@ export default async function SiteHomePage({
     getSiteData(params.domain),
     getPostsForSite(params.domain),
   ]);
-
-  const links = data?.links ? JSON.parse(data?.links) : {};
 
   if (!data) {
     notFound();
@@ -72,113 +59,12 @@ export default async function SiteHomePage({
               >
                 {data.description}
               </p>
-              <div className="mb-16 mt-5 flex items-center justify-center">
-                {links.facebookLink && (
-                  <a
-                    href={links.facebookLink}
-                    className="ml-1"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <FacebookIcon />
-                  </a>
-                )}
-                {links.instagramLink && (
-                  <a
-                    href={links.instagramLink}
-                    className="ml-1"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <InstagramIcon />
-                  </a>
-                )}
-                {links.twitterLink && (
-                  <a
-                    href={links.twitterLink}
-                    className="ml-1"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <TwitterIcon />
-                  </a>
-                )}
-                {links.githubLink && (
-                  <a
-                    href={links.githubLink}
-                    className="ml-1"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <GithubIcon />
-                  </a>
-                )}
-                {links.telegramLink && (
-                  <a
-                    href={links.telegramLink}
-                    className="ml-1"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <SendIcon />
-                  </a>
-                )}
-                {links.email && (
-                  <a
-                    href={links.email}
-                    className="ml-1"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <MailIcon />
-                  </a>
-                )}
-                {links.linkedInLink && (
-                  <a
-                    href={links.linkedInLink}
-                    className="ml-1"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <LinkedinIcon />
-                  </a>
-                )}
-                {links.youtubeLink && (
-                  <a
-                    href={links.youtubeLink}
-                    className="ml-1"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <YoutubeIcon />
-                  </a>
-                )}
-                {links.whatsappLink && (
-                  <a
-                    href={links.whatsappLink}
-                    className="ml-1"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <MessageCircleIcon />
-                  </a>
-                )}
-                {links.websiteLink && (
-                  <a
-                    href={links.websiteLink}
-                    className="ml-1"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <LinkIcon />
-                  </a>
-                )}
-              </div>
+              <SocialLinks linksData={data.links}/>
             </Link>
           </div>
         </div>
 
-        <div className="w-full pb-16">
+        <div className="w-full pt-16 pb-16">
           {posts.length > 0 ? (
             posts.map((post, index) => (
               <div
