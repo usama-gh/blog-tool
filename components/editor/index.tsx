@@ -17,13 +17,15 @@ import LoadingDots from "../icons/loading-dots";
 import { ExternalLink, PlusCircle, PlusCircleIcon, XCircle } from "lucide-react";
 import { Button } from "@tremor/react";
 import { EditorContents } from "./editor-content";
+import ImportJSONButton from "../import-json-btn";
+import ImportJsonModal from "../modal/import-json";
 
 type PostWithSite = Post & { site: { subdomain: string | null } | null };
 
 export default function Editor({ post }: { post: PostWithSite }) {
   let [isPendingSaving, startTransitionSaving] = useTransition();
   let [isPendingPublishing, startTransitionPublishing] = useTransition();
-
+  
   const [data, setData] = useState<PostWithSite>(post);
   const [hydrated, setHydrated] = useState(false);
   const [slides, setSlides] = useState<Array<string>>(!!post.slides ? JSON.parse(post.slides) : [])
@@ -188,6 +190,7 @@ export default function Editor({ post }: { post: PostWithSite }) {
         break;
       case 'delete':
         updatedSlides.splice(index, 1)
+        console.log(updatedSlides)
         setSlides(updatedSlides)
         break;
     }
@@ -196,6 +199,12 @@ export default function Editor({ post }: { post: PostWithSite }) {
   useEffect(() => {
     setData({ ...data, slides: JSON.stringify([...slides]) })
   }, [slides]);
+
+  const setSlideWithJson = (newSlides: Array<string>, content: string) => {
+    setData({ ...data, slides: JSON.stringify(newSlides), content: content, })
+    editor?.commands.setContent(content);
+    setSlides(newSlides)
+  }
 
   return (
     <>
@@ -211,6 +220,9 @@ export default function Editor({ post }: { post: PostWithSite }) {
               <ExternalLink className="h-4 w-4" />
             </a>
           )}
+          <ImportJSONButton>
+            <ImportJsonModal setSlideWithJson={setSlideWithJson}/>
+          </ImportJSONButton>
           <div className="rounded-lg bg-stone-100 px-2 py-1 text-sm text-stone-400 dark:bg-stone-800 dark:text-stone-500">
             {isPendingSaving ? "Saving..." : "Saved"}
           </div>
