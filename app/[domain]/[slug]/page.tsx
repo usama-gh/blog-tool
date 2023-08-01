@@ -5,6 +5,7 @@ import BlurImage from "@/components/blur-image";
 import MDX from "@/components/mdx";
 import { placeholderBlurhash, toDateString } from "@/lib/utils";
 import Carousel from "@/components/carousel/blog-carousal";
+import Link from "next/link";
 
 export async function generateMetadata({
   params,
@@ -65,9 +66,9 @@ export default async function SitePostPage({
               </div>
             )}
           </div>
-          <p className="px-3.5 font-semibold text-xl text-gray-400">
+          <Link href="/" className="px-3.5 font-semibold text-xl text-gray-400">
             {siteData?.user?.name}
-          </p>
+          </Link>
           <div className="h-7 w-1 bg-slate-200"></div>
           <p className="pl-3 text-2xl font-semibold text-gray-400">
             {data.title}
