@@ -2,6 +2,7 @@ import prisma from "@/lib/prisma";
 import Form from "@/components/form";
 import { updateSite } from "@/lib/actions";
 import DeleteSiteForm from "@/components/form/delete-site-form";
+import SocialLinksForm from "@/components/form/social-links-form";
 
 export default async function SiteSettingsIndex({
   params,
@@ -41,6 +42,11 @@ export default async function SiteSettingsIndex({
           placeholder: "A blog about really interesting things.",
         }}
         handleSubmit={updateSite}
+      />
+
+      <SocialLinksForm
+        handleSubmit={updateSite}
+        links={data?.links ? JSON.parse(data.links) : {}}
       />
 
       <DeleteSiteForm siteName={data?.name!} />

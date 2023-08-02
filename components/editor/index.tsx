@@ -17,13 +17,15 @@ import LoadingDots from "../icons/loading-dots";
 import { ExternalLink, PlusCircle, PlusCircleIcon, XCircle } from "lucide-react";
 import { Button } from "@tremor/react";
 import { EditorContents } from "./editor-content";
+import ImportJSONButton from "../import-json-btn";
+import ImportJsonModal from "../modal/import-json";
 
 type PostWithSite = Post & { site: { subdomain: string | null } | null };
 
 export default function Editor({ post }: { post: PostWithSite }) {
   let [isPendingSaving, startTransitionSaving] = useTransition();
   let [isPendingPublishing, startTransitionPublishing] = useTransition();
-
+  
   const [data, setData] = useState<PostWithSite>(post);
   const [hydrated, setHydrated] = useState(false);
   const [slides, setSlides] = useState<Array<string>>(!!post.slides ? JSON.parse(post.slides) : [])
@@ -44,7 +46,7 @@ export default function Editor({ post }: { post: PostWithSite }) {
       return;
     }
     startTransitionSaving(async () => {
-      await updatePost(debouncedData);
+      await updatePost(debouncedData); 
     });
   }, [debouncedData, post]);
 
@@ -188,6 +190,7 @@ export default function Editor({ post }: { post: PostWithSite }) {
         break;
       case 'delete':
         updatedSlides.splice(index, 1)
+        console.log(updatedSlides)
         setSlides(updatedSlides)
         break;
     }
@@ -196,6 +199,12 @@ export default function Editor({ post }: { post: PostWithSite }) {
   useEffect(() => {
     setData({ ...data, slides: JSON.stringify([...slides]) })
   }, [slides]);
+
+  const setSlideWithJson = (newSlides: Array<string>, content: string) => {
+    setData({ ...data, slides: JSON.stringify(newSlides), content: content, })
+    editor?.commands.setContent(content);
+    setSlides(newSlides)
+  }
 
   return (
     <>
@@ -211,6 +220,9 @@ export default function Editor({ post }: { post: PostWithSite }) {
               <ExternalLink className="h-4 w-4" />
             </a>
           )}
+          <ImportJSONButton>
+            <ImportJsonModal setSlideWithJson={setSlideWithJson}/>
+          </ImportJSONButton>
           <div className="rounded-lg bg-stone-100 px-2 py-1 text-sm text-stone-400 dark:bg-stone-800 dark:text-stone-500">
             {isPendingSaving ? "Saving..." : "Saved"}
           </div>
@@ -262,13 +274,14 @@ export default function Editor({ post }: { post: PostWithSite }) {
             className="dark:placeholder-text-600 w-full resize-none border-none px-0 placeholder:text-stone-400 focus:outline-none focus:ring-0 dark:bg-black dark:text-white"
           />
         </div>
-        {/* <EditorContents data={data} post={post} setData={setData}/> */}
+        {editor && <EditorBubbleMenu editor={editor} />}
+        <EditorContent editor={editor} />
       </div>
       {
-        slides.map((data: string, index: number) =>
+        slides.map((slideData: string, index: number) =>
           <div key={`slide-${index}`} className="relative min-h-[200px] w-full max-w-screen-lg border-stone-200 p-12 px-8 dark:border-stone-700 sm:mb-[calc(20vh)] sm:rounded-lg sm:border sm:px-12 sm:shadow-lg">
             <XCircle width={24} className="dark:text-white absolute top-4 right-4 cursor-pointer" onClick={() => { updateSlides('delete', Number(index), '') }}></XCircle>
-            <EditorContents data={data} post={post} setData={setData} updateSlides={updateSlides} index={index}/>
+            <EditorContents data={data} slideData={slideData} post={post} slides={slides} setData={setData} updateSlides={updateSlides} index={index}/>
           </div>
         )
       }

@@ -5,8 +5,9 @@ import { DotButton, NextButton, PrevButton } from "./carousel-buttons";
 import useEmblaCarousel from "embla-carousel-react";
 import MDX from "../mdx";
 import BlogCard from "../blog-card";
+import SocialLinks from "../social-links";
 
-const Carousel = ({ data }: any) => {
+const Carousel = ({ data, siteData }: any) => {
   const [viewportRef, embla] = useEmblaCarousel({
     skipSnaps: false,
     watchDrag: false,
@@ -85,7 +86,7 @@ const Carousel = ({ data }: any) => {
               {JSON.parse(data.slides).map((value: string, index: number) => (
                 <div className="relative min-w-full" key={`slide-${index}`}>
                   <div className="relative overflow-hidden [&>*]:text-[33px] [&>*]:text-slate-500">
-                    <p>{value}</p>
+                    <MDX source={data.slidesMdxSource[index]} />
                   </div>
                 </div>
               ))}
@@ -105,6 +106,12 @@ const Carousel = ({ data }: any) => {
                               <BlogCard key={index} data={value} />
                             ),
                           )}
+                        </div>
+                        <div className="mt-5 flex justify-center items-center flex-col">
+                          <p className="mb-1 text-[22px] font-extrabold text-stone-500 dark:bg-black dark:text-stone-400">
+                            Follow Me
+                          </p>
+                          <SocialLinks linksData={siteData.links}/>
                         </div>
                       </>
                     )}
