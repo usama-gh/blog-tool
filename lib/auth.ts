@@ -11,15 +11,15 @@ export const authOptions: NextAuthOptions = {
     GoogleProvider({
       clientId: process.env.AUTH_GOOGLE_ID as string,
       clientSecret: process.env.AUTH_GOOGLE_SECRET as string,
-      profile(profile) {
-        return {
-          id: profile.id.toString(),
-          name: profile.name || profile.login,
-          gh_username: profile.login || profile.name,
-          email: profile.email,
-          image: profile.avatar_url,
-        };
-      },
+      // profile(profile) {
+      //   return {
+      //     id: profile.id.toString(),
+      //     name: profile.name || profile.login,
+      //     gh_username: profile.login || profile.name,
+      //     email: profile.email,
+      //     image: profile.avatar_url,
+      //   };
+      // },
     }),
     // GitHubProvider({
     //   clientId: process.env.AUTH_GITHUB_ID as string,
@@ -69,8 +69,11 @@ export const authOptions: NextAuthOptions = {
         ...session.user,
         // @ts-expect-error
         id: token.sub,
-        // @ts-expect-error
-        username: token?.user?.username || token?.user?.gh_username,
+        // username: token?.user?.username || token?.user?.gh_username,
+        username: session?.user?.name
+          ?.split(" ")
+          ?.join("")
+          ?.toLocaleLowerCase(),
       };
       return session;
     },
