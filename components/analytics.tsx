@@ -100,7 +100,7 @@ export default function AnalyticsMockup() {
           }
         />
       </Card>
-      <Grid numItemsSm={2} numItemsLg={3} className="gap-6">
+      {/* <Grid numItemsSm={2} numItemsLg={3} className="gap-6">
         {categories.map(({ title, subtitle, data }) => (
           <Card key={title} className="max-w-lg">
             <Title>{title}</Title>
@@ -147,7 +147,7 @@ export default function AnalyticsMockup() {
             />
           </Card>
         ))}
-      </Grid>
+      </Grid> */}
     </div>
   );
 }

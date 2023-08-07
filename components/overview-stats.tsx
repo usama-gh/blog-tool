@@ -20,8 +20,8 @@ export default function OverviewStats() {
   }, []);
 
   return (
-    <div className="grid gap-6 sm:grid-cols-2">
-      <Card className="dark:!bg-stone-900">
+    <div className="grid gap-6 sm:grid-cols-2 hidden">
+      {/* <Card className="dark:!bg-stone-900">
         <Text>Total Visitors</Text>
         <Flex
           className="space-x-3 truncate"
@@ -51,7 +51,7 @@ export default function OverviewStats() {
           showYAxis={false}
           showLegend={false}
         />
-      </Card>
+      </Card> */}
     </div>
   );
 }

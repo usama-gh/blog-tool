@@ -23,43 +23,30 @@ import { getSiteFromPostId } from "@/lib/actions";
 import Image from "next/image";
 import { FileCode, Github } from "lucide-react";
 
-const externalLinks = [
-  {
-    name: "Read announcement",
-    href: "https://vercel.com/blog/platforms-starter-kit",
-    icon: <Megaphone width={18} />,
-  },
-  {
-    name: "Star on GitHub",
-    href: "https://github.com/vercel/platforms",
-    icon: <Github width={18} />,
-  },
-  {
-    name: "Read the guide",
-    href: "https://vercel.com/guides/nextjs-multi-tenant-application",
-    icon: <FileCode width={18} />,
-  },
-  {
-    name: "View demo site",
-    href: "https://demo.vercel.pub",
-    icon: <Layout width={18} />,
-  },
-  {
-    name: "Deploy your own",
-    href: "https://vercel.com/templates/next.js/platforms-starter-kit",
-    icon: (
-      <svg
-        width={18}
-        viewBox="0 0 76 76"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-        className="py-1 text-black dark:text-white"
-      >
-        <path d="M37.5274 0L75.0548 65H0L37.5274 0Z" fill="currentColor" />
-      </svg>
-    ),
-  },
-];
+// const externalLinks = [
+
+
+  // {
+  //   name: "View demo site",
+  //   href: "https://demo.vercel.pub",
+  //   icon: <Layout width={18} />,
+  // },
+  // {
+  //   name: "Deploy your own",
+  //   href: "https://vercel.com/templates/next.js/platforms-starter-kit",
+  //   icon: (
+  //     <svg
+  //       width={18}
+  //       viewBox="0 0 76 76"
+  //       fill="none"
+  //       xmlns="http://www.w3.org/2000/svg"
+  //       className="py-1 text-black dark:text-white"
+  //     >
+  //       <path d="M37.5274 0L75.0548 65H0L37.5274 0Z" fill="currentColor" />
+  //     </svg>
+  //   ),
+  // },
+// ];
 
 export default function Nav({ children }: { children: ReactNode }) {
   const segments = useSelectedLayoutSegments();
@@ -131,7 +118,7 @@ export default function Nav({ children }: { children: ReactNode }) {
         icon: <LayoutDashboard width={18} />,
       },
       {
-        name: "Sites",
+        name: "Blogs",
         href: "/sites",
         isActive: segments[0] === "sites",
         icon: <Globe width={18} />,
@@ -224,7 +211,7 @@ export default function Nav({ children }: { children: ReactNode }) {
         </div>
         <div>
           <div className="grid gap-1">
-            {externalLinks.map(({ name, href, icon }) => (
+            {/* {externalLinks.map(({ name, href, icon }) => (
               <a
                 key={name}
                 href={href}
@@ -238,7 +225,7 @@ export default function Nav({ children }: { children: ReactNode }) {
                 </div>
                 <p>↗</p>
               </a>
-            ))}
+            ))} */}
           </div>
           <div className="my-2 border-t border-stone-200 dark:border-stone-700" />
           {children}
