@@ -1,11 +1,12 @@
 import { notFound } from "next/navigation";
 import { getPostData, getPostsForSite, getSiteData } from "@/lib/fetchers";
-import BlogCard from "@/components/blog-card";
+
 import BlurImage from "@/components/blur-image";
-import MDX from "@/components/mdx";
 import { placeholderBlurhash, toDateString } from "@/lib/utils";
 import Carousel from "@/components/carousel/blog-carousal";
 import Link from "next/link";
+import { headers } from 'next/headers';
+import { addVisitor, getSiteViews } from "@/lib/actions";
 
 export async function generateMetadata({
   params,
@@ -41,7 +42,23 @@ export default async function SitePostPage({
   params: { domain: string; slug: string };
 }) {
   const { domain, slug } = params;
-  const data = await getPostData(domain, slug);
+  const ip = headers().get('X-Forwarded-For');
+  const referrer = headers().get('referer');
+  const getReferrer = ()=>{
+    if (referrer?.includes("google")) {
+      return "Google";
+    } else if (referrer?.includes("bing")) {
+      return "Bing";
+    } else if (referrer?.includes("email")) {
+      return "Email";
+    } else if (referrer?.includes("t.co")) {
+      return "Twitter";
+    } else {
+      return "Other";
+    }
+  }
+  const data = await getPostData(domain, slug)
+  const res = await addVisitor(ip as string, getReferrer(), data?.id as string, data?.siteId as string)
   const siteData = await getSiteData(params.domain);
   if (!data) {
     notFound();

@@ -101,13 +101,7 @@ export default function Nav({ children }: { children: ReactNode }) {
           href: `/post/${id}`,
           isActive: segments.length === 2,
           icon: <Edit3 width={18} />,
-        },
-        {
-          name: "Settings",
-          href: `/post/${id}/settings`,
-          isActive: segments.includes("settings"),
-          icon: <Settings width={18} />,
-        },
+        }
       ];
     }
     return [

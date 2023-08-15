@@ -2,6 +2,7 @@ import { getSession } from "@/lib/auth";
 import prisma from "@/lib/prisma";
 import { notFound, redirect } from "next/navigation";
 import AnalyticsMockup from "@/components/analytics";
+import { getSiteViews } from "@/lib/actions";
 
 export default async function SiteAnalytics({
   params,
@@ -20,6 +21,7 @@ export default async function SiteAnalytics({
   if (!data || data.userId !== session.user.id) {
     notFound();
   }
+  const siteViews = await getSiteViews(params.id);
 
   const url = `${data.subdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`;
 
@@ -40,7 +42,7 @@ export default async function SiteAnalytics({
           </a>
         </div>
       </div>
-      <AnalyticsMockup />
+      <AnalyticsMockup visitors={siteViews}/>
     </>
   );
 }

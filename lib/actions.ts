@@ -162,7 +162,7 @@ export const updateSite = withSiteAuth(
             ...(blurhash && { imageBlurhash: blurhash }),
           },
         });
-      } else if(key === "links"){
+      } else if (key === "links") {
         const formDataObj: any = {};
         formData.forEach((value, key) => (formDataObj[key] = value));
         response = await prisma.site.update({
@@ -170,7 +170,7 @@ export const updateSite = withSiteAuth(
             id: site.id,
           },
           data: {
-            links: JSON.stringify(formDataObj)
+            links: JSON.stringify(formDataObj),
           },
         });
       } else {
@@ -293,7 +293,7 @@ export const updatePost = async (data: Post) => {
         title: data.title,
         description: data.description,
         content: data.content,
-        slides: data.slides
+        slides: data.slides,
       },
     });
 
@@ -438,4 +438,49 @@ export const editUser = async (
       };
     }
   }
+};
+
+export const addVisitor = async (
+  ip: string,
+  referrer: string,
+  postId: string,
+  siteId: string,
+) => {
+  const location = await fetch(
+    `https://freeipapi.com/api/json/${ip}`,
+  ).then((response) => response.json());
+  try {
+    const response = await prisma.vistor.create({
+      data: {
+        siteId: siteId,
+        location: JSON.stringify(location),
+        referrer: referrer,
+      },
+    });
+    return response;
+  } catch (error: any) {
+    return {
+      error: error.message,
+    };
+  }
+};
+
+export const getSiteViews = async (siteId: string) => {
+  const oneYearAgo = new Date();
+  oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
+  const visitors = await prisma.$queryRaw`
+  SELECT
+      DATE_PART('month', "createdAt") AS month,
+      DATE_PART('year', "createdAt") AS year,
+      COUNT(*) AS count
+  FROM
+      "Vistor"
+  WHERE
+      "siteId" = ${siteId} AND
+      "createdAt" >= ${oneYearAgo}
+  GROUP BY
+      month, year
+  `;
+  
+  return visitors;
 };

@@ -137,7 +137,6 @@ export const EditorContents = (props: Props) => {
   // Hydrate the editor with the content
   useEffect(() => {
     if (editor && props.slideData && !hydrated) {
-      console.log(props.slideData)
       editor.commands.setContent(props.slideData);
       setHydrated(true);
     }
