@@ -45,6 +45,7 @@
     "next-auth": "4.22.1",
     "next-mdx-remote": "^4.4.1",
     "openai-edge": "^1.2.0",
+    "paddle-sdk": "^4.6.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-textarea-autosize": "^8.5.2",

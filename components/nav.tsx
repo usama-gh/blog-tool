@@ -118,6 +118,12 @@ export default function Nav({ children }: { children: ReactNode }) {
         icon: <Globe width={18} />,
       },
       {
+        name: "Plans",
+        href: "/plans",
+        isActive: segments[0] === "plans",
+        icon: <Settings width={18} />,
+      },
+      {
         name: "Settings",
         href: "/settings",
         isActive: segments[0] === "settings",

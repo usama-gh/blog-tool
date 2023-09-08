@@ -29,6 +29,7 @@ model User {
   sites         Site[]
   posts         Post[]
   Vistor        Vistor[]
+  plan          String
 }
 
 model Account {

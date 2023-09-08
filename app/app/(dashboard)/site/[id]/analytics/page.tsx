@@ -44,5 +44,5 @@ export default async function SiteAnalytics({
       </div>
       <AnalyticsMockup visitors={siteViews}/>
     </>
-  );
+  )
 }
