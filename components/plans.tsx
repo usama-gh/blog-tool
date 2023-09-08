@@ -28,7 +28,7 @@ export default function Plans() {
       <div className="p-8">
         <ul className="ml-5 list-disc dark:text-white">
           <li className="mb-1">500 views per month</li>
-          <li className="mb-1">1 website</li>
+          <li className="mb-1">1 website(s)</li>
           <li className="mb-1">Has ‘Made with SlideBites’ badge</li>
           <li className="mb-1">
             Import Twitter threads, LinkedIn posts & Facebook posts.
