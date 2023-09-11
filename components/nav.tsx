@@ -11,6 +11,7 @@ import {
   Megaphone,
   Menu,
   Newspaper,
+  Rss,
   Settings,
 } from "lucide-react";
 import {
@@ -128,6 +129,12 @@ export default function Nav({ children }: { children: ReactNode }) {
         href: "/settings",
         isActive: segments[0] === "settings",
         icon: <Settings width={18} />,
+      },
+      {
+        name: "Subscription",
+        href: "/subscription ",
+        isActive: segments[0] === "subscription",
+        icon: <Rss width={18} />,
       },
     ];
   }, [segments, id, siteId]);
