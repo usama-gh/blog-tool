@@ -6,7 +6,7 @@ import { Product } from "paddle-sdk/esm/types";
 export default async function Plans(product: Product) {
   const client = new PaddleSDK(
 		process.env.NEXT_PUBLIC_PADDLE_VENDOR_ID as string,
-		process.env.NEXT_PUBLIC_PADDLE_KEY as string
+		process.env.NEXTAUTH_URL as string
 	);
   const products = await client.getProducts();
 
