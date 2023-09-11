@@ -24,8 +24,8 @@ export default async function SettingsPage() {
           Enjoy all benefits of SlideBites with just one time payment
         </h2>
         <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
-          {products.map((product) => {
-            return <Plans {...product}></Plans>;
+          {products.map((product, index) => {
+            return <Plans {...product} key={index}></Plans>;
           })}
         </div>
         <h3 className="mt-8 font-cal font-medium tracking-widest dark:text-white">
