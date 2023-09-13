@@ -24,13 +24,39 @@ export default function Subscriptions() {
         <button
           className="mt-3 rounded-md bg-indigo-500 px-2 py-2 text-white outline-none"
           onClick={() => {
+            var itemsList = [
+              {
+                priceId: "pri_01h9mgnqvbdw67nengb0zmtrb5",
+                // quantity: 1,
+              },
+            ];
+
+            // @ts-ignore
+            // Paddle.Checkout.open({
+            //     product: "pro_01h9mgfgf29z0z33ka8a6rqkgb",
+            //     product: 12345,
+            //     successCallback: (res: any) => {
+            //       console.log(res);
+            //     },
+            // });
+
             // @ts-ignore
             Paddle.Checkout.open({
-              //   product: "pro_01h9mgfgf29z0z33ka8a6rqkgb",
-              product: 12345,
-              successCallback: (res: any) => {
-                console.log(res);
+              //   product: 12345,
+              items: itemsList,
+              customer: {
+                email: "weloveyourproduct@paddle.com",
+                address: {
+                  countryCode: "US",
+                  postalCode: "92663",
+                  region: "California",
+                  city: "Newport Beach",
+                  firstLine: "Balboa Center",
+                },
               },
+              //   successCallback: (res: any) => {
+              //     console.log(res);
+              //   },
             });
           }}
         >
