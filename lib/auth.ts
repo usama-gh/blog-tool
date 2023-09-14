@@ -49,29 +49,11 @@ export const authOptions: NextAuthOptions = {
     },
   },
   callbacks: {
-    // @ts-ignore
-    signIn: async ({ user }) => {
-      const subscription = await prisma.subscription.findFirst({
-        where: {
-          userId: user.id,
-        },
-      });
-
-      if (!subscription) {
-        await prisma.subscription.create({
-          data: {
-            planId: 1,
-            userId: user.id,
-          },
-        });
-      }
-
-      return true;
-    },
     jwt: async ({ token, user }) => {
       if (user) {
         token.user = user;
       }
+
       return token;
     },
     session: async ({ session, token }) => {
@@ -85,6 +67,7 @@ export const authOptions: NextAuthOptions = {
           ?.join("")
           ?.toLocaleLowerCase(),
       };
+
       return session;
     },
   },

@@ -5,8 +5,28 @@ import Posts from "@/components/posts";
 import Link from "next/link";
 import PlacholderCard from "@/components/placeholder-card";
 import OverviewSitesCTA from "@/components/overview-sites-cta";
+import { getSession } from "@/lib/auth";
+import prisma from "@/lib/prisma";
 
-export default function Overview() {
+export default async function Overview() {
+  const session = await getSession();
+
+  // check if user has subscription or create subscription for new user
+  const subscription = await prisma.subscription.findFirst({
+    where: {
+      userId: session?.user.id,
+    },
+  });
+
+  if (!subscription) {
+    await prisma.subscription.create({
+      data: {
+        planId: 1,
+        userId: session?.user.id,
+      },
+    });
+  }
+
   return (
     <div className="flex max-w-screen-xl flex-col space-y-12 p-8">
       <div className="flex flex-col space-y-6">
