@@ -14,7 +14,12 @@ import { Post } from "@prisma/client";
 import { updatePost, updatePostMetadata } from "@/lib/actions";
 import { cn } from "@/lib/utils";
 import LoadingDots from "../icons/loading-dots";
-import { ExternalLink, PlusCircle, PlusCircleIcon, XCircle } from "lucide-react";
+import {
+  ExternalLink,
+  PlusCircle,
+  PlusCircleIcon,
+  XCircle,
+} from "lucide-react";
 import { Button } from "@tremor/react";
 import { EditorContents } from "./editor-content";
 import ImportJSONButton from "../import-json-btn";
@@ -25,10 +30,12 @@ type PostWithSite = Post & { site: { subdomain: string | null } | null };
 export default function Editor({ post }: { post: PostWithSite }) {
   let [isPendingSaving, startTransitionSaving] = useTransition();
   let [isPendingPublishing, startTransitionPublishing] = useTransition();
-  
+
   const [data, setData] = useState<PostWithSite>(post);
   const [hydrated, setHydrated] = useState(false);
-  const [slides, setSlides] = useState<Array<string>>(!!post.slides ? JSON.parse(post.slides) : [])
+  const [slides, setSlides] = useState<Array<string>>(
+    !!post.slides ? JSON.parse(post.slides) : [],
+  );
 
   const url = process.env.NEXT_PUBLIC_VERCEL_ENV
     ? `https://${data.site?.subdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}/${data.slug}`
@@ -46,7 +53,7 @@ export default function Editor({ post }: { post: PostWithSite }) {
       return;
     }
     startTransitionSaving(async () => {
-      await updatePost(debouncedData); 
+      await updatePost(debouncedData);
     });
   }, [debouncedData, post]);
 
@@ -83,7 +90,8 @@ export default function Editor({ post }: { post: PostWithSite }) {
         });
         // we're using this for now until we can figure out a way to stream markdown text with proper formatting: https://github.com/steven-tey/novel/discussions/7
         complete(
-          `Title: ${data.title}\n Description: ${data.description
+          `Title: ${data.title}\n Description: ${
+            data.description
           }\n\n ${e.editor.getText()}`,
         );
         // complete(e.editor.storage.markdown.getMarkdown());
@@ -144,7 +152,8 @@ export default function Editor({ post }: { post: PostWithSite }) {
       stop();
       if (window.confirm("AI writing paused. Continue?")) {
         complete(
-          `Title: ${data.title}\n Description: ${data.description}\n\n ${editor?.getText() || " "
+          `Title: ${data.title}\n Description: ${data.description}\n\n ${
+            editor?.getText() || " "
           }`,
         );
       }
@@ -178,37 +187,36 @@ export default function Editor({ post }: { post: PostWithSite }) {
     }
   }, [editor, post, hydrated]);
 
-  const updateSlides = (action: string, index: number, value: string) =>{
+  const updateSlides = (action: string, index: number, value: string) => {
     const updatedSlides = slides.slice();
     switch (action) {
-      case 'add':
-        setSlides([...slides, value])
+      case "add":
+        setSlides([...slides, value]);
         break;
-      case 'update':
+      case "update":
         updatedSlides[index] = value;
-        setSlides(updatedSlides)
+        setSlides(updatedSlides);
         break;
-      case 'delete':
-        updatedSlides.splice(index, 1)
-        console.log(updatedSlides)
-        setSlides(updatedSlides)
+      case "delete":
+        updatedSlides.splice(index, 1);
+        setSlides(updatedSlides);
         break;
     }
-  }
+  };
 
   useEffect(() => {
-    setData({ ...data, slides: JSON.stringify([...slides]) })
+    setData({ ...data, slides: JSON.stringify([...slides]) });
   }, [slides]);
 
   const setSlideWithJson = (newSlides: Array<string>, content: string) => {
-    setData({ ...data, slides: JSON.stringify(newSlides), content: content, })
+    setData({ ...data, slides: JSON.stringify(newSlides), content: content });
     editor?.commands.setContent(content);
-    setSlides(newSlides)
-  }
+    setSlides(newSlides);
+  };
 
   return (
     <>
-      <div className="relative min-h-[500px] w-full max-w-screen-lg border-stone-200 p-12 px-8 dark:border-stone-700 sm:rounded-lg sm:border sm:px-12 sm:shadow-lg">
+      <div className="relative min-h-[500px] w-full max-w-screen-lg border-stone-200 p-12 px-8 mb-10 dark:border-stone-700 sm:rounded-lg sm:border sm:px-12 sm:shadow-lg">
         <div className="absolute right-5 top-5 mb-5 flex items-center space-x-3">
           {data.published && (
             <a
@@ -221,7 +229,7 @@ export default function Editor({ post }: { post: PostWithSite }) {
             </a>
           )}
           <ImportJSONButton>
-            <ImportJsonModal setSlideWithJson={setSlideWithJson}/>
+            <ImportJsonModal setSlideWithJson={setSlideWithJson} />
           </ImportJSONButton>
           <div className="rounded-lg bg-stone-100 px-2 py-1 text-sm text-stone-400 dark:bg-stone-800 dark:text-stone-500">
             {isPendingSaving ? "Saving..." : "Saved"}
@@ -235,10 +243,14 @@ export default function Editor({ post }: { post: PostWithSite }) {
                 await updatePostMetadata(formData, post.id, "published").then(
                   () => {
                     toast.success(
-                      `Successfully ${data.published ? "unpublished" : "published"
+                      `Successfully ${
+                        data.published ? "unpublished" : "published"
                       } your post.`,
                     );
-                    setData((prev) => ({ ...prev, published: !prev.published }));
+                    setData((prev) => ({
+                      ...prev,
+                      published: !prev.published,
+                    }));
                   },
                 );
               });
@@ -277,20 +289,39 @@ export default function Editor({ post }: { post: PostWithSite }) {
         {editor && <EditorBubbleMenu editor={editor} />}
         <EditorContent editor={editor} />
       </div>
-      {
-        slides.map((slideData: string, index: number) =>
-          <div key={`slide-${index}`} className="relative min-h-[200px] w-full max-w-screen-lg border-stone-200 p-12 px-8 dark:border-stone-700 sm:mb-[calc(20vh)] sm:rounded-lg sm:border sm:px-12 sm:shadow-lg">
-            <XCircle width={24} className="dark:text-white absolute top-4 right-4 cursor-pointer" onClick={() => { updateSlides('delete', Number(index), '') }}></XCircle>
-            <EditorContents data={data} slideData={slideData} post={post} slides={slides} setData={setData} updateSlides={updateSlides} index={index}/>
-          </div>
-        )
-      }
-      <div className="flex justify-end w-full max-w-screen-lg">
-        <button type="button" onClick={(e) => { updateSlides('add', 0, '') }}>
-          <PlusCircleIcon width={24} className="dark:text-white mr-4" />
+      {slides.map((slideData: string, index: number) => (
+        <div
+          key={`slide-${index}`}
+          className="relative min-h-[200px] w-full max-w-screen-lg border-stone-200 p-12 px-8 dark:border-stone-700 mb-10 sm:rounded-lg sm:border sm:px-12 sm:shadow-lg"
+        >
+          <XCircle
+            width={24}
+            className="absolute right-4 top-4 cursor-pointer dark:text-white"
+            onClick={() => {
+              updateSlides("delete", Number(index), "");
+            }}
+          ></XCircle>
+          <EditorContents
+            data={data}
+            slideData={slideData}
+            post={post}
+            slides={slides}
+            setData={setData}
+            updateSlides={updateSlides}
+            index={index}
+          />
+        </div>
+      ))}
+      <div className="flex w-full max-w-screen-lg justify-end">
+        <button
+          type="button"
+          onClick={(e) => {
+            updateSlides("add", 0, "");
+          }}
+        >
+          <PlusCircleIcon width={24} className="mr-4 dark:text-white" />
         </button>
       </div>
     </>
-
   );
 }

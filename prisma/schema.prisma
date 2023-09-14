@@ -95,20 +95,6 @@ model Post {
   @@index([userId])
 }
 
-model Vistor {
-  id        String   @id @default(cuid())
-  location  String?  @db.Text
-  referrer  String?  @db.Text
-  createdAt DateTime @default(now())
-  site      Site?    @relation(fields: [siteId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  siteId    String?
-  post      User?    @relation(fields: [postId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  postId    String?
-
-  @@index([siteId])
-  @@index([postId])
-}
-
 model Subscription {
   id        String   @id @default(cuid())
   name      String?  @default("Free")
@@ -125,6 +111,20 @@ model Subscription {
 
   @@index([planId])
   @@index([userId])
+}
+
+model Vistor {
+  id        String   @id @default(cuid())
+  location  String?  @db.Text
+  referrer  String?  @db.Text
+  createdAt DateTime @default(now())
+  site      Site?    @relation(fields: [siteId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  siteId    String?
+  post      User?    @relation(fields: [postId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  postId    String?
+
+  @@index([siteId])
+  @@index([postId])
 }
 
 model Site {
