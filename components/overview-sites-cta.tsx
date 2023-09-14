@@ -5,6 +5,7 @@ import CreateSiteModal from "./modal/create-site";
 import Link from "next/link";
 
 export default async function OverviewSitesCTA() {
+  let canCreatePost = false;
   const session = await getSession();
   if (!session) {
     return 0;
@@ -15,6 +16,19 @@ export default async function OverviewSitesCTA() {
     },
   });
 
+  // getting user subscription
+  const subscription = await prisma.subscription.findFirst({
+    where: {
+      userId: session?.user?.id,
+    },
+  });
+
+  const planSites = subscription?.websites ?? 1;
+
+  if (planSites > sites) {
+    canCreatePost = true;
+  }
+
   return sites > 0 ? (
     <Link
       href="/sites"
@@ -23,7 +37,7 @@ export default async function OverviewSitesCTA() {
       View All Blogs
     </Link>
   ) : (
-    <CreateSiteButton>
+    <CreateSiteButton canCreatePost={canCreatePost}>
       <CreateSiteModal />
     </CreateSiteButton>
   );

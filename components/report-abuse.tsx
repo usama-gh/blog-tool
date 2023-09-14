@@ -9,7 +9,10 @@ import LoadingDots from "./icons/loading-dots";
 import va from "@vercel/analytics";
 import { toast } from "sonner";
 
-export default function ReportAbuse() {
+interface Props {
+  isShowBadge: boolean;
+}
+export default function ReportAbuse({ isShowBadge }: Props) {
   const [open, setOpen] = useState(false);
   const { domain, slug } = useParams() as { domain: string; slug?: string };
   const url = slug ? `https://${domain}/${slug}` : `https://${domain}`;
@@ -22,6 +25,12 @@ export default function ReportAbuse() {
       >
         <AlertTriangle size={24} />
       </button>
+      {isShowBadge && (
+        <span className="ml-4 inline-flex items-center gap-1.5 rounded-full bg-black px-3 py-2 text-xs font-medium text-white">
+          Made with SlideBites
+        </span>
+      )}
+
       {open && (
         <form
           action={async (formData) => {

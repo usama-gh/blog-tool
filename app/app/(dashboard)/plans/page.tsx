@@ -21,18 +21,6 @@ export default async function Plans() {
   });
 
   // getting user sites
-  const sites = await prisma.site.findMany({
-    where: {
-      userId: session.user.id,
-    },
-  });
-
-  const planId = subscription?.planId ?? 1;
-  const planSites = subscription?.websites ?? 1;
-  const planVisitors = subscription?.visitors ?? 500;
-  let visitors = 0;
-
-  // calculating total visitor of each site in current month
   let date = new Date();
   let firstDay = new Date(
     date.getFullYear(),
@@ -44,19 +32,59 @@ export default async function Plans() {
     date.getMonth() + 1,
     0,
   ).toLocaleDateString("sv-SE");
-
-  sites.forEach(async (site) => {
-    let siteVisitors = await prisma.vistor.findMany({
-      where: {
-        siteId: site.id,
-        createdAt: {
-          gte: new Date(firstDay),
-          lte: new Date(lastDay),
+  const sites = await prisma.site.findMany({
+    where: {
+      userId: session.user.id,
+    },
+    include: {
+      _count: {
+        select: {
+          Vistor: {
+            where: {
+              createdAt: {
+                gte: new Date(firstDay),
+                lte: new Date(lastDay),
+              },
+            },
+          },
         },
       },
-    });
-    visitors += siteVisitors.length;
+    },
   });
+
+  const planId = subscription?.planId ?? 1;
+  const planSites = subscription?.websites ?? 1;
+  const planVisitors = subscription?.visitors ?? 500;
+  let visitors = 0;
+
+  // calculating total visitor of each site in current month
+  for (let index = 0; index < sites.length; index++) {
+    visitors += sites[index]._count.Vistor;
+  }
+  // let date = new Date();
+  // let firstDay = new Date(
+  //   date.getFullYear(),
+  //   date.getMonth(),
+  //   1,
+  // ).toLocaleDateString("sv-SE");
+  // let lastDay = new Date(
+  //   date.getFullYear(),
+  //   date.getMonth() + 1,
+  //   0,
+  // ).toLocaleDateString("sv-SE");
+
+  // for (let index = 0; index < sites.length; index++) {
+  //   let siteVisitors = await prisma.vistor.findMany({
+  //     where: {
+  //       siteId: sites[index].id,
+  //       createdAt: {
+  //         gte: new Date(firstDay),
+  //         lte: new Date(lastDay),
+  //       },
+  //     },
+  //   });
+  //   visitors += siteVisitors.length;
+  // }
 
   return (
     <>

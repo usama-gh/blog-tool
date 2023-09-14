@@ -21,20 +21,6 @@ const allowedOrigins = ["http://localhost:3000", "http://app.localhost:3000"];
 export default async function middleware(req: NextRequest) {
   const url = req.nextUrl;
 
-  // req.headers.append(
-  //   "Access-Control-Allow-Origin",
-  //   "http://app.localhost:3000",
-  // );
-  // req.headers.append("Access-Control-Allow-Credentials", "true");
-  // req.headers.append(
-  //   "Access-Control-Allow-Methods",
-  //   "GET,DELETE,PATCH,POST,PUT",
-  // );
-  // req.headers.append(
-  //   "Access-Control-Allow-Headers",
-  //   "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version",
-  // );
-
   // Get hostname of request (e.g. demo.vercel.pub, demo.localhost:3000)
   const hostname = req.headers
     .get("host")!

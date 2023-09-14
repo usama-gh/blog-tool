@@ -1,5 +1,3 @@
-import Image from "next/image";
-import Link from "next/link";
 import { ReactNode } from "react";
 import prisma from "@/lib/prisma";
 import CTA from "@/components/cta";
@@ -8,6 +6,7 @@ import { notFound, redirect } from "next/navigation";
 import { getSiteData } from "@/lib/fetchers";
 import { fontMapper } from "@/styles/fonts";
 import { Metadata } from "next";
+import { getSession } from "@/lib/auth";
 
 export async function generateMetadata({
   params,
@@ -112,7 +111,7 @@ export default async function SiteLayout({
       params.domain == `platformize.co` ? (
         <CTA />
       ) : (
-        <ReportAbuse />
+        <ReportAbuse isShowBadge={true} />
       )}
     </div>
   );
