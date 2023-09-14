@@ -5,11 +5,10 @@ import { plans } from "@/data";
 import axios from "axios";
 
 interface Props {
-  userId: string;
   subscriptionId?: string;
 }
 
-export function PaddleLoader({ userId, subscriptionId }: Props) {
+export function PaddleLoader({ subscriptionId }: Props) {
   return (
     <Script
       //   src="https://cdn.paddle.com/paddle/paddle.js"

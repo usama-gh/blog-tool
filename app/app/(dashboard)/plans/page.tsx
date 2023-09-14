@@ -60,10 +60,7 @@ export default async function Plans() {
 
   return (
     <>
-      <PaddleLoader
-        userId={session.user.id}
-        subscriptionId={subscription?.id}
-      />
+      <PaddleLoader subscriptionId={subscription?.id} />
       <div className="flex max-w-screen-xl flex-col p-8">
         <div className="flex flex-col space-y-2">
           <h1 className="font-cal text-3xl font-bold dark:text-white">Plans</h1>
