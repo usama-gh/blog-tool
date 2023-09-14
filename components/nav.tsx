@@ -11,6 +11,7 @@ import {
   Megaphone,
   Menu,
   Newspaper,
+  Rss,
   Settings,
 } from "lucide-react";
 import {
@@ -25,27 +26,26 @@ import { FileCode, Github } from "lucide-react";
 
 // const externalLinks = [
 
-
-  // {
-  //   name: "View demo site",
-  //   href: "https://demo.vercel.pub",
-  //   icon: <Layout width={18} />,
-  // },
-  // {
-  //   name: "Deploy your own",
-  //   href: "https://vercel.com/templates/next.js/platforms-starter-kit",
-  //   icon: (
-  //     <svg
-  //       width={18}
-  //       viewBox="0 0 76 76"
-  //       fill="none"
-  //       xmlns="http://www.w3.org/2000/svg"
-  //       className="py-1 text-black dark:text-white"
-  //     >
-  //       <path d="M37.5274 0L75.0548 65H0L37.5274 0Z" fill="currentColor" />
-  //     </svg>
-  //   ),
-  // },
+// {
+//   name: "View demo site",
+//   href: "https://demo.vercel.pub",
+//   icon: <Layout width={18} />,
+// },
+// {
+//   name: "Deploy your own",
+//   href: "https://vercel.com/templates/next.js/platforms-starter-kit",
+//   icon: (
+//     <svg
+//       width={18}
+//       viewBox="0 0 76 76"
+//       fill="none"
+//       xmlns="http://www.w3.org/2000/svg"
+//       className="py-1 text-black dark:text-white"
+//     >
+//       <path d="M37.5274 0L75.0548 65H0L37.5274 0Z" fill="currentColor" />
+//     </svg>
+//   ),
+// },
 // ];
 
 export default function Nav({ children }: { children: ReactNode }) {
@@ -116,6 +116,12 @@ export default function Nav({ children }: { children: ReactNode }) {
         href: "/sites",
         isActive: segments[0] === "sites",
         icon: <Globe width={18} />,
+      },
+      {
+        name: "Plans",
+        href: "/plans",
+        isActive: segments[0] === "plans",
+        icon: <Rss width={18} />,
       },
       {
         name: "Settings",

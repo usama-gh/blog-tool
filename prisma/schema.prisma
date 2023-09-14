@@ -29,6 +29,7 @@ model User {
   sites         Site[]
   posts         Post[]
   Vistor        Vistor[]
+  subscription  Subscription[]
 }
 
 model Account {
@@ -91,6 +92,24 @@ model Post {
 
   @@unique([slug, siteId])
   @@index([siteId])
+  @@index([userId])
+}
+
+model Subscription {
+  id        String   @id @default(cuid())
+  name      String?  @default("Free")
+  planId    Int?     @default(1)
+  user      User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String?
+  websites  Int?     @default(1)
+  visitors  Int?     @default(500)
+  priceId String?    @default("pri_01h9mghe4gbtqc0s7e25dch51g")
+  checkoutId String?
+  transactionId String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([planId])
   @@index([userId])
 }
 

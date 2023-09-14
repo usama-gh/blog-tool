@@ -24,31 +24,41 @@ export const EditorBubbleMenu: FC<EditorBubbleMenuProps> = (props) => {
   const items: BubbleMenuItem[] = [
     {
       name: "bold",
+      // @ts-ignore
       isActive: () => props.editor.isActive("bold"),
+      // @ts-ignore
       command: () => props.editor.chain().focus().toggleBold().run(),
       icon: BoldIcon,
     },
     {
       name: "italic",
+      // @ts-ignore
       isActive: () => props.editor.isActive("italic"),
+      // @ts-ignore
       command: () => props.editor.chain().focus().toggleItalic().run(),
       icon: ItalicIcon,
     },
     {
       name: "underline",
+      // @ts-ignore
       isActive: () => props.editor.isActive("underline"),
+      // @ts-ignore
       command: () => props.editor.chain().focus().toggleUnderline().run(),
       icon: UnderlineIcon,
     },
     {
       name: "strike",
+      // @ts-ignore
       isActive: () => props.editor.isActive("strike"),
+      // @ts-ignore
       command: () => props.editor.chain().focus().toggleStrike().run(),
       icon: StrikethroughIcon,
     },
     {
       name: "code",
+      // @ts-ignore
       isActive: () => props.editor.isActive("code"),
+      // @ts-ignore
       command: () => props.editor.chain().focus().toggleCode().run(),
       icon: CodeIcon,
     },
@@ -79,6 +89,7 @@ export const EditorBubbleMenu: FC<EditorBubbleMenuProps> = (props) => {
       className="flex rounded border border-stone-200 bg-white shadow-xl"
     >
       <NodeSelector
+        // @ts-ignore
         editor={props.editor}
         isOpen={isNodeSelectorOpen}
         setIsOpen={() => {

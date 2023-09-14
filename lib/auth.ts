@@ -8,23 +8,23 @@ const VERCEL_DEPLOYMENT = !!process.env.VERCEL_URL;
 
 export const authOptions: NextAuthOptions = {
   providers: [
-    // GoogleProvider({
-    //   clientId: process.env.AUTH_GOOGLE_ID as string,
-    //   clientSecret: process.env.AUTH_GOOGLE_SECRET as string,
-    // }),
-    GitHubProvider({
-      clientId: process.env.AUTH_GITHUB_ID as string,
-      clientSecret: process.env.AUTH_GITHUB_SECRET as string,
-      profile(profile) {
-        return {
-          id: profile.id.toString(),
-          name: profile.name || profile.login,
-          gh_username: profile.login,
-          email: profile.email,
-          image: profile.avatar_url,
-        };
-      },
+    GoogleProvider({
+      clientId: process.env.AUTH_GOOGLE_ID as string,
+      clientSecret: process.env.AUTH_GOOGLE_SECRET as string,
     }),
+    // GitHubProvider({
+    //   clientId: process.env.AUTH_GITHUB_ID as string,
+    //   clientSecret: process.env.AUTH_GITHUB_SECRET as string,
+    //   profile(profile) {
+    //     return {
+    //       id: profile.id.toString(),
+    //       name: profile.name || profile.login,
+    //       gh_username: profile.login,
+    //       email: profile.email,
+    //       image: profile.avatar_url,
+    //     };
+    //   },
+    // }),
   ],
   pages: {
     signIn: `/login`,
@@ -53,6 +53,7 @@ export const authOptions: NextAuthOptions = {
       if (user) {
         token.user = user;
       }
+
       return token;
     },
     session: async ({ session, token }) => {
@@ -66,6 +67,7 @@ export const authOptions: NextAuthOptions = {
           ?.join("")
           ?.toLocaleLowerCase(),
       };
+
       return session;
     },
   },
