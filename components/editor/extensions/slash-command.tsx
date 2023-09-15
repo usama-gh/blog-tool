@@ -29,6 +29,8 @@ import { toast } from "sonner";
 import va from "@vercel/analytics";
 import Magic from "@/components/icons/magic";
 import { handleImageUpload } from "../utils";
+import { getSession } from "@/lib/auth";
+import { redirect } from "next/navigation";
 
 interface CommandItemProps {
   title: string;
@@ -71,14 +73,14 @@ const Command = Extension.create({
   },
 });
 
-const getSuggestionItems = ({ query }: { query: string }) => {
+const getSuggestionItems = async ({ query }: { query: string }) => {
   return [
-    {
-      title: "Continue writing",
-      description: "Use AI to expand your thoughts.",
-      searchTerms: ["gpt"],
-      icon: <Magic className="w-7 text-black dark:text-white" />,
-    },
+    // {
+    //   title: "Continue writing",
+    //   description: "Use AI to expand your thoughts.",
+    //   searchTerms: ["gpt"],
+    //   icon: <Magic className="w-7 text-black dark:text-white" />,
+    // },
     {
       title: "Send Feedback",
       description: "Let us know how we can improve.",

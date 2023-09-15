@@ -3,7 +3,7 @@ import prisma from "@/lib/prisma";
 import CTA from "@/components/cta";
 import ReportAbuse from "@/components/report-abuse";
 import { notFound, redirect } from "next/navigation";
-import { getSiteData } from "@/lib/fetchers";
+import { getSiteData, getUserPlanAnalytics } from "@/lib/fetchers";
 import { fontMapper } from "@/styles/fonts";
 import { Metadata } from "next";
 import { getSession } from "@/lib/auth";
@@ -87,8 +87,14 @@ export default async function SiteLayout({
   params: { domain: string };
   children: ReactNode;
 }) {
+  let isShowBadge = false;
   const { domain } = params;
   const data = await getSiteData(domain);
+
+  if (data?.userId) {
+    const result = await getUserPlanAnalytics(data?.userId);
+    isShowBadge = result.isShowBadge;
+  }
 
   if (!data) {
     notFound();
@@ -111,7 +117,7 @@ export default async function SiteLayout({
       params.domain == `platformize.co` ? (
         <CTA />
       ) : (
-        <ReportAbuse isShowBadge={true} />
+        <ReportAbuse isShowBadge={isShowBadge} />
       )}
     </div>
   );

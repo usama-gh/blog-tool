@@ -1,5 +1,6 @@
 import prisma from "@/lib/prisma";
 import { NextResponse } from "next/server";
+import { revalidateTag } from "next/cache";
 
 export async function POST(request: Request) {
   const origin = request.headers.get("origin");
@@ -19,6 +20,7 @@ export async function POST(request: Request) {
         transactionId: data.transactionId,
       },
     });
+    revalidateTag(`${data.userId}-states`);
     return new NextResponse(JSON.stringify({ subscription: updated }), {
       status: 201,
       headers: {

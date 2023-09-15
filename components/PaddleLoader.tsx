@@ -6,9 +6,10 @@ import axios from "axios";
 
 interface Props {
   subscriptionId?: string;
+  userId?: string;
 }
 
-export function PaddleLoader({ subscriptionId }: Props) {
+export function PaddleLoader({ subscriptionId, userId }: Props) {
   return (
     <Script
       //   src="https://cdn.paddle.com/paddle/paddle.js"
@@ -30,6 +31,7 @@ export function PaddleLoader({ subscriptionId }: Props) {
 
               await axios
                 .post(`api/subscription`, {
+                  userId,
                   id: subscriptionId,
                   planId: plan?.id,
                   name: plan?.name,

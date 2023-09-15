@@ -18,13 +18,13 @@ import { EditorBubbleMenu } from "../bubble-menu";
 type PostWithSite = Post & { site: { subdomain: string | null } | null };
 
 interface Props {
-  index: number,
+  index: number;
   data: any;
   post: any;
   setData: Dispatch<SetStateAction<PostWithSite>>;
   updateSlides: any;
-  slides: Array<string>,
-  slideData: string
+  slides: Array<string>;
+  slideData: string;
 }
 
 export const EditorContents = (props: Props) => {
@@ -53,9 +53,16 @@ export const EditorContents = (props: Props) => {
         // complete(e.editor.storage.markdown.getMarkdown());
         va.track("Autocomplete Shortcut Used");
       } else {
-        console.log(props.data)
-        props.setData({ ...props.data, slides: JSON.stringify([...props.slides]) })
-        props.updateSlides('update', Number(props.index), e.editor.storage.markdown.getMarkdown())
+        console.log(props.data);
+        props.setData({
+          ...props.data,
+          slides: JSON.stringify([...props.slides]),
+        });
+        props.updateSlides(
+          "update",
+          Number(props.index),
+          e.editor.storage.markdown.getMarkdown(),
+        );
       }
     },
   });
@@ -140,7 +147,7 @@ export const EditorContents = (props: Props) => {
       editor.commands.setContent(props.slideData);
       setHydrated(true);
     }
-  }, [editor, props.post, hydrated]);
+  }, [editor, props.post, hydrated, props.slideData]);
 
   return (
     <>

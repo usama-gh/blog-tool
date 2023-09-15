@@ -14,20 +14,21 @@ import { Post } from "@prisma/client";
 import { updatePost, updatePostMetadata } from "@/lib/actions";
 import { cn } from "@/lib/utils";
 import LoadingDots from "../icons/loading-dots";
-import {
-  ExternalLink,
-  PlusCircle,
-  PlusCircleIcon,
-  XCircle,
-} from "lucide-react";
-import { Button } from "@tremor/react";
+import { ExternalLink, PlusCircleIcon, XCircle } from "lucide-react";
 import { EditorContents } from "./editor-content";
 import ImportJSONButton from "../import-json-btn";
 import ImportJsonModal from "../modal/import-json";
+import { TiptapExtensionsAI } from "./extensions/index-ai";
 
 type PostWithSite = Post & { site: { subdomain: string | null } | null };
 
-export default function Editor({ post }: { post: PostWithSite }) {
+export default function Editor({
+  post,
+  canUseAI,
+}: {
+  post: PostWithSite;
+  canUseAI: boolean;
+}) {
   let [isPendingSaving, startTransitionSaving] = useTransition();
   let [isPendingPublishing, startTransitionPublishing] = useTransition();
 
@@ -74,7 +75,7 @@ export default function Editor({ post }: { post: PostWithSite }) {
   }, [data, startTransitionSaving]);
 
   const editor = useEditor({
-    extensions: TiptapExtensions,
+    extensions: canUseAI ? TiptapExtensionsAI : TiptapExtensions,
     editorProps: TiptapEditorProps,
     onUpdate: (e) => {
       const selection = e.editor.state.selection;
@@ -206,7 +207,7 @@ export default function Editor({ post }: { post: PostWithSite }) {
 
   useEffect(() => {
     setData({ ...data, slides: JSON.stringify([...slides]) });
-  }, [slides]);
+  }, [slides, data]);
 
   const setSlideWithJson = (newSlides: Array<string>, content: string) => {
     setData({ ...data, slides: JSON.stringify(newSlides), content: content });
@@ -216,7 +217,7 @@ export default function Editor({ post }: { post: PostWithSite }) {
 
   return (
     <>
-      <div className="relative min-h-[500px] w-full max-w-screen-lg border-stone-200 p-12 px-8 mb-10 dark:border-stone-700 sm:rounded-lg sm:border sm:px-12 sm:shadow-lg">
+      <div className="relative mb-10 min-h-[500px] w-full max-w-screen-lg border-stone-200 p-12 px-8 dark:border-stone-700 sm:rounded-lg sm:border sm:px-12 sm:shadow-lg">
         <div className="absolute right-5 top-5 mb-5 flex items-center space-x-3">
           {data.published && (
             <a
@@ -292,7 +293,7 @@ export default function Editor({ post }: { post: PostWithSite }) {
       {slides.map((slideData: string, index: number) => (
         <div
           key={`slide-${index}`}
-          className="relative min-h-[200px] w-full max-w-screen-lg border-stone-200 p-12 px-8 dark:border-stone-700 mb-10 sm:rounded-lg sm:border sm:px-12 sm:shadow-lg"
+          className="relative mb-10 min-h-[200px] w-full max-w-screen-lg border-stone-200 p-12 px-8 dark:border-stone-700 sm:rounded-lg sm:border sm:px-12 sm:shadow-lg"
         >
           <XCircle
             width={24}

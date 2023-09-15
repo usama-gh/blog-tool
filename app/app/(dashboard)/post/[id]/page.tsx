@@ -6,13 +6,18 @@ import { updatePostMetadata } from "@/lib/actions";
 import DeletePostForm from "@/components/form/delete-post-form";
 import PostForm from "@/components/form/post-form";
 import Form from "@/components/form";
-
+import { getUserPlanAnalytics } from "@/lib/fetchers";
 
 export default async function PostPage({ params }: { params: { id: string } }) {
+  let canUseAI = false;
   const session = await getSession();
   if (!session) {
     redirect("/login");
   }
+
+  const result = await getUserPlanAnalytics(session.user.id as string);
+  canUseAI = result.canUseAI;
+
   const data = await prisma.post.findUnique({
     where: {
       id: params.id,
@@ -33,9 +38,9 @@ export default async function PostPage({ params }: { params: { id: string } }) {
     <>
       <div className="flex flex-col-reverse justify-between xl:flex-row">
         <div className="w-full xl:w-7/12">
-          <Editor post={data} />;
+          <Editor post={data} canUseAI={canUseAI} />;
         </div>
-        <div className="w-full xl:w-[38%] mb-10 xl:mb-0">
+        <div className="mb-10 w-full xl:mb-0 xl:w-[38%]">
           <div className="flex flex-col space-y-6">
             <PostForm
               title="Post Slug"
