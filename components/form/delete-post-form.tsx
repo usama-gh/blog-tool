@@ -6,7 +6,6 @@ import { useParams, useRouter } from "next/navigation";
 import { experimental_useFormStatus as useFormStatus } from "react-dom";
 import { toast } from "sonner";
 import { deletePost } from "@/lib/actions";
-import va from "@vercel/analytics";
 
 export default function DeletePostForm({ postName }: { postName: string }) {
   const { id } = useParams() as { id: string };
@@ -19,7 +18,6 @@ export default function DeletePostForm({ postName }: { postName: string }) {
           if (res.error) {
             toast.error(res.error);
           } else {
-            va.track("Deleted Post");
             router.refresh();
             router.push(`/site/${res.siteId}`);
             toast.success(`Successfully deleted post!`);
@@ -46,7 +44,7 @@ export default function DeletePostForm({ postName }: { postName: string }) {
       </div>
 
       <div className="flex flex-col items-center justify-center space-y-2 rounded-b-lg border-t border-stone-200 bg-stone-50 p-3 dark:border-stone-700 dark:bg-stone-800 sm:flex-row sm:justify-between sm:space-y-0 sm:px-10">
-        <p className="text-center text-sm text-stone-500 dark:text-stone-400 mr-3">
+        <p className="mr-3 text-center text-sm text-stone-500 dark:text-stone-400">
           This action is irreversible. Please proceed with caution.
         </p>
         <div className="w-32">

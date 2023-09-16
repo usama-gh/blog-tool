@@ -7,7 +7,6 @@ import { TiptapExtensions } from "./extensions";
 import { useDebounce } from "use-debounce";
 import { useCompletion } from "ai/react";
 import { toast } from "sonner";
-import va from "@vercel/analytics";
 import TextareaAutosize from "react-textarea-autosize";
 import { EditorBubbleMenu } from "./bubble-menu";
 import { Post } from "@prisma/client";
@@ -96,7 +95,6 @@ export default function Editor({
           }\n\n ${e.editor.getText()}`,
         );
         // complete(e.editor.storage.markdown.getMarkdown());
-        va.track("Autocomplete Shortcut Used");
       } else {
         setData((prev) => ({
           ...prev,
@@ -117,9 +115,6 @@ export default function Editor({
     },
     onError: (err) => {
       toast.error(err.message);
-      if (err.message === "You have reached your request limit for the day.") {
-        va.track("Rate Limit Reached");
-      }
     },
   });
 

@@ -6,7 +6,6 @@ import { useParams } from "next/navigation";
 import { useState } from "react";
 import { experimental_useFormStatus as useFormStatus } from "react-dom";
 import LoadingDots from "./icons/loading-dots";
-import va from "@vercel/analytics";
 import { toast } from "sonner";
 
 interface Props {
@@ -35,7 +34,6 @@ export default function ReportAbuse({ isShowBadge }: Props) {
         <form
           action={async (formData) => {
             const url = formData.get("url") as string;
-            va.track("Reported Abuse", { url });
             // artificial 1s delay
             await new Promise((resolve) => setTimeout(resolve, 1000));
             setOpen(false);

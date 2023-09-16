@@ -9,7 +9,6 @@ import React, {
 } from "react";
 import { TiptapExtensions } from "../extensions";
 import { TiptapEditorProps } from "../props";
-import va from "@vercel/analytics";
 import { useCompletion } from "ai/react";
 import { toast } from "sonner";
 import { Post } from "@prisma/client";
@@ -51,7 +50,6 @@ export const EditorContents = (props: Props) => {
           }\n\n ${e.editor.getText()}`,
         );
         // complete(e.editor.storage.markdown.getMarkdown());
-        va.track("Autocomplete Shortcut Used");
       } else {
         console.log(props.data);
         props.setData({
@@ -78,9 +76,6 @@ export const EditorContents = (props: Props) => {
     },
     onError: (err) => {
       toast.error(err.message);
-      if (err.message === "You have reached your request limit for the day.") {
-        va.track("Rate Limit Reached");
-      }
     },
   });
 

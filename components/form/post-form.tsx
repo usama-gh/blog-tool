@@ -3,10 +3,7 @@
 import { useSession } from "next-auth/react";
 import { useParams, useRouter } from "next/navigation";
 import { toast } from "sonner";
-import DomainStatus from "./domain-status";
-import DomainConfiguration from "./domain-configuration";
 import Uploader from "./uploader";
-import va from "@vercel/analytics";
 import LoadingCircle from "../icons/loading-circle";
 import { useEffect, useRef, useState } from "react";
 import { useDebounce } from "use-debounce";
@@ -55,7 +52,6 @@ export default function PostForm({
           if (res.error) {
             toast.error(res.error);
           } else {
-            va.track(`Updated ${inputAttrs.name}`, id ? { id } : {});
             if (id) {
               router.refresh();
             } else {
@@ -71,11 +67,7 @@ export default function PostForm({
       <div className="relative flex flex-col space-y-4 p-5 sm:p-10">
         <div className="flex justify-between">
           <h2 className="font-cal text-xl dark:text-white">{title}</h2>
-          {isLoading ? (
-            <LoadingCircle />
-          ) : (
-            <></>
-          )}
+          {isLoading ? <LoadingCircle /> : <></>}
         </div>
         <p className="text-sm text-stone-500 dark:text-stone-400">
           {description}

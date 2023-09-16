@@ -59,9 +59,6 @@ dependencies:
   '@upstash/ratelimit':
     specifier: ^0.4.4
     version: 0.4.4
-  '@vercel/analytics':
-    specifier: ^1.0.2
-    version: 1.0.2
   '@vercel/blob':
     specifier: ^0.9.3
     version: 0.9.3
@@ -1380,10 +1377,6 @@ packages:
       isomorphic-fetch: 3.0.0
     transitivePeerDependencies:
       - encoding
-    dev: false
-
-  /@vercel/analytics@1.0.2:
-    resolution: {integrity: sha512-BZFxVrv24VbNNl5xMxqUojQIegEeXMI6rX3rg1uVLYUEXsuKNBSAEQf4BWEcjQDp/8aYJOj6m8V4PUA3x/cxgg==}
     dev: false
 
   /@vercel/blob@0.9.3:

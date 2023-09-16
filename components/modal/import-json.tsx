@@ -1,39 +1,35 @@
 "use client";
 
-import { toast } from "sonner";
-import { createSite } from "@/lib/actions";
-import { useRouter } from "next/navigation";
 import { experimental_useFormStatus as useFormStatus } from "react-dom";
 import { cn } from "@/lib/utils";
-import LoadingDots from "@/components/icons/loading-dots";
 import { useModal } from "./provider";
-import va from "@vercel/analytics";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
-export default function ImportJsonModal({setSlideWithJson}:any) {
-  const router = useRouter();
+export default function ImportJsonModal({ setSlideWithJson }: any) {
   const modal = useModal();
 
-  const [data, setData] = useState('');
+  const [data, setData] = useState("");
 
   return (
     <form
       action={async () => {
         const importedData = JSON.parse(data);
         let tweetImageWithContent = importedData.tweet.text;
-        importedData.tweet.images.forEach((image:string) => {
-            tweetImageWithContent += '\n\n' + `![](${image})`
-        })
-        setSlideWithJson(importedData.threads.map((thread: any) => {
-            let imagesContent = '';
+        importedData.tweet.images.forEach((image: string) => {
+          tweetImageWithContent += "\n\n" + `![](${image})`;
+        });
+        setSlideWithJson(
+          importedData.threads.map((thread: any) => {
+            let imagesContent = "";
             thread.images.forEach((image: string) => {
-                imagesContent += '\n\n' + `![](${image})`
+              imagesContent += "\n\n" + `![](${image})`;
             });
-            return thread.content + imagesContent
-        }), tweetImageWithContent)
-        modal?.hide(); 
-      }
-      }
+            return thread.content + imagesContent;
+          }),
+          tweetImageWithContent,
+        );
+        modal?.hide();
+      }}
       className="w-full rounded-md bg-white dark:bg-black md:max-w-md md:border md:border-stone-200 md:shadow dark:md:border-stone-700"
     >
       <div className="relative flex flex-col space-y-4">
@@ -44,7 +40,7 @@ export default function ImportJsonModal({setSlideWithJson}:any) {
             value={data}
             onChange={(e) => setData(e.target.value)}
             rows={3}
-            className="w-full h-60 rounded-md border border-stone-200 bg-stone-50 text-sm text-stone-600 placeholder:text-stone-400 focus:border-black focus:outline-none focus:ring-black dark:border-stone-600 dark:bg-black dark:text-white dark:placeholder-stone-700 dark:focus:ring-white"
+            className="h-60 w-full rounded-md border border-stone-200 bg-stone-50 text-sm text-stone-600 placeholder:text-stone-400 focus:border-black focus:outline-none focus:ring-black dark:border-stone-600 dark:bg-black dark:text-white dark:placeholder-stone-700 dark:focus:ring-white"
           />
         </div>
       </div>
