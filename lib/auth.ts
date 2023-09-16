@@ -12,19 +12,19 @@ export const authOptions: NextAuthOptions = {
       clientId: process.env.AUTH_GOOGLE_ID as string,
       clientSecret: process.env.AUTH_GOOGLE_SECRET as string,
     }),
-    // GitHubProvider({
-    //   clientId: process.env.AUTH_GITHUB_ID as string,
-    //   clientSecret: process.env.AUTH_GITHUB_SECRET as string,
-    //   profile(profile) {
-    //     return {
-    //       id: profile.id.toString(),
-    //       name: profile.name || profile.login,
-    //       gh_username: profile.login,
-    //       email: profile.email,
-    //       image: profile.avatar_url,
-    //     };
-    //   },
-    // }),
+    GitHubProvider({
+      clientId: process.env.AUTH_GITHUB_ID as string,
+      clientSecret: process.env.AUTH_GITHUB_SECRET as string,
+      profile(profile) {
+        return {
+          id: profile.id.toString(),
+          name: profile.name || profile.login,
+          gh_username: profile.login,
+          email: profile.email,
+          image: profile.avatar_url,
+        };
+      },
+    }),
   ],
   pages: {
     signIn: `/login`,

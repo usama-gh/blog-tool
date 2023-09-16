@@ -18,14 +18,14 @@ export default function ReportAbuse({ isShowBadge }: Props) {
 
   return (
     <div className="fixed bottom-5 right-5">
-      <button
+      {/* <button
         className="rounded-full bg-black p-4 text-white shadow-lg transition-all hover:-translate-y-1 hover:shadow-2xl active:translate-y-0 active:shadow-sm"
         onClick={() => setOpen(!open)}
       >
         <AlertTriangle size={24} />
-      </button>
+      </button> */}
       {isShowBadge && (
-        <span className="ml-4 inline-flex items-center gap-1.5 rounded-full bg-black px-3 py-2 text-xs font-medium text-white">
+        <span className="ml-4 inline-flex bg-slate-100 text-gray-800 dark:text-gray-100 dark:bg-gray-900 items-center gap-1.5 rounded-full px-3 py-2 text-xs font-medium">
           Made with SlideBites
         </span>
       )}

@@ -2,7 +2,7 @@ import React from "react";
 
 export const DotButton = ({ selected, onClick }: any) => (
   <button
-    className={`cursor-pointer relative w-full h-1 flex items-center mx-2 p-0 border-0 outline-0 bg-slate-200  rounded-sm; ${selected ? "bg-slate-400 opacity-100;" : ""}`}
+    className={`cursor-pointer relative w-full h-[3px] flex items-center p-0 border-0 outline-0 bg-slate-200 dark:bg-gray-700  rounded-sm; ${selected ? "bg-slate-400 dark:bg-gray-500 opacity-100;" : ""}`}
     type="button"
     onClick={onClick}
   />
@@ -10,13 +10,13 @@ export const DotButton = ({ selected, onClick }: any) => (
 
 export const PrevButton = ({ enabled, onClick }: any) => (
     <button
-      className="cursor-pointer bg-transparent absolute z-[1] top-[50%] left-[27px] rotate-180 disabled:opacity-20 disabled:cursor-default"
+      className="cursor-pointer bg-transparent absolute z-[1] absolute top-1/2  transform  -translate-y-1/2 left-[27px] rotate-180 disabled:opacity-20 disabled:cursor-default"
       onClick={onClick}
       disabled={!enabled}
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        className="w-full h-full"
+        className="w-20 h-20"
         width="93"
         height="93"
         viewBox="0 0 93 93"
@@ -36,13 +36,14 @@ export const PrevButton = ({ enabled, onClick }: any) => (
 
 export const NextButton = ({ enabled, onClick }: any) => (
   <button
-    className="cursor-pointer bg-transparent absolute z-[1] top-[50%] right-[27px] disabled:opacity-20 disabled:cursor-default"
+    className="cursor-pointer bg-transparent absolute z-[1] absolute top-1/2  transform  -translate-y-1/2
+    right-[27px] disabled:opacity-20 disabled:cursor-default"
     onClick={onClick}
     disabled={!enabled}
   >
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      className="w-full h-full"
+      className="w-20 h-20"
       width="93"
       height="93"
       viewBox="0 0 93 93"

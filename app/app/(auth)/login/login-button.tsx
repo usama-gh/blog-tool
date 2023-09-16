@@ -23,8 +23,8 @@ export default function LoginButton() {
       disabled={loading}
       onClick={() => {
         setLoading(true);
-        // signIn("github");
-        signIn("google");
+        signIn("github");
+        // signIn("google");
       }}
       className={`${
         loading

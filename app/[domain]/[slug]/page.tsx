@@ -66,15 +66,15 @@ export default async function SitePostPage({
 
   return (
     <>
-      <div className="mx-auto flex items-center justify-between px-10 pt-6 pb-5">
+      <div className="mx-auto flex items-center justify-between px-10 py-3">
         <div className="flex items-center">
-          <div className="h-11 w-11 overflow-hidden rounded-full">
+          <div className="h[25px] w-[25px] overflow-hidden rounded-full">
             {siteData?.user?.image ? (
               <BlurImage
                 alt={siteData.user?.name ?? "User Avatar"}
-                width={47}
-                height={47}
-                className="h-full w-full scale-100 object-cover blur-0 duration-700 ease-in-out"
+                width={20}
+                height={20}
+                className="h-full w-full scale-100 rounded-full object-cover blur-0 duration-700 ease-in-out"
                 src={siteData.user?.image}
               />
             ) : (
@@ -83,15 +83,15 @@ export default async function SitePostPage({
               </div>
             )}
           </div>
-          <Link href="/" className="px-3.5 font-semibold text-xl text-gray-400">
+          <Link href="/" className="px-3.5 font-regular tracking-widest uppercase text-sm text-slate-500 dark:text-gray-400">
             {siteData?.user?.name}
           </Link>
-          <div className="h-7 w-1 bg-slate-200"></div>
-          <p className="pl-3 text-2xl font-semibold text-gray-400">
+          <div className="h-7 w-[2px] bg-slate-200 dark:bg-gray-700"></div>
+          <p className="pl-3 text-sm font-regular text-slate-500 dark:text-gray-400">
             {data.title}
           </p>
         </div>
-        <p className="font-semibold text-lg text-gray-400">{toDateString(data.createdAt, "short")}</p>
+        <p className="font-regular text-sm text-slate-500 dark:text-gray-400">{toDateString(data.createdAt, "short")}</p>
       </div>
       <Carousel data={data} siteData={siteData}></Carousel>
     </>
