@@ -141,7 +141,7 @@ export async function getUserPlanAnalytics(userId: string) {
     },
     [`${userId}-states`],
     {
-      revalidate: 5,
+      revalidate: 900, // 15 minutes
       tags: [`${userId}-states`],
     },
   )();

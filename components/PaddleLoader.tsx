@@ -44,6 +44,7 @@ export function PaddleLoader({ subscriptionId, userId }: Props) {
                 .then(function (response) {
                   // @ts-ignore
                   Paddle.Checkout.close();
+                  window.location.reload();
                 })
                 .catch(function (error) {
                   console.log(error.message);
