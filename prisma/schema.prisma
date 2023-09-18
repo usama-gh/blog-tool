@@ -131,6 +131,7 @@ model Site {
   id            String   @id @default(cuid())
   name          String?
   description   String?  @db.Text
+  bio           String?  @db.Text
   logo          String?  @default("https://public.blob.vercel-storage.com/eEZHAoPTOBSYGBE3/JRajRyC-PhBHEinQkupt02jqfKacBVHLWJq7Iy.png") @db.Text
   font          String   @default("font-cal")
   image         String?  @default("https://public.blob.vercel-storage.com/eEZHAoPTOBSYGBE3/hxfcV5V-eInX3jbVUhjAt1suB7zB88uGd1j20b.png") @db.Text

@@ -23,6 +23,7 @@ import {
   Image as ImageIcon,
   Code,
   CheckSquare,
+  Link,
 } from "lucide-react";
 import LoadingCircle from "@/components/icons/loading-circle";
 import { toast } from "sonner";
@@ -152,6 +153,20 @@ const getSuggestionItems = async ({ query }: { query: string }) => {
           .run();
       },
     },
+    // {
+    //   title: "Link",
+    //   description: "Create a simple link",
+    //   searchTerms: ["unordered", "point"],
+    //   icon: <Link size={18} />,
+    //   command: ({ editor, range }: CommandProps) => {
+    //     editor
+    //       .chain()
+    //       .focus()
+    //       .deleteRange(range)
+    //       .setLink({ href: "", target: "_blank" })
+    //       .run();
+    //   },
+    // },
     {
       title: "Bullet List",
       description: "Create a simple bullet list.",

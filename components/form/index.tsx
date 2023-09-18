@@ -9,6 +9,14 @@ import { toast } from "sonner";
 import DomainStatus from "./domain-status";
 import DomainConfiguration from "./domain-configuration";
 import Uploader from "./uploader";
+import { useEditor, EditorContent } from "@tiptap/react";
+import { EditorBubbleMenu } from "../editor/bubble-menu";
+import { useEffect, useRef, useState } from "react";
+import { TiptapExtensions } from "../editor/extensions";
+import { TiptapEditorProps } from "../editor/props";
+import { TiptapExtensionsAI } from "../editor/extensions/index-ai";
+import { useCompletion } from "ai/react";
+import BioEditor from "../editor/bio-editor";
 
 export default function Form({
   title,
@@ -16,6 +24,7 @@ export default function Form({
   helpText,
   inputAttrs,
   handleSubmit,
+  canUseAI,
 }: {
   title: string;
   description: string;
@@ -29,10 +38,15 @@ export default function Form({
     pattern?: string;
   };
   handleSubmit: any;
+  canUseAI?: boolean;
 }) {
   const { id } = useParams() as { id?: string };
   const router = useRouter();
   const { update } = useSession();
+
+  // eidtor setup
+  const [bio, setBio] = useState({ bio: inputAttrs.defaultValue });
+
   return (
     <form
       action={async (data: FormData) => {
@@ -44,7 +58,11 @@ export default function Form({
         ) {
           return;
         }
-        handleSubmit(data, id, inputAttrs.name).then(async (res: any) => {
+        handleSubmit(
+          inputAttrs.name !== "bio" ? data : bio.bio,
+          id,
+          inputAttrs.name,
+        ).then(async (res: any) => {
           if (res.error) {
             toast.error(res.error);
           } else {
@@ -112,6 +130,8 @@ export default function Form({
             required
             className="w-full max-w-xl rounded-md border border-stone-300 text-sm text-stone-900 placeholder-stone-300 focus:border-stone-500 focus:outline-none focus:ring-stone-500 dark:border-stone-600 dark:bg-black dark:text-white dark:placeholder-stone-700"
           />
+        ) : inputAttrs.name === "bio" ? (
+          <BioEditor bio={bio} setBio={setBio} canUseAI={canUseAI} />
         ) : (
           <input
             {...inputAttrs}

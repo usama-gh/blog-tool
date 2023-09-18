@@ -209,6 +209,35 @@ export const updateSite = withSiteAuth(
   },
 );
 
+export const updateSiteBio = withSiteAuth(
+  async (content: string, site: Site, key: string) => {
+    try {
+      let response;
+
+      response = await prisma.site.update({
+        where: {
+          id: site.id,
+        },
+        data: {
+          [key]: content,
+        },
+      });
+
+      return response;
+    } catch (error: any) {
+      if (error.code === "P2002") {
+        return {
+          error: `This ${key} is already taken`,
+        };
+      } else {
+        return {
+          error: error.message,
+        };
+      }
+    }
+  },
+);
+
 export const deleteSite = withSiteAuth(async (_: FormData, site: Site) => {
   try {
     const response = await prisma.site.delete({
@@ -446,9 +475,9 @@ export const addVisitor = async (
   postId: string,
   siteId: string,
 ) => {
-  const location = await fetch(
-    `https://freeipapi.com/api/json/${ip}`,
-  ).then((response) => response.json());
+  const location = await fetch(`https://freeipapi.com/api/json/${ip}`).then(
+    (response) => response.json(),
+  );
   try {
     const response = await prisma.vistor.create({
       data: {
@@ -481,6 +510,6 @@ export const getSiteViews = async (siteId: string) => {
   GROUP BY
       month, year
   `;
-  
+
   return visitors;
 };
