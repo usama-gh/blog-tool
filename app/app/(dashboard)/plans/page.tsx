@@ -31,7 +31,7 @@ export default async function Plans() {
         </div>
 
         {/* Grid */}
-        <div className="mt-12 grid grid-cols-1 gap-5 md:grid-cols-3">
+        <div className="mt-12 grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-4">
           {plans.map((plan) => (
             <Plan
               key={plan.id}
@@ -54,9 +54,10 @@ export default async function Plans() {
           <PlanUsage
             title="website views"
             planLimit={
-              result.subscription?.planId != 3
-                ? result.planVisitors
-                : "Unlimited"
+              // result.subscription?.planId != 3
+              //   ? result.planVisitors
+              //   : "Unlimited"
+              result.planVisitors
             }
             usage={result.visitors}
           />
