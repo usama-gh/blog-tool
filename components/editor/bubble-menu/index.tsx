@@ -10,6 +10,7 @@ import {
 
 import { NodeSelector } from "./node-selector";
 import { cn } from "@/lib/utils";
+import { LinkSelector } from "./link-selector";
 
 export interface BubbleMenuItem {
   name: string;
@@ -77,11 +78,15 @@ export const EditorBubbleMenu: FC<EditorBubbleMenuProps> = (props) => {
       moveTransition: "transform 0.15s ease-out",
       onHidden: () => {
         setIsNodeSelectorOpen(false);
+        setIsColorSelectorOpen(false);
+        setIsLinkSelectorOpen(false);
       },
     },
   };
 
   const [isNodeSelectorOpen, setIsNodeSelectorOpen] = useState(false);
+  const [isColorSelectorOpen, setIsColorSelectorOpen] = useState(false);
+  const [isLinkSelectorOpen, setIsLinkSelectorOpen] = useState(false);
 
   return (
     <BubbleMenu
@@ -94,6 +99,19 @@ export const EditorBubbleMenu: FC<EditorBubbleMenuProps> = (props) => {
         isOpen={isNodeSelectorOpen}
         setIsOpen={() => {
           setIsNodeSelectorOpen(!isNodeSelectorOpen);
+          setIsColorSelectorOpen(false);
+          setIsLinkSelectorOpen(false);
+        }}
+      />
+
+      <LinkSelector
+        // @ts-ignore
+        editor={props.editor}
+        isOpen={isLinkSelectorOpen}
+        setIsOpen={() => {
+          setIsLinkSelectorOpen(!isLinkSelectorOpen);
+          setIsColorSelectorOpen(false);
+          setIsNodeSelectorOpen(false);
         }}
       />
 

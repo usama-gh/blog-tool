@@ -15,10 +15,10 @@ export async function getSiteData(domain: string) {
         include: { user: true },
       });
     },
-    [`${domain}-metadata`],
+    [`${domain}-metadata`, "site-info"],
     {
       revalidate: 900,
-      tags: [`${domain}-metadata`],
+      tags: [`${domain}-metadata`, "site-info"],
     },
   )();
 }
@@ -50,10 +50,10 @@ export async function getPostsForSite(domain: string) {
         ],
       });
     },
-    [`${domain}-posts`],
+    [`${domain}-posts`, "site-info"],
     {
       revalidate: 900,
-      tags: [`${domain}-posts`],
+      tags: [`${domain}-posts`, "site-info"],
     },
   )();
 }

@@ -194,6 +194,7 @@ export const updateSite = withSiteAuth(
       site.customDomain &&
         (await revalidateTag(`${site.customDomain}-metadata`));
 
+      revalidateTag("site-info");
       return response;
     } catch (error: any) {
       if (error.code === "P2002") {
@@ -222,7 +223,7 @@ export const updateSiteBio = withSiteAuth(
           [key]: content,
         },
       });
-
+      revalidateTag("site-info");
       return response;
     } catch (error: any) {
       if (error.code === "P2002") {
