@@ -56,7 +56,7 @@ export default function Editor({
     startTransitionSaving(async () => {
       await updatePost(debouncedData);
     });
-  }, [debouncedData, post.title, post.content, post.description, post.slides]);
+  }, [debouncedData, post]);
 
   // listen to CMD + S and override the default behavior
   useEffect(() => {
@@ -186,6 +186,7 @@ export default function Editor({
 
   const updateSlides = (action: string, index: number, value: string) => {
     const updatedSlides = slides.slice();
+
     switch (action) {
       case "add":
         setSlides([...slides, value]);
@@ -201,9 +202,9 @@ export default function Editor({
     }
   };
 
-  useEffect(() => {
-    setData({ ...data, slides: JSON.stringify([...slides]) });
-  }, [slides, data]);
+  // useEffect(() => {
+  //   setData({ ...data, slides: JSON.stringify([...slides]) });
+  // }, [slides, data]);
 
   const setSlideWithJson = (newSlides: Array<string>, content: string) => {
     setData({ ...data, slides: JSON.stringify(newSlides), content: content });

@@ -18,12 +18,16 @@ export default function ImportJsonModal({ setSlideWithJson }: any) {
         importedData.tweet.images.forEach((image: string) => {
           tweetImageWithContent += "\n\n" + `![](${image})`;
         });
+
         setSlideWithJson(
           importedData.threads.map((thread: any) => {
             let imagesContent = "";
-            thread.images.forEach((image: string) => {
-              imagesContent += "\n\n" + `![](${image})`;
-            });
+            if (Array.isArray(thread.images)) {
+              thread.images.forEach((image: string) => {
+                imagesContent += "\n\n" + `![](${image})`;
+              });
+            }
+
             return thread.content + imagesContent;
           }),
           tweetImageWithContent,
