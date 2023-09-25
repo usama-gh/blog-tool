@@ -63,8 +63,8 @@ export default async function SiteSettingsIndex({
 
       <Form
         title="Bio"
-        description="The bio of your site. This will be used as the meta description on Google as well."
-        helpText="Include SEO-optimized keywords that you want to rank for."
+        description="The bio of your site. This will tell users about your website"
+        helpText=""
         inputAttrs={{
           name: "bio",
           type: "text",

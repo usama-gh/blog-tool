@@ -42,6 +42,7 @@ export default function Editor({
     : `http://${data.site?.subdomain}.localhost:3000/${data.slug}`;
 
   const [debouncedData] = useDebounce(data, 1000);
+
   useEffect(() => {
     // compare the title, description and content only
     if (
@@ -55,7 +56,7 @@ export default function Editor({
     startTransitionSaving(async () => {
       await updatePost(debouncedData);
     });
-  }, [debouncedData, post]);
+  }, [debouncedData, post.title, post.content, post.description, post.slides]);
 
   // listen to CMD + S and override the default behavior
   useEffect(() => {
