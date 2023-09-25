@@ -2,6 +2,7 @@
 
 import { cn } from "@/lib/utils";
 import { AlertTriangle } from "lucide-react";
+import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useState } from "react";
 import { experimental_useFormStatus as useFormStatus } from "react-dom";
@@ -25,9 +26,11 @@ export default function ReportAbuse({ isShowBadge }: Props) {
         <AlertTriangle size={24} />
       </button> */}
       {isShowBadge && (
+        <Link target="_blank" href={`https://slidebites.com`}>
         <span className="ml-4 inline-flex bg-slate-100 text-gray-800 dark:text-gray-100 dark:bg-gray-900 items-center gap-1.5 rounded-full px-3 py-2 text-xs font-medium">
           Made with SlideBites
         </span>
+        </Link>
       )}
 
       {open && (

@@ -14,7 +14,7 @@ interface BlogCardProps {
 export default function BlogCard({ data }: BlogCardProps) {
   return (
     <Link href={`/${data.slug}`} className="w-full">
-      <div className="ease overflow-hidden rounded-2xl border border-stone-100 bg-white dark:bg-gray-800 dark:border-gray-700 shadow-lg transition-all duration-200 hover:-translate-y-1 dark:border-stone-800">
+      <div className="ease overflow-hidden rounded-2xl border border-stone-100 bg-white dark:bg-gray-800 dark:border-gray-600 shadow-lg transition-all duration-200 hover:-translate-y-1 dark:border-stone-800">
         {/* <div className="sm:h-120 group relative mx-auto h-52 w-full p-1 overflow-hidden lg:rounded-3xl">
           <BlurImage
             alt={data.title ?? ""}

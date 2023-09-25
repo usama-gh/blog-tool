@@ -316,8 +316,9 @@ export default function Editor({
           onClick={(e) => {
             updateSlides("add", 0, "");
           }}
+          className="flex items-center gap-x-2 px-2 py-1 rounded-full border-gray-400 border-2 dark:border-gray-500 dark:text-gray-300"
         >
-          <PlusCircleIcon width={24} className="mr-4 dark:text-white" />
+        Add slide
         </button>
       </div>
     </>

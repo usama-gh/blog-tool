@@ -34,10 +34,11 @@ export default function ImportJsonModal({ setSlideWithJson }: any) {
         );
         modal?.hide();
       }}
-      className="w-full rounded-md bg-white dark:bg-black md:max-w-md md:border md:border-stone-200 md:shadow dark:md:border-stone-700"
+      className="w-full rounded-md bg-white dark:bg-black  md:max-w-md md:border md:border-stone-200 md:shadow dark:md:border-stone-700"
     >
-      <div className="relative flex flex-col space-y-4">
-        <div className="flex flex-col space-y-2">
+      <div className="relative flex flex-col space-y-4 p-5">
+        <p className="text-sm text-gray-600 dark:text-gray-400">Install our Chrome Extension to import your social media posts.</p>
+        <div className="flex flex-col space-y-2 ">
           <textarea
             name="json"
             placeholder="Paste JSON here"
@@ -66,7 +67,7 @@ function CreateJsonButton() {
       )}
       disabled={pending}
     >
-      Import JSON
+      Import
     </button>
   );
 }

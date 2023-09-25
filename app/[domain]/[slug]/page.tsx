@@ -66,7 +66,7 @@ export default async function SitePostPage({
 
   return (
     <>
-      <div className="mx-auto flex items-center justify-between px-10 py-3">
+      <div className="mx-auto flex items-center justify-between px-2 lg:px-10 py-3">
         <div className="flex items-center">
           <div className="h[25px] w-[25px] overflow-hidden rounded-full">
             {siteData?.user?.image ? (
@@ -83,16 +83,17 @@ export default async function SitePostPage({
               </div>
             )}
           </div>
-          <Link href="/" className="px-3.5 font-regular tracking-widest uppercase text-sm text-slate-500 dark:text-gray-400">
+          <Link href="/" className="px-3.5  font-regular tracking-widest uppercase text-[8px] lg:text-sm text-slate-500 dark:text-gray-400 dark:hover:text-gray-300 hover:text-slate-600">
             {siteData?.user?.name}
           </Link>
           <div className="h-7 w-[2px] bg-slate-200 dark:bg-gray-700"></div>
-          <p className="pl-3 text-sm font-regular text-slate-500 dark:text-gray-400">
+          <p className="pl-3 text-[12px] text-xs truncate lg:text-sm font-regular text-slate-500 dark:text-gray-400">
             {data.title}
           </p>
         </div>
-        <p className="font-regular text-sm text-slate-500 dark:text-gray-400">{toDateString(data.createdAt, "short")}</p>
+        <p className="font-regular text-[10px] text-ellipsis overflow-hidden lg:text-sm text-slate-500 dark:text-gray-400">{toDateString(data.createdAt, "short")}</p>
       </div>
+
       <Carousel data={data} siteData={siteData}></Carousel>
     </>
   );

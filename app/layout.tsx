@@ -36,7 +36,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={cn(cal.variable, inter.variable)}>
+      <body className={'overflow-y-auto min-h-screen h-full bg-gradient-to-b from-white to-[#F4F8FF] dark:bg-gray-800 dark:bg-none '+cn(cal.variable, inter.variable)}>
         <Providers>{children}</Providers>
       </body>
     </html>

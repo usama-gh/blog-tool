@@ -24,7 +24,7 @@ export default async function SiteHomePage({
 
   return (
     <>
-      <div className="h-full bg-gradient-to-b from-white to-[#F4F8FF] dark:bg-gray-800 dark:bg-none">
+      <div className="">
         <div className="ease left-0 right-0 top-0 z-30 flex w-full transition-all duration-150 dark:bg-gray-800 dark:text-white">
           <div className="mx-auto mt-[76px] md:w-2/6">
             <div className="m-auto flex w-full flex-col items-center justify-center">
@@ -43,7 +43,7 @@ export default async function SiteHomePage({
                   </div>
                 )}
               </div>
-              <h3 className="mb-2.5 text-lg font-light tracking-widest text-slate-600 dark:text-gray-200">
+              <h3 className="mb-2.5 text-sm lg:text-lg font-light tracking-widest text-slate-600 dark:text-gray-200">
                 {data.name}
               </h3>
               <div
@@ -62,14 +62,14 @@ export default async function SiteHomePage({
           </div>
         </div>
 
-        <div className="w-full pb-16 pt-16">
+        <div className="w-full pb-16 pt-16 px-2">
           {posts.length > 0 ? (
             posts.map((post, index) => (
               <div key={`post-${index}`}>
                 <Link href={`/${post.slug}`}>
                   <div
                     className="ease md: w-100 mx-auto mb-5  max-w-screen-xl rounded-3xl border border-stone-100 bg-white p-1
-                shadow-[0_0px_13px_0px_rgba(148,163,184,0.12)] dark:overflow-hidden dark:border-gray-700 dark:bg-gray-800 dark:shadow-none md:w-3/6 lg:w-2/6"
+                shadow-[0_0px_13px_0px_rgba(148,163,184,0.12)] dark:overflow-hidden dark:border-gray-700 dark:hover:border-gray-600 dark:bg-gray-800 dark:shadow-none md:w-3/6 lg:w-2/6"
                   >
                     {/* {index == 0 ? (
                     <div className="sm:h-120 group relative mx-auto h-52 w-full overflow-hidden rounded-3xl">

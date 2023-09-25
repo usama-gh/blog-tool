@@ -6,7 +6,7 @@ interface Props {
 
 export default function PlanUsage({ title, planLimit, usage }: Props) {
   return (
-    <div className="relative flex flex-col rounded-lg bg-stone-100 shadow-md transition-all hover:shadow-xl">
+    <div className="relative flex flex-col rounded-lg bg-stone-100 dark:bg-black shadow-md transition-all hover:shadow-xl">
       {/* plan overview */}
       <div className="flex justify-between  p-8 dark:border-stone-700">
         <div className="flex flex-col">

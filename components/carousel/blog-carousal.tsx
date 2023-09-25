@@ -12,6 +12,8 @@ const Carousel = ({ data, siteData }: any) => {
     skipSnaps: false,
     watchDrag: false,
     dragFree: true,
+    align: 'center',
+    containScroll:false,
   });
   const [prevBtnEnabled, setPrevBtnEnabled] = useState<boolean>(false);
   const [nextBtnEnabled, setNextBtnEnabled] = useState<boolean>(false);
@@ -69,14 +71,14 @@ const Carousel = ({ data, siteData }: any) => {
             />
           ))}
         </div>
-        <div className="mx-auto min-h-[calc(100vh-106px)] h-screen w-7/12">
+        <div className="mx-auto my-auto flex items-center w-11/12	lg:w-7/12">
           <div
-            className="h-screen w-full overflow-hidden"
+            className="w-full overflow-x-hidden"
             ref={viewportRef}
           >
-            <div className="flex items-center h-screen pb-20">
-              <div className="relative min-w-full">
-                <div className="relative overflow-hidden text-slate-50  dark:text-gray-400">
+            <div className="flex py-5">
+              <div className="min-w-full my-1 lg:my-auto">
+                <div className="text-slate-50  dark:text-gray-400">
                   <h3 className="text-3xl font-extrabold text-slate-800 dark:text-gray-300">
                     {data.title}
                   </h3>
@@ -84,14 +86,14 @@ const Carousel = ({ data, siteData }: any) => {
                 </div>
               </div>
               {JSON.parse(data.slides).map((value: string, index: number) => (
-                <div className="relative min-w-full" key={`slide-${index}`}>
-                  <div className="relative overflow-hidden [&>*]:text-xl text-slate-500  dark:text-gray-400">
+                <div className="relative min-w-full flex items-center h-[90vh]" key={`slide-${index}`}>
+                  <div className="relative overflow-hidden [&>*]:text-xl text-slate-500  dark:text-gray-400 ">
                     <MDX source={data.slidesMdxSource[index]} />
                   </div>
                 </div>
               ))}
               {data.adjacentPosts.length > 0 && (
-                <div className="relative min-w-full">
+                <div className="relative min-w-full mt-10">
                   <div className="relative top-2 z-50 flex w-full justify-center">
                     <span className="bg-white dark:bg-gray-800 pt-3 px-2 text-sm text-slate-400 dark:bg-black dark:text-gray-400">
                       Continue Reading
@@ -108,7 +110,7 @@ const Carousel = ({ data, siteData }: any) => {
                           )}
                         </div>
                         <div className="mt-8 flex justify-center items-center flex-col">
-                          <p className="mb-1 text-[22px] font-bold text-stone-500 dark:bg-bg-gray-800 dark:text-gray-400">
+                          <p className="mb-1 text-[22px] font-bold text-slate-500 dark:bg-bg-gray-800 dark:text-gray-400">
                             Follow Me
                           </p>
                           <SocialLinks linksData={siteData.links}/>
