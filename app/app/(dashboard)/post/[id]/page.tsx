@@ -38,7 +38,7 @@ export default async function PostPage({ params }: { params: { id: string } }) {
     <>
       <div className="flex flex-col-reverse justify-between xl:flex-row">
         <div className="w-full xl:w-7/12">
-          <Editor post={data} canUseAI={canUseAI} />;
+          <Editor post={data} canUseAI={canUseAI} />
         </div>
         <div className="mb-10 w-full xl:mb-0 xl:w-[38%]">
           <div className="flex flex-col space-y-6">

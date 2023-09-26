@@ -225,11 +225,17 @@ async function getMdxSource(postContents: string) {
 }
 
 async function getSlidesMdxSource(slides: string) {
+  if (!slides) {
+    // Handle the case where slides is null or undefined
+    return [];
+  }
+
   // transforms links like <link> to [link](link) as MDX doesn't support <link> syntax
   // https://mdxjs.com/docs/what-is-mdx/#markdown
   const slidesArr = JSON.parse(slides);
-  let slidesMdxSource: any = [];
-  slidesArr.forEach(async (slide: string) => {
+  let slidesMdxSource: any[] = [];
+
+  for (const slide of slidesArr) {
     const content = slide?.replaceAll(/<(https?:\/\/\S+)>/g, "[$1]($1)") ?? "";
     // Serialize the content string into MDX
     const mdxSource = await serialize(content, {
@@ -238,6 +244,7 @@ async function getSlidesMdxSource(slides: string) {
       },
     });
     slidesMdxSource.push(mdxSource);
-  });
+  }
+
   return slidesMdxSource;
 }

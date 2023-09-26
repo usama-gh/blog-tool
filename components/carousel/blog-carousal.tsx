@@ -38,6 +38,7 @@ const Carousel = ({ data, siteData }: any) => {
     setSelectedIndex(embla.selectedScrollSnap());
     setPrevBtnEnabled(embla.canScrollPrev());
     setNextBtnEnabled(embla.canScrollNext());
+    console.log('hellooooooooo')
   }, [embla, setSelectedIndex]);
 
   useEffect(() => {
@@ -73,11 +74,11 @@ const Carousel = ({ data, siteData }: any) => {
         </div>
         <div className="mx-auto my-auto flex items-center w-11/12	lg:w-7/12">
           <div
-            className="w-full overflow-x-hidden"
+            className="w-full overflow-hidden"
             ref={viewportRef}
           >
             <div className="flex py-5">
-              <div className="min-w-full my-1 lg:my-auto">
+              <div className="min-w-full">
                 <div className="text-slate-50  dark:text-gray-400">
                   <h3 className="text-3xl font-extrabold text-slate-800 dark:text-gray-300">
                     {data.title}
@@ -85,13 +86,15 @@ const Carousel = ({ data, siteData }: any) => {
                   <MDX source={data.mdxSource} />
                 </div>
               </div>
-              {JSON.parse(data.slides).map((value: string, index: number) => (
-                <div className="relative min-w-full flex items-center h-[90vh]" key={`slide-${index}`}>
-                  <div className="relative overflow-hidden [&>*]:text-xl text-slate-500  dark:text-gray-400 ">
-                    <MDX source={data.slidesMdxSource[index]} />
-                  </div>
-                </div>
-              ))}
+              {data.slides &&
+  JSON.parse(data.slides).map((value: string, index: number) => (
+    <div className={`relative min-w-full my-1 flex items-start`}  key={`slide-${index}`}>
+      <div className="relative overflow-hidden [&>*]:text-xl text-slate-500 dark:text-gray-400 h-fit">
+        <MDX source={data.slidesMdxSource[index]} />
+      </div>
+    </div>
+  ))}
+
               {data.adjacentPosts.length > 0 && (
                 <div className="relative min-w-full mt-10">
                   <div className="relative top-2 z-50 flex w-full justify-center">

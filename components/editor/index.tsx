@@ -33,9 +33,15 @@ export default function Editor({
 
   const [data, setData] = useState<PostWithSite>(post);
   const [hydrated, setHydrated] = useState(false);
-  const [slides, setSlides] = useState<Array<string>>(
-    !!post.slides ? JSON.parse(post.slides) : [],
-  );
+  const [slides, setSlides] = useState<Array<string>>(() => {
+    try {
+      return !!post.slides ? JSON.parse(post.slides) : [];
+    } catch (error) {
+      console.error("Error parsing JSON:", error);
+      return [];
+    }
+  });
+  
 
   const url = process.env.NEXT_PUBLIC_VERCEL_ENV
     ? `https://${data.site?.subdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}/${data.slug}`
@@ -206,11 +212,32 @@ export default function Editor({
   //   setData({ ...data, slides: JSON.stringify([...slides]) });
   // }, [slides, data]);
 
+  const escapeSpecialCharacters = (str: string) => {
+    return str.replace(/[<{]/g, '\\$&');
+  };
+  
+  const escapeSpecialCharactersInArray = (array: Array<string>) => {
+    return array.map(item => escapeSpecialCharacters(item));
+  };
+  
   const setSlideWithJson = (newSlides: Array<string>, content: string) => {
-    setData({ ...data, slides: JSON.stringify(newSlides), content: content });
-    editor?.commands.setContent(content);
+    // Escape < characters in the content
+    const escapedContent = escapeSpecialCharacters(content);
+  
+    // Escape < characters in the newSlides array
+    const escapedSlides = escapeSpecialCharactersInArray(newSlides);
+  
+    // Set the slides in JSON format with escaped content
+    setData({ ...data, slides: JSON.stringify(escapedSlides), content: escapedContent });
+  
+    // Set the escaped content in the editor
+    editor?.commands.setContent(escapedContent);
+  
+    // Set the slides
     setSlides(newSlides);
   };
+  
+  
 
   return (
     <>
