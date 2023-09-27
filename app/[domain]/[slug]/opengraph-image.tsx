@@ -38,7 +38,7 @@ export default async function PostOG({
   }
 
   const clashData = await fetch(
-    new URL("@/styles/CalSans-SemiBold.otf", import.meta.url),
+    new URL("@/styles/Inter-Bold.otf", import.meta.url),
   ).then((res) => res.arrayBuffer());
 
   return new ImageResponse(
@@ -59,11 +59,11 @@ export default async function PostOG({
             />
             <p tw="text-xl font-medium text-gray-900">by {data.authorName}</p>
           </div>
-          <img
+          {/* <img
             tw="mt-4 w-5/6 rounded-2xl border border-gray-200 shadow-md"
             src={data.image}
             alt={data.title}
-          />
+          /> */}
         </div>
       </div>
     ),

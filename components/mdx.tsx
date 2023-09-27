@@ -17,7 +17,7 @@ export default function MDX({ source }: { source: MDXRemoteProps }) {
 
   return (
     <article
-      className={`prose-md w-full prose h-fit prose-slate my-auto dark:prose-invert sm:prose-lg text-slate-500 dark:text-gray-100 pb-[60px] ${styles.root}`}
+      className={`lg:px-0 px-4 prose-md w-full prose h-fit prose-slate my-auto dark:prose-invert sm:prose-lg text-slate-600 dark:text-gray-100 pb-[60px] ${styles.root}`}
       suppressHydrationWarning={true}
     >
       <div className=" pb-18">
@@ -62,7 +62,7 @@ function ExamplesCard({ data }: { data: ExampleCardProps }) {
           />
         </div>
         <div className="h-36 px-5 py-6">
-          <h3 className="truncate font-cal text-2xl font-bold tracking-wide">
+          <h3 className="truncate font-inter text-2xl font-bold tracking-wide">
             {data.name}
           </h3>
           <p className="mt-3 text-base italic leading-snug text-gray-800">
@@ -83,7 +83,7 @@ function ExamplesCard({ data }: { data: ExampleCardProps }) {
           />
         </div>
         <div className="w-3/5 px-5 py-6">
-          <h3 className="my-0 truncate font-cal text-xl font-bold tracking-wide dark:text-white">
+          <h3 className="my-0 truncate font-inter text-xl font-bold tracking-wide dark:text-white">
             {data.name}
           </h3>
           <p className="mt-3 text-sm font-normal italic leading-snug text-gray-800">

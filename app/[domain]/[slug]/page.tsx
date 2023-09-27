@@ -66,8 +66,9 @@ export default async function SitePostPage({
 
   return (
     <>
-      <div className="mx-auto flex items-center w-screen justify-between px-2 lg:px-10 py-3">
+      <div className="animate-fade	mx-auto flex items-center w-screen justify-between px-2 lg:px-10 py-3">
         <div className="flex items-center">
+        <Link href="/"> 
           <div className="h[25px] w-[25px] overflow-hidden rounded-full">
             {siteData?.user?.image ? (
               <BlurImage
@@ -83,6 +84,7 @@ export default async function SitePostPage({
               </div>
             )}
           </div>
+          </Link>
           <Link href="/" className="px-3.5  font-regular tracking-widest uppercase text-[8px] lg:text-sm text-slate-500 dark:text-gray-400 dark:hover:text-gray-300 hover:text-slate-600">
             {siteData?.user?.name}
           </Link>

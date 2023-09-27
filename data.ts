@@ -24,7 +24,7 @@ export const plans = [
     payType: "Pay Once",
     priceId: "pri_01h9mgk8bqqy4naybp0wsaqcff",
     specifications: [
-      " 6,000 views per month",
+      "6,000 views per month",
       "1 website",
       "Import Twitter threads, LinkedIn posts & Facebook posts",
       "AI assistant",

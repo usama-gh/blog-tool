@@ -70,7 +70,7 @@ const Carousel = ({ data, siteData }: any) => {
   return (
     <>
       <div className="relative">
-        <div className="z-10 mt-1  flex list-none justify-between space-x-2">
+        <div className="mt-1  flex list-none justify-between space-x-2">
           {scrollSnaps.map((_, index: number) => (
             <DotButton
               key={index}
@@ -80,11 +80,11 @@ const Carousel = ({ data, siteData }: any) => {
             />
           ))}
         </div>
-        <div className="mx-auto my-auto flex items-center  ">
+        <div className="mx-auto my-auto flex items-center ">
           <div className="w-full overflow-hidden" ref={viewportRef}>
             <div className="flex h-fit items-start ">
               <div className="relative h-fit min-w-full text-slate-50  dark:text-gray-400 ">
-                <div className="my-auto flex h-screen w-full items-center justify-center overflow-y-auto py-10 text-slate-500 dark:text-gray-400 [&>*]:text-xl">
+                <div className="scrollbar-thumb-rounded-full scrollbar-track-rounded-full my-auto flex h-screen w-full items-center justify-center overflow-y-auto py-10 text-slate-600 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-gray-200 dark:text-gray-400 dark:scrollbar-thumb-gray-800 [&>*]:text-xl [&>*]:rounded-xl ">
                   <MDX source={data.mdxSource} />
                 </div>
               </div>
@@ -95,28 +95,28 @@ const Carousel = ({ data, siteData }: any) => {
                     className={`relative flex  h-fit min-w-full items-start justify-center`}
                     key={`slide-${index}`}
                   >
-                    <div className="my-auto flex h-screen w-full items-center justify-center overflow-y-auto py-10 text-slate-500 dark:text-gray-400 [&>*]:text-xl">
+                    <div className="scrollbar-thumb-rounded-full scrollbar-track-rounded-full my-auto flex h-screen w-full items-center justify-center overflow-y-auto py-10 text-slate-600 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-gray-200 dark:text-gray-400 dark:scrollbar-thumb-gray-800 [&>*]:text-xl ">
                       <MDX source={data.slidesMdxSource[index]} />
                     </div>
                   </div>
                 ))}
 
               {data.adjacentPosts.length > 0 && (
-                <div className="relative mt-10 min-w-full">
-                  <div className="relative top-2 z-50 flex w-full justify-center">
-                    <span className="bg-white px-2 pt-3 text-sm text-slate-400 dark:bg-gray-800 dark:text-gray-400">
-                      Continue Reading
-                    </span>
-                  </div>
-                  <div className="relative  border px-8 py-16 text-slate-500 dark:border-gray-700 dark:text-gray-400">
+                <div className="scrollbar-thumb-rounded-full scrollbar-track-rounded-full relative mx-auto mt-10 h-screen w-9/12 min-w-full overflow-y-auto scrollbar-thin scrollbar-track-transparent scrollbar-thumb-gray-200 dark:scrollbar-thumb-gray-800">
+                  <h4 className="py-4 text-center text-lg tracking-tight text-slate-400 dark:bg-gray-800 dark:text-gray-400">
+                    Continue Reading
+                  </h4>
+                  <div className="relative mx-auto w-9/12 border px-8 py-4 text-slate-500 dark:border-gray-700 dark:text-gray-400">
                     {data.adjacentPosts && (
                       <>
-                        <div className="relative flex flex-col justify-between gap-6 sm:flex-col md:flex-col lg:flex-row">
-                          {data.adjacentPosts.map(
-                            (value: any, index: number) => (
-                              <BlogCard key={index} data={value} />
-                            ),
-                          )}
+                        <div className="relative grid gap-2 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2">
+                          {data.adjacentPosts
+                            .slice(0, 4)
+                            .map((value: any, index: number) => (
+                              <div key={index}>
+                                <BlogCard key={index} data={value} />
+                              </div>
+                            ))}
                         </div>
                         <div className="mt-8 flex flex-col items-center justify-center">
                           <p className="dark:bg-bg-gray-800 mb-1 text-[22px] font-bold text-slate-500 dark:text-gray-400">

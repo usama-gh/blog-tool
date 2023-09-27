@@ -63,7 +63,10 @@
 }
 
 /* Custom image styles */
-
+p img {
+border-radius: 20px;
+box-shadow: -1px 5px 11px #0000004a;
+}
 .ProseMirror img {
   transition: filter 0.1s ease-in-out;
 

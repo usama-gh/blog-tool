@@ -26,7 +26,7 @@ export default async function Plans() {
         <div className="flex flex-col space-y-2">
           <h1 className="font-cal text-3xl font-bold dark:text-white">Plans</h1>
           <p className="text-lg font-semibold dark:text-white">
-            Enjoy all benefits of SlideBites with just one time payment
+            Enjoy all benefits of SlideBites with just one time payment. Limited to first 100 users only
           </p>
         </div>
 
@@ -52,7 +52,7 @@ export default async function Plans() {
         {/* plan usage end */}
         <div className="flex flex-wrap gap-5">
           <PlanUsage
-            title="website views"
+            title="page views"
             planLimit={
               // result.subscription?.planId != 3
               //   ? result.planVisitors
@@ -62,7 +62,7 @@ export default async function Plans() {
             usage={result.visitors}
           />
           <PlanUsage
-            title="website created"
+            title="blogs made"
             planLimit={result.planSites}
             usage={result.sites}
           />

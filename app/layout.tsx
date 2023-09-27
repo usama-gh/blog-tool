@@ -5,15 +5,15 @@ import { Metadata } from "next";
 import { cn } from "@/lib/utils";
 
 const title =
-  "SlideBites – The all-in-one starter kit for building multi-tenant applications.";
+  "SlideBites – Turn your social media posts into blogs & create a personal social blog";
 const description =
-  "The Platforms Starter Kit is a full-stack Next.js app with multi-tenancy and custom domain support. Built with Next.js App Router, Vercel Postgres and the Vercel Domains API.";
-const image = "https://vercel.pub/thumbnail.png";
+  "Easily turn your social media posts into blogs and build a persona blog for yourself. It has a new way to read blog which is more interactive. Built for personal brands";
+const image = "/og-image.png";
 
 export const metadata: Metadata = {
   title,
   description,
-  icons: ["https://vercel.pub/favicon.ico"],
+  icons: ["/favicon.ico"],
   openGraph: {
     title,
     description,
@@ -24,9 +24,9 @@ export const metadata: Metadata = {
     title,
     description,
     images: [image],
-    creator: "@vercel",
+    creator: "@slidebites",
   },
-  metadataBase: new URL("https://vercel.pub"),
+  metadataBase: new URL("https://slidebites.com"),
 };
 
 export default function RootLayout({
@@ -36,7 +36,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={'overflow-y-auto min-h-screen h-full bg-gradient-to-b from-white to-[#F4F8FF] dark:bg-gray-800 dark:bg-none '+cn(cal.variable, inter.variable)}>
+      <body className={'overflow-y-auto tracking-tight min-h-screen h-full bg-gradient-to-b from-white to-[#F4F8FF] dark:bg-gray-800 dark:bg-none '+cn(cal.variable, inter.variable)}>
         <Providers>{children}</Providers>
       </body>
     </html>

@@ -157,7 +157,7 @@ export default function Nav({ children }: { children: ReactNode }) {
       <div
         className={`transform ${
           showSidebar ? "translate-x-0" : "-translate-x-full"
-        } fixed z-10 flex h-full w-full flex-col justify-between border-r border-stone-200 bg-stone-100 p-4 transition-all dark:border-stone-700 dark:bg-stone-900 sm:w-60 sm:translate-x-0`}
+        } fixed z-10 flex h-full w-full flex-col justify-between border-r border-gray-200 bg-gray-100 p-4 transition-all dark:border-stone-700 dark:bg-stone-900 sm:w-60 sm:translate-x-0`}
       >
         <div className="grid gap-2">
           <div className="flex items-center space-x-2 rounded-lg px-2 py-1.5">
@@ -165,7 +165,7 @@ export default function Nav({ children }: { children: ReactNode }) {
            
             <Link
               href="/"
-              className="rounded-lg p-2 hover:bg-stone-200 dark:hover:bg-stone-700"
+              className="rounded-lg p-2 hover:bg-gray-200 dark:hover:bg-gray-700"
             >
               <h3 className="dark:text-white text-gray-800 text-sm font-semibold uppercase tracking-widest">SlideBites</h3>
               {/* <Image
@@ -183,8 +183,8 @@ export default function Nav({ children }: { children: ReactNode }) {
                 key={name}
                 href={href}
                 className={`flex items-center space-x-3 ${
-                  isActive ? "bg-stone-200 text-black dark:bg-stone-700" : ""
-                } rounded-lg px-2 py-1.5 transition-all duration-150 ease-in-out hover:bg-stone-200 active:bg-stone-300 dark:text-white dark:hover:bg-stone-700 dark:active:bg-stone-800`}
+                  isActive ? "bg-gray-200 text-black dark:bg-gray-700" : ""
+                } rounded-lg px-2 py-1.5 transition-all duration-150 ease-in-out hover:bg-gray-200 active:bg-gray-300 dark:text-white dark:hover:bg-gray-700 dark:active:bg-gray-800`}
               >
                 {icon}
                 <span className="text-sm font-medium">{name}</span>
@@ -210,7 +210,7 @@ export default function Nav({ children }: { children: ReactNode }) {
               </a>
             ))} */}
           </div>
-          <div className="my-2 border-t border-stone-200 dark:border-stone-700" />
+          <div className="my-2 border-t border-gray-200 dark:border-gray-700" />
           {children}
         </div>
       </div>

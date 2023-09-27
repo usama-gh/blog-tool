@@ -66,7 +66,7 @@ export default function PostForm({
     >
       <div className="relative flex flex-col space-y-4 p-5 sm:p-10">
         <div className="flex justify-between">
-          <h2 className="font-cal text-xl dark:text-white">{title}</h2>
+          <h2 className="font-inter text-xl dark:text-white">{title}</h2>
           {isLoading ? <LoadingCircle /> : <></>}
         </div>
         <p className="text-sm text-stone-500 dark:text-stone-400">
