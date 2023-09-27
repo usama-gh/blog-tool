@@ -2,7 +2,7 @@ import React from "react";
 
 export const DotButton = ({ selected, onClick }: any) => (
   <button
-    className={`cursor-pointer relative w-full h-[3px] flex items-center p-0 border-0 outline-0 bg-slate-200 dark:bg-gray-700  rounded-sm; ${selected ? "bg-slate-400 dark:bg-gray-400 opacity-100;" : ""}`}
+    className={`cursor-pointer relative w-full h-[3px] flex items-center p-0 border-0 outline-0  rounded-sm ${selected ? "bg-slate-400 dark:bg-gray-400 opacity-100;" : "bg-slate-200 dark:bg-gray-700"}`}
     type="button"
     onClick={onClick}
   />
