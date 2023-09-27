@@ -66,7 +66,7 @@ export default async function SitePostPage({
 
   return (
     <>
-      <div className="mx-auto flex items-center justify-between px-2 lg:px-10 py-3">
+      <div className="mx-auto flex items-center w-screen justify-between px-2 lg:px-10 py-3">
         <div className="flex items-center">
           <div className="h[25px] w-[25px] overflow-hidden rounded-full">
             {siteData?.user?.image ? (

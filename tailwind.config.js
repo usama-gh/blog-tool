@@ -117,13 +117,13 @@ module.exports = {
         DEFAULT: {
           css: {
             h1: {
-              fontFamily: "Cal Sans",
+              fontFamily: "Inter",
             },
             h2: {
-              fontFamily: "Cal Sans",
+              fontFamily: "Inter",
             },
             h3: {
-              fontFamily: "Cal Sans",
+              fontFamily: "Inter",
             },
             "blockquote p:first-of-type::before": { content: "none" },
             "blockquote p:first-of-type::after": { content: "none" },
