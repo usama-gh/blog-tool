@@ -24,7 +24,7 @@ export default async function Plans() {
       />
       <div className="flex max-w-screen-xl flex-col p-8">
         <div className="flex flex-col space-y-2">
-          <h1 className="font-cal text-3xl font-bold dark:text-white">Plans</h1>
+          <h1 className="font-inter text-3xl font-bold dark:text-white">Plans</h1>
           <p className="text-lg font-semibold dark:text-white">
             Enjoy all benefits of SlideBites with just one time payment. Limited to first 100 users only
           </p>
@@ -45,7 +45,7 @@ export default async function Plans() {
 
         {/* plan usage */}
         <div className="mb-3 mt-12 flex flex-col">
-          <h2 className="font-cal text-2xl font-normal dark:text-white">
+          <h2 className="font-inter text-2xl font-normal dark:text-white">
             Plan Usage
           </h2>
         </div>
