@@ -36,6 +36,8 @@ export async function generateMetadata({
       title,
       description,
       images: [image],
+      url: new URL(`https://${params.domain}`),
+      type: "website",
     },
     twitter: {
       card: "summary_large_image",
@@ -45,6 +47,9 @@ export async function generateMetadata({
       creator: "@vercel",
     },
     icons: [logo],
+    alternates: {
+      canonical: new URL(`https://${params.domain}`),
+    },
     metadataBase: new URL(`https://${params.domain}`),
   };
 }
@@ -111,7 +116,7 @@ export default async function SiteLayout({
 
   return (
     <div className={fontMapper[data.font]}>
-      <div className="dark:bg-gray-800 overflow-hidden">{children}</div>
+      <div className="overflow-hidden dark:bg-gray-800">{children}</div>
 
       {params.domain == `demo.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}` ||
       params.domain == `platformize.co` ? (

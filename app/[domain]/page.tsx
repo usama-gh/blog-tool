@@ -43,9 +43,9 @@ export default async function SiteHomePage({
                   </div>
                 )}
               </div>
-              <h3 className="mb-2.5 text-sm lg:text-lg font-light tracking-widest text-slate-600 dark:text-gray-200">
+              <h1 className="mb-2.5 text-sm font-light tracking-widest text-slate-600 dark:text-gray-200 lg:text-lg">
                 {data.name}
-              </h3>
+              </h1>
               <div
                 className="font-regular site-bio overflow-hidden text-slate-500 dark:text-gray-200"
                 // style={{
@@ -55,21 +55,21 @@ export default async function SiteHomePage({
                 // }}
               >
                 {/* @ts-ignore*/}
-                <MarkdownRenderer markdown={data.bio} />
+                <MarkdownRenderer markdown={data?.bio} />
               </div>
               <SocialLinks linksData={data.links} />
             </div>
           </div>
         </div>
 
-        <div className="w-full pb-16 pt-16 px-2">
+        <div className="w-full px-2 pb-16 pt-16">
           {posts.length > 0 ? (
             posts.map((post, index) => (
               <div key={`post-${index}`}>
                 <Link href={`/${post.slug}`}>
                   <div
                     className="ease md: w-100 mx-auto mb-5  max-w-screen-xl rounded-3xl border border-stone-100 bg-white p-1
-                shadow-[0_0px_13px_0px_rgba(148,163,184,0.12)] dark:overflow-hidden dark:border-gray-700 dark:hover:border-gray-600 dark:bg-gray-800 dark:shadow-none md:w-3/6 lg:w-2/6"
+                shadow-[0_0px_13px_0px_rgba(148,163,184,0.12)] dark:overflow-hidden dark:border-gray-700 dark:bg-gray-800 dark:shadow-none dark:hover:border-gray-600 md:w-3/6 lg:w-2/6"
                   >
                     {/* {index == 0 ? (
                     <div className="sm:h-120 group relative mx-auto h-52 w-full overflow-hidden rounded-3xl">
