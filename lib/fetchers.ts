@@ -134,6 +134,7 @@ export async function getUserPlanAnalytics(userId: string) {
         planVisitors,
         isShowBadge,
         sites: sites.length,
+        sitesData: sites,
         planSites,
         canCreateSite,
         canUseAI,

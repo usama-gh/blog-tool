@@ -48,6 +48,8 @@ export const createSite = async (formData: FormData) => {
     await revalidateTag(
       `${subdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}-metadata`,
     );
+    revalidateTag(`${session.user.id}-states`);
+
     return response;
   } catch (error: any) {
     if (error.code === "P2002") {

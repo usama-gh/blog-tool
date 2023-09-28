@@ -149,11 +149,8 @@ module.exports = {
     },
   },
   variants: {
-    
-    scrollbar: ['dark','rounded'],
-  
-
-},
+    scrollbar: ["dark", "rounded"],
+  },
   safelist: [
     {
       pattern:
@@ -187,8 +184,6 @@ module.exports = {
     require("@tailwindcss/typography"),
     require("@tailwindcss/forms"),
     require("tailwindcss-animate"),
-    require("@tailwindcss/line-clamp"),
-    require('tailwind-scrollbar'),
-
+    require("tailwind-scrollbar"),
   ],
 };
