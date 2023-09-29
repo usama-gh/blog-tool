@@ -41,7 +41,6 @@ export default function Editor({
       return [];
     }
   });
-  
 
   const url = process.env.NEXT_PUBLIC_VERCEL_ENV
     ? `https://${data.site?.subdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}/${data.slug}`
@@ -59,6 +58,8 @@ export default function Editor({
     ) {
       return;
     }
+    console.log("slides", "slides changes");
+
     startTransitionSaving(async () => {
       await updatePost(debouncedData);
     });
@@ -212,32 +213,41 @@ export default function Editor({
   //   setData({ ...data, slides: JSON.stringify([...slides]) });
   // }, [slides, data]);
 
+  useEffect(() => {
+    setData((state) => {
+      return { ...state, slides: JSON.stringify([...slides]) };
+    });
+    console.log("hooked called");
+  }, [slides]);
+
   const escapeSpecialCharacters = (str: string) => {
-    return str.replace(/[<{]/g, '\\$&');
+    return str.replace(/[<{]/g, "\\$&");
   };
-  
+
   const escapeSpecialCharactersInArray = (array: Array<string>) => {
-    return array.map(item => escapeSpecialCharacters(item));
+    return array.map((item) => escapeSpecialCharacters(item));
   };
-  
+
   const setSlideWithJson = (newSlides: Array<string>, content: string) => {
     // Escape < characters in the content
     const escapedContent = escapeSpecialCharacters(content);
-  
+
     // Escape < characters in the newSlides array
     const escapedSlides = escapeSpecialCharactersInArray(newSlides);
-  
+
     // Set the slides in JSON format with escaped content
-    setData({ ...data, slides: JSON.stringify(escapedSlides), content: escapedContent });
-  
+    setData({
+      ...data,
+      slides: JSON.stringify(escapedSlides),
+      content: escapedContent,
+    });
+
     // Set the escaped content in the editor
     editor?.commands.setContent(escapedContent);
-  
+
     // Set the slides
     setSlides(newSlides);
   };
-  
-  
 
   return (
     <>
@@ -262,7 +272,6 @@ export default function Editor({
           <button
             onClick={() => {
               const formData = new FormData();
-              console.log(data.published, typeof data.published);
               formData.append("published", String(!data.published));
               startTransitionPublishing(async () => {
                 await updatePostMetadata(formData, post.id, "published").then(
@@ -302,7 +311,7 @@ export default function Editor({
             defaultValue={post?.title || ""}
             autoFocus
             onChange={(e) => setData({ ...data, title: e.target.value })}
-            className="dark:placeholder-text-600 border-none px-0 font-inter text-3xl placeholder:text-stone-400 focus:outline-none focus:ring-0 dark:bg-black dark:text-white"
+            className="dark:placeholder-text-600 font-inter border-none px-0 text-3xl placeholder:text-stone-400 focus:outline-none focus:ring-0 dark:bg-black dark:text-white"
           />
           <TextareaAutosize
             placeholder="Description"
@@ -343,9 +352,9 @@ export default function Editor({
           onClick={(e) => {
             updateSlides("add", 0, "");
           }}
-          className="flex items-center gap-x-2 px-2 py-1 rounded-full border-gray-400 border-2 dark:border-gray-500 dark:text-gray-300"
+          className="flex items-center gap-x-2 rounded-full border-2 border-gray-400 px-2 py-1 dark:border-gray-500 dark:text-gray-300"
         >
-        Add slide
+          Add slide
         </button>
       </div>
     </>
