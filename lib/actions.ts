@@ -336,6 +336,7 @@ export const updatePost = async (data: Post) => {
       `${post.site?.subdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}-${post.slug}`,
     );
 
+    // await revalidateTag(`${data.id}-post`);
     // if the site has a custom domain, we need to revalidate those tags too
     post.site?.customDomain &&
       (await revalidateTag(`${post.site?.customDomain}-posts`),

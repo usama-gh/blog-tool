@@ -30,6 +30,7 @@ export default async function PostPage({ params }: { params: { id: string } }) {
       },
     },
   });
+
   if (!data || data.userId !== session.user.id) {
     notFound();
   }
@@ -45,13 +46,15 @@ export default async function PostPage({ params }: { params: { id: string } }) {
             <PostForm
               title="Post Slug"
               description="The slug is the URL-friendly version of the name. It is usually all lowercase and contains only letters, numbers, and hyphens."
-              helpText="Please use a slug that is unique to this post."
+              // helpText="Please use a slug that is unique to this post."
+              helpText=""
               inputAttrs={{
                 name: "slug",
                 type: "text",
                 defaultValue: data?.slug!,
                 placeholder: "slug",
               }}
+              postTitle={data?.title}
               handleSubmit={updatePostMetadata}
             />
 

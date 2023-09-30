@@ -14,6 +14,7 @@ export default function PostForm({
   helpText,
   inputAttrs,
   handleSubmit,
+  postTitle,
 }: {
   title: string;
   description: string;
@@ -26,28 +27,55 @@ export default function PostForm({
     maxLength?: number;
     pattern?: string;
   };
+  postTitle?: string | null;
   handleSubmit: any;
 }) {
   const { id } = useParams() as { id?: string };
   const router = useRouter();
   const { update } = useSession();
+
+  const makeSlug = (title: string | null | undefined) => {
+    return title?.toLowerCase()?.replaceAll(" ", "-");
+  };
   const [isLoading, setIsLoading] = useState(false);
-  const [formVal, setFormVal] = useState(inputAttrs.defaultValue);
-  const [debouncedData] = useDebounce(formVal, 1000);
+  const [slug, setSlug] = useState(makeSlug(postTitle));
+
+  const [debouncedData] = useDebounce(slug, 1000);
   const formRef = useRef<HTMLFormElement>(null);
 
   useEffect(() => {
-    if (debouncedData === inputAttrs.defaultValue) {
+    if (postTitle) {
+      setSlug(makeSlug(postTitle));
+    } else {
+      setSlug(inputAttrs.defaultValue);
+    }
+  }, [slug, postTitle, inputAttrs.defaultValue]);
+
+  useEffect(() => {
+    if (debouncedData === makeSlug(postTitle)) {
       return;
     }
     setIsLoading(true);
     formRef.current?.requestSubmit();
-  }, [debouncedData, inputAttrs.defaultValue]);
+  }, [slug, debouncedData]);
+
+  const deleteDefaultValue = (props: any) => {
+    delete props.defaultValue;
+    return props;
+  };
+
   return (
     <form
       ref={formRef}
       action={async (data: FormData) => {
-        handleSubmit(data, id, inputAttrs.name).then(async (res: any) => {
+        if (!slug) {
+          setIsLoading(false);
+          toast.error("Slug required");
+          return;
+        }
+        let formData = new FormData();
+        formData.append("slug", slug!);
+        handleSubmit(formData, id, inputAttrs.name).then(async (res: any) => {
           setIsLoading(false);
           if (res.error) {
             toast.error(res.error);
@@ -79,11 +107,13 @@ export default function PostForm({
           />
         ) : (
           <input
-            {...inputAttrs}
+            // {...inputAttrs}
+            {...deleteDefaultValue(inputAttrs)}
+            value={slug}
             required
             className="w-full max-w-md rounded-md border border-stone-300 text-sm text-stone-900 placeholder-stone-300 focus:border-stone-500 focus:outline-none focus:ring-stone-500 dark:border-stone-600 dark:bg-black dark:text-white dark:placeholder-stone-700"
             onChange={(e) => {
-              setFormVal(e.target.value);
+              setSlug(e.target.value);
             }}
             disabled={isLoading}
           />

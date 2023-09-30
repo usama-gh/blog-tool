@@ -18,6 +18,7 @@ import { EditorContents } from "./editor-content";
 import ImportJSONButton from "../import-json-btn";
 import ImportJsonModal from "../modal/import-json";
 import { TiptapExtensionsAI } from "./extensions/index-ai";
+import { getPostFromId } from "@/lib/fetchers";
 
 type PostWithSite = Post & { site: { subdomain: string | null } | null };
 
@@ -43,8 +44,8 @@ export default function Editor({
   });
 
   const url = process.env.NEXT_PUBLIC_VERCEL_ENV
-    ? `https://${data.site?.subdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}/${data.slug}`
-    : `http://${data.site?.subdomain}.localhost:3000/${data.slug}`;
+    ? `https://${data.site?.subdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}/${post.slug}`
+    : `http://${data.site?.subdomain}.localhost:3000/${post.slug}`;
 
   const [debouncedData] = useDebounce(data, 1000);
 
@@ -208,10 +209,6 @@ export default function Editor({
         break;
     }
   };
-
-  // useEffect(() => {
-  //   setData({ ...data, slides: JSON.stringify([...slides]) });
-  // }, [slides, data]);
 
   useEffect(() => {
     setData((state) => {
