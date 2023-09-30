@@ -102,7 +102,7 @@ export default function Editor({
             data.description
           }\n\n ${e.editor.getText()}`,
         );
-        // complete(e.editor.storage.markdown.getMarkdown());
+        complete(e.editor.storage.markdown.getMarkdown());
       } else {
         setData((prev) => ({
           ...prev,
@@ -191,7 +191,7 @@ export default function Editor({
     }
   }, [editor, post, hydrated]);
 
-  const updateSlides = (action: string, index: number, value: string) => {
+  const updateSlides = async (action: string, index: number, value: string) => {
     const updatedSlides = slides.slice();
 
     switch (action) {
@@ -339,6 +339,7 @@ export default function Editor({
             setData={setData}
             updateSlides={updateSlides}
             index={index}
+            canUseAI={canUseAI}
           />
         </div>
       ))}

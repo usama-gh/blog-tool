@@ -24,6 +24,7 @@ import {
   Code,
   CheckSquare,
   Link,
+  PlusCircle,
 } from "lucide-react";
 import LoadingCircle from "@/components/icons/loading-circle";
 import { toast } from "sonner";
@@ -153,20 +154,6 @@ const getSuggestionItems = async ({ query }: { query: string }) => {
           .run();
       },
     },
-    // {
-    //   title: "Link",
-    //   description: "Create a simple link",
-    //   searchTerms: ["unordered", "point"],
-    //   icon: <Link size={18} />,
-    //   command: ({ editor, range }: CommandProps) => {
-    //     editor
-    //       .chain()
-    //       .focus()
-    //       .deleteRange(range)
-    //       .setLink({ href: "", target: "_blank" })
-    //       .run();
-    //   },
-    // },
     {
       title: "Bullet List",
       description: "Create a simple bullet list.",
@@ -227,6 +214,20 @@ const getSuggestionItems = async ({ query }: { query: string }) => {
         input.click();
       },
     },
+    // {
+    //   title: "Split Screen",
+    //   description: "Split the slide into next",
+    //   searchTerms: ["split", "slide"],
+    //   icon: <PlusCircle size={18} />,
+    //   command: ({ editor, range }: CommandProps) => {
+    //     editor
+    //       .chain()
+    //       .focus()
+    //       .deleteRange(range)
+    //       .setNode("heading", { level: 4 })
+    //       .run();
+    //   },
+    // },
   ].filter((item) => {
     if (typeof query === "string" && query.length > 0) {
       const search = query.toLowerCase();

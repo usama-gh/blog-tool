@@ -1,5 +1,7 @@
 "use client";
 
+import LoadingDots from "@/components/icons/loading-dots";
+import { cn } from "@/lib/utils";
 import { useSession } from "next-auth/react";
 import { useParams, useRouter } from "next/navigation";
 import { toast } from "sonner";
@@ -7,6 +9,7 @@ import Uploader from "./uploader";
 import LoadingCircle from "../icons/loading-circle";
 import { useEffect, useRef, useState } from "react";
 import { useDebounce } from "use-debounce";
+import { experimental_useFormStatus as useFormStatus } from "react-dom";
 
 export default function PostForm({
   title,
@@ -35,29 +38,41 @@ export default function PostForm({
   const { update } = useSession();
 
   const makeSlug = (title: string | null | undefined) => {
-    return title?.toLowerCase()?.replaceAll(" ", "-");
+    return title
+      ?.toLowerCase()
+      ?.replace(/[`~!@#$%^*()_|+\=?;:'",.<>\{\}\[\]\\\/]/gi, "")
+      ?.replaceAll(" ", "-");
   };
   const [isLoading, setIsLoading] = useState(false);
-  const [slug, setSlug] = useState(makeSlug(postTitle));
+  // const [slug, setSlug] = useState(makeSlug(postTitle));
+  const [slug, setSlug] = useState(inputAttrs.defaultValue);
 
   const [debouncedData] = useDebounce(slug, 1000);
   const formRef = useRef<HTMLFormElement>(null);
+  const firstRender = useRef<boolean>(true);
+  const firstRenderDebounce = useRef<boolean>(true);
 
   useEffect(() => {
-    if (postTitle) {
-      setSlug(makeSlug(postTitle));
-    } else {
-      setSlug(inputAttrs.defaultValue);
+    if (firstRender.current) {
+      firstRender.current = false;
+      return;
     }
-  }, [slug, postTitle, inputAttrs.defaultValue]);
+
+    setSlug(makeSlug(postTitle)!);
+  }, [postTitle]);
 
   useEffect(() => {
+    if (firstRenderDebounce.current) {
+      firstRenderDebounce.current = false;
+      return;
+    }
+
     if (debouncedData === makeSlug(postTitle)) {
       return;
     }
     setIsLoading(true);
     formRef.current?.requestSubmit();
-  }, [slug, debouncedData]);
+  }, [debouncedData, postTitle, slug]);
 
   const deleteDefaultValue = (props: any) => {
     delete props.defaultValue;
@@ -119,6 +134,27 @@ export default function PostForm({
           />
         )}
       </div>
+      {/* <div className="flex flex-col items-center justify-center space-y-2 rounded-b-lg border-t border-gray-200 bg-gray-50 p-3 dark:border-gray-700 dark:bg-gray-800 sm:flex-row sm:justify-between sm:space-y-0 sm:px-10">
+        <p className="text-sm text-gray-500 dark:text-gray-400">{helpText}</p>
+        <FormButton />
+      </div> */}
     </form>
   );
 }
+
+// function FormButton() {
+//   const { pending } = useFormStatus();
+//   return (
+//     <button
+//       className={cn(
+//         "flex h-8 w-32 items-center justify-center space-x-2 rounded-md border text-sm transition-all focus:outline-none sm:h-10",
+//         pending
+//           ? "cursor-not-allowed border-gray-200 bg-gray-100 text-gray-400 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300"
+//           : "border-black bg-black text-white hover:bg-white hover:text-black dark:border-gray-700 dark:hover:border-gray-200 dark:hover:bg-black dark:hover:text-white dark:active:bg-gray-800",
+//       )}
+//       disabled={pending}
+//     >
+//       {pending ? <LoadingDots color="#808080" /> : <p>Save Changes</p>}
+//     </button>
+//   );
+// }

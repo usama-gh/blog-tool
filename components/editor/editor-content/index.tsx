@@ -13,6 +13,7 @@ import { useCompletion } from "ai/react";
 import { toast } from "sonner";
 import { Post } from "@prisma/client";
 import { EditorBubbleMenu } from "../bubble-menu";
+import { TiptapExtensionsAI } from "../extensions/index-ai";
 
 type PostWithSite = Post & { site: { subdomain: string | null } | null };
 
@@ -24,12 +25,13 @@ interface Props {
   updateSlides: any;
   slides: Array<string>;
   slideData: string;
+  canUseAI: boolean;
 }
 
 export const EditorContents = (props: Props) => {
   const [hydrated, setHydrated] = useState(false);
   const editor = useEditor({
-    extensions: TiptapExtensions,
+    extensions: props.canUseAI ? TiptapExtensionsAI : TiptapExtensions,
     editorProps: TiptapEditorProps,
     onUpdate: (e) => {
       const selection = e.editor.state.selection;
@@ -51,7 +53,6 @@ export const EditorContents = (props: Props) => {
         );
         // complete(e.editor.storage.markdown.getMarkdown());
       } else {
-        console.log(props.data);
         props.setData({
           ...props.data,
           slides: JSON.stringify([...props.slides]),
