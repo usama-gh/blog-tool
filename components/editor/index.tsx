@@ -18,7 +18,6 @@ import { EditorContents } from "./editor-content";
 import ImportJSONButton from "../import-json-btn";
 import ImportJsonModal from "../modal/import-json";
 import { TiptapExtensionsAI } from "./extensions/index-ai";
-import { getPostFromId } from "@/lib/fetchers";
 
 type PostWithSite = Post & { site: { subdomain: string | null } | null };
 
