@@ -43,7 +43,7 @@ export default async function SiteHomePage({
                   </div>
                 )}
               </div>
-              <h1 className="mb-2.5 text-sm font-semibold tracking-widest text-slate-600 dark:text-gray-200 lg:text-lg">
+              <h1 className="mb-2.5 text-sm font-semibold tracking-tight text-slate-600 dark:text-gray-200 lg:text-lg">
                 {data.name}
               </h1>
               <div
