@@ -85,7 +85,7 @@ export default async function SitePostPage({
             )}
           </div>
           </Link>
-          <Link href="/" className="px-3.5  font-regular tracking-widest uppercase text-[8px] lg:text-sm text-slate-500 dark:text-gray-400 dark:hover:text-gray-300 hover:text-slate-600">
+          <Link href="/" className="px-3.5  font-semibold tracking-normal text-[8px] lg:text-sm text-slate-500 dark:text-gray-400 dark:hover:text-gray-300 hover:text-slate-600">
             {siteData?.user?.name}
           </Link>
           <div className="h-7 w-[2px] bg-slate-200 dark:bg-gray-700"></div>

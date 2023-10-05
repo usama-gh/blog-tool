@@ -49,6 +49,7 @@ const Carousel = ({ data, siteData }: any) => {
     embla.on("select", onSelect);
 
     document.body.style.overflow = "hidden";
+    document.body.scrollTop = document.documentElement.scrollTop = 0;
 
     // Re-enable the window scroll when the component unmounts
     return () => {
@@ -70,7 +71,7 @@ const Carousel = ({ data, siteData }: any) => {
   return (
     <>
       <div className="relative">
-        <div className="mt-1  flex list-none justify-between space-x-2">
+        <div className="flex list-none justify-between space-x-2">
           {scrollSnaps.map((_, index: number) => (
             <DotButton
               key={index}

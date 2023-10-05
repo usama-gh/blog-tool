@@ -43,7 +43,7 @@ export default async function SiteHomePage({
                   </div>
                 )}
               </div>
-              <h1 className="mb-2.5 text-sm font-light tracking-widest text-slate-600 dark:text-gray-200 lg:text-lg">
+              <h1 className="mb-2.5 text-sm font-semibold tracking-widest text-slate-600 dark:text-gray-200 lg:text-lg">
                 {data.name}
               </h1>
               <div
@@ -62,14 +62,14 @@ export default async function SiteHomePage({
           </div>
         </div>
 
-        <div className="w-full px-2 pb-16 pt-16">
+        <div className="w-full px-2 pb-16 pt-16 max-w-2xl mx-auto">
           {posts.length > 0 ? (
             posts.map((post, index) => (
               <div key={`post-${index}`}>
                 <Link href={`/${post.slug}`}>
                   <div
-                    className="ease md: w-100 mx-auto mb-5  max-w-screen-xl rounded-3xl border border-stone-100 bg-white p-1
-                shadow-[0_0px_13px_0px_rgba(148,163,184,0.12)] dark:overflow-hidden dark:border-gray-700 dark:bg-gray-800 dark:shadow-none dark:hover:border-gray-600 md:w-3/6 lg:w-2/6"
+                    className="ease transition-all md:w-full mx-auto mb-5  max-w-screen-xl rounded-3xl border border-slate-200 hover:border-slate-300 px-4 py-8
+               dark:overflow-hidden dark:border-gray-700 dark:bg-gray-800 dark:shadow-none dark:hover:border-gray-600"
                   >
                     {/* {index == 0 ? (
                     <div className="sm:h-120 group relative mx-auto h-52 w-full overflow-hidden rounded-3xl">
@@ -86,16 +86,17 @@ export default async function SiteHomePage({
                   ) : (
                     <></>
                   )} */}
-                    <div className="m-auto w-full px-8 text-center">
-                      <p className="m-auto mt-7 text-xs font-semibold text-slate-400 dark:text-gray-500">
+                    <div className="m-auto w-full px-8 text-center flex flex-col justify-center items-center gap-y-2">
+                      <p className="m-auto text-sm tracking-normal text-slate-500 dark:text-gray-400">
                         {toDateString(post.createdAt, "long")}
                       </p>
-                      <h2 className="mt-1 text-xl font-medium text-slate-600 dark:text-white">
+                      <h2 className="text-2xl md:text-3xl tracking-tight font-semibold  text-slate-600 dark:text-white">
                         {post.title}
                       </h2>
-                      <p className="mb-8 mt-1.5 w-full text-base text-slate-500 dark:text-gray-400">
+                      <p className="w-full leading-6 text-base text-slate-500 dark:text-gray-300">
                         {post.description}
                       </p>
+                      <button  className="mt-2 w-auto text-center text-sm px-4 py-2 rounded-full dark:bg-transparent border border-slate-500 text-slate-500 dark:border-gray-600 hover:text-slate-600 hover:border-slate-700 dark:text-gray-300">Read More</button>
                     </div>
                   </div>
                 </Link>
