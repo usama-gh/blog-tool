@@ -12,7 +12,7 @@ export default function PostCard({
   const url = `${data.site?.subdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}/${data.slug}`;
 
   return (
-    <div className="relative rounded-lg border border-gray-200 pb-10 transition-all hover:border-gray-300 dark:border-stone-700 dark:hover:border-white">
+    <div className="relative rounded-lg border border-gray-200 pb-10 transition-all hover:border-gray-300 dark:border-gray-700 dark:hover:border-white">
       <Link
         href={`/post/${data.id}`}
         className="flex flex-col overflow-hidden rounded-lg"

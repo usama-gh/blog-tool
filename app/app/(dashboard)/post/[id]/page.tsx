@@ -37,15 +37,15 @@ export default async function PostPage({ params }: { params: { id: string } }) {
 
   return (
     <>
-      <div className="flex flex-col-reverse justify-between xl:flex-row">
-        <div className="w-full xl:w-7/12">
+      <div className="flex justify-between flex-wrap gap-y-2">
+        <div className="w-full md:w-full lg:w-3/4 px-2 lg:px-4">
           <Editor post={data} canUseAI={canUseAI} />
         </div>
-        <div className="mb-10 w-full xl:mb-0 xl:w-[38%]">
+        <div className="mb-10 w-full md:w-full xl:mb-0 lg:w-1/4 px-2 lg:px-4">
           <div className="flex flex-col space-y-6">
             <PostForm
               title="Post Slug"
-              description="The slug is the URL-friendly version of the name. It is usually all lowercase and contains only letters, numbers, and hyphens."
+              description="A slug is a lowercase, URL-friendly version of a name, consisting of letters, numbers, and hyphens."
               // helpText="Please use a slug that is unique to this post."
               helpText=""
               inputAttrs={{
@@ -58,7 +58,7 @@ export default async function PostPage({ params }: { params: { id: string } }) {
               handleSubmit={updatePostMetadata}
             />
 
-            <Form
+            {/* <Form
               title="Thumbnail image"
               description="The thumbnail image for your post. Accepted formats: .png, .jpg, .jpeg"
               helpText="Max file size 50MB. Recommended size 1200x630."
@@ -68,7 +68,7 @@ export default async function PostPage({ params }: { params: { id: string } }) {
                 defaultValue: data?.image!,
               }}
               handleSubmit={updatePostMetadata}
-            />
+            /> */}
 
             <DeletePostForm postName={data?.title!} />
           </div>

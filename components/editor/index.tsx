@@ -247,14 +247,14 @@ export default function Editor({
 
   return (
     <>
-      <div className="relative mb-10 min-h-[500px] w-full max-w-screen-lg border-stone-200 p-12 px-8 dark:border-stone-700 sm:rounded-lg sm:border sm:px-12 sm:shadow-lg">
+      <div className="relative mb-10 min-h-[500px] w-full max-w-screen-lg border-gray-200 p-12 px-8 dark:border-gray-700 sm:rounded-lg sm:border sm:px-12 sm:shadow-lg">
         <div className="absolute right-5 top-5 mb-5 flex items-center space-x-3">
           {data.published && (
             <a
               href={url}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center space-x-1 text-sm text-stone-400 hover:text-stone-500"
+              className="flex items-center space-x-1 text-sm text-gray-400 hover:text-gray-500"
             >
               <ExternalLink className="h-4 w-4" />
             </a>
@@ -262,7 +262,7 @@ export default function Editor({
           <ImportJSONButton>
             <ImportJsonModal setSlideWithJson={setSlideWithJson} />
           </ImportJSONButton>
-          <div className="rounded-lg bg-stone-100 px-2 py-1 text-sm text-stone-400 dark:bg-stone-800 dark:text-stone-500">
+          <div className="rounded-lg bg-gray-100 px-2 py-1 text-sm text-gray-400 dark:bg-gray-800 dark:text-gray-500">
             {isPendingSaving ? "Saving..." : "Saved"}
           </div>
           <button
@@ -288,8 +288,8 @@ export default function Editor({
             className={cn(
               "flex h-7 w-24 items-center justify-center space-x-2 rounded-lg border text-sm transition-all focus:outline-none",
               isPendingPublishing
-                ? "cursor-not-allowed border-stone-200 bg-stone-100 text-stone-400 dark:border-stone-700 dark:bg-stone-800 dark:text-stone-300"
-                : "border border-black bg-black text-white hover:bg-white hover:text-black active:bg-stone-100 dark:border-stone-700 dark:hover:border-stone-200 dark:hover:bg-black dark:hover:text-white dark:active:bg-stone-800",
+                ? "cursor-not-allowed border-gray-200 bg-gray-100 text-gray-400 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300"
+                : "border border-black bg-black text-white hover:bg-white hover:text-black active:bg-gray-100 dark:border-gray-700 dark:hover:border-gray-200 dark:hover:bg-black dark:hover:text-white dark:active:bg-gray-800",
             )}
             disabled={isPendingPublishing}
           >
@@ -300,20 +300,20 @@ export default function Editor({
             )}
           </button>
         </div>
-        <div className="mb-5 flex flex-col space-y-3 border-b border-stone-200 pb-5 dark:border-stone-700">
+        <div className="mb-5 flex flex-col space-y-3 border-b border-gray-200 pb-5 dark:border-gray-700">
           <input
             type="text"
             placeholder="Title"
             defaultValue={post?.title || ""}
             autoFocus
             onChange={(e) => setData({ ...data, title: e.target.value })}
-            className="dark:placeholder-text-600 font-inter border-none px-0 text-3xl placeholder:text-stone-400 focus:outline-none focus:ring-0 dark:bg-black dark:text-white"
+            className="dark:placeholder-text-600 font-inter border-none px-0 text-3xl placeholder:text-gray-400 focus:outline-none focus:ring-0 dark:bg-black dark:text-white"
           />
           <TextareaAutosize
             placeholder="Description"
             defaultValue={post?.description || ""}
             onChange={(e) => setData({ ...data, description: e.target.value })}
-            className="dark:placeholder-text-600 w-full resize-none border-none px-0 placeholder:text-stone-400 focus:outline-none focus:ring-0 dark:bg-black dark:text-white"
+            className="dark:placeholder-text-600 w-full resize-none border-none px-0 placeholder:text-gray-400 focus:outline-none focus:ring-0 dark:bg-black dark:text-white"
           />
         </div>
         {editor && <EditorBubbleMenu editor={editor} />}
@@ -322,7 +322,7 @@ export default function Editor({
       {slides.map((slideData: string, index: number) => (
         <div
           key={`slide-${index}`}
-          className="relative mb-10 min-h-[200px] w-full max-w-screen-lg border-stone-200 p-12 px-8 dark:border-stone-700 sm:rounded-lg sm:border sm:px-12 sm:shadow-lg"
+          className="relative mb-10 min-h-[200px] w-full max-w-screen-lg border-gray-200 p-12 px-8 dark:border-gray-700 sm:rounded-lg sm:border sm:px-12 sm:shadow-lg"
         >
           <XCircle
             width={24}
@@ -349,7 +349,7 @@ export default function Editor({
           onClick={(e) => {
             updateSlides("add", 0, "");
           }}
-          className="flex items-center gap-x-2 rounded-full border-2 border-gray-400 px-2 py-1 dark:border-gray-500 dark:text-gray-300"
+          className="flex items-center gap-x-2 rounded-full border border-gray-400 px-4 py-1 dark:border-gray-500 dark:text-gray-400"
         >
           Add slide
         </button>

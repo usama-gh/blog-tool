@@ -35,7 +35,7 @@ SlideBites
 <div className="mx-auto mt-4 w-11/12 max-w-xs sm:w-full">
   <Suspense
     fallback={
-      <div className="my-2 h-10 w-full rounded-md border border-stone-200 bg-stone-100 dark:border-stone-700 dark:bg-stone-800" />
+      <div className="my-2 h-10 w-full rounded-md border border-gray-200 bg-gray-100 dark:border-gray-700 dark:bg-gray-800" />
     }
   >
     <LoginButton />
