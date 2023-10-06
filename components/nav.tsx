@@ -167,7 +167,7 @@ export default function Nav({ children }: { children: ReactNode }) {
               href="/"
               className="rounded-lg p-2 hover:bg-gray-200 dark:hover:bg-gray-700"
             >
-              <h3 className="dark:text-white text-gray-800 text-sm font-semibold uppercase tracking-widest">SlideBites</h3>
+              <h3 className="dark:text-white text-gray-800 text-sm font-semibold uppercase tracking-widest">Typedd</h3>
               {/* <Image
                 src="/logo.png"
                 width={24}
