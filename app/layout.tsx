@@ -5,7 +5,7 @@ import { Metadata } from "next";
 import { cn } from "@/lib/utils";
 
 const title =
-  "SlideBites – Turn your social media posts into blogs & create a personal social blog";
+  "Typedd – Turn your social media posts into blogs & create a personal social blog";
 const description =
   "Easily turn your social media posts into blogs and build a persona blog for yourself. It has a new way to read blog which is more interactive. Built for personal brands";
 const image = "/og-image.png";
@@ -24,9 +24,9 @@ export const metadata: Metadata = {
     title,
     description,
     images: [image],
-    creator: "@slidebites",
+    creator: "@typedd",
   },
-  metadataBase: new URL("https://slidebites.com"),
+  metadataBase: new URL("https://typedd.com"),
 };
 
 export default function RootLayout({

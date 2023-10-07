@@ -8,7 +8,7 @@ export const plans = [
     specifications: [
       "3000 views per month",
       "1 website",
-      "Has ‘Made with SlideBites’ badge",
+      "Has ‘Made with Typedd badge",
       "Import Twitter threads, LinkedIn posts & Facebook posts",
     ],
     views: 3000,

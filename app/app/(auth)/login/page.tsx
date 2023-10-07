@@ -25,7 +25,7 @@ export default function LoginPage() {
   src="/logo.png"
 />
 <h1 className="mt-6 text-center font-inter text-3xl dark:text-white">
-SlideBites
+Typedd
 </h1>
 <p className="mt-2 text-center text-sm text-gray-600 dark:text-gray-400">
   Build a social blog for your personal brand  

@@ -26,9 +26,9 @@ export default function ReportAbuse({ isShowBadge }: Props) {
         <AlertTriangle size={24} />
       </button> */}
       {isShowBadge && (
-        <Link target="_blank" href={`https://slidebites.com`}>
+        <Link target="_blank" href={`https://typedd.com`}>
         <span className="ml-4 inline-flex bg-slate-100 text-gray-800 dark:text-gray-100 dark:bg-gray-900 items-center gap-1.5 rounded-full px-3 py-2 text-xs font-medium">
-          Made with SlideBites
+          Made with Typedd
         </span>
         </Link>
       )}

@@ -26,7 +26,7 @@ export default async function Plans() {
         <div className="flex flex-col space-y-2">
           <h1 className="font-inter text-3xl font-bold dark:text-white">Plans</h1>
           <p className="text-lg font-semibold dark:text-white">
-            Enjoy all benefits of SlideBites with just one time payment. Limited to first 100 users only
+            Enjoy all benefits of Typedd with just one time payment. Limited to first 100 users only
           </p>
         </div>
 
