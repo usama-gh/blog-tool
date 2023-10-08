@@ -149,7 +149,7 @@ export default function Nav({ children }: { children: ReactNode }) {
           segments[0] === "post" && segments.length === 2 && !showSidebar
             ? "left-5 top-5"
             : "right-5 top-7"
-        } sm:hidden`}
+        } sm:hidden text-gray-400`}
         onClick={() => setShowSidebar(!showSidebar)}
       >
         <Menu width={20} />
@@ -157,7 +157,7 @@ export default function Nav({ children }: { children: ReactNode }) {
       <div
         className={`transform ${
           showSidebar ? "translate-x-0" : "-translate-x-full"
-        } fixed z-10 flex h-full w-full flex-col justify-between border-r border-gray-200 bg-gray-100 p-4 transition-all dark:border-gray-700 dark:bg-gray-900 sm:w-60 sm:translate-x-0`}
+        } fixed z-10 flex h-full w-full flex-col justify-between border-r border-slate-200 bg-slate-100 p-4 transition-all dark:border-gray-700 dark:bg-gray-900 sm:w-60 sm:translate-x-0`}
       >
         <div className="grid gap-2">
           <div className="flex items-center space-x-2 rounded-lg px-2 py-1.5">
@@ -167,7 +167,7 @@ export default function Nav({ children }: { children: ReactNode }) {
               href="/"
               className="rounded-lg p-2 hover:bg-gray-200 dark:hover:bg-gray-700"
             >
-              <h3 className="dark:text-white text-gray-800 text-sm font-semibold uppercase tracking-widest">Typedd</h3>
+              <h3 className="dark:text-white text-slate-800 text-sm font-semibold uppercase tracking-widest">Typedd</h3>
               {/* <Image
                 src="/logo.png"
                 width={24}
@@ -183,8 +183,8 @@ export default function Nav({ children }: { children: ReactNode }) {
                 key={name}
                 href={href}
                 className={`flex items-center space-x-3 ${
-                  isActive ? "bg-gray-200 text-black dark:bg-gray-700" : ""
-                } rounded-lg px-2 py-1.5 transition-all duration-150 ease-in-out hover:bg-gray-200 active:bg-gray-300 dark:text-white dark:hover:bg-gray-700 dark:active:bg-gray-800`}
+                  isActive ? "bg-slate-200 text-black dark:bg-gray-700" : ""
+                } rounded-lg px-2 py-1.5 transition-all duration-150 ease-in-out hover:bg-slate-200 active:bg-slate-300 dark:text-white dark:hover:bg-gray-700 dark:active:bg-gray-800`}
               >
                 {icon}
                 <span className="text-sm font-medium">{name}</span>
@@ -210,7 +210,7 @@ export default function Nav({ children }: { children: ReactNode }) {
               </a>
             ))} */}
           </div>
-          <div className="my-2 border-t border-gray-200 dark:border-gray-700" />
+          <div className="my-2 border-t border-slate-200 dark:border-gray-700" />
           {children}
         </div>
       </div>

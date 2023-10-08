@@ -38,7 +38,7 @@ export default async function Overview() {
 
       <div className="flex flex-col space-y-6">
         <div className="flex items-center justify-between">
-          <h1 className="font-inter text-md font-semibold uppercase tracking-wide dark:text-white">
+          <h1 className="font-inter hidden lg:block text-md font-semibold uppercase tracking-wide dark:text-white">
             Your Blog
           </h1>
           <Suspense fallback={null}>

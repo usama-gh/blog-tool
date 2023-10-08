@@ -81,7 +81,7 @@ const Carousel = ({ data, siteData }: any) => {
             />
           ))}
         </div>
-        <div className="mx-auto my-auto flex items-center ">
+        <div className="mx-auto my-auto flex items-center relative ">
           <div className="w-full overflow-hidden" ref={viewportRef}>
             <div className="flex h-fit items-start ">
               <div className="relative h-fit min-w-full text-slate-50  dark:text-gray-400 ">
@@ -147,9 +147,9 @@ const Carousel = ({ data, siteData }: any) => {
               )}
             </div>
           </div>
-        </div>
-        <PrevButton onClick={scrollPrev} enabled={prevBtnEnabled} />
+          <PrevButton onClick={scrollPrev} enabled={prevBtnEnabled} />
         <NextButton onClick={scrollNext} enabled={nextBtnEnabled} />
+        </div>
       </div>
     </>
   );

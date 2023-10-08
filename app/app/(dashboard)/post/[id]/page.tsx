@@ -38,12 +38,12 @@ export default async function PostPage({ params }: { params: { id: string } }) {
   return (
     <>
       <div className="flex justify-between flex-wrap gap-y-2">
-        <div className="w-full md:w-full lg:w-3/4 px-2 lg:px-4">
+        <div className="w-full px-2 lg:px-4">
           <Editor post={data} canUseAI={canUseAI} />
         </div>
-        <div className="mb-10 w-full md:w-full xl:mb-0 lg:w-1/4 px-2 lg:px-4">
+        <div className="mb-10  xl:mb-0 px-2 lg:px-4">
           <div className="flex flex-col space-y-6">
-            <PostForm
+            {/* <PostForm
               title="Post Slug"
               description="A slug is a lowercase, URL-friendly version of a name, consisting of letters, numbers, and hyphens."
               // helpText="Please use a slug that is unique to this post."
@@ -56,7 +56,7 @@ export default async function PostPage({ params }: { params: { id: string } }) {
               }}
               postTitle={data?.title}
               handleSubmit={updatePostMetadata}
-            />
+            /> */}
 
             {/* <Form
               title="Thumbnail image"

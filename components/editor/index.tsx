@@ -6,6 +6,7 @@ import { TiptapEditorProps } from "./props";
 import { TiptapExtensions } from "./extensions";
 import { useDebounce } from "use-debounce";
 import { useCompletion } from "ai/react";
+import PostForm from "@/components/form/post-form";
 import { toast } from "sonner";
 import TextareaAutosize from "react-textarea-autosize";
 import { EditorBubbleMenu } from "./bubble-menu";
@@ -30,6 +31,28 @@ export default function Editor({
 }) {
   let [isPendingSaving, startTransitionSaving] = useTransition();
   let [isPendingPublishing, startTransitionPublishing] = useTransition();
+
+  const [textareaValue, setTextareaValue] = useState<string>(post?.description || "");
+  const [userEdits, setUserEdits] = useState<boolean>(false);
+
+  useEffect(() => {
+    // Update textareaValue whenever post.content changes, but only if the user hasn't manually edited it
+    if (!userEdits && !post.description) {
+      const first170Characters = post?.content?.substr(0, 170) || "";
+      if (textareaValue !== first170Characters) {
+        setTextareaValue(first170Characters);
+      }
+    }
+  }, [post.description, textareaValue, userEdits]);
+
+  const handleTextareaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const newValue = e.target.value;
+    setTextareaValue(newValue);
+    setData({ ...data, description: newValue });
+
+    // Set the userEdits flag to true when the user directly edits the textarea
+    setUserEdits(true);
+  };
 
   const [data, setData] = useState<PostWithSite>(post);
   const [hydrated, setHydrated] = useState(false);
@@ -65,6 +88,7 @@ export default function Editor({
     });
   }, [debouncedData, post]);
 
+ 
   // listen to CMD + S and override the default behavior
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
@@ -247,8 +271,7 @@ export default function Editor({
 
   return (
     <>
-      <div className="relative mb-10 min-h-[500px] w-full max-w-screen-lg border-gray-200 p-12 px-8 dark:border-gray-700 sm:rounded-lg sm:border sm:px-12 sm:shadow-lg">
-        <div className="absolute right-5 top-5 mb-5 flex items-center space-x-3">
+     <div className=" flex items-center justify-end space-x-3 my-5">
           {data.published && (
             <a
               href={url}
@@ -300,6 +323,10 @@ export default function Editor({
             )}
           </button>
         </div>
+
+
+      <div className="relative mt-5 lg:mt-0 mb-5 min-h-[500px] w-full max-w-screen-xl p-4 border-gray-200  dark:border-gray-700 sm:rounded-lg border lg:p-12">
+       
         <div className="mb-5 flex flex-col space-y-3 border-b border-gray-200 pb-5 dark:border-gray-700">
           <input
             type="text"
@@ -307,14 +334,9 @@ export default function Editor({
             defaultValue={post?.title || ""}
             autoFocus
             onChange={(e) => setData({ ...data, title: e.target.value })}
-            className="dark:placeholder-text-600 font-inter border-none px-0 text-3xl placeholder:text-gray-400 focus:outline-none focus:ring-0 dark:bg-black dark:text-white"
+            className="dark:placeholder-text-600 font-inter font-bold border-none px-0 text-3xl placeholder:text-gray-400 focus:outline-none focus:ring-0 dark:bg-black dark:text-white"
           />
-          <TextareaAutosize
-            placeholder="Description"
-            defaultValue={post?.description || ""}
-            onChange={(e) => setData({ ...data, description: e.target.value })}
-            className="dark:placeholder-text-600 w-full resize-none border-none px-0 placeholder:text-gray-400 focus:outline-none focus:ring-0 dark:bg-black dark:text-white"
-          />
+          
         </div>
         {editor && <EditorBubbleMenu editor={editor} />}
         <EditorContent editor={editor} />
@@ -343,7 +365,7 @@ export default function Editor({
           />
         </div>
       ))}
-      <div className="flex w-full max-w-screen-lg justify-end">
+      <div className="flex w-full justify-end mb-4">
         <button
           type="button"
           onClick={(e) => {
@@ -354,6 +376,51 @@ export default function Editor({
           Add slide
         </button>
       </div>
+        
+      <div className="w-full grid grid-cols-2  gap-x-2  ">
+        <div className="border border-slate-200  dark:border-gray-700 rounded-lg px-4 py-2">
+
+          
+        <div className="relative flex flex-col space-y-4 p-5 sm:p-10">
+        <div className="flex justify-between">
+          <h2 className="font-inter font-semibold text-slate-500 text-xl dark:text-white">SEO description</h2>
+        </div>
+        <p className="text-sm text-gray-500 dark:text-gray-400">
+            A small 170 character summary of your blog
+        </p>
+          
+        <TextareaAutosize
+            placeholder="SEO Description"
+            value={textareaValue}
+        onChange={handleTextareaChange}
+            className="w-full max-w-md rounded-md bg-transparent border border-slate-300 text-sm text-slate-900 placeholder-gray-300 focus:border-slate-500 focus:outline-none focus:ring-slate-500 dark:border-slate-600 dark:bg-black dark:text-white dark:placeholder-gray-700"
+          />
+          
+      </div>
+
+     
+            </div>
+
+            <div>
+           <PostForm
+              title="Post Slug"
+              description="Its URL-friendly version of a blog title for searching"
+              // helpText="Please use a slug that is unique to this post."
+              helpText=""
+              inputAttrs={{
+                name: "slug",
+                type: "text",
+                defaultValue: data?.slug!,
+                placeholder: "slug",
+              }}
+              postTitle={data?.title}
+              handleSubmit={updatePostMetadata}
+            />
+            </div>
+      </div>
+
+     
+          
     </>
   );
 }

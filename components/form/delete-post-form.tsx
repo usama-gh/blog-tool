@@ -59,7 +59,7 @@ function FormButton() {
         "flex h-8 w-32 items-center justify-center space-x-2 rounded-full border text-sm transition-all focus:outline-none sm:h-8",
         pending
           ? "cursor-not-allowed border-gray-200 bg-gray-100 text-gray-400 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300"
-          : "border-red-900 bg-red-900 bg-opacity-20 border-opacity-20 text-red-600 hover:bg-white hover:text-red-600 dark:hover:bg-transparent",
+          : "border-red-900 bg-transparent hover:bg-red-100 bg-opacity-20  text-red-600 hover:text-red-600 dark:hover:bg-transparent",
       )}
       disabled={pending}
     >
