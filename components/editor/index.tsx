@@ -40,10 +40,15 @@ export default function Editor({
   const firstRender = useRef<boolean>(true);
 
   useEffect(() => {
-    if (post.description) {
+    // @ts-ignore
+    let plainText =
+      markdownToTxt(post?.content)?.replaceAll("\n", " ")?.substring(0, 170) ||
+      "";
+
+    if (post.description !== plainText) {
       setIsUserEdit(true);
     }
-  }, [post.description]);
+  }, []);
 
   useEffect(() => {
     // Update textareaValue whenever post.content changes, but only if the user hasn't manually edited it
@@ -65,7 +70,11 @@ export default function Editor({
     setData({ ...data, description: newValue });
 
     // Set the isUserEdit flag to true when the user directly edits the textarea
-    setIsUserEdit(true);
+    if (newValue) {
+      setIsUserEdit(true);
+    } else {
+      setIsUserEdit(false);
+    }
   };
 
   const [data, setData] = useState<PostWithSite>(post);
@@ -284,7 +293,7 @@ export default function Editor({
 
   return (
     <>
-      <div className="flex items-center justify-end space-x-3 my-5 lg:my-0 mb-0 lg:mb-4">
+      <div className="my-5 mb-0 flex items-center justify-end space-x-3 lg:my-0 lg:mb-4">
         {data.published && (
           <a
             href={url}
@@ -337,7 +346,7 @@ export default function Editor({
         </button>
       </div>
 
-      <div className="relative mt-5 lg:mt-0 mb-5 min-h-[500px] w-full max-w-screen-xl p-4 border-gray-200  dark:border-gray-700 sm:rounded-lg border lg:p-12">
+      <div className="relative mb-5 mt-5 min-h-[500px] w-full max-w-screen-xl border border-gray-200 p-4  dark:border-gray-700 sm:rounded-lg lg:mt-0 lg:p-12">
         <div className="mb-5 flex flex-col space-y-3 border-b border-gray-200 pb-5 dark:border-gray-700">
           <input
             type="text"
@@ -354,7 +363,7 @@ export default function Editor({
       {slides.map((slideData: string, index: number) => (
         <div
           key={`slide-${index}`}
-          className="relative mt-5 lg:mt-0 mb-5 min-h-[500px] w-full max-w-screen-xl p-4 border-gray-200  dark:border-gray-700 sm:rounded-lg border lg:p-12"
+          className="relative mb-5 mt-5 min-h-[500px] w-full max-w-screen-xl border border-gray-200 p-4  dark:border-gray-700 sm:rounded-lg lg:mt-0 lg:p-12"
         >
           <XCircle
             width={24}
@@ -387,7 +396,7 @@ export default function Editor({
         </button>
       </div>
 
-      <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-y-2 gap-x-2">
+      <div className="grid w-full grid-cols-1 gap-x-2 gap-y-2 lg:grid-cols-2">
         <div className="rounded-lg border  border-slate-200 px-4 py-2 dark:border-gray-700">
           <div className="relative flex flex-col space-y-4 p-2 lg:p-10">
             <div className="flex justify-between">
@@ -420,7 +429,7 @@ export default function Editor({
               defaultValue: data?.slug!,
               placeholder: "slug",
             }}
-            postTitle={data?.title}
+            postTitle={debouncedData?.title}
             handleSubmit={updatePostMetadata}
           />
         </div>
