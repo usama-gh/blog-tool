@@ -284,7 +284,7 @@ export default function Editor({
 
   return (
     <>
-      <div className=" my-5 flex items-center justify-end space-x-3">
+      <div className="flex items-center justify-end space-x-3 my-5 lg:my-0 mb-0 lg:mb-4">
         {data.published && (
           <a
             href={url}
@@ -337,7 +337,7 @@ export default function Editor({
         </button>
       </div>
 
-      <div className="relative mb-5 mt-5 min-h-[500px] w-full max-w-screen-xl border border-gray-200 p-4  dark:border-gray-700 sm:rounded-lg lg:mt-0 lg:p-12">
+      <div className="relative mt-5 lg:mt-0 mb-5 min-h-[500px] w-full max-w-screen-xl p-4 border-gray-200  dark:border-gray-700 sm:rounded-lg border lg:p-12">
         <div className="mb-5 flex flex-col space-y-3 border-b border-gray-200 pb-5 dark:border-gray-700">
           <input
             type="text"
@@ -354,7 +354,7 @@ export default function Editor({
       {slides.map((slideData: string, index: number) => (
         <div
           key={`slide-${index}`}
-          className="relative mb-10 min-h-[200px] w-full max-w-screen-lg border-gray-200 p-12 px-8 dark:border-gray-700 sm:rounded-lg sm:border sm:px-12 sm:shadow-lg"
+          className="relative mt-5 lg:mt-0 mb-5 min-h-[500px] w-full max-w-screen-xl p-4 border-gray-200  dark:border-gray-700 sm:rounded-lg border lg:p-12"
         >
           <XCircle
             width={24}
@@ -387,9 +387,9 @@ export default function Editor({
         </button>
       </div>
 
-      <div className="grid w-full grid-cols-2  gap-x-2  ">
+      <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-y-2 gap-x-2">
         <div className="rounded-lg border  border-slate-200 px-4 py-2 dark:border-gray-700">
-          <div className="relative flex flex-col space-y-4 p-5 sm:p-10">
+          <div className="relative flex flex-col space-y-4 p-2 lg:p-10">
             <div className="flex justify-between">
               <h2 className="font-inter text-xl font-semibold text-slate-500 dark:text-white">
                 SEO description
