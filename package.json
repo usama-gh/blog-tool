@@ -41,6 +41,7 @@
     "js-cookie": "^3.0.5",
     "lucide-react": "^0.244.0",
     "markdown-react-renderer": "^2.1.0",
+    "markdown-to-txt": "^2.0.1",
     "nanoid": "^4.0.2",
     "next": "13.4.10-canary.2",
     "next-auth": "4.22.1",

@@ -19,6 +19,7 @@ import { EditorContents } from "./editor-content";
 import ImportJSONButton from "../import-json-btn";
 import ImportJsonModal from "../modal/import-json";
 import { TiptapExtensionsAI } from "./extensions/index-ai";
+import { markdownToTxt } from "markdown-to-txt";
 
 type PostWithSite = Post & { site: { subdomain: string | null } | null };
 
@@ -32,26 +33,39 @@ export default function Editor({
   let [isPendingSaving, startTransitionSaving] = useTransition();
   let [isPendingPublishing, startTransitionPublishing] = useTransition();
 
-  const [textareaValue, setTextareaValue] = useState<string>(post?.description || "");
-  const [userEdits, setUserEdits] = useState<boolean>(false);
+  const [textareaValue, setTextareaValue] = useState<string>(
+    post?.description || "",
+  );
+  const [isUserEdit, setIsUserEdit] = useState<boolean>(false);
+  const firstRender = useRef<boolean>(true);
+
+  useEffect(() => {
+    if (post.description) {
+      setIsUserEdit(true);
+    }
+  }, [post.description]);
 
   useEffect(() => {
     // Update textareaValue whenever post.content changes, but only if the user hasn't manually edited it
-    if (!userEdits && !post.description) {
-      const first170Characters = post?.content?.substr(0, 170) || "";
+    if (!firstRender.current && !isUserEdit) {
+      // @ts-ignore
+      let plainText = markdownToTxt(post?.content)?.replaceAll("\n", " ");
+      const first170Characters = plainText?.substring(0, 170) || "";
       if (textareaValue !== first170Characters) {
         setTextareaValue(first170Characters);
+        setData({ ...data, description: first170Characters });
       }
     }
-  }, [post.description, textareaValue, userEdits]);
+    firstRender.current = false;
+  }, [post.description, textareaValue, isUserEdit, post.content]);
 
   const handleTextareaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const newValue = e.target.value;
     setTextareaValue(newValue);
     setData({ ...data, description: newValue });
 
-    // Set the userEdits flag to true when the user directly edits the textarea
-    setUserEdits(true);
+    // Set the isUserEdit flag to true when the user directly edits the textarea
+    setIsUserEdit(true);
   };
 
   const [data, setData] = useState<PostWithSite>(post);
@@ -88,7 +102,6 @@ export default function Editor({
     });
   }, [debouncedData, post]);
 
- 
   // listen to CMD + S and override the default behavior
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
@@ -271,62 +284,60 @@ export default function Editor({
 
   return (
     <>
-     <div className=" flex items-center justify-end space-x-3 my-5">
-          {data.published && (
-            <a
-              href={url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center space-x-1 text-sm text-gray-400 hover:text-gray-500"
-            >
-              <ExternalLink className="h-4 w-4" />
-            </a>
-          )}
-          <ImportJSONButton>
-            <ImportJsonModal setSlideWithJson={setSlideWithJson} />
-          </ImportJSONButton>
-          <div className="rounded-lg bg-gray-100 px-2 py-1 text-sm text-gray-400 dark:bg-gray-800 dark:text-gray-500">
-            {isPendingSaving ? "Saving..." : "Saved"}
-          </div>
-          <button
-            onClick={() => {
-              const formData = new FormData();
-              formData.append("published", String(!data.published));
-              startTransitionPublishing(async () => {
-                await updatePostMetadata(formData, post.id, "published").then(
-                  () => {
-                    toast.success(
-                      `Successfully ${
-                        data.published ? "unpublished" : "published"
-                      } your post.`,
-                    );
-                    setData((prev) => ({
-                      ...prev,
-                      published: !prev.published,
-                    }));
-                  },
-                );
-              });
-            }}
-            className={cn(
-              "flex h-7 w-24 items-center justify-center space-x-2 rounded-lg border text-sm transition-all focus:outline-none",
-              isPendingPublishing
-                ? "cursor-not-allowed border-gray-200 bg-gray-100 text-gray-400 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300"
-                : "border border-black bg-black text-white hover:bg-white hover:text-black active:bg-gray-100 dark:border-gray-700 dark:hover:border-gray-200 dark:hover:bg-black dark:hover:text-white dark:active:bg-gray-800",
-            )}
-            disabled={isPendingPublishing}
+      <div className=" my-5 flex items-center justify-end space-x-3">
+        {data.published && (
+          <a
+            href={url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center space-x-1 text-sm text-gray-400 hover:text-gray-500"
           >
-            {isPendingPublishing ? (
-              <LoadingDots />
-            ) : (
-              <p>{data.published ? "Unpublish" : "Publish"}</p>
-            )}
-          </button>
+            <ExternalLink className="h-4 w-4" />
+          </a>
+        )}
+        <ImportJSONButton>
+          <ImportJsonModal setSlideWithJson={setSlideWithJson} />
+        </ImportJSONButton>
+        <div className="rounded-lg bg-gray-100 px-2 py-1 text-sm text-gray-400 dark:bg-gray-800 dark:text-gray-500">
+          {isPendingSaving ? "Saving..." : "Saved"}
         </div>
+        <button
+          onClick={() => {
+            const formData = new FormData();
+            formData.append("published", String(!data.published));
+            startTransitionPublishing(async () => {
+              await updatePostMetadata(formData, post.id, "published").then(
+                () => {
+                  toast.success(
+                    `Successfully ${
+                      data.published ? "unpublished" : "published"
+                    } your post.`,
+                  );
+                  setData((prev) => ({
+                    ...prev,
+                    published: !prev.published,
+                  }));
+                },
+              );
+            });
+          }}
+          className={cn(
+            "flex h-7 w-24 items-center justify-center space-x-2 rounded-lg border text-sm transition-all focus:outline-none",
+            isPendingPublishing
+              ? "cursor-not-allowed border-gray-200 bg-gray-100 text-gray-400 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300"
+              : "border border-black bg-black text-white hover:bg-white hover:text-black active:bg-gray-100 dark:border-gray-700 dark:hover:border-gray-200 dark:hover:bg-black dark:hover:text-white dark:active:bg-gray-800",
+          )}
+          disabled={isPendingPublishing}
+        >
+          {isPendingPublishing ? (
+            <LoadingDots />
+          ) : (
+            <p>{data.published ? "Unpublish" : "Publish"}</p>
+          )}
+        </button>
+      </div>
 
-
-      <div className="relative mt-5 lg:mt-0 mb-5 min-h-[500px] w-full max-w-screen-xl p-4 border-gray-200  dark:border-gray-700 sm:rounded-lg border lg:p-12">
-       
+      <div className="relative mb-5 mt-5 min-h-[500px] w-full max-w-screen-xl border border-gray-200 p-4  dark:border-gray-700 sm:rounded-lg lg:mt-0 lg:p-12">
         <div className="mb-5 flex flex-col space-y-3 border-b border-gray-200 pb-5 dark:border-gray-700">
           <input
             type="text"
@@ -334,9 +345,8 @@ export default function Editor({
             defaultValue={post?.title || ""}
             autoFocus
             onChange={(e) => setData({ ...data, title: e.target.value })}
-            className="dark:placeholder-text-600 font-inter font-bold border-none px-0 text-3xl placeholder:text-gray-400 focus:outline-none focus:ring-0 dark:bg-black dark:text-white"
+            className="dark:placeholder-text-600 font-inter border-none px-0 text-3xl font-bold placeholder:text-gray-400 focus:outline-none focus:ring-0 dark:bg-black dark:text-white"
           />
-          
         </div>
         {editor && <EditorBubbleMenu editor={editor} />}
         <EditorContent editor={editor} />
@@ -365,7 +375,7 @@ export default function Editor({
           />
         </div>
       ))}
-      <div className="flex w-full justify-end mb-4">
+      <div className="mb-4 flex w-full justify-end">
         <button
           type="button"
           onClick={(e) => {
@@ -376,51 +386,45 @@ export default function Editor({
           Add slide
         </button>
       </div>
-        
-      <div className="w-full grid grid-cols-2  gap-x-2  ">
-        <div className="border border-slate-200  dark:border-gray-700 rounded-lg px-4 py-2">
 
-          
-        <div className="relative flex flex-col space-y-4 p-5 sm:p-10">
-        <div className="flex justify-between">
-          <h2 className="font-inter font-semibold text-slate-500 text-xl dark:text-white">SEO description</h2>
-        </div>
-        <p className="text-sm text-gray-500 dark:text-gray-400">
-            A small 170 character summary of your blog
-        </p>
-          
-        <TextareaAutosize
-            placeholder="SEO Description"
-            value={textareaValue}
-        onChange={handleTextareaChange}
-            className="w-full max-w-md rounded-md bg-transparent border border-slate-300 text-sm text-slate-900 placeholder-gray-300 focus:border-slate-500 focus:outline-none focus:ring-slate-500 dark:border-slate-600 dark:bg-black dark:text-white dark:placeholder-gray-700"
-          />
-          
-      </div>
-
-     
+      <div className="grid w-full grid-cols-2  gap-x-2  ">
+        <div className="rounded-lg border  border-slate-200 px-4 py-2 dark:border-gray-700">
+          <div className="relative flex flex-col space-y-4 p-5 sm:p-10">
+            <div className="flex justify-between">
+              <h2 className="font-inter text-xl font-semibold text-slate-500 dark:text-white">
+                SEO description
+              </h2>
             </div>
+            <p className="text-sm text-gray-500 dark:text-gray-400">
+              A small 170 character summary of your blog
+            </p>
 
-            <div>
-           <PostForm
-              title="Post Slug"
-              description="Its URL-friendly version of a blog title for searching"
-              // helpText="Please use a slug that is unique to this post."
-              helpText=""
-              inputAttrs={{
-                name: "slug",
-                type: "text",
-                defaultValue: data?.slug!,
-                placeholder: "slug",
-              }}
-              postTitle={data?.title}
-              handleSubmit={updatePostMetadata}
+            <TextareaAutosize
+              placeholder="SEO Description"
+              value={textareaValue}
+              onChange={handleTextareaChange}
+              className="w-full max-w-md rounded-md border border-slate-300 bg-transparent text-sm text-slate-900 placeholder-gray-300 focus:border-slate-500 focus:outline-none focus:ring-slate-500 dark:border-slate-600 dark:bg-black dark:text-white dark:placeholder-gray-700"
             />
-            </div>
-      </div>
+          </div>
+        </div>
 
-     
-          
+        <div>
+          <PostForm
+            title="Post Slug"
+            description="Its URL-friendly version of a blog title for searching"
+            // helpText="Please use a slug that is unique to this post."
+            helpText=""
+            inputAttrs={{
+              name: "slug",
+              type: "text",
+              defaultValue: data?.slug!,
+              placeholder: "slug",
+            }}
+            postTitle={data?.title}
+            handleSubmit={updatePostMetadata}
+          />
+        </div>
+      </div>
     </>
   );
 }
