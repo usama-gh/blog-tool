@@ -371,7 +371,7 @@ export default function Editor({
         >
           <XCircle
             width={24}
-            className="absolute right-4 top-4 cursor-pointer dark:text-white"
+            className="z-20 absolute right-4 top-4 cursor-pointer dark:text-white"
             onClick={() => {
               updateSlides("delete", Number(index), "");
             }}
