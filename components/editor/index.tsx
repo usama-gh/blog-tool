@@ -42,8 +42,9 @@ export default function Editor({
   useEffect(() => {
     // @ts-ignore
     let plainText =
-      markdownToTxt(post?.content)?.replaceAll("\n", " ")?.substring(0, 170) ||
-      "";
+      markdownToTxt(post?.content as string)
+        ?.replaceAll("\n", " ")
+        ?.substring(0, 170) || "";
 
     if (post.description !== plainText) {
       setIsUserEdit(true);
@@ -332,11 +333,11 @@ export default function Editor({
           }}
           className={cn(
             "flex h-7 w-24 items-center justify-center space-x-2 rounded-lg border text-sm transition-all focus:outline-none",
-            isPendingPublishing
+            isPendingPublishing || debouncedData.content === ""
               ? "cursor-not-allowed border-gray-200 bg-gray-100 text-gray-400 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300"
               : "border border-black bg-black text-white hover:bg-white hover:text-black active:bg-gray-100 dark:border-gray-700 dark:hover:border-gray-200 dark:hover:bg-black dark:hover:text-white dark:active:bg-gray-800",
           )}
-          disabled={isPendingPublishing}
+          disabled={isPendingPublishing || debouncedData.content === ""}
         >
           {isPendingPublishing ? (
             <LoadingDots />
