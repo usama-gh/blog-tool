@@ -118,7 +118,7 @@ export default function BioEditor({
   return (
     <>
       {editor && <EditorBubbleMenu editor={editor} />}
-      <EditorContent editor={editor}></EditorContent>
+      <EditorContent className="w-full py-1 px-4 max-w-md rounded-md border border-gray-300 text-sm text-gray-900 placeholder-gray-300 focus:border-gray-500 focus:outline-none focus:ring-gray-500 dark:border-gray-600 dark:bg-black dark:text-white dark:placeholder-gray-700" editor={editor}></EditorContent>
     </>
   );
 }

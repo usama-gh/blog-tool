@@ -6,6 +6,7 @@ import { useSession } from "next-auth/react";
 import { useParams, useRouter } from "next/navigation";
 import { experimental_useFormStatus as useFormStatus } from "react-dom";
 import { toast } from "sonner";
+import { useEffect } from 'react';
 import {
   FacebookIcon,
   GithubIcon,
@@ -26,6 +27,18 @@ export default function SocialLinksForm({
   handleSubmit: any;
   links: any;
 }) {
+
+  useEffect(() => {
+    // Check if the URL contains "#socials"
+    if (window.location.hash === '#socials') {
+      // Scroll to the section with the id "socials"
+      const socialsSection = document.getElementById('socials');
+      if (socialsSection) {
+        socialsSection.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  }, []);
+
   const { id } = useParams() as { id?: string };
   const router = useRouter();
   const { update } = useSession();
@@ -47,6 +60,7 @@ export default function SocialLinksForm({
         });
       }}
       className="rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-black"
+      id="socials"
     >
       <div className="relative flex flex-col space-y-4 p-5 sm:p-10">
         <h4 className="font-inter text-lg dark:text-white">Social Links</h4>

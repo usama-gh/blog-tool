@@ -77,13 +77,20 @@ export default function Nav({ children }: { children: ReactNode }) {
           icon: <Newspaper width={18} />,
         },
         {
+          name: "Add Social Links",
+          href: `/site/${id}/settings#socials`,
+          isActive: segments.includes("settings"),
+          icon: <Megaphone width={18} />,
+        },
+        {
           name: "Analytics",
           href: `/site/${id}/analytics`,
           isActive: segments.includes("analytics"),
           icon: <BarChart3 width={18} />,
         },
+       
         {
-          name: "Settings",
+          name: "Blog Settings",
           href: `/site/${id}/settings`,
           isActive: segments.includes("settings"),
           icon: <Settings width={18} />,
@@ -112,7 +119,7 @@ export default function Nav({ children }: { children: ReactNode }) {
         icon: <LayoutDashboard width={18} />,
       },
       {
-        name: "Blogs",
+        name: "Your Blogs",
         href: "/sites",
         isActive: segments[0] === "sites",
         icon: <Globe width={18} />,
@@ -124,7 +131,7 @@ export default function Nav({ children }: { children: ReactNode }) {
         icon: <Rss width={18} />,
       },
       {
-        name: "Settings",
+        name: "My Account",
         href: "/settings",
         isActive: segments[0] === "settings",
         icon: <Settings width={18} />,
