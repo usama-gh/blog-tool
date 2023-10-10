@@ -41,7 +41,8 @@ export default function Editor({
 
   useEffect(() => {
     // @ts-ignore
-    let plainText =
+    if(post && post.content){
+      let plainText =
       markdownToTxt(post?.content as string)
         ?.replaceAll("\n", " ")
         ?.substring(0, 170) || "";
@@ -49,6 +50,8 @@ export default function Editor({
     if (post.description !== plainText) {
       setIsUserEdit(true);
     }
+    }
+    
   }, []);
 
   useEffect(() => {
