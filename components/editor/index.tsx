@@ -306,7 +306,7 @@ export default function Editor({
     let currentChunk = '';
     
     
-sentences.forEach((sentence) => {
+sentences.forEach((sentence: string | any[]) => {
   if ((currentChunk.length + sentence.length) <= MAX_CHUNK_LENGTH) {
     currentChunk += sentence + ' ';
   } else {
