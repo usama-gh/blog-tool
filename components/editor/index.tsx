@@ -305,23 +305,24 @@ export default function Editor({
     const sentences = nlp(text).sentences().out('array');
     const chunks = [];
     let currentChunk = '';
-    
-    
-sentences.forEach((sentence: string | any[]) => {
-  if ((currentChunk.length + sentence.length) <= MAX_CHUNK_LENGTH) {
-    currentChunk += sentence + ' ';
-  } else {
-    currentChunk = currentChunk.trim();
-    chunks.push(currentChunk.replace(/\\/g, '\n').trim());
-    currentChunk = sentence + ' ';
-  }
-});
 
-if (currentChunk.trim().length > 0) {
-  chunks.push(currentChunk.replace(/\\/g, '\n').trim());
-}
+    sentences.forEach((sentence: string) => {
+        const sentenceWithSpace = sentence + ' ';
+        if ((currentChunk.length + sentenceWithSpace.length) <= MAX_CHUNK_LENGTH) {
+            currentChunk += sentenceWithSpace;
+        } else {
+            if (currentChunk.trim() !== '') {
+                chunks.push(currentChunk.trim().replace(/\\/g, '\n'));
+            }
+            currentChunk = sentenceWithSpace;
+        }
+    });
 
-  return chunks.map((chunk, index) => ({ id: index + 1, content: chunk}));
+    if (currentChunk.trim() !== '') {
+        chunks.push(currentChunk.trim().replace(/\\/g, '\n'));
+    }
+
+    return chunks.map((chunk, index) => ({ id: index + 1, content: chunk}));
   };
 
   // Split the content into slides
