@@ -59,7 +59,7 @@ export default function SocialLinksForm({
           }
         });
       }}
-      className="rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-black"
+      className="rounded-lg border  border-slate-200 dark:border-gray-700"
       id="socials"
     >
       <div className="relative flex flex-col space-y-4 p-5 sm:p-10">
@@ -215,13 +215,13 @@ export default function SocialLinksForm({
               defaultValue={links?.websiteLink}
               type="text"
               placeholder="https://contentdrips.com"
-              className="w-full rounded-md border border-gray-300 py-3 pl-20 text-sm text-gray-900 placeholder-gray-300 focus:border-gray-500 focus:outline-none focus:ring-gray-500 dark:border-gray-600 dark:bg-black dark:text-white dark:placeholder-gray-700"
+              className="w-full rounded-md border border-slate-300 py-3 pl-20 text-sm text-slate-900 placeholder-slate-300 focus:border-slate-500 focus:outline-none focus:ring-slate-500 dark:border-gray-600 dark:bg-black dark:text-white dark:placeholder-gray-700"
             />
           </div>
         </div>
       </div>
-      <div className="flex flex-col items-center justify-center space-y-2 rounded-b-lg border-t border-gray-200 bg-gray-50 p-3 dark:border-gray-700 dark:bg-gray-800 sm:flex-row sm:justify-between sm:space-y-0 sm:px-10">
-        <p className="text-sm text-gray-500 dark:text-gray-400"></p>
+      <div className="flex flex-col items-center justify-center space-y-2 rounded-b-lg border-t border-slate-200 bg-slate-50 p-3 dark:border-gray-700 dark:bg-gray-800 sm:flex-row sm:justify-between sm:space-y-0 sm:px-10">
+        <p className="text-sm text-slate-500 dark:text-gray-400"></p>
         <FormButton />
       </div>
     </form>

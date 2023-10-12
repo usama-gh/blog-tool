@@ -30,6 +30,7 @@ export default async function Overview() {
 
   // redirect user to dashboard of site if user has only one site
   const result = await getUserPlanAnalytics(session?.user.id as string);
+  
   if (result.sites == 1) {
     redirect(`/site/${result.sitesData[0].id}`);
   }

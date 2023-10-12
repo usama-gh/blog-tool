@@ -79,7 +79,6 @@ export default function Nav({ children }: { children: ReactNode }) {
         {
           name: "Add Social Links",
           href: `/site/${id}/settings#socials`,
-          isActive: segments.includes("settings"),
           icon: <Megaphone width={18} />,
         },
         {

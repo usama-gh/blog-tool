@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, useTransition } from "react";
 import { useEditor, EditorContent } from "@tiptap/react";
+import nlp from 'compromise'
 import { TiptapEditorProps } from "./props";
 import { TiptapExtensions } from "./extensions";
 import { useDebounce } from "use-debounce";
@@ -39,7 +40,7 @@ export default function Editor({
   const [isUserEdit, setIsUserEdit] = useState<boolean>(false);
   const firstRender = useRef<boolean>(true);
   const MAX_CHUNK_LENGTH =
-    Number(process.env.NEXT_PUBLIC_MAX_CHUNK_LENGTH) || 100;
+    Number(process.env.NEXT_PUBLIC_MAX_CHUNK_LENGTH) || 300;
 
   useEffect(() => {
     // @ts-ignore
@@ -298,24 +299,28 @@ export default function Editor({
 
   // Split the content into required character
   const splitTextIntoChunks = (text: string) => {
-    const sentences = text.split(/(?<=[.!?])\s+/); // Split the text into sentences
+
+    const MAX_CHUNK_LENGTH = 300;
+    const sentences = nlp(text).sentences().out('array');
     const chunks = [];
-    let currentChunk = "";
+    let currentChunk = '';
+    
+    
+sentences.forEach((sentence) => {
+  if ((currentChunk.length + sentence.length) <= MAX_CHUNK_LENGTH) {
+    currentChunk += sentence + ' ';
+  } else {
+    currentChunk = currentChunk.trim();
+    chunks.push(currentChunk.replace(/\\/g, '\n').trim());
+    currentChunk = sentence + ' ';
+  }
+});
 
-    sentences.forEach((sentence) => {
-      if ((currentChunk + sentence).length <= MAX_CHUNK_LENGTH) {
-        currentChunk += sentence + " ";
-      } else {
-        chunks.push(currentChunk.trim());
-        currentChunk = sentence + " ";
-      }
-    });
+if (currentChunk.trim().length > 0) {
+  chunks.push(currentChunk.replace(/\\/g, '\n').trim());
+}
 
-    if (currentChunk.trim().length > 0) {
-      chunks.push(currentChunk.trim());
-    }
-
-    return chunks.map((chunk, index) => ({ id: index + 1, content: chunk }));
+  return chunks.map((chunk, index) => ({ id: index + 1, content: chunk}));
   };
 
   // Split the content into slides
@@ -326,6 +331,8 @@ export default function Editor({
 
   // Checking weather user has exceeded the limit of characters or not
   useEffect(() => {
+    if(debouncedData.content){
+        console.log(debouncedData.content)
     let splitContent = splitTextIntoChunks(debouncedData.content as string);
 
     if (splitContent.length > 1) {
@@ -336,6 +343,7 @@ export default function Editor({
         },
       });
     }
+  }
   }, [debouncedData.content]);
 
   return (
@@ -393,7 +401,7 @@ export default function Editor({
         </button>
       </div>
 
-      <div className="relative mb-5 mt-5 min-h-[500px] w-full max-w-screen-xl border border-gray-200 p-4  dark:border-gray-700 sm:rounded-lg lg:mt-0 lg:p-12">
+      <div className="relative mb-5 mt-5 min-h-[320px] w-full max-w-screen-xl border border-gray-200 p-4  dark:border-gray-700 sm:rounded-lg lg:mt-0 lg:p-12">
         <div className="mb-5 flex flex-col space-y-3 border-b border-gray-200 pb-5 dark:border-gray-700">
           <input
             type="text"
@@ -410,7 +418,7 @@ export default function Editor({
       {slides.map((slideData: string, index: number) => (
         <div
           key={`slide-${index}`}
-          className="relative mb-5 mt-5 min-h-[500px] w-full max-w-screen-xl border border-gray-200 p-4  dark:border-gray-700 sm:rounded-lg lg:mt-0 lg:p-12"
+          className="relative mb-5 mt-5 min-h-[300px] w-full max-w-screen-xl border border-gray-200 p-4  dark:border-gray-700 sm:rounded-lg lg:mt-0 lg:p-12"
         >
           <XCircle
             width={24}
@@ -444,7 +452,7 @@ export default function Editor({
       </div>
 
       <div className="grid w-full grid-cols-1 gap-x-2 gap-y-2 lg:grid-cols-2">
-        <div className="rounded-lg border  border-slate-200 px-4 py-2 dark:border-gray-700">
+        <div className="rounded-lg border  border-slate-200 dark:border-gray-700">
           <div className="relative flex flex-col space-y-4 p-2 lg:p-10">
             <div className="flex justify-between">
               <h2 className="font-inter text-xl font-semibold text-slate-500 dark:text-white">

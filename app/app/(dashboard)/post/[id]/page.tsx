@@ -58,17 +58,17 @@ export default async function PostPage({ params }: { params: { id: string } }) {
               handleSubmit={updatePostMetadata}
             /> */}
 
-            {/* <Form
+            <Form
               title="Thumbnail image"
               description="The thumbnail image for your post. Accepted formats: .png, .jpg, .jpeg"
-              helpText="Max file size 50MB. Recommended size 1200x630."
+              helpText="Recommended size 1200x630."
               inputAttrs={{
                 name: "image",
                 type: "file",
                 defaultValue: data?.image!,
               }}
               handleSubmit={updatePostMetadata}
-            /> */}
+            />
 
             <DeletePostForm postName={data?.title!} />
           </div>

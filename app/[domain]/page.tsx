@@ -29,13 +29,13 @@ export default async function SiteHomePage({
           <div className="mx-auto mt-[76px] md:w-2/6">
             <div className="m-auto flex w-full flex-col items-center justify-center">
               <div className="h-50 w-50 mb-5 overflow-hidden rounded-full align-middle">
-                {data.user?.image ? (
+                {data.logo ? (
                   <BlurImage
                     alt={data.user?.name ?? "User Avatar"}
                     width={50}
                     height={50}
                     className="h-full w-full object-cover"
-                    src={data.user?.image}
+                    src={data.logo}
                   />
                 ) : (
                   <div className="absolute flex h-full w-full select-none items-center justify-center bg-stone-100 text-4xl text-stone-500">

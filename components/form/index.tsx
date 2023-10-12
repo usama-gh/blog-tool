@@ -76,11 +76,11 @@ export default function Form({
           }
         });
       }}
-      className="rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-black"
+      className="rounded-lg border  border-slate-200 dark:border-gray-700"
     >
       <div className="relative flex flex-col space-y-4 p-5 sm:p-10">
         <h2 className="font-inter text-xl dark:text-white">{title}</h2>
-        <p className="text-sm text-gray-500 dark:text-gray-400">
+        <p className="text-sm text-slate-500 dark:text-gray-400">
           {description}
         </p>
         {inputAttrs.name === "image" || inputAttrs.name === "logo" ? (
@@ -106,9 +106,9 @@ export default function Form({
             <input
               {...inputAttrs}
               required
-              className="z-10 flex-1 rounded-l-md border border-gray-300 text-sm text-gray-900 placeholder-gray-300 focus:border-gray-500 focus:outline-none focus:ring-gray-500 dark:border-gray-600 dark:bg-black dark:text-white dark:placeholder-gray-700"
+              className="z-10 flex-1 rounded-l-md border border-slate-300 text-sm text-slate-900 placeholder-slate-300 focus:border-slate-500 focus:outline-none focus:ring-slate-500 dark:border-gray-600 dark:bg-black dark:text-white dark:placeholder-gray-700"
             />
-            <div className="flex items-center rounded-r-md border border-l-0 border-gray-300 bg-gray-100 px-3 text-sm dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400">
+            <div className="flex items-center rounded-r-md border border-l-0 border-slate-300 bg-slate-100 px-3 text-sm dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400">
               {process.env.NEXT_PUBLIC_ROOT_DOMAIN}
             </div>
           </div>
@@ -116,7 +116,7 @@ export default function Form({
           <div className="relative flex w-full max-w-md">
             <input
               {...inputAttrs}
-              className="z-10 flex-1 rounded-md border border-gray-300 text-sm text-gray-900 placeholder-gray-300 focus:border-gray-500 focus:outline-none focus:ring-gray-500 dark:border-gray-600 dark:bg-black dark:text-white dark:placeholder-gray-700"
+              className="z-10 flex-1 rounded-md border border-slate-300 text-sm text-slate-900 placeholder-slate-300 focus:border-slate-500 focus:outline-none focus:ring-slate-500 dark:border-gray-600 dark:bg-black dark:text-white dark:placeholder-gray-700"
             />
             {inputAttrs.defaultValue && (
               <div className="absolute right-3 z-10 flex h-full items-center">
@@ -137,14 +137,14 @@ export default function Form({
           <input
             {...inputAttrs}
             required
-            className="w-full max-w-md rounded-md border border-gray-300 text-sm text-gray-900 placeholder-gray-300 focus:border-gray-500 focus:outline-none focus:ring-gray-500 dark:border-gray-600 dark:bg-black dark:text-white dark:placeholder-gray-700"
+            className="w-full max-w-md rounded-md border border-slate-300 text-sm text-slate-900 placeholder-slate-300 focus:border-slate-500 focus:outline-none focus:ring-slate-500 dark:border-gray-600 dark:bg-black dark:text-white dark:placeholder-gray-700"
           />
         )}
       </div>
       {inputAttrs.name === "customDomain" && inputAttrs.defaultValue && (
         <DomainConfiguration domain={inputAttrs.defaultValue} />
       )}
-      <div className="flex flex-col items-center justify-center space-y-2 rounded-b-lg border-t border-gray-200 bg-gray-50 p-3 dark:border-gray-700 dark:bg-gray-800 sm:flex-row sm:justify-between sm:space-y-0 sm:px-10">
+      <div className="flex flex-col items-center justify-center space-y-2 rounded-b-lg border-t border-slate-200 bg-slate-50 p-3 dark:border-gray-700 dark:bg-gray-800 sm:flex-row sm:justify-between sm:space-y-0 sm:px-10">
         <p className="text-sm text-gray-500 dark:text-gray-400">{helpText}</p>
         <FormButton />
       </div>
