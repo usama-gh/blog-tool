@@ -21,6 +21,7 @@ import ImportJSONButton from "../import-json-btn";
 import ImportJsonModal from "../modal/import-json";
 import { TiptapExtensionsAI } from "./extensions/index-ai";
 import { markdownToTxt } from "markdown-to-txt";
+import Form from "@/components/form";
 
 type PostWithSite = Post & { site: { subdomain: string | null } | null };
 
@@ -362,7 +363,7 @@ if (currentChunk.trim().length > 0) {
         <ImportJSONButton>
           <ImportJsonModal setSlideWithJson={setSlideWithJson} />
         </ImportJSONButton>
-        <div className="rounded-lg bg-gray-100 px-2 py-1 text-sm text-gray-400 dark:bg-gray-800 dark:text-gray-500">
+        <div className="rounded-lg bg-gray-100 px-2 text-lg py-1 text-gray-400 dark:bg-gray-800 dark:text-gray-500">
           {isPendingSaving ? "Saving..." : "Saved"}
         </div>
         <button
@@ -386,7 +387,7 @@ if (currentChunk.trim().length > 0) {
             });
           }}
           className={cn(
-            "flex h-7 w-24 items-center justify-center space-x-2 rounded-lg border text-sm transition-all focus:outline-none",
+            "flex py-1 px-5 items-center justify-center space-x-2 rounded-lg border text-lg transition-all focus:outline-none",
             isPendingPublishing || debouncedData.content === ""
               ? "cursor-not-allowed border-gray-200 bg-gray-100 text-gray-400 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300"
               : "border border-black bg-black text-white hover:bg-white hover:text-black active:bg-gray-100 dark:border-gray-700 dark:hover:border-gray-200 dark:hover:bg-black dark:hover:text-white dark:active:bg-gray-800",
@@ -451,7 +452,7 @@ if (currentChunk.trim().length > 0) {
         </button>
       </div>
 
-      <div className="grid w-full grid-cols-1 gap-x-2 gap-y-2 lg:grid-cols-2">
+      <div className="grid w-full grid-cols-1 gap-x-2 gap-y-2 lg:grid-cols-3">
         <div className="rounded-lg border  border-slate-200 dark:border-gray-700">
           <div className="relative flex flex-col space-y-4 p-2 lg:p-10">
             <div className="flex justify-between">
@@ -459,7 +460,7 @@ if (currentChunk.trim().length > 0) {
                 SEO description
               </h2>
             </div>
-            <p className="text-sm text-gray-500 dark:text-gray-400">
+            <p className="text-sm text-slate-500 dark:text-gray-400">
               A small 170 character summary of your blog
             </p>
 
@@ -487,6 +488,19 @@ if (currentChunk.trim().length > 0) {
             postTitle={debouncedData?.title}
             handleSubmit={updatePostMetadata}
           />
+        </div>
+        <div>
+        <Form
+              title="Post thumbnail"
+              description="Accepted formats: .png, .jpg, .jpeg"
+              helpText=""
+              inputAttrs={{
+                name: "image",
+                type: "file",
+                defaultValue: data?.image!,
+              }}
+              handleSubmit={updatePostMetadata}
+            />
         </div>
       </div>
     </>

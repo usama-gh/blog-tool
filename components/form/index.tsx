@@ -79,7 +79,7 @@ export default function Form({
       className="rounded-lg border  border-slate-200 dark:border-gray-700"
     >
       <div className="relative flex flex-col space-y-4 p-5 sm:p-10">
-        <h2 className="font-inter text-xl dark:text-white">{title}</h2>
+        <h2 className="font-semibold font-inter text-slate-500 text-xl dark:text-white">{title}</h2>
         <p className="text-sm text-slate-500 dark:text-gray-400">
           {description}
         </p>
@@ -157,7 +157,7 @@ function FormButton() {
   return (
     <button
       className={cn(
-        "flex h-8 w-32 items-center justify-center space-x-2 rounded-md border text-sm transition-all focus:outline-none sm:h-10",
+        "flex  py-1 px-3 items-center justify-center space-x-2 rounded-md border text-sm transition-all focus:outline-none",
         pending
           ? "cursor-not-allowed border-gray-200 bg-gray-100 text-gray-400 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300"
           : "border-black bg-black text-white hover:bg-white hover:text-black dark:border-gray-700 dark:hover:border-gray-200 dark:hover:bg-black dark:hover:text-white dark:active:bg-gray-800",

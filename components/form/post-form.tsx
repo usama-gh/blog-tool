@@ -112,7 +112,7 @@ export default function PostForm({
           <h2 className="font-semibold font-inter text-slate-500 text-xl dark:text-white">{title}</h2>
           {isLoading ? <LoadingCircle /> : <></>}
         </div>
-        <p className="text-sm text-gray-500 dark:text-gray-400">
+        <p className="text-sm text-slate-500 dark:text-gray-400">
           {description}
         </p>
         {inputAttrs.name === "image" || inputAttrs.name === "logo" ? (

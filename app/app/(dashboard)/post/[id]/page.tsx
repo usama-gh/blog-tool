@@ -41,7 +41,7 @@ export default async function PostPage({ params }: { params: { id: string } }) {
         <div className="w-full px-2 lg:px-4">
           <Editor post={data} canUseAI={canUseAI} />
         </div>
-        <div className="mb-10  xl:mb-0 px-2 lg:px-4">
+        <div className="mb-10  xl:mb-0 px-2 lg:px-4 ml-auto mt-10">
           <div className="flex flex-col space-y-6">
             {/* <PostForm
               title="Post Slug"
@@ -58,7 +58,7 @@ export default async function PostPage({ params }: { params: { id: string } }) {
               handleSubmit={updatePostMetadata}
             /> */}
 
-            <Form
+            {/* <Form
               title="Thumbnail image"
               description="The thumbnail image for your post. Accepted formats: .png, .jpg, .jpeg"
               helpText="Recommended size 1200x630."
@@ -68,7 +68,7 @@ export default async function PostPage({ params }: { params: { id: string } }) {
                 defaultValue: data?.image!,
               }}
               handleSubmit={updatePostMetadata}
-            />
+            /> */}
 
             <DeletePostForm postName={data?.title!} />
           </div>
