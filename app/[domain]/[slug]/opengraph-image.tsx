@@ -59,11 +59,11 @@ export default async function PostOG({
             />
             <p tw="text-xl font-medium text-gray-900">by {data.authorName}</p>
           </div>
-          {/* <img
+          <img
             tw="mt-4 w-5/6 rounded-2xl border border-gray-200 shadow-md"
             src={data.image}
             alt={data.title}
-          /> */}
+          />
         </div>
       </div>
     ),

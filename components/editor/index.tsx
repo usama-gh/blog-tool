@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, useTransition } from "react";
 import { useEditor, EditorContent } from "@tiptap/react";
+import nlp from 'compromise'
 import { TiptapEditorProps } from "./props";
 import { TiptapExtensions } from "./extensions";
 import { useDebounce } from "use-debounce";
@@ -38,20 +39,21 @@ export default function Editor({
   );
   const [isUserEdit, setIsUserEdit] = useState<boolean>(false);
   const firstRender = useRef<boolean>(true);
+  const MAX_CHUNK_LENGTH =
+    Number(process.env.NEXT_PUBLIC_MAX_CHUNK_LENGTH) || 300;
 
   useEffect(() => {
     // @ts-ignore
-    if(post && post.content){
+    if (post && post.content) {
       let plainText =
-      markdownToTxt(post?.content as string)
-        ?.replaceAll("\n", " ")
-        ?.substring(0, 170) || "";
+        markdownToTxt(post?.content as string)
+          ?.replaceAll("\n", " ")
+          ?.substring(0, 170) || "";
 
-    if (post.description !== plainText) {
-      setIsUserEdit(true);
+      if (post.description !== plainText) {
+        setIsUserEdit(true);
+      }
     }
-    }
-    
   }, []);
 
   useEffect(() => {
@@ -108,7 +110,7 @@ export default function Editor({
     ) {
       return;
     }
-    console.log("slides", "slides changes");
+    console.log("112: ", "slides changes");
 
     startTransitionSaving(async () => {
       await updatePost(debouncedData);
@@ -295,6 +297,55 @@ export default function Editor({
     setSlides(newSlides);
   };
 
+  // Split the content into required character
+  const splitTextIntoChunks = (text: string) => {
+
+    const MAX_CHUNK_LENGTH = 300;
+    const sentences = nlp(text).sentences().out('array');
+    const chunks = [];
+    let currentChunk = '';
+    
+    
+sentences.forEach((sentence: string | any[]) => {
+  if ((currentChunk.length + sentence.length) <= MAX_CHUNK_LENGTH) {
+    currentChunk += sentence + ' ';
+  } else {
+    currentChunk = currentChunk.trim();
+    chunks.push(currentChunk.replace(/\\/g, '\n').trim());
+    currentChunk = sentence + ' ';
+  }
+});
+
+if (currentChunk.trim().length > 0) {
+  chunks.push(currentChunk.replace(/\\/g, '\n').trim());
+}
+
+  return chunks.map((chunk, index) => ({ id: index + 1, content: chunk}));
+  };
+
+  // Split the content into slides
+  const splitContentIntoSlides = async (splitContent: any) => {
+    const slides = splitContent.slice(1).map((item: any) => item.content);
+    setSlideWithJson(slides, splitContent[0].content);
+  };
+
+  // Checking weather user has exceeded the limit of characters or not
+  useEffect(() => {
+    if(debouncedData.content){
+        console.log(debouncedData.content)
+    let splitContent = splitTextIntoChunks(debouncedData.content as string);
+
+    if (splitContent.length > 1) {
+      toast("Want to split your posts?", {
+        action: {
+          label: "Yes",
+          onClick: () => splitContentIntoSlides(splitContent),
+        },
+      });
+    }
+  }
+  }, [debouncedData.content]);
+
   return (
     <>
       <div className="my-5 mb-0 flex items-center justify-end space-x-3 lg:my-0 lg:mb-4">
@@ -350,7 +401,7 @@ export default function Editor({
         </button>
       </div>
 
-      <div className="relative mb-5 mt-5 min-h-[500px] w-full max-w-screen-xl border border-gray-200 p-4  dark:border-gray-700 sm:rounded-lg lg:mt-0 lg:p-12">
+      <div className="relative mb-5 mt-5 min-h-[320px] w-full max-w-screen-xl border border-gray-200 p-4  dark:border-gray-700 sm:rounded-lg lg:mt-0 lg:p-12">
         <div className="mb-5 flex flex-col space-y-3 border-b border-gray-200 pb-5 dark:border-gray-700">
           <input
             type="text"
@@ -367,11 +418,11 @@ export default function Editor({
       {slides.map((slideData: string, index: number) => (
         <div
           key={`slide-${index}`}
-          className="relative mb-5 mt-5 min-h-[500px] w-full max-w-screen-xl border border-gray-200 p-4  dark:border-gray-700 sm:rounded-lg lg:mt-0 lg:p-12"
+          className="relative mb-5 mt-5 min-h-[300px] w-full max-w-screen-xl border border-gray-200 p-4  dark:border-gray-700 sm:rounded-lg lg:mt-0 lg:p-12"
         >
           <XCircle
             width={24}
-            className="z-20 absolute right-4 top-4 cursor-pointer dark:text-white"
+            className="absolute right-4 top-4 z-20 cursor-pointer dark:text-white"
             onClick={() => {
               updateSlides("delete", Number(index), "");
             }}
@@ -401,7 +452,7 @@ export default function Editor({
       </div>
 
       <div className="grid w-full grid-cols-1 gap-x-2 gap-y-2 lg:grid-cols-2">
-        <div className="rounded-lg border  border-slate-200 px-4 py-2 dark:border-gray-700">
+        <div className="rounded-lg border  border-slate-200 dark:border-gray-700">
           <div className="relative flex flex-col space-y-4 p-2 lg:p-10">
             <div className="flex justify-between">
               <h2 className="font-inter text-xl font-semibold text-slate-500 dark:text-white">

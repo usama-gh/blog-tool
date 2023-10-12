@@ -7,6 +7,8 @@ import PlacholderCard from "@/components/placeholder-card";
 import OverviewSitesCTA from "@/components/overview-sites-cta";
 import { getSession } from "@/lib/auth";
 import prisma from "@/lib/prisma";
+import { getUserPlanAnalytics } from "@/lib/fetchers";
+import { redirect } from "next/navigation";
 
 export default async function Overview() {
   const session = await getSession();
@@ -17,7 +19,6 @@ export default async function Overview() {
       userId: session?.user.id,
     },
   });
-
   if (!subscription) {
     await prisma.subscription.create({
       data: {
@@ -25,6 +26,13 @@ export default async function Overview() {
         userId: session?.user.id,
       },
     });
+  }
+
+  // redirect user to dashboard of site if user has only one site
+  const result = await getUserPlanAnalytics(session?.user.id as string);
+  
+  if (result.sites == 1) {
+    redirect(`/site/${result.sitesData[0].id}`);
   }
 
   return (
@@ -38,7 +46,7 @@ export default async function Overview() {
 
       <div className="flex flex-col space-y-6">
         <div className="flex items-center justify-between">
-          <h1 className="font-inter hidden lg:block text-md font-semibold uppercase tracking-wide dark:text-white">
+          <h1 className="font-inter text-md hidden font-semibold uppercase tracking-wide dark:text-white lg:block">
             Your Blog
           </h1>
           <Suspense fallback={null}>
@@ -58,7 +66,7 @@ export default async function Overview() {
         </Suspense>
       </div>
 
-     <div className="flex flex-col space-y-6">
+      <div className="flex flex-col space-y-6">
         <h1 className="font-inter text-md font-semibold uppercase tracking-wide dark:text-white">
           Recent Posts
         </h1>
@@ -73,7 +81,7 @@ export default async function Overview() {
         >
           <Posts limit={8} />
         </Suspense>
-      </div> 
+      </div>
     </div>
   );
 }
