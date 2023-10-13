@@ -87,7 +87,7 @@ export default function Nav({ children }: { children: ReactNode }) {
           isActive: segments.includes("analytics"),
           icon: <BarChart3 width={18} />,
         },
-       
+
         {
           name: "Blog Settings",
           href: `/site/${id}/settings`,
@@ -107,14 +107,15 @@ export default function Nav({ children }: { children: ReactNode }) {
           href: `/post/${id}`,
           isActive: segments.length === 2,
           icon: <Edit3 width={18} />,
-        }
+        },
       ];
     }
     return [
       {
         name: "Overview",
-        href: "/",
-        isActive: segments.length === 0,
+        href: "/overview",
+        // isActive: segments.length === 0,
+        isActive: segments[0] === "overview",
         icon: <LayoutDashboard width={18} />,
       },
       {
@@ -155,7 +156,7 @@ export default function Nav({ children }: { children: ReactNode }) {
           segments[0] === "post" && segments.length === 2 && !showSidebar
             ? "left-5 top-5"
             : "right-5 top-7"
-        } sm:hidden text-gray-400`}
+        } text-gray-400 sm:hidden`}
         onClick={() => setShowSidebar(!showSidebar)}
       >
         <Menu width={20} />
@@ -167,13 +168,13 @@ export default function Nav({ children }: { children: ReactNode }) {
       >
         <div className="grid gap-2">
           <div className="flex items-center space-x-2 rounded-lg px-2 py-1.5">
-            
-           
             <Link
               href="/"
               className="rounded-lg p-2 hover:bg-gray-200 dark:hover:bg-gray-700"
             >
-              <h3 className="dark:text-white text-slate-800 text-sm font-semibold uppercase tracking-widest">Typedd</h3>
+              <h3 className="text-sm font-semibold uppercase tracking-widest text-slate-800 dark:text-white">
+                Typedd
+              </h3>
               {/* <Image
                 src="/logo.png"
                 width={24}
