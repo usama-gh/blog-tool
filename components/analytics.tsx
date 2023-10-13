@@ -12,7 +12,20 @@ import {
 } from "@tremor/react";
 import Image from "next/image";
 
-const shortMonths = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const shortMonths = [
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "May",
+  "Jun",
+  "Jul",
+  "Aug",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dec",
+];
 
 const pages = [
   { name: "/platforms-starter-kit", value: "1,230" },
@@ -59,14 +72,7 @@ const categories = [
   },
 ];
 
-
-export default function AnalyticsMockup({visitors}: any) {
-  const chartData = visitors.map((visitor: any)=>{
-    return {
-      date: `${shortMonths[visitor.month-1]} ${visitor.year}`, 
-      Visitors: Number(visitor.count)
-    }
-  })
+export default function AnalyticsMockup({ chartData }: any) {
   return (
     <div className="grid gap-6">
       <Card>

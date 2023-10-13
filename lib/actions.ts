@@ -31,6 +31,7 @@ export const createSite = async (formData: FormData) => {
   const name = formData.get("name") as string;
   const description = formData.get("description") as string;
   const subdomain = formData.get("subdomain") as string;
+  const logo = session.user.image as string;
 
   try {
     const response = await prisma.site.create({
@@ -38,6 +39,7 @@ export const createSite = async (formData: FormData) => {
         name,
         description,
         subdomain,
+        logo,
         user: {
           connect: {
             id: session.user.id,
@@ -498,7 +500,7 @@ export const addVisitor = async (
   }
 };
 
-export const getSiteViews = async (siteId: string) => {
+export const getSiteViews = async (siteId: string, type: string) => {
   const oneYearAgo = new Date();
   oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
   const visitors = await prisma.$queryRaw`
@@ -514,6 +516,63 @@ export const getSiteViews = async (siteId: string) => {
   GROUP BY
       month, year
   `;
+
+  return visitors;
+};
+
+export const getSiteViewsTest = async (siteId: string, type: string) => {
+  let visitors = null;
+  const oldDataLimit = new Date();
+  if (type === "month") {
+    oldDataLimit.setFullYear(oldDataLimit.getFullYear() - 1);
+
+    visitors = await prisma.$queryRaw`
+    SELECT
+      DATE_PART('month', "createdAt") AS month,
+      DATE_PART('year', "createdAt") AS year,
+      COUNT(*) AS count
+    FROM
+      "Vistor"
+    WHERE
+      "siteId" = ${siteId} AND
+      "createdAt" >= ${oldDataLimit}
+    GROUP BY
+      month, year
+    `;
+  } else if (type === "day") {
+    oldDataLimit.setDate(oldDataLimit.getDate() - 60);
+
+    visitors = await prisma.$queryRaw`
+    SELECT
+      DATE_PART('day', "createdAt") AS day,
+      DATE_PART('month', "createdAt") AS month,
+      DATE_PART('year', "createdAt") AS year,
+      COUNT(*) AS count
+    FROM
+      "Vistor"
+    WHERE
+      "siteId" = ${siteId} AND
+      "createdAt" >= ${oldDataLimit}
+    GROUP BY
+      day, month, year
+    `;
+  } else {
+    oldDataLimit.setDate(oldDataLimit.getDate() - 7 * 26);
+    visitors = await prisma.$queryRaw`
+    SELECT
+      DATE_PART('week', "createdAt") AS week,
+      DATE_PART('month', "createdAt") AS month,
+      DATE_PART('year', "createdAt") AS year,
+      COUNT(*) AS count
+    FROM
+      "Vistor"
+    WHERE
+      "siteId" = ${siteId} AND
+      "createdAt" >= ${oldDataLimit}
+    GROUP BY
+      week, month, year
+    `;
+  }
 
   return visitors;
 };
