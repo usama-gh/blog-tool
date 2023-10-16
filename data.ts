@@ -44,7 +44,7 @@ export const plans = [
     priceId: "pri_01hcvny257xq273v0504b4nkc2",
     specifications: [
       "10,000 views per month",
-      "5 website",
+      "5 websites",
       "Import Twitter threads, LinkedIn posts & Facebook posts",
       "AI assistant",
       "All upcoming features",
@@ -57,13 +57,13 @@ export const plans = [
   },
   {
     id: 4,
-    name: "Ultimate",
+    name: "Agency",
     price: 149,
     payType: "Pay Once",
     priceId: "pri_01hcvnzh8a62f0a3j1n8h2mmd9",
     specifications: [
       "45,000 views per month",
-      "25 website",
+      "25 websites",
       "Import Twitter threads, LinkedIn posts & Facebook posts",
       "AI assistant",
       "All upcoming features",
