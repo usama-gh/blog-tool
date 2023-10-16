@@ -334,22 +334,19 @@ export default function Editor({
   // Checking weather user has exceeded the limit of characters or not
   useEffect(() => {
     
-    if (debouncedData.content !== null && debouncedData.content.length <= 0 ) {
+    if(debouncedData.content){
+        console.log(debouncedData.content)
+    let splitContent = splitTextIntoChunks(debouncedData.content as string);
 
-      console.log(debouncedData.content)
-      let splitContent = splitTextIntoChunks(debouncedData.content as unknown as string);
-  
-      if (splitContent.length > 1) {
-        toast("Want to split your posts?", {
-          action: {
-            label: "Yes",
-            onClick: () => splitContentIntoSlides(splitContent),
-          },
-        });
-      }
-
-    } 
-   
+    if (splitContent.length > 1) {
+      toast("Want to split your posts?", {
+        action: {
+          label: "Yes",
+          onClick: () => splitContentIntoSlides(splitContent),
+        },
+      });
+    }
+  }
   }, [debouncedData.content]);
 
   return (
