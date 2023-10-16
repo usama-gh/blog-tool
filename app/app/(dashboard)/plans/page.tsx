@@ -25,7 +25,7 @@ export default async function Plans() {
       <div className="flex max-w-screen-xl flex-col p-8">
         <div className="flex flex-col space-y-2">
           <h1 className="font-inter text-3xl font-bold dark:text-white">Plans</h1>
-          <p className="text-lg font-semibold dark:text-white">
+          <p className="text-lg font-regular text-slate-800 dark:text-white">
             Enjoy all benefits of Typedd with just one time payment. Limited to first 100 users only
           </p>
         </div>
@@ -45,12 +45,12 @@ export default async function Plans() {
 
         {/* plan usage */}
         <div className="mb-3 mt-12 flex flex-col">
-          <h2 className="font-inter text-2xl font-normal dark:text-white">
+          <h2 className="font-inter uppercase tracking-widest text-sm text-slate-800 font-normal dark:text-white">
             Plan Usage
           </h2>
         </div>
         {/* plan usage end */}
-        <div className="flex flex-wrap gap-5">
+        <div className="grid grid-cols-1 gap-2 lg:grid-cols-2">
           <PlanUsage
             title="page views"
             planLimit={
