@@ -333,6 +333,7 @@ export default function Editor({
 
   // Checking weather user has exceeded the limit of characters or not
   useEffect(() => {
+    
     if(debouncedData.content){
         console.log(debouncedData.content)
     let splitContent = splitTextIntoChunks(debouncedData.content as string);
