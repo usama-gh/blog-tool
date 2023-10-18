@@ -28,7 +28,12 @@ export default async function SiteAnalytics({
 
   return (
     <>
-      <AnalyticsType data={data} url={url} siteViews={siteViews} />
+      {/* <AnalyticsType data={data} url={url} siteViews={siteViews} /> */}
+      <iframe
+        src={`https://typedd-analytics.vercel.app/?token=${process.env.NEXT_PUBLIC_TINYBIRD_DASHBOARD_URL}&host=https%3A%2F%2Fui.tinybird.co&project_id=${params.id}`}
+        title="description"
+        className="min-h-screen"
+      ></iframe>
     </>
   );
 }

@@ -34,6 +34,7 @@ export const createSite = async (formData: FormData) => {
   const logo = session.user.image as string;
 
   try {
+    // creating site
     const response = await prisma.site.create({
       data: {
         name,
@@ -45,6 +46,23 @@ export const createSite = async (formData: FormData) => {
             id: session.user.id,
           },
         },
+      },
+    });
+
+    // creating site visitors row
+    await prisma.vistor.create({
+      data: {
+        user: {
+          connect: {
+            id: session.user.id,
+          },
+        },
+        site: {
+          connect: {
+            id: response.id,
+          },
+        },
+        views: 0,
       },
     });
     await revalidateTag(
@@ -475,21 +493,16 @@ export const editUser = async (
   }
 };
 
-export const addVisitor = async (
-  ip: string,
-  referrer: string,
-  postId: string,
-  siteId: string,
-) => {
-  const location = await fetch(`https://freeipapi.com/api/json/${ip}`).then(
-    (response) => response.json(),
-  );
+export const addVisitor = async (siteId: string) => {
   try {
-    const response = await prisma.vistor.create({
-      data: {
+    const response = await prisma.vistor.update({
+      where: {
         siteId: siteId,
-        location: JSON.stringify(location),
-        referrer: referrer,
+      },
+      data: {
+        views: {
+          increment: 1,
+        },
       },
     });
     return response;

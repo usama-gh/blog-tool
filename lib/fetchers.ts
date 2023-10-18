@@ -71,33 +71,40 @@ export async function getUserPlanAnalytics(userId: string) {
         },
       });
       // getting user sites
-      let date = new Date();
-      let firstDay = new Date(
-        date.getFullYear(),
-        date.getMonth(),
-        1,
-      ).toLocaleDateString("sv-SE");
-      let lastDay = new Date(
-        date.getFullYear(),
-        date.getMonth() + 1,
-        0,
-      ).toLocaleDateString("sv-SE");
+      // let date = new Date();
+      // let firstDay = new Date(
+      //   date.getFullYear(),
+      //   date.getMonth(),
+      //   1,
+      // ).toLocaleDateString("sv-SE");
+      // let lastDay = new Date(
+      //   date.getFullYear(),
+      //   date.getMonth() + 1,
+      //   0,
+      // ).toLocaleDateString("sv-SE");
 
       const sites = await prisma.site.findMany({
         where: {
           userId: userId,
         },
+        // include: {
+        //   _count: {
+        //     select: {
+        //       Vistor: {
+        //         where: {
+        //           createdAt: {
+        //             gte: new Date(firstDay),
+        //             lte: new Date(lastDay),
+        //           },
+        //         },
+        //       },
+        //     },
+        //   },
+        // },
         include: {
-          _count: {
+          views: {
             select: {
-              Vistor: {
-                where: {
-                  createdAt: {
-                    gte: new Date(firstDay),
-                    lte: new Date(lastDay),
-                  },
-                },
-              },
+              views: true,
             },
           },
         },
@@ -106,12 +113,18 @@ export async function getUserPlanAnalytics(userId: string) {
       const planId = subscription?.planId ?? 1;
       const planSites = subscription?.websites ?? 1;
       const planVisitors = subscription?.visitors ?? 500;
-      let visitors = 0;
 
       // calculating total visitor of each site in current month
-      for (let index = 0; index < sites.length; index++) {
-        visitors += sites[index]._count.Vistor;
-      }
+      const visitors = sites.reduce(
+        // @ts-ignore
+        (total, site) => total + site?.views[0]?.views,
+        0,
+      );
+
+      // let visitors = 0;
+      // for (let index = 0; index < sites.length; index++) {
+      //   visitors += sites[index]?.views[0]?.views || 0;
+      // }
 
       // calculating can badge will show
       if (planId == 1 || planVisitors < visitors) {
