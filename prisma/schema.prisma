@@ -14,21 +14,21 @@ generator client {
 }
 
 model User {
-  id            String    @id @default(cuid())
+  id            String         @id @default(cuid())
   name          String?
   // if you are using Github OAuth, you can get rid of the username attribute (that is for Twitter OAuth)
   username      String?
   gh_username   String?
-  email         String?   @unique
+  email         String?        @unique
   emailVerified DateTime?
   image         String?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
   accounts      Account[]
   sessions      Session[]
   sites         Site[]
   posts         Post[]
-  Vistor        Vistor[]
+  vistors       Vistor[]
   subscription  Subscription[]
 }
 
@@ -96,18 +96,18 @@ model Post {
 }
 
 model Subscription {
-  id        String   @id @default(cuid())
-  name      String?  @default("Free")
-  planId    Int?     @default(1)
-  user      User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId    String?
-  websites  Int?     @default(1)
-  visitors  Int?     @default(500)
-  priceId String?    @default("pri_01h9mghe4gbtqc0s7e25dch51g")
-  checkoutId String?
+  id            String   @id @default(cuid())
+  name          String?  @default("Free")
+  planId        Int?     @default(1)
+  user          User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId        String?
+  websites      Int?     @default(1)
+  visitors      Int?     @default(500)
+  priceId       String?  @default("pri_01h9mghe4gbtqc0s7e25dch51g")
+  checkoutId    String?
   transactionId String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 
   @@index([planId])
   @@index([userId])
@@ -115,16 +115,15 @@ model Subscription {
 
 model Vistor {
   id        String   @id @default(cuid())
-  location  String?  @db.Text
-  referrer  String?  @db.Text
-  createdAt DateTime @default(now())
+  user      User?    @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId    String?
   site      Site?    @relation(fields: [siteId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  siteId    String?
-  post      User?    @relation(fields: [postId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  postId    String?
+  siteId    String?  @unique
+  views     Int?     @default(0)
+  createdAt DateTime @default(now())
 
+  @@index([userId])
   @@index([siteId])
-  @@index([postId])
 }
 
 model Site {
@@ -145,7 +144,7 @@ model Site {
   user          User?    @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userId        String?
   posts         Post[]
-  Vistor        Vistor[]
+  views         Vistor[]
 
   @@index([userId])
 }
