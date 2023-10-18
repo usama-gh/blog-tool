@@ -365,7 +365,7 @@ export default function Editor({
         <ImportJSONButton>
           <ImportJsonModal setSlideWithJson={setSlideWithJson} />
         </ImportJSONButton>
-        <div className="rounded-lg bg-gray-100 px-2 text-lg py-1 text-gray-400 dark:bg-gray-800 dark:text-gray-500">
+        <div className="rounded-lg bg-gray-100 px-2 text-xs lg:text-lg py-1 text-gray-400 dark:bg-gray-800 dark:text-gray-500">
           {isPendingSaving ? "Saving..." : "Saved"}
         </div>
         <button
@@ -389,7 +389,7 @@ export default function Editor({
             });
           }}
           className={cn(
-            "flex py-1 px-5 items-center justify-center space-x-2 rounded-lg border text-lg transition-all focus:outline-none",
+            "flex py-1 px-5 items-center justify-center space-x-2 rounded-lg border  text-xs lg:text-lg transition-all focus:outline-none",
             isPendingPublishing || debouncedData.content === ""
               ? "cursor-not-allowed border-gray-200 bg-gray-100 text-gray-400 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300"
               : "border border-black bg-black text-white hover:bg-white hover:text-black active:bg-gray-100 dark:border-gray-700 dark:hover:border-gray-200 dark:hover:bg-black dark:hover:text-white dark:active:bg-gray-800",
