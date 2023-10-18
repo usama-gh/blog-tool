@@ -32,7 +32,7 @@ export default async function SiteAnalytics({
       <iframe
         src={`https://typedd-analytics.vercel.app/?token=${process.env.NEXT_PUBLIC_TINYBIRD_DASHBOARD_URL}&host=https%3A%2F%2Fui.tinybird.co&project_id=${params.id}`}
         title="description"
-        className="min-h-screen"
+        className="min-h-screen h-full"
       ></iframe>
     </>
   );
