@@ -10,15 +10,15 @@ export default async function Overview() {
     <>
       <div className="flex max-w-screen-xl flex-col space-y-12 p-8">
         <div className="flex flex-col space-y-6">
-          <h1 className="font-inter text-3xl font-bold dark:text-white">
-            Overview
+          <h1 className="font-inter text-3xl font-bold dark:text-white hide_onboarding">
+            Overview 
           </h1>
           <OverviewStats />
         </div>
 
         <div className="flex flex-col space-y-6">
           <div className="flex items-center justify-between">
-            <h1 className="font-inter text-md hidden font-semibold uppercase tracking-wide dark:text-white lg:block">
+            <h1 className="font-inter text-md hidden font-semibold uppercase tracking-wide dark:text-white lg:block hide_onboarding">
               Your Blog
             </h1>
             <Suspense fallback={null}>
@@ -39,7 +39,7 @@ export default async function Overview() {
         </div>
 
         <div className="flex flex-col space-y-6">
-          <h1 className="font-inter text-md font-semibold uppercase tracking-wide dark:text-white">
+          <h1 className="font-inter text-md font-semibold uppercase tracking-wide dark:text-white hide_onboarding">
             Recent Posts
           </h1>
           <Suspense

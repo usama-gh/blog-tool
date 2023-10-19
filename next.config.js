@@ -7,6 +7,7 @@ module.exports = {
   },
   images: {
     domains: [
+      "ige9ec25vizexnyy.public.blob.vercel-storage.com",
       "public.blob.vercel-storage.com",
       "res.cloudinary.com",
       "abs.twimg.com",

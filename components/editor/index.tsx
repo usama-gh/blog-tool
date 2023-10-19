@@ -344,6 +344,7 @@ export default function Editor({
           label: "Yes",
           onClick: () => splitContentIntoSlides(splitContent),
         },
+        duration:6000,
       });
     }
   }
@@ -448,7 +449,7 @@ export default function Editor({
           onClick={(e) => {
             updateSlides("add", 0, "");
           }}
-          className="flex items-center gap-x-2 rounded-full border border-gray-400 px-4 py-1 dark:border-gray-500 dark:text-gray-400"
+          className="flex items-center gap-x-2 text-sm lg:text-md rounded-full border border-gray-400 px-4 py-1 dark:border-gray-500 dark:text-gray-400"
         >
           Add slide
         </button>

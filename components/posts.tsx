@@ -36,7 +36,7 @@ export default async function Posts({
       ))}
     </div>
   ) : (
-    <div className="flex flex-col items-center space-x-4">
+    <div className="flex flex-col items-center space-x-4 hide_onboarding">
       <h1 className="font-inter text-4xl">No Posts Yet</h1>
       <Image
         alt="missing post"
