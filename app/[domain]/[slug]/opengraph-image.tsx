@@ -48,9 +48,9 @@ export default async function PostOG({
           <h1 tw="text-6xl font-bold text-gray-900 leading-none tracking-tight">
             {data.title}
           </h1>
-          <p tw="mt-4 text-xl text-gray-600 max-w-xl text-center">
+          {/* <p tw="mt-4 text-xl text-gray-600 max-w-xl text-center">
             {truncate(data.description, 120)}
-          </p>
+          </p> */}
           <div tw="flex items-center justify-center">
             <img
               tw="w-12 h-12 rounded-full mr-4"
