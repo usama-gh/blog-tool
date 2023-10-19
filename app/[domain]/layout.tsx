@@ -6,7 +6,6 @@ import { notFound, redirect } from "next/navigation";
 import { getSiteData, getUserPlanAnalytics } from "@/lib/fetchers";
 import { fontMapper } from "@/styles/fonts";
 import { Metadata } from "next";
-import { getSession } from "@/lib/auth";
 
 export async function generateMetadata({
   params,
@@ -14,6 +13,7 @@ export async function generateMetadata({
   params: { domain: string };
 }): Promise<Metadata | null> {
   const data = await getSiteData(params.domain);
+
   if (!data) {
     return null;
   }
@@ -32,13 +32,6 @@ export async function generateMetadata({
   return {
     title,
     description,
-    openGraph: {
-      title,
-      description,
-      images: [image],
-      url: new URL(`https://${params.domain}`),
-      type: "website",
-    },
     twitter: {
       card: "summary_large_image",
       title,

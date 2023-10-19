@@ -1,12 +1,11 @@
 import { notFound } from "next/navigation";
-import { getPostData, getPostsForSite, getSiteData } from "@/lib/fetchers";
+import { getPostData, getSiteData } from "@/lib/fetchers";
 
 import BlurImage from "@/components/blur-image";
-import { placeholderBlurhash, toDateString } from "@/lib/utils";
+import { toDateString } from "@/lib/utils";
 import Carousel from "@/components/carousel/blog-carousal";
 import Link from "next/link";
-import { headers } from "next/headers";
-import { addVisitor, getSiteViews } from "@/lib/actions";
+import { addVisitor } from "@/lib/actions";
 import Script from "next/script";
 
 export async function generateMetadata({
