@@ -36,7 +36,7 @@ export default async function PostOG({
 
   return new ImageResponse(
     (
-      <div tw="flex flex-col items-center w-full h-full bg-white">
+      <div tw="flex flex-col items-center justify-center w-full min-h-screen bg-white">
         <div tw="flex flex-col items-center justify-center mt-8">
           <h1 tw="text-6xl font-bold text-gray-900 leading-none tracking-tight">
             {data.authorName}
