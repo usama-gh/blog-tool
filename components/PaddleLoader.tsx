@@ -3,6 +3,8 @@
 import Script from "next/script";
 import { plans } from "@/data";
 import axios from "axios";
+import { updateSubscription } from "@/lib/actions";
+import { toast } from "sonner";
 
 interface Props {
   subscriptionId?: string;
@@ -29,8 +31,8 @@ export function PaddleLoader({ subscriptionId, userId }: Props) {
                 (plan) => plan.priceId == res.data.items[0].price_id,
               );
 
-              await axios
-                .post(`api/subscription`, {
+              try {
+                updateSubscription({
                   userId,
                   id: subscriptionId,
                   planId: plan?.id,
@@ -40,15 +42,19 @@ export function PaddleLoader({ subscriptionId, userId }: Props) {
                   visitors: plan?.views,
                   checkoutId: res.data.id,
                   transactionId: res.data.transaction_id,
-                })
-                .then(function (response) {
-                  // @ts-ignore
-                  Paddle.Checkout.close();
-                  window.location.reload();
-                })
-                .catch(function (error) {
-                  console.log(error.message);
+                }).then((res: any) => {
+                  if (res.error) {
+                    toast.error(res.error);
+                  } else {
+                    // @ts-ignore
+                    Paddle.Checkout.close();
+                    window.location.reload();
+                  }
                 });
+              } catch (error) {
+                // @ts-ignore
+                toast.error(error.message);
+              }
             }
           },
         });

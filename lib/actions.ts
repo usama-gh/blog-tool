@@ -271,6 +271,7 @@ export const deleteSite = withSiteAuth(async (_: FormData, site: Site) => {
     await revalidateTag(
       `${site.subdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}-metadata`,
     );
+    await revalidateTag(`${site.userId}-states`);
     response.customDomain &&
       (await revalidateTag(`${site.customDomain}-metadata`));
     return response;
@@ -490,6 +491,32 @@ export const editUser = async (
         error: error.message,
       };
     }
+  }
+};
+
+export const updateSubscription = async (data: any) => {
+  try {
+    const response = await prisma.subscription.update({
+      where: {
+        id: data.id,
+      },
+      data: {
+        name: data.name,
+        planId: data.planId,
+        priceId: data.priceId,
+        websites: data.websites,
+        visitors: data.visitors,
+        checkoutId: data.checkoutId,
+        transactionId: data.transactionId,
+      },
+    });
+    await revalidateTag(`${data.userId}-states`);
+
+    return response;
+  } catch (error: any) {
+    return {
+      error: error.message,
+    };
   }
 };
 
