@@ -48,11 +48,14 @@ export default async function PostOG({
               alt={data.authorName}
             />
           </div>
-          <img
-            tw="mt-4 w-5/6 rounded-2xl border border-gray-200 shadow-md"
-            src={data.image}
-            alt={data.name}
-          />
+          {data.image !==
+            "https://public.blob.vercel-storage.com/eEZHAoPTOBSYGBE3/hxfcV5V-eInX3jbVUhjAt1suB7zB88uGd1j20b.png" && (
+            <img
+              tw="mt-4 w-5/6 rounded-2xl border border-gray-200 shadow-md"
+              src={data.image}
+              alt={data.name}
+            />
+          )}
         </div>
       </div>
     ),
