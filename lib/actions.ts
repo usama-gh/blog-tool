@@ -32,7 +32,26 @@ export const createSite = async (formData: FormData) => {
   const description = formData.get("description") as string;
   const bio = formData.get("description") as string;
   const subdomain = formData.get("subdomain") as string;
-  const logo = session.user.image as string;
+  let logo = formData.get("image") as string;
+  if (
+    logo !==
+    "https://public.blob.vercel-storage.com/eEZHAoPTOBSYGBE3/JRajRyC-PhBHEinQkupt02jqfKacBVHLWJq7Iy.png"
+  ) {
+    if (!process.env.BLOB_READ_WRITE_TOKEN) {
+      return {
+        error:
+          "Missing BLOB_READ_WRITE_TOKEN token. Note: Vercel Blob is currently in beta – ping @steventey on Twitter for access.",
+      };
+    }
+
+    const file = formData.get("logo") as File;
+    const filename = `${nanoid()}.${file.type.split("/")[1]}`;
+
+    const { url } = await put(filename, file, {
+      access: "public",
+    });
+    logo = url;
+  }
 
   try {
     // creating site

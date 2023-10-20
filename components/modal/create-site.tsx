@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils";
 import LoadingDots from "@/components/icons/loading-dots";
 import { useModal } from "./provider";
 import { useEffect, useState } from "react";
+import LogoUploader from "../form/logo-uploader";
 
 export default function CreateSiteModal() {
   const router = useRouter();
@@ -18,6 +19,9 @@ export default function CreateSiteModal() {
     subdomain: "",
     description: "",
   });
+  const [image, setImage] = useState(
+    "https://public.blob.vercel-storage.com/eEZHAoPTOBSYGBE3/JRajRyC-PhBHEinQkupt02jqfKacBVHLWJq7Iy.png",
+  );
 
   useEffect(() => {
     setData((prev) => ({
@@ -31,7 +35,8 @@ export default function CreateSiteModal() {
 
   return (
     <form
-      action={async (data: FormData) =>
+      action={async (data: FormData) => {
+        data.append("image", image);
         createSite(data).then((res: any) => {
           if (res.error) {
             toast.error(res.error);
@@ -42,8 +47,8 @@ export default function CreateSiteModal() {
             modal?.hide();
             toast.success(`Successfully created site!`);
           }
-        })
-      }
+        });
+      }}
       className="w-full rounded-md bg-white dark:bg-black md:max-w-md md:border md:border-slate-200 md:shadow dark:md:border-slate-700"
     >
       <div className="relative flex flex-col space-y-4 p-5 md:p-10">
@@ -91,7 +96,7 @@ export default function CreateSiteModal() {
               required
               className="w-full rounded-l-lg border border-slate-200 bg-slate-50 px-4 py-2 text-sm text-slate-600 placeholder:text-slate-400 focus:border-black focus:outline-none focus:ring-black dark:border-gray-600 dark:bg-black dark:text-white dark:placeholder-gray-700 dark:focus:ring-white"
             />
-            <div className="whitespace-nowrap flex items-center rounded-r-lg border border-l-0 border-slate-200 bg-slate-100 px-3 text-sm dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400">
+            <div className="flex items-center whitespace-nowrap rounded-r-lg border border-l-0 border-slate-200 bg-slate-100 px-3 text-sm dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400">
               .{process.env.NEXT_PUBLIC_ROOT_DOMAIN}
             </div>
           </div>
@@ -111,8 +116,17 @@ export default function CreateSiteModal() {
             onChange={(e) => setData({ ...data, description: e.target.value })}
             maxLength={140}
             rows={3}
-            className="w-full rounded-md border border-slate-200 bg-stslateone-50 px-4 py-2 text-sm text-slate-600 placeholder:text-slate-400 focus:border-black  focus:outline-none focus:ring-black dark:border-gray-600 dark:bg-black dark:text-white dark:placeholder-gray-700 dark:focus:ring-white"
+            className="bg-stslateone-50 w-full rounded-md border border-slate-200 px-4 py-2 text-sm text-slate-600 placeholder:text-slate-400 focus:border-black  focus:outline-none focus:ring-black dark:border-gray-600 dark:bg-black dark:text-white dark:placeholder-gray-700 dark:focus:ring-white"
           />
+        </div>
+        <div className="flex flex-col space-y-2">
+          <label
+            htmlFor="description"
+            className="text-sm font-medium text-slate-500"
+          >
+            Site Logo
+          </label>
+          <LogoUploader defaultValue={image} name="logo" setLogo={setImage} />
         </div>
       </div>
       <div className="flex items-center justify-end rounded-b-lg border-t border-slate-200 bg-slate-50 p-3 dark:border-gray-700 dark:bg-gray-800 md:px-10">
