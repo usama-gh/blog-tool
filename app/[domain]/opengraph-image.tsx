@@ -17,7 +17,7 @@ export default async function PostOG({
     : null;
 
   const response = await sql`
-  SELECT site.name, site.image, "user".name as "authorName", "user".image as "authorImage"
+  SELECT site.name, site.image,site.logo, "user".name as "authorName", "user".image as "authorImage"
   FROM "Site" AS site 
   INNER JOIN "User" AS "user" ON site."userId" = "user".id 
   WHERE site.subdomain = ${subdomain}
@@ -39,13 +39,13 @@ export default async function PostOG({
       <div tw="flex flex-col items-center justify-center w-full min-h-screen bg-white">
         <div tw="flex flex-col items-center justify-center mt-8">
           <h1 tw="text-6xl font-bold text-gray-900 leading-none tracking-tight">
-            {data.authorName}
+            {data.name}
           </h1>
           <div tw="flex items-center justify-center">
             <img
               tw="w-12 h-12 rounded-full mr-4"
-              src={data.authorImage}
-              alt={data.authorName}
+              src={data.logo}
+              alt={data.name}
             />
           </div>
           {data.image !==

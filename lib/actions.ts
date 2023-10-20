@@ -30,6 +30,7 @@ export const createSite = async (formData: FormData) => {
   }
   const name = formData.get("name") as string;
   const description = formData.get("description") as string;
+  const bio = formData.get("description") as string;
   const subdomain = formData.get("subdomain") as string;
   const logo = session.user.image as string;
 
@@ -39,6 +40,7 @@ export const createSite = async (formData: FormData) => {
       data: {
         name,
         description,
+        bio,
         subdomain,
         logo,
         user: {
