@@ -18,7 +18,7 @@ export default async function PostOG({
     : null;
 
   const response = await sql`
-  SELECT post.title, post.description, post.image, "user".name as "authorName", "user".image as "authorImage"
+  SELECT post.title, post.description, post.image, "user".name as "authorName", "user".image as "authorImage","site".name as "siteName", "site".logo as "siteLogo" 
   FROM "Post" AS post 
   INNER JOIN "Site" AS site ON post."siteId" = site.id 
   INNER JOIN "User" AS "user" ON site."userId" = "user".id 
@@ -66,7 +66,7 @@ export default async function PostOG({
             <div tw="flex items-center justify-center">
               <img
                 tw="w-8 h-8 rounded-full mr-4"
-                src={data.authorImage}
+                src={data.siteLogo}
                 alt={data.siteName}
               />
               <p tw="text-xl font-medium text-white uppercase">{data.siteName}</p>
@@ -75,12 +75,13 @@ export default async function PostOG({
             {data.title}
             </h1>
             <div tw="flex items-end justify-between w-full">
-              <div tw="mt-4 justify-center flex items-center bg-white px-6 shadow-lg py-2 text-lg font-bold text-gray-900 rounded-full shadow-xl">
+              <div tw="mt-4 justify-center flex items-center  bg-[#2dd4bf] shadow-[#2dd4bf30] px-6 shadow-lg py-2 text-lg font-bold text-gray-900 rounded-full shadow-xl">
                 Read Now
               </div>
             </div>
-            <h3 tw="text-gray-500 text-xl font-bold tracking-normal uppercase absolute bottom-12 right-14">Typedd</h3>
+        
           </div>
+          <h3 tw="text-gray-500 text-xl font-bold tracking-normal uppercase absolute bottom-12 right-14">Typedd</h3>
         </div>
 
     ),

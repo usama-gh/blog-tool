@@ -47,7 +47,7 @@ export default async function PostOG({
           </div>
 
           <h1 style={{
-  background: 'linear-gradient(19deg, #f8fafc, #7989a1)',
+  background: 'linear-gradient(to top right, #ffffff, #7989a1)',
  backgroundClip: 'text',
 color: 'transparent',
 }}
