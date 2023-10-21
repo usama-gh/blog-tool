@@ -40,13 +40,18 @@ export default async function PostOG({
         <div tw="flex gap-y-6 flex-col items-center justify-center w-full relative">
           <div tw="flex items-center justify-center">
             <img
-              tw="w-24 h-24 shad rounded-full"
+              tw="w-24 h-24 mb-2 rounded-full"
               src={data.logo}
               alt={data.siteName}
             />
           </div>
 
-          <h1 tw="text-6xl font-bold text-white leading-none tracking-tight">
+          <h1 style={{
+  background: 'linear-gradient(90deg, #f8fafc, #64748b)',
+ backgroundClip: 'text',
+color: 'transparent',
+}}
+ tw="text-6xl font-bold leading-none tracking-tight">
            {data.name}
          </h1>
         

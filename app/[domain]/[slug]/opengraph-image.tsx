@@ -59,7 +59,8 @@ export default async function PostOG({
       //     />
       //   </div>
       // ) : (
-        <div style={{background:'linear-gradient(90deg, #0f172a, #334155)'}}  tw="bg-gray-900 flex flex-col justify-center items-start relative  px-24 w-full h-screen ">
+    (
+        <div style={{background:'linear-gradient(90deg, #0f172a, #334155)'}}  tw="flex flex-col justify-center items-start relative  px-24 w-full h-screen ">
           <span tw="absolute right-5 top-5  scale-50">
           <img
             alt="Vercel"
@@ -76,7 +77,7 @@ export default async function PostOG({
             width={95}
           />
           </span>
-          <div tw="flex gap-y-6 flex-col items-start justify-center mt-10 w-full relative">
+          <div tw="flex  flex-col items-start justify-center mt-10 w-full relative">
             <div tw="flex items-center justify-center">
               <img
                 tw="w-8 h-8 rounded-full mr-4"
@@ -96,7 +97,7 @@ export default async function PostOG({
             <h3 tw="text-gray-500 text-xl font-bold tracking-normal uppercase absolute bottom-12 right-14">Typedd</h3>
           </div>
         </div>
-      // )
+    )
     ),
     {
       width: 1200,
