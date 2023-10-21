@@ -36,8 +36,9 @@ export default async function PostOG({
 
   return new ImageResponse(
   (
-        data.image !== "https://ige9ec25vizexnyy.public.blob.vercel-storage.com/WFClpH0wjj2gu1mBXIlms-MnS5yKErN4UsYCqCMs4tezoQ6G2IXS.png" ? (
+        data.image === "https://ige9ec25vizexnyy.public.blob.vercel-storage.com/WFClpH0wjj2gu1mBXIlms-MnS5yKErN4UsYCqCMs4tezoQ6G2IXS.png" ? (
           <div tw="h-full w-full">
+            <p>test</p>
             <img
               tw="w-full"
               src={data.image}
