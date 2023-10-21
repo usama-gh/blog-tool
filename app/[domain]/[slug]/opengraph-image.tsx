@@ -45,8 +45,8 @@ export default async function PostOG({
             />
           </div>
         ) : (
-          <div tw="bg-gray-900 flex flex-col justify-center items-start relative  px-24 h-full w-full min-h-screen ">
-            <span tw="absolute right-5 top-5  scale-50">
+          <div tw="bg-gray-900 flex flex-col justify-center items-start relative  px-24 w-full h-screen ">
+            <span tw="absolute right-5 top-5">
             <img
               alt="Vercel"
               height={153}
@@ -69,7 +69,7 @@ export default async function PostOG({
                   src={data.siteLogo}
                   alt={data.siteName}
                 />
-                <p tw="text-xl font-medium text-white uppercase">{data.title}</p>
+                <p tw="text-xl font-medium text-white uppercase">{data.siteName}</p>
               </div>
               <h1 tw="text-6xl font-bold text-white leading-none tracking-tight">
               {data.title}
