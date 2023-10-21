@@ -46,10 +46,9 @@ export default async function PostOG({
             />
           </div>
 
-        
-          <h1 tw="text-6xl text-center font-bold  leading-none tracking-tight mb-2">
-            {data.siteName}
-          </h1>
+          <h1 tw="text-6xl font-bold text-white leading-none tracking-tight">
+           {data.name}
+         </h1>
         </div>
 
         <h3 tw="text-slate-500  text-xl font-bold tracking-wide uppercase  absolute left-1/2 bottom-12 transform -translate-x-1/2 ">
