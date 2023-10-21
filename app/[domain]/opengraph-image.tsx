@@ -59,7 +59,7 @@ export default async function PostOG({
 
 
           <h1 tw="text-6xl text-center font-bold text-transparent bg-clip-text bg-gradient-to-tr from-slate-50 to-slate-500 leading-none tracking-tight">
-          {data.name}
+          {data.siteName}
          
           </h1>
          
