@@ -36,7 +36,7 @@ export default async function PostOG({
 
   return new ImageResponse(
     (
-      <div tw="m-2 flex flex-col bg-gradient-to-r w-full h-full from-slate-900 to-slate-700 justify-center items-center relative  bg-slate-800 px-24">
+      <div tw="flex flex-col bg-gradient-to-r w-full h-full from-slate-900 to-slate-700 justify-center items-center relative  bg-slate-800 px-24">
 
 
 
