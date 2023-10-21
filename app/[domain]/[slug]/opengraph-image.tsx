@@ -57,7 +57,7 @@ export default async function PostOG({
               src={data.siteLogo}
               alt={data.siteName}
             />
-            <p tw="text-xl font-medium text-gray-900">by {data.authorName}</p>
+            <p tw="text-xl font-medium text-gray-900">by {data.siteName}</p>
           </div>
           <img
             tw="mt-4 w-5/6 rounded-2xl border border-gray-200 shadow-md"

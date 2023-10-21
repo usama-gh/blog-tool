@@ -9,13 +9,7 @@ import { toast } from "sonner";
 import DomainStatus from "./domain-status";
 import DomainConfiguration from "./domain-configuration";
 import Uploader from "./uploader";
-import { useEditor, EditorContent } from "@tiptap/react";
-import { EditorBubbleMenu } from "../editor/bubble-menu";
-import { useEffect, useRef, useState } from "react";
-import { TiptapExtensions } from "../editor/extensions";
-import { TiptapEditorProps } from "../editor/props";
-import { TiptapExtensionsAI } from "../editor/extensions/index-ai";
-import { useCompletion } from "ai/react";
+import { useState } from "react";
 import BioEditor from "../editor/bio-editor";
 
 export default function Form({
@@ -79,7 +73,9 @@ export default function Form({
       className="rounded-lg border  border-slate-200 dark:border-gray-700"
     >
       <div className="relative flex flex-col space-y-4 p-5 sm:p-10">
-        <h2 className="font-semibold font-inter text-slate-500 text-xl dark:text-white">{title}</h2>
+        <h2 className="font-inter text-xl font-semibold text-slate-500 dark:text-white">
+          {title}
+        </h2>
         <p className="text-sm text-slate-500 dark:text-gray-400">
           {description}
         </p>
@@ -95,7 +91,7 @@ export default function Form({
               defaultValue={inputAttrs.defaultValue}
               className="w-full rounded-none border-none bg-white px-4 py-2 text-sm font-medium text-gray-700 focus:outline-none focus:ring-black dark:bg-black dark:text-gray-200 dark:focus:ring-white"
             >
-                   <option value="font-inter">Inter</option>
+              <option value="font-inter">Inter</option>
               <option value="font-cal">Cal Sans</option>
               <option value="font-lora">Lora</option>
               <option value="font-work">Work Sans</option>
@@ -157,7 +153,7 @@ function FormButton() {
   return (
     <button
       className={cn(
-        "flex  py-1 px-3 items-center justify-center space-x-2 rounded-md border text-sm transition-all focus:outline-none",
+        "flex  items-center justify-center space-x-2 rounded-md border px-3 py-1 text-sm transition-all focus:outline-none",
         pending
           ? "cursor-not-allowed border-gray-200 bg-gray-100 text-gray-400 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300"
           : "border-black bg-black text-white hover:bg-white hover:text-black dark:border-gray-700 dark:hover:border-gray-200 dark:hover:bg-black dark:hover:text-white dark:active:bg-gray-800",
