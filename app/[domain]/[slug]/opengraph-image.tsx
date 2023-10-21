@@ -83,13 +83,13 @@ export default async function PostOG({
             {data.title}
             </h1>
             <div tw="flex items-end justify-between w-full">
-              <div tw="mt-4 justify-center flex items-center  bg-[#2dd4bf] shadow-[#2dd4bf30] px-6 shadow-lg py-3 pb-2 text-lg font-bold text-gray-900 rounded-full shadow-xl">
+              <div tw="mt-4 justify-center flex items-center  bg-[#2dd4bf] shadow-[#2dd4bf30] px-6 shadow-lg py-2 text-lg font-bold text-gray-900 rounded-full shadow-xl">
                 Read Now
               </div>
             </div>
         
           </div>
-          <h3 tw="text-gray-500 text-xl font-bold tracking-normal uppercase absolute bottom-20 right-20">Typedd</h3>
+          <h3 tw="text-gray-500 text-xl font-bold tracking-normal uppercase absolute bottom-22 right-24">Typedd</h3>
         </div>
         )
 
