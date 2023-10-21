@@ -68,11 +68,11 @@ export default async function SitePostPage({
             <div className="h[25px] w-[25px] overflow-hidden rounded-full">
               {siteData?.user?.image ? (
                 <BlurImage
-                  alt={siteData.user?.name ?? "User Avatar"}
+                  alt={siteData?.logo ?? "User Avatar"}
                   width={20}
                   height={20}
                   className="h-full w-full scale-100 rounded-full object-cover blur-0 duration-700 ease-in-out"
-                  src={siteData.user?.image}
+                  src={siteData?.logo}
                 />
               ) : (
                 <div className="absolute flex h-full w-full select-none items-center justify-center bg-stone-100 text-4xl text-stone-500">
@@ -83,12 +83,12 @@ export default async function SitePostPage({
           </Link>
           <Link
             href="/"
-            className="px-3.5  text-[8px] font-semibold tracking-normal text-slate-500 hover:text-slate-600 dark:text-gray-400 dark:hover:text-gray-300 lg:text-sm"
+            className="px-1 lg:px-3.5  text-[10px] font-semibold tracking-normal text-slate-500 hover:text-slate-600 dark:text-gray-400 dark:hover:text-gray-300 lg:text-sm"
           >
-            {siteData?.user?.name}
+            {siteData?.name}
           </Link>
           <div className="h-7 w-[2px] bg-slate-200 dark:bg-gray-700"></div>
-          <p className="font-regular truncate pl-3 text-[12px] text-xs text-slate-500 dark:text-gray-400 lg:text-sm">
+          <p className="font-regular truncate pl-1 lg:pl-3 text-[12px] text-xs text-slate-500 dark:text-gray-400 lg:text-sm">
             {data.title}
           </p>
         </div>
