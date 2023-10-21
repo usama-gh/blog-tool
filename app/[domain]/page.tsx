@@ -96,7 +96,7 @@ export default async function SiteHomePage({
                       <p className="w-full leading-6 text-base text-slate-500 dark:text-gray-300 line-clamp-3">
                         {post.description}
                       </p>
-                      <button  className="mt-2 w-auto text-center text-sm px-4 py-2 rounded-full dark:bg-transparent border border-slate-500 text-slate-500 dark:border-gray-600 hover:text-slate-600 hover:border-slate-700 dark:text-gray-300">Read More</button>
+                      <button  className="mt-2 w-auto text-center text-sm px-4 py-2 rounded-full dark:bg-transparent border border-slate-500 text-slate-500 dark:border-gray-600 hover:text-slate-600 hover:border-slate-700 dark:hover:border-gray-300 dark:hover:text-gray-300 dark:text-gray-300">Read More</button>
                     </div>
                   </div>
                 </Link>
