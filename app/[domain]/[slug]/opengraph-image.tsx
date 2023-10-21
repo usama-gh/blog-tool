@@ -47,7 +47,7 @@ export default async function PostOG({
    
   
         data.image === "https://ige9ec25vizexnyy.public.blob.vercel-storage.com/WFClpH0wjj2gu1mBXIlms-MnS5yKErN4UsYCqCMs4tezoQ6G2IXS.png" ? (
-          <div tw="w-full h-full">
+          <div tw="w-full h-screen">
             <img
               tw="w-full"
               src={data.image}
@@ -55,7 +55,7 @@ export default async function PostOG({
             />
           </div>
         ) : (
-          <div style={{backgroundImage:'linear-gradient(90deg, #0f172a, #334155)'}} tw="flex flex-col justify-center items-start relative  px-24 w-full h-screen ">
+          <div style={{background:'linear-gradient(90deg, #0f172a, #334155)'}} tw="flex flex-col justify-center items-start relative  px-24 w-full h-screen ">
           <span tw="absolute right-10 top-10  scale-50">
           <img
             alt="Vercel"
