@@ -49,15 +49,14 @@ export default async function PostOG({
           <h1 tw="text-6xl font-bold text-white leading-none tracking-tight">
            {data.name}
          </h1>
-         <div tw="mt-2">
-        <h3 tw="text-slate-500  text-xl font-bold tracking-wide uppercase text-center mt-12">
+        
+       
+        </div>
+
+
+        <h3 tw="absolute bottom-4 text-slate-500  text-xl font-bold tracking-wide uppercase text-center mt-10">
           Typedd.com
         </h3>
-        </div>
-        </div>
-
-
-
         
       </div>
     ),
