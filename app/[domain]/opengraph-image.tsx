@@ -36,7 +36,7 @@ export default async function PostOG({
 
   return new ImageResponse(
     (
-      <div tw="bg-slate-800 flex flex-col w-full h-screen justify-center items-center relative px-24">
+      <div style={{background:'linear-gradient(90deg, #0f172a, #334155)'}}  tw="flex flex-col w-full h-screen justify-center items-center relative px-24">
         <div tw="flex gap-y-6 flex-col items-center justify-center w-full relative">
           <div tw="flex items-center justify-center">
             <img
