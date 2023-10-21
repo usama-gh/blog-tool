@@ -10,13 +10,13 @@ export const DotButton = ({ selected, onClick }: any) => (
 
 export const PrevButton = ({ enabled, onClick }: any) => (
     <button
-      className="h-40 lg:h-[50vh] rounded-xl bg-opacity-20 hover:bg-opacity-40 cursor-pointer bg-slate-200 dark:bg-gray-900 fixed z-[1] bottom-0  lg:top-1/2  transform  lg:-translate-y-1/2 left-0 lg:left-4 rotate-180 disabled:opacity-60 disabled:cursor-default"
+      className="h-40 lg:h-[50vh] rounded-xl bg-opacity-20 hover:bg-opacity-20 cursor-pointer bg-slate-200 dark:bg-gray-700 dark:bg-opacity-50 fixed z-[1] bottom-0  lg:top-1/2  transform  lg:-translate-y-1/2 left-0 lg:left-4 rotate-180 disabled:opacity-60 disabled:cursor-default"
       onClick={onClick}
       disabled={!enabled}
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        className="w-8 h-8 lg:w-12 lg:h-12"
+        className="w-8 h-8 lg:w-12 lg:h-12 text-slate-800 dark:text-gray-300"
         width="93"
         height="93"
         viewBox="0 0 93 93"
@@ -24,7 +24,7 @@ export const PrevButton = ({ enabled, onClick }: any) => (
       >
         <path
           d="M31.9688 17.4375L61.0312 46.5L31.9688 75.5625"
-          stroke="#64748B"
+          stroke="currentColor"
           strokeWidth="2"
           strokeLinecap="round"
           strokeLinejoin="round"
@@ -36,13 +36,13 @@ export const PrevButton = ({ enabled, onClick }: any) => (
 
 export const NextButton = ({ enabled, onClick }: any) => (
   <button
-    className="h-40 lg:h-[50vh] rounded-xl bg-opacity-20 hover:bg-opacity-40 cursor-pointer bg-slate-200 dark:bg-gray-900 fixed z-[1] bottom-0  lg:top-1/2  transform  lg:-translate-y-1/2 right-0 lg:right-4 disabled:opacity-60 disabled:cursor-default"
+    className="h-40 lg:h-[50vh] rounded-xl bg-opacity-20 hover:bg-opacity-20 cursor-pointer bg-slate-200 dark:bg-gray-700 dark:bg-opacity-50 fixed z-[1] bottom-0  lg:top-1/2  transform  lg:-translate-y-1/2 right-0 lg:right-4 disabled:opacity-60 disabled:cursor-default"
     onClick={onClick}
     disabled={!enabled}
   >
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      className="w-8 h-8 lg:w-12 lg:h-12"
+      className="w-8 h-8 lg:w-12 lg:h-12 text-slate-800 dark:text-gray-300"
       width="93"
       height="93"
       viewBox="0 0 93 93"
@@ -50,7 +50,7 @@ export const NextButton = ({ enabled, onClick }: any) => (
     >
       <path
         d="M31.9688 17.4375L61.0312 46.5L31.9688 75.5625"
-        stroke="#64748B"
+        stroke="currentColor"
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
