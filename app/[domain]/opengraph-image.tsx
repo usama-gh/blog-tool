@@ -36,67 +36,43 @@ export default async function PostOG({
 
   return new ImageResponse(
     (
-      <div tw="flex flex-col bg-gradient-to-r w-screen h-screen from-slate-900 to-slate-700 justify-center items-center relative  bg-slate-800 px-24">
-
-
-
-  
-
-       
-
-
+      <div tw="flex flex-col bg-gradient-to-r w-screen h-screen from-slate-900 to-slate-700 justify-center items-center relative  bg-slate-300 px-24">
         <div tw="flex gap-y-6 flex-col items-center justify-center w-full relative">
-
-          
-           <div tw="flex items-center justify-center">
+          <div tw="flex items-center justify-center">
             <img
               tw="w-24 h-24 shad rounded-full"
               src={data.logo}
               alt={data.siteName}
             />
-          
-            </div>
+          </div>
 
-            {data.siteName}
+          <h1 tw="text-6xl font-bold text-gray-900 leading-none tracking-tight">
+          {data.name}
+         </h1>
           <h1 tw="text-6xl text-center font-bold text-transparent bg-clip-text bg-gradient-to-tr from-slate-50 to-slate-500 leading-none tracking-tight">
-          {data.siteName}
-         
+            {data.siteName}
           </h1>
-         
-        
-
-
-
-
-          
-           
-          
-
-
-    
         </div>
-        
-          
-        
-              <h3 tw="text-slate-500  text-xl font-bold tracking-wide uppercase  absolute left-1/2 bottom-12 transform -translate-x-1/2 ">Typedd.com</h3>
-        
-       
+
+        <h3 tw="text-slate-500  text-xl font-bold tracking-wide uppercase  absolute left-1/2 bottom-12 transform -translate-x-1/2 ">
+          Typedd.com
+        </h3>
       </div>
-      // <div tw="flex flex-col items-center justify-center w-full min-h-screen bg-white">
-      //   <div tw="flex flex-col items-center justify-center mt-8">
-      //     <h1 tw="text-6xl font-bold text-gray-900 leading-none tracking-tight">
-      //       {data.name}
-      //     </h1>
-      //     <div tw="flex items-center justify-center">
-      //       <img
-      //         tw="w-12 h-12 rounded-full mr-4"
-      //         src={data.logo}
-      //         alt={data.name}
-      //       />
-      //     </div>
-      //   </div>
-      // </div>
     ),
+    // <div tw="flex flex-col items-center justify-center w-full min-h-screen bg-white">
+    //   <div tw="flex flex-col items-center justify-center mt-8">
+    //     <h1 tw="text-6xl font-bold text-gray-900 leading-none tracking-tight">
+    //       {data.name}
+    //     </h1>
+    //     <div tw="flex items-center justify-center">
+    //       <img
+    //         tw="w-12 h-12 rounded-full mr-4"
+    //         src={data.logo}
+    //         alt={data.name}
+    //       />
+    //     </div>
+    //   </div>
+    // </div>
     {
       width: 1200,
       height: 600,
