@@ -77,19 +77,19 @@ export default async function PostOG({
                 src={data.siteLogo}
                 alt={data.siteName}
               />
-              <p tw="text-xl font-medium text-white uppercase pt-1">{data.siteName}</p>
+              <p tw="text-xl font-medium text-gray-200 uppercase pt-1">{data.siteName}</p>
             </div>
             <h1 tw="text-6xl font-bold text-white leading-none tracking-tight">
             {data.title}
             </h1>
             <div tw="flex items-end justify-between w-full">
-              <div tw="mt-4 justify-center flex items-center  bg-[#2dd4bf] shadow-[#2dd4bf30] px-6 shadow-lg py-2 text-lg font-bold text-gray-900 rounded-full shadow-xl">
+              <div tw="mt-4 justify-center flex items-center  bg-[#2dd4bf] shadow-[#2dd4bf30] px-6 shadow-lg pb-2 pt-3 text-lg font-bold text-gray-900 rounded-full shadow-xl">
                 Read Now
               </div>
             </div>
         
           </div>
-          <h3 tw="text-gray-500 text-xl font-bold tracking-normal uppercase absolute bottom-22 right-24">Typedd</h3>
+          <h3 tw="text-gray-500 text-xl font-bold tracking-normal uppercase absolute bottom-18 right-20">Typedd</h3>
         </div>
         )
 

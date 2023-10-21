@@ -1,4 +1,5 @@
 import prisma from "@/lib/prisma";
+import { revalidateTag } from "next/cache";
 import { NextResponse } from "next/server";
 
 // Nextjs route segment config
@@ -11,6 +12,12 @@ export async function GET() {
       data: {
         views: 0,
       },
+    });
+
+    const visitors = await prisma.vistor.findMany();
+
+    visitors.forEach((visit) => {
+      revalidateTag(`${visit.userId}-states`);
     });
 
     return new NextResponse("Views Reset", { status: 200 });
