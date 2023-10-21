@@ -72,7 +72,7 @@ export default async function SitePostPage({
                   width={20}
                   height={20}
                   className="h-full w-full scale-100 rounded-full object-cover blur-0 duration-700 ease-in-out"
-                  src={siteData?.logo}
+                  src={siteData?.logo ?? "https://public.blob.vercel-storage.com/eEZHAoPTOBSYGBE3/JRajRyC-PhBHEinQkupt02jqfKacBVHLWJq7Iy.png"}
                 />
               ) : (
                 <div className="absolute flex h-full w-full select-none items-center justify-center bg-stone-100 text-4xl text-stone-500">
