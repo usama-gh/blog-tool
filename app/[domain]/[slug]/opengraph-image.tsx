@@ -38,7 +38,6 @@ export default async function PostOG({
   (
        data.image === "https://ige9ec25vizexnyy.public.blob.vercel-storage.com/WFClpH0wjj2gu1mBXIlms-MnS5yKErN4UsYCqCMs4tezoQ6G2IXS.png" ? (
           <div tw="h-full w-full">
-            <p>test</p>
             <img
               tw="w-full"
               src={data.image}
@@ -46,7 +45,7 @@ export default async function PostOG({
             />
           </div>
         ) : (
-          <div tw="bg-slate-900 flex flex-col justify-center items-start relative  px-24 h-full w-full min-h-screen ">
+          <div tw="bg-gray-900 flex flex-col justify-center items-start relative  px-24 h-full w-full min-h-screen ">
             <span tw="absolute right-5 top-5  scale-50">
             <img
               alt="Vercel"
@@ -70,17 +69,17 @@ export default async function PostOG({
                   src={data.siteLogo}
                   alt={data.siteName}
                 />
-                <p tw="text-xl font-medium text-slate-400 uppercase">{data.siteName}</p>
+                <p tw="text-xl font-medium text-white uppercase">{data.title}</p>
               </div>
-              <h1 tw="text-6xl font-bold text-slate-100 leading-none tracking-tight">
+              <h1 tw="text-6xl font-bold text-white leading-none tracking-tight">
               {data.title}
               </h1>
               <div tw="flex items-end justify-between w-full">
-                <div tw="mt-4 justify-center flex items-center bg-[#2dd4bf] shadow-[#2dd4bf30] px-6 shadow- py-2 text-lg font-bold text-slate-900 rounded-full shadow-xl">
+                <div tw="mt-4 justify-center flex items-center bg-white px-6 shadow-lg py-2 text-lg font-bold text-gray-900 rounded-full shadow-xl">
                   Read Now
                 </div>
               </div>
-              <h3 tw="text-slate-500 text-xl font-bold tracking-normal uppercase absolute bottom-12 right-14">Typedd</h3>
+              <h3 tw="text-white text-xl font-bold tracking-normal uppercase absolute bottom-12 right-14">Typedd</h3>
             </div>
           </div>
         )
