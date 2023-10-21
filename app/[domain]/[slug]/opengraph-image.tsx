@@ -44,21 +44,21 @@ export default async function PostOG({
   return new ImageResponse(
     (
       
-      data.image === "https://ige9ec25vizexnyy.public.blob.vercel-storage.com/WFClpH0wjj2gu1mBXIlms-MnS5yKErN4UsYCqCMs4tezoQ6G2IXS.png" ? (
-        <div tw="w-full h-screen">
-           <img
-            alt="Vercel"
-            height={52}
-            src="data:image/svg+xml, %3Csvg width='105' height='62' viewBox='0 0 105 62' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M44.8378 58.5613C49.1057 62.7047 55.8943 62.7047 60.1622 58.5613L101.023 18.8924C108.111 12.0113 103.239 0 93.3607 0H11.6393C1.76064 0 -3.1108 12.0113 3.97706 18.8924L44.8378 58.5613Z' fill='%2375FBF0' /%3E%3C/svg%3E"
-            width={95}
-          />
-          <img
-            tw="w-full"
-            src={data.image}
-            alt={data.title}
-          />
-        </div>
-      ) : (
+      // data.image === "https://ige9ec25vizexnyy.public.blob.vercel-storage.com/WFClpH0wjj2gu1mBXIlms-MnS5yKErN4UsYCqCMs4tezoQ6G2IXS.png" ? (
+      //   <div tw="w-full h-screen">
+      //      <img
+      //       alt="Vercel"
+      //       height={52}
+      //       src="data:image/svg+xml, %3Csvg width='105' height='62' viewBox='0 0 105 62' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M44.8378 58.5613C49.1057 62.7047 55.8943 62.7047 60.1622 58.5613L101.023 18.8924C108.111 12.0113 103.239 0 93.3607 0H11.6393C1.76064 0 -3.1108 12.0113 3.97706 18.8924L44.8378 58.5613Z' fill='%2375FBF0' /%3E%3C/svg%3E"
+      //       width={95}
+      //     />
+      //     <img
+      //       tw="w-full"
+      //       src={data.image}
+      //       alt={data.title}
+      //     />
+      //   </div>
+      // ) : (
         <div style={{background:'linear-gradient(90deg, #0f172a, #334155)'}}  tw="bg-gray-900 flex flex-col justify-center items-start relative  px-24 w-full h-screen ">
           <span tw="absolute right-5 top-5  scale-50">
           <img
@@ -96,7 +96,7 @@ export default async function PostOG({
             <h3 tw="text-gray-500 text-xl font-bold tracking-normal uppercase absolute bottom-12 right-14">Typedd</h3>
           </div>
         </div>
-      )
+      // )
     ),
     {
       width: 1200,
