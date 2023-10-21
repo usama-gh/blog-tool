@@ -77,7 +77,7 @@ export default async function PostOG({
                 src={data.siteLogo}
                 alt={data.siteName}
               />
-              <p tw="text-xl font-medium text-white uppercase">{data.siteName}</p>
+              <p tw="text-xl font-medium text-white uppercase pt-1">{data.siteName}</p>
             </div>
             <h1 tw="text-6xl font-bold text-white leading-none tracking-tight">
             {data.title}
