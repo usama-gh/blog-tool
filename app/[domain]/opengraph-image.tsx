@@ -36,7 +36,7 @@ export default async function PostOG({
 
   return new ImageResponse(
     (
-      <div tw="flex flex-col bg-gradient-to-r w-screen h-screen from-slate-900 to-slate-700 justify-center items-center relative  bg-slate-300 px-24">
+      <div style={{background:'linear-gradient(90deg, #0f172a, #334155)'}}  tw="flex flex-col w-screen h-screen justify-center items-center relative px-24">
         <div tw="flex gap-y-6 flex-col items-center justify-center w-full relative">
           <div tw="flex items-center justify-center">
             <img
@@ -46,10 +46,8 @@ export default async function PostOG({
             />
           </div>
 
-          <h1 tw="text-6xl font-bold text-gray-900 leading-none tracking-tight">
-          {data.name}
-         </h1>
-          <h1 tw="text-6xl text-center font-bold text-transparent bg-clip-text bg-gradient-to-tr from-slate-50 to-slate-500 leading-none tracking-tight">
+        
+          <h1 style={{background:'background: -webkit-linear-gradient(#f8fafc, #64748b);-webkit-background-clip: text;-webkit-text-fill-color: transparent;'}}  tw="text-6xl text-center font-bold  leading-none tracking-tight mb-2">
             {data.siteName}
           </h1>
         </div>
