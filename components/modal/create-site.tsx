@@ -49,7 +49,7 @@ export default function CreateSiteModal() {
           }
         });
       }}
-      className="w-full rounded-md bg-white dark:bg-black md:max-w-md md:border md:border-slate-200 md:shadow dark:md:border-slate-700"
+      className="w-full rounded-md bg-white dark:bg-black md:max-w-md md:border md:border-gray-200 md:shadow dark:md:border-gray-700"
     >
       <div className="relative flex flex-col space-y-4 p-5 md:p-10">
         <h2 className="font-inter text-2xl dark:text-white">
@@ -59,7 +59,7 @@ export default function CreateSiteModal() {
         <div className="flex flex-col space-y-2">
           <label
             htmlFor="name"
-            className="text-sm font-medium text-stone-500 dark:text-gray-400"
+            className="text-sm font-medium text-slate-500 dark:text-gray-400"
           >
             Blog Name
           </label>
@@ -72,14 +72,14 @@ export default function CreateSiteModal() {
             onChange={(e) => setData({ ...data, name: e.target.value })}
             maxLength={32}
             required
-            className="w-full rounded-md border border-slate-200 bg-slate-50 px-4 py-2 text-sm text-slate-600 placeholder:text-slate-400 focus:border-black focus:outline-none focus:ring-black dark:border-stone-600 dark:bg-black dark:text-white dark:placeholder-stone-700 dark:focus:ring-white"
+            className="w-full rounded-md border border-slate-200 bg-slate-50 px-4 py-2 text-sm text-slate-600 placeholder:text-slate-400 focus:border-black focus:outline-none focus:ring-black dark:border-gray-600 dark:bg-black dark:text-white dark:placeholder-gray-700 dark:focus:ring-white"
           />
         </div>
 
         <div className="flex flex-col space-y-2">
           <label
             htmlFor="subdomain"
-            className="text-sm font-medium text-stone-500 dark:text-gray-400"
+            className="text-sm font-medium text-gray-500 dark:text-gray-400"
           >
             Subdomain
           </label>
@@ -107,7 +107,7 @@ export default function CreateSiteModal() {
             htmlFor="description"
             className="text-sm font-medium text-slate-500"
           >
-            SEO Description
+            Your Bio
           </label>
           <textarea
             name="description"
@@ -143,7 +143,7 @@ function CreateSiteFormButton() {
         "flex h-10 w-full items-center justify-center space-x-2 rounded-md border text-sm transition-all focus:outline-none",
         pending
           ? "cursor-not-allowed border-slate-200 bg-slate-100 text-slate-400 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300"
-          : "border-black bg-black text-white hover:bg-white hover:text-black dark:border-gray-700 dark:hover:border-gray-200 dark:hover:bg-black dark:hover:text-white dark:active:bg-gray-800",
+          : "border-black bg-black text-white hover:bg-white hover:text-black dark:border-gray-700 dark:hover:border-gray-600 dark:hover:bg-black dark:hover:text-white dark:active:bg-gray-800",
       )}
       disabled={pending}
     >

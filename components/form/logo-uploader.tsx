@@ -45,8 +45,14 @@ export default function LogoUploader({
     <div>
       <label
         htmlFor={`${name}-upload`}
-        className="group relative mt-2 flex h-12 w-12 cursor-pointer flex-col items-center justify-center rounded-full border border-gray-300 bg-white shadow-sm transition-all hover:bg-gray-50"
+        className="group relative mt-2 flex h-12 w-12 cursor-pointer flex-col items-center justify-center rounded-full border border-gray-300 dark:border-gray-500 bg-white shadow-sm transition-all hover:bg-gray-50"
       >
+        <div className="bg-white p-1 flex items-center justify-center shadow-lg border border-slate-200 dark:border-gray-400 dark:bg-gray-900 text-slate-900 dark:text-gray-200 rounded-full absolute -top-2 -right-2">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-3 h-3">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125" />
+</svg>
+
+        </div>
         <div
           className="absolute z-[5] h-full w-full rounded-md"
           onDragOver={(e) => {

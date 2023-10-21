@@ -45,7 +45,7 @@ export default async function Sites({ limit }: { limit?: number }) {
   src="/wave.webp" // Reference to the image in the public folder
 />
 
-      <h1 className="font-inter font-bold text-4xl">Welcome to Typedd</h1>
+      <h1 className="font-inter font-bold text-4xl text-slate-900 dark:text-white">Welcome to Typedd</h1>
       <p className="text-lg text-slate-500 dark:text-gray-200 mt-2">
         You do not have any blog yet. So let's create one and get started.
       </p>
