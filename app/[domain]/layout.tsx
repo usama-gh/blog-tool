@@ -36,8 +36,7 @@ export async function generateMetadata({
       card: "summary_large_image",
       title,
       description,
-      images: [image],
-      creator: "@vercel",
+      creator: "@"+title,
     },
     icons: [logo],
     alternates: {
