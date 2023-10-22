@@ -32,6 +32,12 @@ export async function generateMetadata({
   return {
     title,
     description,
+    openGraph: {
+      title,
+      description,
+        type:"website",
+        url:new URL(`https://${params.domain}`)
+    },
     twitter: {
       card: "summary_large_image",
       title,

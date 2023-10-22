@@ -26,6 +26,8 @@ export async function generateMetadata({
     openGraph: {
       title,
       description,
+        type:"article",
+        url:new URL(`https://${params.domain}`)
     },
     twitter: {
       card: "summary_large_image",
