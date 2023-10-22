@@ -20,7 +20,11 @@ export default async function PostOG({
   SELECT site.name, site.image,site.logo, "user".name as "authorName", "user".image as "authorImage"
   FROM "Site" AS site 
   INNER JOIN "User" AS "user" ON site."userId" = "user".id 
-  WHERE site.subdomain = ${subdomain}
+  WHERE 
+  (
+      site.subdomain = ${subdomain}
+      OR site."customDomain" = ${domain}
+  )
   LIMIT 1;
 `;
 
