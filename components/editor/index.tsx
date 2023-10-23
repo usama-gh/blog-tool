@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState, useTransition } from "react";
 import { useEditor, EditorContent } from "@tiptap/react";
-import nlp from 'compromise'
+import nlp from "compromise";
 import { TiptapEditorProps } from "./props";
 import { TiptapExtensions } from "./extensions";
 import { useDebounce } from "use-debounce";
@@ -300,29 +300,28 @@ export default function Editor({
 
   // Split the content into required character
   const splitTextIntoChunks = (text: string) => {
-
     const MAX_CHUNK_LENGTH = 300;
-    const sentences = nlp(text).sentences().out('array');
+    const sentences = nlp(text).sentences().out("array");
     const chunks = [];
-    let currentChunk = '';
+    let currentChunk = "";
 
     sentences.forEach((sentence: string) => {
-        const sentenceWithSpace = sentence + ' ';
-        if ((currentChunk.length + sentenceWithSpace.length) <= MAX_CHUNK_LENGTH) {
-            currentChunk += sentenceWithSpace;
-        } else {
-            if (currentChunk.trim() !== '') {
-                chunks.push(currentChunk.trim().replace(/\\/g, '\n'));
-            }
-            currentChunk = sentenceWithSpace;
+      const sentenceWithSpace = sentence + " ";
+      if (currentChunk.length + sentenceWithSpace.length <= MAX_CHUNK_LENGTH) {
+        currentChunk += sentenceWithSpace;
+      } else {
+        if (currentChunk.trim() !== "") {
+          chunks.push(currentChunk.trim().replace(/\\/g, "\n"));
         }
+        currentChunk = sentenceWithSpace;
+      }
     });
 
-    if (currentChunk.trim() !== '') {
-        chunks.push(currentChunk.trim().replace(/\\/g, '\n'));
+    if (currentChunk.trim() !== "") {
+      chunks.push(currentChunk.trim().replace(/\\/g, "\n"));
     }
 
-    return chunks.map((chunk, index) => ({ id: index + 1, content: chunk}));
+    return chunks.map((chunk, index) => ({ id: index + 1, content: chunk }));
   };
 
   // Split the content into slides
@@ -333,21 +332,20 @@ export default function Editor({
 
   // Checking weather user has exceeded the limit of characters or not
   useEffect(() => {
-    
-    if(debouncedData.content){
-        console.log(debouncedData.content)
-    let splitContent = splitTextIntoChunks(debouncedData.content as string);
+    if (debouncedData.content) {
+      console.log(debouncedData.content);
+      let splitContent = splitTextIntoChunks(debouncedData.content as string);
 
-    if (splitContent.length > 1) {
-      toast("Want to split your posts?", {
-        action: {
-          label: "Yes",
-          onClick: () => splitContentIntoSlides(splitContent),
-        },
-        duration:6000,
-      });
+      if (splitContent.length > 1) {
+        toast("Want to split your posts?", {
+          action: {
+            label: "Yes",
+            onClick: () => splitContentIntoSlides(splitContent),
+          },
+          duration: 6000,
+        });
+      }
     }
-  }
   }, [debouncedData.content]);
 
   return (
@@ -366,7 +364,7 @@ export default function Editor({
         <ImportJSONButton>
           <ImportJsonModal setSlideWithJson={setSlideWithJson} />
         </ImportJSONButton>
-        <div className="rounded-lg bg-gray-100 px-2 text-xs lg:text-lg py-1 text-gray-400 dark:bg-gray-800 dark:text-gray-500">
+        <div className="rounded-lg bg-gray-100 px-2 py-1 text-xs text-gray-400 dark:bg-gray-800 dark:text-gray-500 lg:text-lg">
           {isPendingSaving ? "Saving..." : "Saved"}
         </div>
         <button
@@ -390,7 +388,7 @@ export default function Editor({
             });
           }}
           className={cn(
-            "flex py-1 px-5 items-center justify-center space-x-2 rounded-lg border  text-xs lg:text-lg transition-all focus:outline-none",
+            "flex items-center justify-center space-x-2 rounded-lg border px-5 py-1  text-xs transition-all focus:outline-none lg:text-lg",
             isPendingPublishing || debouncedData.content === ""
               ? "cursor-not-allowed border-gray-200 bg-gray-100 text-gray-400 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300"
               : "border border-black bg-black text-white hover:bg-white hover:text-black active:bg-gray-100 dark:border-gray-700 dark:hover:border-gray-200 dark:hover:bg-black dark:hover:text-white dark:active:bg-gray-800",
@@ -449,7 +447,7 @@ export default function Editor({
           onClick={(e) => {
             updateSlides("add", 0, "");
           }}
-          className="flex items-center gap-x-2 text-sm lg:text-md rounded-full border border-gray-400 px-4 py-1 dark:border-gray-500 dark:text-gray-400"
+          className="lg:text-md flex items-center gap-x-2 rounded-full border border-gray-400 px-4 py-1 text-sm dark:border-gray-500 dark:text-gray-400"
         >
           Add slide
         </button>
@@ -493,17 +491,17 @@ export default function Editor({
           />
         </div>
         <div>
-        <Form
-              title="Post thumbnail"
-              description="Accepted formats: .png, .jpg, .jpeg"
-              helpText=""
-              inputAttrs={{
-                name: "image",
-                type: "file",
-                defaultValue: data?.image!,
-              }}
-              handleSubmit={updatePostMetadata}
-            />
+          <Form
+            title="Post thumbnail"
+            description="Accepted formats: .png, .jpg, .jpeg"
+            helpText=""
+            inputAttrs={{
+              name: "image",
+              type: "file",
+              defaultValue: data?.image!,
+            }}
+            handleSubmit={updatePostMetadata}
+          />
         </div>
       </div>
     </>
