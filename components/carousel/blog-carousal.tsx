@@ -39,7 +39,8 @@ const Carousel = ({ data, siteData }: any) => {
     setSelectedIndex(embla.selectedScrollSnap());
     setPrevBtnEnabled(embla.canScrollPrev());
     setNextBtnEnabled(embla.canScrollNext());
-    console.log("hellooooooooo");
+
+    document.body.scrollTop = document.documentElement.scrollTop = 0;
   }, [embla, setSelectedIndex]);
 
   useEffect(() => {
@@ -56,32 +57,6 @@ const Carousel = ({ data, siteData }: any) => {
       document.body.style.overflow = "visible";
     };
   }, [embla, setScrollSnaps, onSelect]);
-// Define the touch event handlers
-let startX = 0;
-let startY = 0;
-
-const handleTouchStart = (e: TouchEvent) => {
-  startX = e.touches[0].clientX;
-  startY = e.touches[0].clientY;
-};
-
-const handleTouchMove = (e: TouchEvent) => {
-  const deltaX = e.touches[0].clientX - startX;
-  const deltaY = e.touches[0].clientY - startY;
-
-  // Adjust these values as needed based on the sensitivity of the swipe
-  const swipeThreshold = 50;
-
-  if (Math.abs(deltaX) > swipeThreshold) {
-    if (deltaX > 0) {
-      scrollPrev();
-    } else {
-      scrollNext();
-    }
-  }
-
-  // You can also check deltaY for vertical swipes if needed
-};
 
   // listen to Left and Right arrow and override the default behavior
   useEffect(() => {
@@ -93,16 +68,6 @@ const handleTouchMove = (e: TouchEvent) => {
       }
     };
   });
-
-  useEffect(() => {
-    window.addEventListener('touchstart', handleTouchStart);
-    window.addEventListener('touchmove', handleTouchMove);
-
-    return () => {
-      window.removeEventListener('touchstart', handleTouchStart);
-      window.removeEventListener('touchmove', handleTouchMove);
-    };
-  }, []);
 
   return (
     <>
@@ -167,12 +132,12 @@ const handleTouchMove = (e: TouchEvent) => {
                           </p>
 
                    
-                          <div className="h-50 w-50 overflow-hidden rounded-full">
+                          <div className="h-[70px] w-[70px] overflow-hidden rounded-full border-4 border-slate-300 dark:border-gray-700">
               {siteData?.user?.image ? (
                 <BlurImage
                   alt={siteData?.logo ?? "User Avatar"}
-                  width={50}
-                  height={50}
+                  width={70}
+                  height={70}
                   className="h-full w-full scale-100 rounded-full object-cover blur-0 duration-700 ease-in-out"
                   src={siteData?.logo ?? "https://public.blob.vercel-storage.com/eEZHAoPTOBSYGBE3/JRajRyC-PhBHEinQkupt02jqfKacBVHLWJq7Iy.png"}
                 />
@@ -182,10 +147,10 @@ const handleTouchMove = (e: TouchEvent) => {
                 </div>
               )}
             </div> 
-            <div className="text-lg text-slate-500 dark:text-gray-400 font-semibold mt-2">
+            <div className="text-lg drop-shadow-md	 text-transparent bg-clip-text bg-gradient-to-br from-slate-600 to-slate-300 dark:from-gray-200 dark:to-gray-500  text-slate-500 font-bold mt-2">
             {siteData?.name}
             </div>
-            <div className="text-sm text-slate-400 dark:text-gray-400 ">
+            <div className="text-sm drop-shadow-md text-center	 text-transparent bg-clip-text bg-gradient-to-br from-slate-600 to-slate-300 dark:from-gray-200 dark:to-gray-500 ">
             {siteData?.bio}
             </div>
 

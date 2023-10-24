@@ -86,9 +86,9 @@ export default async function SitePostPage({
           </Link>
           <Link
             href="/"
-            className="text-xs font-semibold tracking-normal text-slate-500 hover:text-slate-600 dark:text-gray-400 dark:hover:text-gray-300 lg:text-sm"
           >
-            {siteData?.name}
+            <p  className="text-xs overflow-hidden text-ellipsis  max-w-sm font-semibold tracking-normal text-slate-500 hover:text-slate-600 dark:text-gray-400 dark:hover:text-gray-300 lg:text-sm"> {siteData?.name}</p>
+           
           </Link>
           </div>
           <div className="h-7 w-[1px] lg:w-[2px] bg-slate-200 dark:bg-gray-700"></div>
@@ -96,7 +96,7 @@ export default async function SitePostPage({
             {data.title}
           </p>
         </div>
-        <p className="font-regular overflow-hidden text-ellipsis text-xs text-slate-500 dark:text-gray-400 lg:text-sm">
+        <p className="font-regular hidden md:block lg:block overflow-hidden text-ellipsis text-xs text-slate-500 dark:text-gray-400 lg:text-sm">
           {toDateString(data.createdAt, "short")}
         </p>
       </div>
