@@ -10,7 +10,7 @@ export const DotButton = ({ selected, onClick }: any) => (
 
 export const PrevButton = ({ enabled, onClick }: any) => (
     <button
-      className="h-40 lg:h-[50vh] rounded-r-xl bg-opacity-20 hover:bg-opacity-20 cursor-pointer bg-slate-300 dark:bg-gray-700 dark:bg-opacity-50 fixed z-[1] bottom-0  lg:top-1/2  transform  lg:-translate-y-1/2 left-0 lg:left-0 rotate-180 disabled:opacity-60 disabled:cursor-default"
+      className="h-40 lg:h-[50vh] rounded-l-xl bg-opacity-20 hover:bg-opacity-20 cursor-pointer bg-slate-300 dark:bg-gray-700 dark:bg-opacity-50 fixed z-[1] bottom-0  lg:top-1/2  transform  lg:-translate-y-1/2 left-0 lg:left-0 rotate-180 disabled:opacity-60 disabled:cursor-default"
       onClick={onClick}
       disabled={!enabled}
     >
