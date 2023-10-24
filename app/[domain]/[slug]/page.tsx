@@ -64,10 +64,11 @@ export default async function SitePostPage({
         data-project={`${data?.siteId}`}
         data-token={`${process.env.NEXT_PUBLIC_TINYBIRD_TRACKER_TOKEN}`}
       />
-      <div className="animate-fade	mx-auto flex w-screen items-center justify-between px-2 py-3 lg:px-10">
-        <div className="flex items-center">
+      <div className="animate-fade	mx-auto flex w-screen items-center justify-between px-2 py-3 lg:px-4">
+        <div className="flex items-center gap-x-2">
+          <div className="flex items-center gap-x-2">
           <Link href="/">
-            <div className="h[25px] w-[25px] overflow-hidden rounded-full">
+            <div className="h-[17px] w-[17px] lg:h-[25px] lg:w-[25px] overflow-hidden rounded-full">
               {siteData?.user?.image ? (
                 <BlurImage
                   alt={siteData?.logo ?? "User Avatar"}
@@ -85,16 +86,17 @@ export default async function SitePostPage({
           </Link>
           <Link
             href="/"
-            className="px-1 lg:px-3.5  text-[10px] font-semibold tracking-normal text-slate-500 hover:text-slate-600 dark:text-gray-400 dark:hover:text-gray-300 lg:text-sm"
+            className="text-xs font-semibold tracking-normal text-slate-500 hover:text-slate-600 dark:text-gray-400 dark:hover:text-gray-300 lg:text-sm"
           >
             {siteData?.name}
           </Link>
-          <div className="h-7 w-[2px] bg-slate-200 dark:bg-gray-700"></div>
-          <p className="font-regular truncate pl-1 lg:pl-3 text-[12px] text-xs text-slate-500 dark:text-gray-400 lg:text-sm">
+          </div>
+          <div className="h-7 w-[1px] lg:w-[2px] bg-slate-200 dark:bg-gray-700"></div>
+          <p className="font-regular truncate text-xs  text-slate-500 dark:text-gray-400 lg:text-sm">
             {data.title}
           </p>
         </div>
-        <p className="font-regular overflow-hidden text-ellipsis text-[10px] text-slate-500 dark:text-gray-400 lg:text-sm">
+        <p className="font-regular overflow-hidden text-ellipsis text-xs text-slate-500 dark:text-gray-400 lg:text-sm">
           {toDateString(data.createdAt, "short")}
         </p>
       </div>

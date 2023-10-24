@@ -18,7 +18,7 @@ export default function ReportAbuse({ isShowBadge }: Props) {
   const url = slug ? `https://${domain}/${slug}` : `https://${domain}`;
 
   return (
-    <div className="fixed bottom-5 right-5">
+    <div className="fixed bottom-5 right-10 lg:right-5">
       {/* <button
         className="rounded-full bg-black p-4 text-white shadow-lg transition-all hover:-translate-y-1 hover:shadow-2xl active:translate-y-0 active:shadow-sm"
         onClick={() => setOpen(!open)}
