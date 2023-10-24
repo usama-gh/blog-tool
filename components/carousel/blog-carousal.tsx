@@ -56,17 +56,16 @@ const Carousel = ({ data, siteData }: any) => {
       document.body.style.overflow = "visible";
     };
   }, [embla, setScrollSnaps, onSelect]);
-
-  // Define the touch event handlers
+// Define the touch event handlers
 let startX = 0;
 let startY = 0;
 
-const handleTouchStart = (e) => {
+const handleTouchStart = (e: TouchEvent) => {
   startX = e.touches[0].clientX;
   startY = e.touches[0].clientY;
 };
 
-const handleTouchMove = (e) => {
+const handleTouchMove = (e: TouchEvent) => {
   const deltaX = e.touches[0].clientX - startX;
   const deltaY = e.touches[0].clientY - startY;
 
