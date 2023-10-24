@@ -55,7 +55,10 @@ export default function PostForm({
   // const [slug, setSlug] = useState(makeSlug(postTitle));
   const [slug, setSlug] = useState(inputAttrs.defaultValue);
 
-  const [debouncedData] = useDebounce(slug, 1000);
+
+  const [debouncedSlug] = useDebounce(slug, 1000);
+
+  
   const formRef = useRef<HTMLFormElement>(null);
   const firstRender = useRef<boolean>(true);
   const firstRenderDebounce = useRef<boolean>(true);
@@ -70,17 +73,42 @@ export default function PostForm({
   }, [postTitle]);
 
   useEffect(() => {
-    if (firstRenderDebounce.current) {
+    if (debouncedSlug === makeSlug(postTitle)) {
+      return;
+    }
+      if (firstRenderDebounce.current) {
       firstRenderDebounce.current = false;
       return;
     }
-
-    if (debouncedData === makeSlug(postTitle)) {
-      return;
+    // Add your logic to handle the debounced slug change here
+    // For example, you can submit the form, set loading flags, or show notifications
+    // You can call `formRef.current?.requestSubmit();` to submit the form.
+  
+    // Example: Submit the form
+    if (formRef.current) {
+      formRef.current.requestSubmit(); // This submits the form
     }
+  
+    // Example: Set a loading flag
     setIsLoading(true);
-    formRef.current?.requestSubmit();
-  }, [debouncedData, postTitle, slug]);
+  
+    // Example: Show a notification on success
+    // toast.success(`Slug updated to ${debouncedSlug}`);
+  
+  }, [debouncedSlug, postTitle]);
+
+  // useEffect(() => {
+  //   if (firstRenderDebounce.current) {
+  //     firstRenderDebounce.current = false;
+  //     return;
+  //   }
+
+  //   if (debouncedData === makeSlug(postTitle)) {
+  //     return;
+  //   }
+  //   setIsLoading(true);
+  //   formRef.current?.requestSubmit();
+  // }, [debouncedData, postTitle, slug]);
 
   const deleteDefaultValue = (props: any) => {
     delete props.defaultValue;
@@ -90,6 +118,7 @@ export default function PostForm({
   return (
     <form
       ref={formRef}
+      
       action={async (data: FormData) => {
         if (!slug) {
           setIsLoading(false);

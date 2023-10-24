@@ -124,7 +124,7 @@ export default function CreateSiteModal() {
             htmlFor="description"
             className="text-sm font-medium text-slate-500"
           >
-            Site Logo
+            Your Avatar
           </label>
           <LogoUploader defaultValue={image} name="logo" setLogo={setImage} />
         </div>

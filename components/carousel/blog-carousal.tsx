@@ -104,8 +104,8 @@ const Carousel = ({ data, siteData }: any) => {
 
               {data.adjacentPosts.length > 0 && (
                 <div className="scrollbar-thumb-rounded-full scrollbar-track-rounded-full relative mx-auto mt-10 h-screen w-9/12 min-w-full overflow-y-auto scrollbar-thin scrollbar-track-transparent scrollbar-thumb-gray-200 dark:scrollbar-thumb-gray-800">
-                  <h4 className="py-4 text-center text-lg tracking-tight text-slate-400 dark:bg-gray-800 dark:text-gray-400">
-                    Continue Reading
+                  <h4 className="pb-8 text-center font-semibold uppercase text-sm tracking-wide text-slate-400 dark:bg-gray-800 dark:text-gray-400">
+                    Continue Reading MORE...
                   </h4>
                   <div className="relative mx-auto w-9/12 border px-8 py-4 text-slate-500 dark:border-gray-700 dark:text-gray-400">
                     {data.adjacentPosts && (

@@ -487,6 +487,7 @@ export default function Editor({
               placeholder: "slug",
             }}
             postTitle={debouncedData?.title}
+            
             handleSubmit={updatePostMetadata}
           />
         </div>
