@@ -38,10 +38,18 @@ export default function PostForm({
   const { update } = useSession();
 
   const makeSlug = (title: string | null | undefined) => {
-    return title
-      ?.toLowerCase()
-      ?.replace(/[`~!@#$%^*()_|+\=?;:'",.<>\{\}\[\]\\\/]/gi, "")
-      ?.replaceAll(" ", "-");
+    return (
+      title
+        ?.toString()
+        ?.normalize("NFD")
+        ?.replace(/[\u0300-\u036f]/g, "")
+        ?.toLowerCase()
+        ?.trim()
+        ?.replace(/[`~!@#$%^*()_|+\=?;:'",.<>\{\}\[\]\\\/]/gi, "")
+        // ?.replaceAll(" ", "-")
+        ?.replace(/[^a-z0-9 ]/g, "")
+        ?.replace(/\s+/g, "-")
+    );
   };
   const [isLoading, setIsLoading] = useState(false);
   // const [slug, setSlug] = useState(makeSlug(postTitle));
@@ -109,7 +117,9 @@ export default function PostForm({
     >
       <div className="relative flex flex-col space-y-4 p-5 sm:p-10">
         <div className="flex justify-between">
-          <h2 className="font-semibold font-inter text-slate-500 text-xl dark:text-white">{title}</h2>
+          <h2 className="font-inter text-xl font-semibold text-slate-500 dark:text-white">
+            {title}
+          </h2>
           {isLoading ? <LoadingCircle /> : <></>}
         </div>
         <p className="text-sm text-slate-500 dark:text-gray-400">
@@ -126,7 +136,7 @@ export default function PostForm({
             {...deleteDefaultValue(inputAttrs)}
             value={slug}
             required
-            className="w-full max-w-md rounded-md bg-transparent border border-slate-300 text-sm text-slate-900 placeholder-gray-300 focus:border-slate-500 focus:outline-none focus:ring-slate-500 dark:border-slate-600 dark:bg-black dark:text-white dark:placeholder-gray-700"
+            className="w-full max-w-md rounded-md border border-slate-300 bg-transparent text-sm text-slate-900 placeholder-gray-300 focus:border-slate-500 focus:outline-none focus:ring-slate-500 dark:border-slate-600 dark:bg-black dark:text-white dark:placeholder-gray-700"
             onChange={(e) => {
               setSlug(e.target.value);
             }}
