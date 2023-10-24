@@ -26,7 +26,7 @@ export default async function SiteHomePage({
     <>
       <div className="">
         <div className="ease left-0 right-0 top-0 z-30 flex w-full transition-all duration-150 dark:bg-gray-800 dark:text-white">
-          <div className="mx-auto mt-[76px] md:w-2/6">
+          <div className="mx-auto md:w-2/6 py-12">
             <div className="m-auto flex w-full flex-col items-center justify-center">
               <div className="h-50 w-50 mb-5 overflow-hidden rounded-full align-middle">
                 {data.logo ? (
@@ -38,16 +38,16 @@ export default async function SiteHomePage({
                     src={data.logo}
                   />
                 ) : (
-                  <div className="absolute flex h-full w-full select-none items-center justify-center bg-stone-100 text-4xl text-stone-500">
+                  <div className="absolute flex h-full w-full select-none items-center justify-center bg-slate-100 text-4xl text-stone-500">
                     ?
                   </div>
                 )}
               </div>
-              <h1 className="mb-2.5 text-sm font-semibold tracking-tight text-slate-600 dark:text-gray-200 lg:text-lg">
+              <h1 className="text-lg   dark:drop-shadow-md text-transparent bg-clip-text bg-gradient-to-br from-slate-600 to-slate-600 dark:from-gray-50 dark:to-gray-500  font-bold">
                 {data.name}
               </h1>
               <div
-                className="font-regular site-bio overflow-hidden text-slate-500 dark:text-gray-200"
+                className="font-regular site-bio overflow-hidden text-sm  "
                 // style={{
                 //   display: "-webkit-box",
                 //   WebkitLineClamp: 2,
@@ -62,7 +62,7 @@ export default async function SiteHomePage({
           </div>
         </div>
 
-        <div className="w-full px-2 pb-16 pt-16 max-w-2xl mx-auto">
+        <div className="w-full px-2 pb-16 max-w-2xl mx-auto">
           {posts.length > 0 ? (
             posts.map((post, index) => (
               <div key={`post-${index}`}>
