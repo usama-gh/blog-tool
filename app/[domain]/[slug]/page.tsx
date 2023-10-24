@@ -27,7 +27,7 @@ export async function generateMetadata({
       title,
       description,
         type:"article",
-        url:new URL(`https://${params.domain}`)
+        url:new URL(`https://${params.domain}/${params.slug}`)
     },
     twitter: {
       card: "summary_large_image",
