@@ -47,7 +47,7 @@ export default function CreateSiteModal() {
             router.refresh();
             router.push(`/site/${id}`);
             modal?.hide();
-            toast.success(`Successfully created site!`);
+            toast.success(`Successfully created site`);
           }
         });
       }}
