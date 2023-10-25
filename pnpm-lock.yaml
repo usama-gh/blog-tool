@@ -59,6 +59,9 @@ dependencies:
   '@upstash/ratelimit':
     specifier: ^0.4.4
     version: 0.4.4
+  '@usermaven/sdk-js':
+    specifier: ^1.2.4
+    version: 1.2.4
   '@vercel/blob':
     specifier: ^0.9.3
     version: 0.9.3
@@ -71,9 +74,6 @@ dependencies:
   ai:
     specifier: ^2.2.11
     version: 2.2.11(react@18.2.0)(solid-js@1.7.11)(svelte@4.2.0)(vue@3.3.4)
-  axios:
-    specifier: ^1.5.0
-    version: 1.5.0
   clsx:
     specifier: ^1.2.1
     version: 1.2.1
@@ -1403,6 +1403,10 @@ packages:
       - encoding
     dev: false
 
+  /@usermaven/sdk-js@1.2.4:
+    resolution: {integrity: sha512-w52OBPw8YKPll79Z5pm/Gshwf9jbkFRSEsX3rqLGVgjRmr9wGwLvQRm/2iDvxHbHY9yxOqtQ0U+fr6Rtx6qXRg==}
+    dev: false
+
   /@vercel/blob@0.9.3:
     resolution: {integrity: sha512-/joEYvzqiItiUdN/WgrA/ICpOfBe1b/5eTJhMd92PHiXw0AEsi41FgGyoKhtFISkkkjOY6c7VO0MHAg/TaWooQ==}
     engines: {node: '>=16.14'}
@@ -1790,16 +1794,6 @@ packages:
     resolution: {integrity: sha512-zIURGIS1E1Q4pcrMjp+nnEh+16G56eG/MUllJH8yEvw7asDo7Ac9uhC9KIH5jzpITueEZolfYglnCGIuSBz39g==}
     engines: {node: '>=4'}
     dev: true
-
-  /axios@1.5.0:
-    resolution: {integrity: sha512-D4DdjDo5CY50Qms0qGQTTw6Q44jl7zRwY7bthds06pUGfChBCTcQs+N743eFWGEd6pRTMd6A+I87aWyFV5wiZQ==}
-    dependencies:
-      follow-redirects: 1.15.2
-      form-data: 4.0.0
-      proxy-from-env: 1.1.0
-    transitivePeerDependencies:
-      - debug
-    dev: false
 
   /axobject-query@3.2.1:
     resolution: {integrity: sha512-jsyHu61e6N4Vbz/v18DHwWYKK0bSWLqn47eeDSKPB7m8tqMHF9YJ+mhIk2lVteyZrY8tnSj/jHOv4YiTCuCJgg==}
@@ -3006,16 +3000,6 @@ packages:
     resolution: {integrity: sha512-p6vGNNWLDGwJCiEjkSK6oERj/hEyI9ITsSwIUICBoKLlWiTWXJRfQibCwcoi50rTZdbi87qDtUlMCmQwsGSgPw==}
     dependencies:
       tabbable: 6.2.0
-    dev: false
-
-  /follow-redirects@1.15.2:
-    resolution: {integrity: sha512-VQLG33o04KaQ8uYi2tVNbdrWp1QWxNNea+nmIB4EVM28v0hmP17z7aG1+wAkNzVq4KeXTq3221ye5qTJP91JwA==}
-    engines: {node: '>=4.0'}
-    peerDependencies:
-      debug: '*'
-    peerDependenciesMeta:
-      debug:
-        optional: true
     dev: false
 
   /for-each@0.3.3:
@@ -5338,10 +5322,6 @@ packages:
       prosemirror-model: 1.19.3
       prosemirror-state: 1.4.3
       prosemirror-transform: 1.7.5
-    dev: false
-
-  /proxy-from-env@1.1.0:
-    resolution: {integrity: sha512-D+zkORCbA9f1tdWRK0RaCR3GPv50cMxcrz4X8k5LTSUD1Dkw47mKJEZQNunItRTkWwgtaUSo1RVFRIG9ZXiFYg==}
     dev: false
 
   /psl@1.9.0:

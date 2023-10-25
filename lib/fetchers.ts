@@ -2,6 +2,9 @@ import { unstable_cache } from "next/cache";
 import prisma from "@/lib/prisma";
 import { serialize } from "next-mdx-remote/serialize";
 import { replaceExamples, replaceTweets } from "@/lib/remark-plugins";
+import { plans } from "@/data";
+import { getSession } from "./auth";
+import { redirect } from "next/navigation";
 
 export async function getSiteData(domain: string) {
   const subdomain = domain.endsWith(`.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`)
@@ -70,37 +73,11 @@ export async function getUserPlanAnalytics(userId: string) {
           userId: userId,
         },
       });
-      // getting user sites
-      // let date = new Date();
-      // let firstDay = new Date(
-      //   date.getFullYear(),
-      //   date.getMonth(),
-      //   1,
-      // ).toLocaleDateString("sv-SE");
-      // let lastDay = new Date(
-      //   date.getFullYear(),
-      //   date.getMonth() + 1,
-      //   0,
-      // ).toLocaleDateString("sv-SE");
 
       const sites = await prisma.site.findMany({
         where: {
           userId: userId,
         },
-        // include: {
-        //   _count: {
-        //     select: {
-        //       Vistor: {
-        //         where: {
-        //           createdAt: {
-        //             gte: new Date(firstDay),
-        //             lte: new Date(lastDay),
-        //           },
-        //         },
-        //       },
-        //     },
-        //   },
-        // },
         include: {
           views: {
             select: {
@@ -261,4 +238,78 @@ async function getSlidesMdxSource(slides: string) {
   }
 
   return slidesMdxSource;
+}
+
+export async function getUserDetails() {
+  const session = await getSession();
+
+  if (!session?.user) {
+    redirect("/login");
+  }
+  return await unstable_cache(
+    async () => {
+      const user = await prisma.user.findFirst({
+        where: {
+          id: session?.user.id,
+        },
+      });
+
+      const name = user?.name?.split(" ") || [];
+      let firstName, lastName;
+
+      if (name?.length > 2) {
+        firstName = name.slice(0, 2).join(" ");
+        lastName = name.slice(2).join(" ");
+      } else {
+        firstName = name[0];
+        lastName = name[1];
+      }
+
+      const subscription = await prisma.subscription.findFirst({
+        where: {
+          userId: session?.user.id,
+        },
+      });
+
+      const plan = plans.find((item) => item.id == subscription?.planId);
+      const sites = await prisma.site.findMany({
+        where: {
+          userId: session?.user.id,
+        },
+        select: {
+          id: true,
+          subdomain: true,
+          customDomain: true,
+          userId: true,
+        },
+      });
+
+      let sitesData: any = [];
+      sites.forEach((site) => {
+        let domain = null;
+        if (site.customDomain) {
+          domain = site.customDomain;
+        } else {
+          domain = `${site.subdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`;
+        }
+
+        sitesData.push(domain);
+      });
+
+      return {
+        ...session?.user,
+        createdAt: user?.createdAt,
+        firstName,
+        lastName,
+        planName: plan?.name,
+        sitesCreated: sites.length,
+        sites: sitesData,
+      };
+    },
+    [`user-details`],
+    {
+      revalidate: 900,
+      tags: [`user-details`],
+    },
+  )();
 }

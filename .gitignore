@@ -1,6 +1,7 @@
 **/node_modules
 **.next
 **.env
+**data.ts
 **.DS_Store
 **.vercel
 .vscode
