@@ -4,21 +4,33 @@ import OverviewStats from "@/components/overview-stats";
 import Posts from "@/components/posts";
 import PlacholderCard from "@/components/placeholder-card";
 import OverviewSitesCTA from "@/components/overview-sites-cta";
+import { getSession } from "@/lib/auth";
+import { redirect } from "next/navigation";
+import { getUserDetails } from "@/lib/fetchers";
+import CreateUsermavenUser from "@/components/usermaven";
 
 export default async function Overview() {
+  const session = await getSession();
+  if (!session?.user) {
+    redirect("/login");
+  }
+
+  const user = await getUserDetails();
+
   return (
     <>
+      <CreateUsermavenUser user={user} />
       <div className="flex max-w-screen-xl flex-col space-y-12 p-8">
         <div className="flex flex-col space-y-6">
-          <h1 className="font-inter text-3xl font-bold dark:text-white hide_onboarding">
-            Overview 
+          <h1 className="font-inter hide_onboarding text-3xl font-bold dark:text-white">
+            Overview
           </h1>
           <OverviewStats />
         </div>
 
         <div className="flex flex-col space-y-6">
           <div className="flex items-center justify-between">
-            <h1 className="font-inter text-md hidden font-semibold uppercase tracking-wide dark:text-white lg:block hide_onboarding">
+            <h1 className="font-inter text-md hide_onboarding hidden font-semibold uppercase tracking-wide dark:text-white lg:block">
               Your Blog
             </h1>
             <Suspense fallback={null}>
@@ -39,7 +51,7 @@ export default async function Overview() {
         </div>
 
         <div className="flex flex-col space-y-6">
-          <h1 className="font-inter text-md font-semibold uppercase tracking-wide dark:text-white hide_onboarding">
+          <h1 className="font-inter text-md hide_onboarding font-semibold uppercase tracking-wide dark:text-white">
             Recent Posts
           </h1>
           <Suspense

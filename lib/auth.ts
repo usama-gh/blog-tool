@@ -3,6 +3,7 @@ import GitHubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import prisma from "@/lib/prisma";
+import { plans } from "@/data";
 
 const VERCEL_DEPLOYMENT = !!process.env.VERCEL_URL;
 

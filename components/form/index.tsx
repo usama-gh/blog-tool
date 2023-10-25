@@ -11,6 +11,7 @@ import DomainConfiguration from "./domain-configuration";
 import Uploader from "./uploader";
 import { useState } from "react";
 import BioEditor from "../editor/bio-editor";
+import { triggerEvent } from "../usermaven";
 
 export default function Form({
   title,
@@ -50,7 +51,9 @@ export default function Form({
           data.get("customDomain") !== inputAttrs.defaultValue &&
           !confirm("Are you sure you want to change your custom domain?")
         ) {
+         
           return;
+          
         }
         handleSubmit(
           inputAttrs.name !== "bio" ? data : bio.bio,
@@ -67,6 +70,10 @@ export default function Form({
               router.refresh();
             }
             toast.success(`Successfully updated ${inputAttrs.name}!`);
+            if(inputAttrs.name==='customDomain'){
+              triggerEvent("added_domain", {});
+            }
+            
           }
         });
       }}

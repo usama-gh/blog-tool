@@ -9,6 +9,7 @@ import LoadingDots from "@/components/icons/loading-dots";
 import { useModal } from "./provider";
 import { useEffect, useState } from "react";
 import LogoUploader from "../form/logo-uploader";
+import { triggerEvent } from "../usermaven";
 
 export default function CreateSiteModal() {
   const router = useRouter();
@@ -41,6 +42,7 @@ export default function CreateSiteModal() {
           if (res.error) {
             toast.error(res.error);
           } else {
+            triggerEvent("new_blog_created", {});
             const { id } = res;
             router.refresh();
             router.push(`/site/${id}`);

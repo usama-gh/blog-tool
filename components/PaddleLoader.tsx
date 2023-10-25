@@ -2,9 +2,9 @@
 
 import Script from "next/script";
 import { plans } from "@/data";
-import axios from "axios";
 import { updateSubscription } from "@/lib/actions";
 import { toast } from "sonner";
+import { triggerEvent } from "./usermaven";
 
 interface Props {
   subscriptionId?: string;
@@ -32,6 +32,11 @@ export function PaddleLoader({ subscriptionId, userId }: Props) {
               );
 
               try {
+                // trigger usermaven event
+                triggerEvent("plan_upgraded", {
+                  plan_name: plan?.name,
+                  amount: plan?.price,
+                });
                 updateSubscription({
                   userId,
                   id: subscriptionId,

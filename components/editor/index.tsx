@@ -22,6 +22,8 @@ import ImportJsonModal from "../modal/import-json";
 import { TiptapExtensionsAI } from "./extensions/index-ai";
 import { markdownToTxt } from "markdown-to-txt";
 import Form from "@/components/form";
+import { triggerEvent } from "../usermaven";
+
 
 type PostWithSite = Post & { site: { subdomain: string | null } | null };
 
@@ -379,6 +381,7 @@ export default function Editor({
                       data.published ? "unpublished" : "published"
                     } your post.`,
                   );
+                  triggerEvent("published_post", {});
                   setData((prev) => ({
                     ...prev,
                     published: !prev.published,
