@@ -7,6 +7,7 @@ import BlurImage from "@/components/blur-image";
 import MDX from "../mdx";
 import BlogCard from "../blog-card";
 import SocialLinks from "../social-links";
+import useSwipe from "@/lib/hooks/useSwipe";
 
 const Carousel = ({ data, siteData }: any) => {
   const [viewportRef, embla] = useEmblaCarousel({
@@ -69,9 +70,14 @@ const Carousel = ({ data, siteData }: any) => {
     };
   });
 
+  const swipeHandlers = useSwipe({
+    onSwipedLeft: () => scrollNext(),
+    onSwipedRight: () => scrollPrev(),
+  });
+
   return (
     <>
-      <div className="relative">
+      <div className="relative" {...swipeHandlers}>
         <div className="flex list-none justify-between space-x-2">
           {scrollSnaps.map((_, index: number) => (
             <DotButton
@@ -86,7 +92,7 @@ const Carousel = ({ data, siteData }: any) => {
           <div className="w-full overflow-hidden" ref={viewportRef}>
             <div className="flex h-fit items-start ">
               <div className="h-fit min-w-full text-slate-50  dark:text-gray-400 ">
-                <div className="scrollbar-thumb-rounded-full scrollbar-track-rounded-full my-auto flex h-screen w-full items-center justify-center overflow-y-auto py-10 text-slate-600 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-gray-200 dark:text-gray-400 dark:scrollbar-thumb-gray-800 [&>*]:text-xl [&>*]:rounded-xl ">
+                <div className="scrollbar-thumb-rounded-full scrollbar-track-rounded-full my-auto flex h-screen w-full items-center justify-center overflow-y-auto py-10 text-slate-600 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-gray-200 dark:text-gray-400 dark:scrollbar-thumb-gray-800 [&>*]:rounded-xl [&>*]:text-xl ">
                   <MDX source={data.mdxSource} />
                 </div>
               </div>
@@ -104,11 +110,11 @@ const Carousel = ({ data, siteData }: any) => {
                 ))}
 
               {data.adjacentPosts.length > 0 && (
-                <div className="scrollbar-thumb-rounded-full scrollbar-track-rounded-full relative mx-auto mt-10 h-screen pb-[120px] w-9/12 min-w-full overflow-y-auto scrollbar-thin scrollbar-track-transparent scrollbar-thumb-gray-200 dark:scrollbar-thumb-gray-800">
-                  <h4 className="pb-8 text-center font-semibold uppercase text-sm tracking-wide text-slate-400 dark:bg-gray-800 dark:text-gray-400">
+                <div className="scrollbar-thumb-rounded-full scrollbar-track-rounded-full relative mx-auto mt-10 h-screen w-9/12 min-w-full overflow-y-auto pb-[120px] scrollbar-thin scrollbar-track-transparent scrollbar-thumb-gray-200 dark:scrollbar-thumb-gray-800">
+                  <h4 className="pb-8 text-center text-sm font-semibold uppercase tracking-wide text-slate-400 dark:bg-gray-800 dark:text-gray-400">
                     More from {siteData?.name}
                   </h4>
-                  <div className="relative mx-auto w-9/12 border border-slate-200 px-8 py-8 text-slate-400 rounded-2xl dark:border-gray-600 dark:text-gray-400">
+                  <div className="relative mx-auto w-9/12 rounded-2xl border border-slate-200 px-8 py-8 text-slate-400 dark:border-gray-600 dark:text-gray-400">
                     {data.adjacentPosts && (
                       <>
                         <div className="relative grid gap-2 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2">
@@ -121,39 +127,35 @@ const Carousel = ({ data, siteData }: any) => {
                             ))}
                         </div>
                         <div className="mt-8 flex flex-col items-center justify-center">
-                          <div className="w-full h-[1px] bg-slate-200 dark:bg-gray-600 mb-5"></div>
-                          <p className="pb-4 flex space-x-2 items-center text-center font-semibold uppercase text-sm tracking-wide text-slate-400 dark:bg-gray-800 dark:text-gray-400">
-                     
-
-  Follow me
-
-
-
+                          <div className="mb-5 h-[1px] w-full bg-slate-200 dark:bg-gray-600"></div>
+                          <p className="flex items-center space-x-2 pb-4 text-center text-sm font-semibold uppercase tracking-wide text-slate-400 dark:bg-gray-800 dark:text-gray-400">
+                            Follow me
                           </p>
 
-                   
                           <div className="h-[70px] w-[70px] overflow-hidden rounded-full border-4 border-slate-300 dark:border-gray-700">
-              {siteData?.user?.image ? (
-                <BlurImage
-                  alt={siteData?.logo ?? "User Avatar"}
-                  width={70}
-                  height={70}
-                  className="h-full w-full scale-100 rounded-full object-cover blur-0 duration-700 ease-in-out"
-                  src={siteData?.logo ?? "https://public.blob.vercel-storage.com/eEZHAoPTOBSYGBE3/JRajRyC-PhBHEinQkupt02jqfKacBVHLWJq7Iy.png"}
-                />
-              ) : (
-                <div className="absolute flex h-full w-full select-none items-center justify-center bg-stone-100 text-4xl text-stone-500">
-                  ?
-                </div>
-              )}
-            </div> 
-            <div className="text-lg drop-shadow-md	 text-transparent bg-clip-text bg-gradient-to-br from-slate-600 to-slate-300 dark:from-gray-200 dark:to-gray-500  text-slate-500 font-bold mt-2">
-            {siteData?.name}
-            </div>
-            <div className="text-sm drop-shadow-md text-center	 text-transparent bg-clip-text bg-gradient-to-br from-slate-600 to-slate-300 dark:from-gray-200 dark:to-gray-500 ">
-            {siteData?.bio}
-            </div>
-
+                            {siteData?.user?.image ? (
+                              <BlurImage
+                                alt={siteData?.logo ?? "User Avatar"}
+                                width={70}
+                                height={70}
+                                className="h-full w-full scale-100 rounded-full object-cover blur-0 duration-700 ease-in-out"
+                                src={
+                                  siteData?.logo ??
+                                  "https://public.blob.vercel-storage.com/eEZHAoPTOBSYGBE3/JRajRyC-PhBHEinQkupt02jqfKacBVHLWJq7Iy.png"
+                                }
+                              />
+                            ) : (
+                              <div className="absolute flex h-full w-full select-none items-center justify-center bg-stone-100 text-4xl text-stone-500">
+                                ?
+                              </div>
+                            )}
+                          </div>
+                          <div className="mt-2 bg-gradient-to-br	 from-slate-600 to-slate-300 bg-clip-text text-lg font-bold text-slate-500 text-transparent  drop-shadow-md dark:from-gray-200 dark:to-gray-500">
+                            {siteData?.name}
+                          </div>
+                          <div className="bg-gradient-to-br from-slate-600 to-slate-300	 bg-clip-text text-center text-sm text-transparent drop-shadow-md dark:from-gray-200 dark:to-gray-500 ">
+                            {siteData?.bio}
+                          </div>
 
                           <SocialLinks linksData={siteData.links} />
                         </div>
@@ -165,7 +167,7 @@ const Carousel = ({ data, siteData }: any) => {
             </div>
           </div>
           <PrevButton onClick={scrollPrev} enabled={prevBtnEnabled} />
-        <NextButton onClick={scrollNext} enabled={nextBtnEnabled} />
+          <NextButton onClick={scrollNext} enabled={nextBtnEnabled} />
         </div>
       </div>
     </>
