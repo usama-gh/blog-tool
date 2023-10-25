@@ -23,6 +23,7 @@ import { ReactNode, useEffect, useMemo, useState } from "react";
 import { getSiteFromPostId } from "@/lib/actions";
 import Image from "next/image";
 import { FileCode, Github } from "lucide-react";
+import { triggerEvent } from "./usermaven";
 
 // const externalLinks = [
 
@@ -147,6 +148,8 @@ export default function Nav({ children }: { children: ReactNode }) {
     // hide sidebar on path change
     setShowSidebar(false);
   }, [pathname]);
+
+  triggerEvent("pageview", {});
 
   return (
     <>
