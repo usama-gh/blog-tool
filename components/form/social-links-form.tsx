@@ -7,6 +7,7 @@ import { useParams, useRouter } from "next/navigation";
 import { experimental_useFormStatus as useFormStatus } from "react-dom";
 import { toast } from "sonner";
 import { useEffect } from 'react';
+import { triggerEvent } from "../usermaven";
 import {
   FacebookIcon,
   GithubIcon,
@@ -55,7 +56,8 @@ export default function SocialLinksForm({
               await update();
               router.refresh();
             }
-            toast.success(`Successfully updated Social Links!`);
+            toast.success(`Successfully updated social links!`);
+            triggerEvent("added_sociallink", {});
           }
         });
       }}

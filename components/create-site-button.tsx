@@ -16,7 +16,7 @@ export default function CreateSiteButton({
 
   const handleClick = () => {
     if (canCreateSite) {
-      triggerEvent("create_site_btn_click", {});
+      triggerEvent("created_blog", {});
       modal?.show(children);
     } else {
       toast.error(

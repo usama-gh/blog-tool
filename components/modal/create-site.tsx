@@ -42,7 +42,7 @@ export default function CreateSiteModal() {
           if (res.error) {
             toast.error(res.error);
           } else {
-            triggerEvent("new_sited_created", {});
+            triggerEvent("new_blog_created", {});
             const { id } = res;
             router.refresh();
             router.push(`/site/${id}`);
