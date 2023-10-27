@@ -35,14 +35,14 @@ export async function generateMetadata({
     openGraph: {
       title,
       description,
-        type:"website",
-        url:new URL(`https://${params.domain}`)
+      type: "website",
+      url: new URL(`https://${params.domain}`),
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
-      creator: "@"+title,
+      creator: "@" + title,
     },
     icons: [logo],
     alternates: {
@@ -94,13 +94,13 @@ export default async function SiteLayout({
   const { domain } = params;
   const data = await getSiteData(domain);
 
+  if (!data) {
+    notFound();
+  }
+
   if (data?.userId) {
     const result = await getUserPlanAnalytics(data?.userId);
     isShowBadge = result.isShowBadge;
-  }
-
-  if (!data) {
-    notFound();
   }
 
   // Optional: Redirect to custom domain if it exists

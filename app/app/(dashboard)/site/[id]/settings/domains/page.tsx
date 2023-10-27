@@ -1,6 +1,7 @@
 import prisma from "@/lib/prisma";
 import Form from "@/components/form";
 import { updateSite } from "@/lib/actions";
+import { getUserPlanAnalytics } from "@/lib/fetchers";
 
 export default async function SiteSettingsDomains({
   params,
@@ -12,6 +13,8 @@ export default async function SiteSettingsDomains({
       id: params.id,
     },
   });
+
+  const response = await getUserPlanAnalytics();
 
   return (
     <div className="flex flex-col space-y-6">
@@ -41,6 +44,7 @@ export default async function SiteSettingsDomains({
           pattern: "^[a-z0-9]+([\\-\\.]{1}[a-z0-9]+)*\\.[a-z]{2,5}$",
         }}
         handleSubmit={updateSite}
+        canUseAI={response.canUseAI}
       />
     </div>
   );

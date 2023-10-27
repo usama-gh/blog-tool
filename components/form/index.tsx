@@ -45,15 +45,21 @@ export default function Form({
   return (
     <form
       action={async (data: FormData) => {
+        // check if form is for custom domain and user can use custom domain feature
+        if (inputAttrs.name === "customDomain" && !canUseAI) {
+          toast.error(
+            "You cannot use custom domain feature with free plan. Please upgrade your plan to use this feature.",
+          );
+          return;
+        }
+
         if (
           inputAttrs.name === "customDomain" &&
           inputAttrs.defaultValue &&
           data.get("customDomain") !== inputAttrs.defaultValue &&
           !confirm("Are you sure you want to change your custom domain?")
         ) {
-         
           return;
-          
         }
         handleSubmit(
           inputAttrs.name !== "bio" ? data : bio.bio,
@@ -70,10 +76,9 @@ export default function Form({
               router.refresh();
             }
             toast.success(`Successfully updated ${inputAttrs.name}!`);
-            if(inputAttrs.name==='customDomain'){
+            if (inputAttrs.name === "customDomain") {
               triggerEvent("added_domain", {});
             }
-            
           }
         });
       }}

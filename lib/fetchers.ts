@@ -61,7 +61,16 @@ export async function getPostsForSite(domain: string) {
   )();
 }
 
-export async function getUserPlanAnalytics(userId: string) {
+export async function getUserPlanAnalytics(userId?: string) {
+  if (!userId) {
+    const session = await getSession();
+
+    if (!session?.user) {
+      redirect("/login");
+    }
+    userId = session.user.id;
+  }
+
   return await unstable_cache(
     async () => {
       let isShowBadge = false;
