@@ -79,7 +79,14 @@ export default async function PostOG({
               />
               <p tw="text-xl font-medium text-gray-200 uppercase pt-1">{data.siteName}</p>
             </div>
-            <h1 tw="text-6xl font-bold text-white leading-none tracking-tight">
+            <h1 style={{
+                fontWeight: "bold",
+                color: "white",
+                lineHeight: "1",
+                letterSpacing: "tight",
+                textOverflow: "ellipsis",
+                fontSize: data.title.length < 20 ? "5.75rem" : "4.5rem"
+             }}>
             {data.title}
             </h1>
             <div tw="flex items-end justify-between w-full">
