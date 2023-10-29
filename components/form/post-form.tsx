@@ -73,9 +73,9 @@ export default function PostForm({
   }, [postTitle]);
 
   useEffect(() => {
-    if (debouncedSlug === makeSlug(postTitle)) {
-      return;
-    }
+    // if (debouncedSlug === makeSlug(postTitle)) {
+    //   return;
+    // }
       if (firstRenderDebounce.current) {
       firstRenderDebounce.current = false;
       return;
