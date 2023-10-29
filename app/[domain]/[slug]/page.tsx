@@ -26,7 +26,7 @@ export async function generateMetadata({
     openGraph: {
       title,
       description,
-        type:"article",
+        type:"website",
         url:new URL(`https://${params.domain}/${params.slug}`)
     },
     twitter: {
