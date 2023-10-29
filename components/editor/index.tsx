@@ -48,8 +48,14 @@ export default function Editor({
   useEffect(() => {
     // @ts-ignore
     if (post && post.content) {
+
+     
+      let abc = post?.content;
+      // @ts-ignore
+      abc = abc?.replace(/!\[.*\]\(.*\)/g, '');
+        // @ts-ignore
       let plainText =
-        markdownToTxt(post?.content as string)
+        markdownToTxt(abc as string)
           ?.replaceAll("\n", " ")
           ?.substring(0, 170) || "";
 
@@ -63,7 +69,11 @@ export default function Editor({
     // Update textareaValue whenever post.content changes, but only if the user hasn't manually edited it
     if (!firstRender.current && !isUserEdit) {
       // @ts-ignore
-      let plainText = markdownToTxt(post?.content)?.replaceAll("\n", " ");
+      let abc = post?.content;
+      // @ts-ignore
+      abc = abc?.replace(/!\[.*\]\(.*\)/g, '');
+        // @ts-ignore
+      let plainText = markdownToTxt(abc)?.replaceAll("\n", " ");
       const first170Characters = plainText?.substring(0, 170) || "";
       if (textareaValue !== first170Characters) {
         setTextareaValue(first170Characters);
@@ -339,7 +349,7 @@ export default function Editor({
       let splitContent = splitTextIntoChunks(debouncedData.content as string);
 
       if (splitContent.length > 1) {
-        toast("Want to split your posts?", {
+        toast("Want to split your post?", {
           action: {
             label: "Yes",
             onClick: () => splitContentIntoSlides(splitContent),
