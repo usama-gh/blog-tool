@@ -82,8 +82,6 @@ export default async function PostOG({
             <h1 style={{
                 fontWeight: "bold",
                 color: "white",
-                lineHeight: "1",
-                letterSpacing: "tight",
                 fontSize: data.title.length < 20 ? "5.75rem" : "4.5rem"
              }}>
             {data.title}
