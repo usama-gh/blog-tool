@@ -28,7 +28,7 @@
   }
 
   .site-bio p {
-    @apply my-1 text-transparent bg-clip-text bg-gradient-to-br from-slate-500 to-slate-500 dark:from-gray-100 dark:to-gray-500 
+    @apply my-1 text-center text-transparent bg-clip-text bg-gradient-to-br from-slate-500 to-slate-500 dark:from-gray-100 dark:to-gray-500 
   }
 
   .site-bio ul {

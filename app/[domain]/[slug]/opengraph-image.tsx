@@ -84,7 +84,6 @@ export default async function PostOG({
                 color: "white",
                 lineHeight: "1",
                 letterSpacing: "tight",
-                textOverflow: "ellipsis",
                 fontSize: data.title.length < 20 ? "5.75rem" : "4.5rem"
              }}>
             {data.title}
