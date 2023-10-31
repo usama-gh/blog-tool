@@ -6,6 +6,7 @@ import SocialLinksForm from "@/components/form/social-links-form";
 import { getSession } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { getUserPlanAnalytics } from "@/lib/fetchers";
+import ApiToken from "@/components/api-token";
 
 export default async function SiteSettingsIndex({
   params,
@@ -24,6 +25,12 @@ export default async function SiteSettingsIndex({
   const data = await prisma.site.findUnique({
     where: {
       id: params.id,
+    },
+  });
+
+  const apiToken = await prisma.apiToken.findFirst({
+    where: {
+      siteId: params.id,
     },
   });
 
@@ -88,6 +95,9 @@ export default async function SiteSettingsIndex({
         }}
         handleSubmit={updateSite}
       />
+
+      {/* showing api token to send request */}
+      {apiToken?.token && <ApiToken token={apiToken.token} />}
 
       <SocialLinksForm
         handleSubmit={updateSite}

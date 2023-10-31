@@ -25,20 +25,21 @@ export default async function Overview() {
     });
   }
 
-  // check if user has api token record
-  let apiToken = await prisma.apiToken.findFirst({
+  // check the site who has not token relation and then create
+  const sites = await prisma.site.findMany({
     where: {
-      userId: session?.user.id,
+      token: null,
     },
   });
 
-  if (!apiToken) {
+  sites.forEach(async (site) => {
     await prisma.apiToken.create({
       data: {
         userId: session?.user.id,
+        siteId: site.id,
       },
     });
-  }
+  });
 
   // redirect user to dashboard of site if user has only one site
   const result = await getUserPlanAnalytics(session?.user.id as string);

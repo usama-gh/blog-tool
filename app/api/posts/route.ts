@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 import { headers } from "next/headers";
 import { z } from "zod";
 import { revalidateTag } from "next/cache";
+import { markdownToTxt } from "markdown-to-txt";
 
 // Nextjs route segment config
 export const dynamic = "force-dynamic"; // Force dynamic (server) route instead of static page
@@ -16,6 +17,7 @@ export async function POST(request: Request) {
     return array.map((item) => escapeSpecialCharacters(item));
   };
 
+  // make slug from post title
   const makeSlug = (title: string | null | undefined) => {
     return title
       ?.toString()
@@ -26,6 +28,16 @@ export async function POST(request: Request) {
       ?.replace(/[`~!@#$%^*()_|+\=?;:'",.<>\{\}\[\]\\\/]/gi, "")
       ?.replace(/[^a-z0-9 ]/g, "")
       ?.replace(/\s+/g, "-");
+  };
+
+  // get 170 words of content eliminated all special character
+  const syncDescription = (string: string) => {
+    string = string?.replace(/!\[.*\]\(.*\)/g, "");
+    return (
+      markdownToTxt(string as string)
+        ?.replaceAll("\n", " ")
+        ?.substring(0, 170) || ""
+    );
   };
 
   const headersList = headers();
@@ -55,7 +67,6 @@ export async function POST(request: Request) {
   // auth token is valid next steps
   // 1: validation schema
   const schema = z.object({
-    siteId: z.string(),
     title: z.string().min(5),
     image: z.nullable(z.string()).optional(),
     published: z.nullable(z.boolean()).optional(),
@@ -93,8 +104,12 @@ export async function POST(request: Request) {
       // 5: check if the site exist against siteId provided
       const site = await prisma.site.findFirst({
         where: {
-          id: data.siteId,
+          id: apiToken.siteId,
           userId: apiToken.userId,
+        },
+        select: {
+          subdomain: true,
+          customDomain: true,
         },
       });
       if (!site) {
@@ -160,12 +175,12 @@ export async function POST(request: Request) {
           content: content,
           description:
             !data.description || data.description == ""
-              ? data.content.substring(0, 170)
+              ? syncDescription(data.content)
               : data.description,
           image: data.image,
           slides: JSON.stringify(escapedSlides),
           published: data.published ?? false,
-          siteId: data.siteId,
+          siteId: apiToken.siteId,
           userId: apiToken.userId,
         },
       });

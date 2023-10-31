@@ -18,7 +18,8 @@ function ApiToken({ token }: any) {
           Api Token
         </h2>
         <p className="text-sm text-slate-500 dark:text-gray-400">
-          Send this api token with api request as a bearer token.
+          Send this api token with api request as a bearer token to create post
+          in the blog.
         </p>
 
         <div className="flex w-full max-w-md items-center justify-between rounded-md border border-slate-300 bg-white p-2 text-sm text-slate-900 focus:border-slate-500 dark:border-gray-600 dark:bg-black dark:text-white">

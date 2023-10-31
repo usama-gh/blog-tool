@@ -88,6 +88,10 @@ export async function POST(
             // @ts-ignore
             id: post.siteId,
           },
+          select: {
+            subdomain: true,
+            customDomain: true,
+          },
         });
 
         revalidateTag(

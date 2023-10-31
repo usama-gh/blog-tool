@@ -2,20 +2,12 @@ import Form from "@/components/form";
 import { getSession } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { editUser } from "@/lib/actions";
-import prisma from "@/lib/prisma";
-import ApiToken from "@/components/api-token";
 
 export default async function SettingsPage() {
   const session = await getSession();
   if (!session) {
     redirect("/login");
   }
-
-  const apiToken = await prisma.apiToken.findFirst({
-    where: {
-      userId: session?.user.id,
-    },
-  });
 
   return (
     <div className="flex max-w-screen-xl flex-col space-y-12 p-8">
@@ -48,9 +40,6 @@ export default async function SettingsPage() {
           }}
           handleSubmit={editUser}
         />
-
-        {/* showing api token to send request */}
-        {apiToken?.token && <ApiToken token={apiToken.token} />}
       </div>
     </div>
   );
