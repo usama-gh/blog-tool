@@ -15,9 +15,6 @@ export const config = {
   ],
 };
 
-// the list of all allowed origins
-const allowedOrigins = ["http://localhost:3000", "http://app.localhost:3000"];
-
 export default async function middleware(req: NextRequest) {
   const url = req.nextUrl;
 

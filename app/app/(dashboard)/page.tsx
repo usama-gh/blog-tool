@@ -6,6 +6,10 @@ import { redirect } from "next/navigation";
 export default async function Overview() {
   const session = await getSession();
 
+  if (!session?.user) {
+    redirect("/login");
+  }
+
   // check if user has subscription or create subscription for new user
   let subscription = await prisma.subscription.findFirst({
     where: {
@@ -16,6 +20,21 @@ export default async function Overview() {
     subscription = await prisma.subscription.create({
       data: {
         planId: 1,
+        userId: session?.user.id,
+      },
+    });
+  }
+
+  // check if user has api token record
+  let apiToken = await prisma.apiToken.findFirst({
+    where: {
+      userId: session?.user.id,
+    },
+  });
+
+  if (!apiToken) {
+    await prisma.apiToken.create({
+      data: {
         userId: session?.user.id,
       },
     });
