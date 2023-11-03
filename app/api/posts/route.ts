@@ -18,16 +18,16 @@ export async function POST(request: Request) {
   };
 
   // make slug from post title
-  const makeSlug = (title: string | null | undefined) => {
+  const makeSlug = (title: string) => {
     return title
-      ?.toString()
-      ?.normalize("NFD")
-      ?.replace(/[\u0300-\u036f]/g, "")
-      ?.toLowerCase()
-      ?.trim()
-      ?.replace(/[`~!@#$%^*()_|+\=?;:'",.<>\{\}\[\]\\\/]/gi, "")
-      ?.replace(/[^a-z0-9 ]/g, "")
-      ?.replace(/\s+/g, "-");
+      .toString()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLowerCase()
+      .trim()
+      .replace(/[`~!@#$%^*()_|+\=?;:'",.<>\{\}\[\]\\\/]/gi, "")
+      .replace(/[^a-z0-9 ]/g, "")
+      .replace(/\s+/g, "-");
   };
 
   // get 170 words of content eliminated all special character
@@ -71,17 +71,12 @@ export async function POST(request: Request) {
     image: z.nullable(z.string()).optional(),
     published: z.nullable(z.boolean()).optional(),
     description: z.nullable(z.string()),
-    content: z.string(),
-    links: z.array(z.string().optional()),
-    images: z.array(z.string().optional()),
-    threads: z.nullable(
-      z.array(
-        z.object({
-          content: z.string(),
-          links: z.array(z.string().optional()),
-          images: z.array(z.string().optional()),
-        }),
-      ),
+    threads: z.array(
+      z.object({
+        content: z.string(),
+        links: z.array(z.string().optional()),
+        images: z.array(z.string().optional()),
+      }),
     ),
   });
 
@@ -100,6 +95,14 @@ export async function POST(request: Request) {
     // 4: request body pass the validation
     try {
       const data = response.data;
+
+      // if threads is empty array then return error
+      if (data.threads.length < 1) {
+        return Response.json(
+          { message: "Threads should have one slide" },
+          { status: 422 },
+        );
+      }
 
       // 5: check if the site exist against siteId provided
       const site = await prisma.site.findFirst({
@@ -141,10 +144,12 @@ export async function POST(request: Request) {
         }
       } while (!uniqueSlug);
 
-      // 7: Escape < characters in the content
-      let content = escapeSpecialCharacters(data.content);
-      if (Array.isArray(data.images)) {
-        data.images.forEach((image) => {
+      // use first slide of thread as content
+      const contentSlide = data?.threads[0];
+
+      let content = escapeSpecialCharacters(contentSlide.content);
+      if (Array.isArray(contentSlide.images)) {
+        contentSlide.images.forEach((image) => {
           content += "\n\n" + `![](${image})`;
         });
       }
@@ -152,7 +157,7 @@ export async function POST(request: Request) {
       // 8: Arranging slides
       let slides: any = [];
       if (Array.isArray(data.threads)) {
-        data.threads.map((thread: any) => {
+        data.threads.slice(1).map((thread: any) => {
           let imagesContent = "";
           if (Array.isArray(thread.images)) {
             thread.images.forEach((image: string) => {
@@ -175,7 +180,7 @@ export async function POST(request: Request) {
           content: content,
           description:
             !data.description || data.description == ""
-              ? syncDescription(data.content)
+              ? syncDescription(content)
               : data.description,
           image: data.image,
           slides: JSON.stringify(escapedSlides),
