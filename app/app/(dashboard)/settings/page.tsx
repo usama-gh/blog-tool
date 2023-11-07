@@ -1,4 +1,3 @@
-import { ReactNode } from "react";
 import Form from "@/components/form";
 import { getSession } from "@/lib/auth";
 import { redirect } from "next/navigation";
@@ -9,6 +8,7 @@ export default async function SettingsPage() {
   if (!session) {
     redirect("/login");
   }
+
   return (
     <div className="flex max-w-screen-xl flex-col space-y-12 p-8">
       <div className="flex flex-col space-y-6">

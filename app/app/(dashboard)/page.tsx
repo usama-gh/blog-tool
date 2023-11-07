@@ -6,6 +6,10 @@ import { redirect } from "next/navigation";
 export default async function Overview() {
   const session = await getSession();
 
+  if (!session?.user) {
+    redirect("/login");
+  }
+
   // check if user has subscription or create subscription for new user
   let subscription = await prisma.subscription.findFirst({
     where: {
@@ -20,6 +24,22 @@ export default async function Overview() {
       },
     });
   }
+
+  // check the site who has not token relation and then create
+  const sites = await prisma.site.findMany({
+    where: {
+      token: null,
+    },
+  });
+
+  sites.forEach(async (site) => {
+    await prisma.apiToken.create({
+      data: {
+        userId: session?.user.id,
+        siteId: site.id,
+      },
+    });
+  });
 
   // redirect user to dashboard of site if user has only one site
   const result = await getUserPlanAnalytics(session?.user.id as string);
