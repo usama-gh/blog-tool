@@ -15,11 +15,10 @@ function ApiToken({ token }: any) {
     <div className="rounded-lg border  border-slate-200 dark:border-gray-700">
       <div className="relative flex flex-col space-y-4 p-5 sm:p-10">
         <h2 className="font-inter text-xl font-semibold text-slate-500 dark:text-white">
-          Api Token
+          API key
         </h2>
         <p className="text-sm text-slate-500 dark:text-gray-400">
-          Send this api token with api request as a bearer token to create post
-          in the blog.
+          Use this Blog API key to publish posts from different channels
         </p>
 
         <div className="flex w-full max-w-md items-center justify-between rounded-md border border-slate-300 bg-white p-2 text-sm text-slate-900 focus:border-slate-500 dark:border-gray-600 dark:bg-black dark:text-white">
