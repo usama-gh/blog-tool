@@ -5,8 +5,12 @@ import { z } from "zod";
 import { revalidateTag } from "next/cache";
 import { markdownToTxt } from "markdown-to-txt";
 
-// Nextjs route segment config
-export const dynamic = "force-dynamic"; // Force dynamic (server) route instead of static page
+// Force dynamic (server) route instead of static page
+export const dynamic = "force-dynamic";
+
+export async function GET(request: Request) {
+  return Response.json({ message: "Success" }, { status: 200 });
+}
 
 export async function POST(request: Request) {
   const escapeSpecialCharacters = (str: string) => {
