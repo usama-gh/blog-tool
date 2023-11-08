@@ -200,11 +200,18 @@ export async function POST(request: Request) {
       );
       site.customDomain && revalidateTag(`${site.customDomain}-posts`);
 
-      // 13: returning response
+      // 13: post url
+      const url = `${site?.subdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}/${newPost.slug}`;
+      const postUrl = process.env.NEXT_PUBLIC_VERCEL_ENV
+        ? `https://${url}`
+        : `http://${site?.subdomain}.localhost:3000/${newPost.slug}`;
+
+      // 14: returning response
       return Response.json(
         {
           success: true,
           message: "New post created successfuly.",
+          view_post_url: postUrl,
           post: newPost,
         },
         { status: 200 },
