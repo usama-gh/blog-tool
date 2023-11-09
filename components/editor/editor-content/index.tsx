@@ -1,7 +1,6 @@
-import { EditorContent, EditorContentProps, useEditor } from "@tiptap/react";
+import { EditorContent, useEditor } from "@tiptap/react";
 import React, {
   Dispatch,
-  FC,
   SetStateAction,
   useEffect,
   useRef,

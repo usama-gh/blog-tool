@@ -24,7 +24,6 @@ import { markdownToTxt } from "markdown-to-txt";
 import Form from "@/components/form";
 import { triggerEvent } from "../usermaven";
 
-
 type PostWithSite = Post & { site: { subdomain: string | null } | null };
 
 export default function Editor({
@@ -41,6 +40,8 @@ export default function Editor({
     post?.description || "",
   );
   const [isUserEdit, setIsUserEdit] = useState<boolean>(false);
+  const [isPasted, setIsPasted] = useState<boolean>(false);
+
   const firstRender = useRef<boolean>(true);
   const MAX_CHUNK_LENGTH =
     Number(process.env.NEXT_PUBLIC_MAX_CHUNK_LENGTH) || 300;
@@ -48,12 +49,10 @@ export default function Editor({
   useEffect(() => {
     // @ts-ignore
     if (post && post.content) {
-
-     
       let abc = post?.content;
       // @ts-ignore
-      abc = abc?.replace(/!\[.*\]\(.*\)/g, '');
-        // @ts-ignore
+      abc = abc?.replace(/!\[.*\]\(.*\)/g, "");
+      // @ts-ignore
       let plainText =
         markdownToTxt(abc as string)
           ?.replaceAll("\n", " ")
@@ -71,8 +70,8 @@ export default function Editor({
       // @ts-ignore
       let abc = post?.content;
       // @ts-ignore
-      abc = abc?.replace(/!\[.*\]\(.*\)/g, '');
-        // @ts-ignore
+      abc = abc?.replace(/!\[.*\]\(.*\)/g, "");
+      // @ts-ignore
       let plainText = markdownToTxt(abc)?.replaceAll("\n", " ");
       const first170Characters = plainText?.substring(0, 170) || "";
       if (textareaValue !== first170Characters) {
@@ -140,7 +139,6 @@ export default function Editor({
         });
       }
     };
-    document.addEventListener("keydown", onKeyDown);
     return () => {
       document.removeEventListener("keydown", onKeyDown);
     };
@@ -342,10 +340,24 @@ export default function Editor({
     setSlideWithJson(slides, splitContent[0].content);
   };
 
-  // Checking weather user has exceeded the limit of characters or not
+  const showSplitToast = () => {
+    let splitContent = splitTextIntoChunks(debouncedData.content as string);
+
+    if (splitContent.length > 1) {
+      toast("Want to split your post?", {
+        action: {
+          label: "Yes",
+          onClick: () => splitContentIntoSlides(splitContent),
+        },
+        duration: 6000,
+      });
+    }
+  };
+
+  // Showing split toast to user
   useEffect(() => {
-    if (debouncedData.content) {
-      console.log(debouncedData.content);
+    if (debouncedData.content && isPasted) {
+      // showSplitToast();
       let splitContent = splitTextIntoChunks(debouncedData.content as string);
 
       if (splitContent.length > 1) {
@@ -357,6 +369,7 @@ export default function Editor({
           duration: 6000,
         });
       }
+      setIsPasted(false);
     }
   }, [debouncedData.content]);
 
@@ -373,9 +386,9 @@ export default function Editor({
             <ExternalLink className="h-4 w-4" />
           </a>
         )}
-        <ImportJSONButton>
+        {/* <ImportJSONButton>
           <ImportJsonModal setSlideWithJson={setSlideWithJson} />
-        </ImportJSONButton>
+        </ImportJSONButton> */}
         <div className="rounded-lg bg-gray-100 px-2 py-1 text-xs text-gray-400 dark:bg-gray-800 dark:text-gray-500 lg:text-lg">
           {isPendingSaving ? "Saving..." : "Saved"}
         </div>
@@ -428,7 +441,9 @@ export default function Editor({
           />
         </div>
         {editor && <EditorBubbleMenu editor={editor} />}
-        <EditorContent editor={editor} />
+        <div onPasteCapture={() => setIsPasted(true)}>
+          <EditorContent editor={editor} />
+        </div>
       </div>
       {slides.map((slideData: string, index: number) => (
         <div
@@ -500,7 +515,6 @@ export default function Editor({
               placeholder: "slug",
             }}
             postTitle={debouncedData?.title}
-            
             handleSubmit={updatePostMetadata}
           />
         </div>
