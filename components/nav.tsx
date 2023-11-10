@@ -13,6 +13,8 @@ import {
   Newspaper,
   Rss,
   Settings,
+  TrophyIcon,
+  ChromeIcon,
 } from "lucide-react";
 import {
   useParams,
@@ -25,30 +27,19 @@ import Image from "next/image";
 import { FileCode, Github } from "lucide-react";
 import { triggerEvent } from "./usermaven";
 
-// const externalLinks = [
+const externalLinks = [
 
-// {
-//   name: "View demo site",
-//   href: "https://demo.vercel.pub",
-//   icon: <Layout width={18} />,
-// },
-// {
-//   name: "Deploy your own",
-//   href: "https://vercel.com/templates/next.js/platforms-starter-kit",
-//   icon: (
-//     <svg
-//       width={18}
-//       viewBox="0 0 76 76"
-//       fill="none"
-//       xmlns="http://www.w3.org/2000/svg"
-//       className="py-1 text-black dark:text-white"
-//     >
-//       <path d="M37.5274 0L75.0548 65H0L37.5274 0Z" fill="currentColor" />
-//     </svg>
-//   ),
-// },
-// ];
-
+  {
+    name: "Our Chrome Extension",
+    href: "https://chrome.google.com/webstore/detail/typedd-%E2%9C%A8-turn-social-medi/pinieadejoomhpjbfocfpnocoapbdplo?",
+    icon: <ChromeIcon width={18} />,
+  },
+  {
+    name: "Upgrade",
+    href: "/plans",
+    icon: <TrophyIcon width={18} />,
+  },
+  ];
 export default function Nav({ children }: { children: ReactNode }) {
   const segments = useSelectedLayoutSegments();
   const { id } = useParams() as { id?: string };
@@ -204,13 +195,13 @@ export default function Nav({ children }: { children: ReactNode }) {
         </div>
         <div>
           <div className="grid gap-1">
-            {/* {externalLinks.map(({ name, href, icon }) => (
+            {externalLinks.map(({ name, href, icon }) => (
               <a
                 key={name}
                 href={href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center justify-between rounded-lg px-2 py-1.5 transition-all duration-150 ease-in-out hover:bg-stone-200 active:bg-stone-300 dark:text-white dark:hover:bg-stone-700 dark:active:bg-stone-800"
+                className="flex items-center justify-between rounded-lg px-2 py-1.5 transition-all duration-150 ease-in-out hover:bg-slate-200 active:bg-slate-300 dark:text-white dark:hover:bg-gray-700 dark:active:bg-gray-800"
               >
                 <div className="flex items-center space-x-3">
                   {icon}
@@ -218,7 +209,7 @@ export default function Nav({ children }: { children: ReactNode }) {
                 </div>
                 <p>↗</p>
               </a>
-            ))} */}
+            ))}
           </div>
           <div className="my-2 border-t border-slate-200 dark:border-gray-700" />
           {children}
