@@ -26,6 +26,23 @@ export default async function Overview() {
   }
 
 
+   // check the site who has not token relation and then create
+   const sites = await prisma.site.findMany({
+    where: {
+      token: null,
+    },
+  });
+
+  sites.forEach(async (site) => {
+    await prisma.apiToken.create({
+      data: {
+        // @ts-ignore
+        userId: site.userId,
+        siteId: site.id,
+      },
+    });
+  });
+  
 
   // redirect user to dashboard of site if user has only one site
   const result = await getUserPlanAnalytics(session?.user.id as string);
