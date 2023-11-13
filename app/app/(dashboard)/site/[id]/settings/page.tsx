@@ -97,7 +97,9 @@ export default async function SiteSettingsIndex({
       />
 
       {/* showing api token to send request */}
-      {apiToken?.token && <ApiToken token={apiToken.token} />}
+      {apiToken?.token && (
+        <ApiToken id={apiToken.id} apiToken={apiToken.token} />
+      )}
 
       <SocialLinksForm
         handleSubmit={updateSite}

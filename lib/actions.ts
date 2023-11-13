@@ -15,7 +15,7 @@ import {
 import { put } from "@vercel/blob";
 import { customAlphabet } from "nanoid";
 import { getBlurDataURL } from "@/lib/utils";
-import { plans } from "@/data";
+import { createId as cuid } from "@paralleldrive/cuid2";
 
 const nanoid = customAlphabet(
   "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz",
@@ -96,17 +96,12 @@ export const createSite = async (formData: FormData) => {
       },
     });
 
- 
-
     await revalidateTag(
       `${subdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}-metadata`,
     );
     revalidateTag(`${session.user.id}-states`);
 
     return response;
-
-
-
   } catch (error: any) {
     if (error.code === "P2002") {
       return {
@@ -651,4 +646,23 @@ export const getSiteViewsTest = async (siteId: string, type: string) => {
   }
 
   return visitors;
+};
+
+export const regenerateToken = async (id: string) => {
+  try {
+    const response = await prisma.apiToken.update({
+      where: {
+        id,
+      },
+      data: {
+        token: cuid(),
+      },
+    });
+
+    return response;
+  } catch (error: any) {
+    return {
+      error: error.message,
+    };
+  }
 };
