@@ -44,8 +44,9 @@ function ApiToken({ id, apiToken }: any) {
               onClick={() => handleClick(token)}
             />
           </div>
+          
           <div
-            className="cursor-pointer"
+            className="cursor-pointer opacity-40 transition duration-200 ease-out hover:opacity-100 text-slate-800 dark:text-white"
             title="Regenerate token"
             onClick={handleNewToken}
           >
