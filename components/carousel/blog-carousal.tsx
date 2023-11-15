@@ -133,7 +133,7 @@ const Carousel = ({ data, siteData }: any) => {
                           </p>
 
                           <div className="h-[70px] w-[70px] overflow-hidden rounded-full border-4 border-slate-300 dark:border-gray-700">
-                            {siteData?.user?.image ? (
+                            {siteData?.logo ? (
                               <BlurImage
                                 alt={siteData?.logo ?? "User Avatar"}
                                 width={70}

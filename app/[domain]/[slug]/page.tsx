@@ -69,7 +69,7 @@ export default async function SitePostPage({
           <div className="flex items-center gap-x-2">
           <Link href="/">
             <div className="h-[17px] w-[17px] lg:h-[25px] lg:w-[25px] overflow-hidden rounded-full">
-              {siteData?.user?.image ? (
+              {siteData?.logo ? (
                 <BlurImage
                   alt={siteData?.logo ?? "User Avatar"}
                   width={20}
