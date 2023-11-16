@@ -6,7 +6,6 @@ import {
   BarChart3,
   Edit3,
   Globe,
-  Layout,
   LayoutDashboard,
   Megaphone,
   Menu,
@@ -15,6 +14,7 @@ import {
   Settings,
   TrophyIcon,
   ChromeIcon,
+  Shield,
 } from "lucide-react";
 import {
   useParams,
@@ -23,12 +23,11 @@ import {
 } from "next/navigation";
 import { ReactNode, useEffect, useMemo, useState } from "react";
 import { getSiteFromPostId } from "@/lib/actions";
-import Image from "next/image";
-import { FileCode, Github } from "lucide-react";
 import { triggerEvent } from "./usermaven";
+import { useSession } from "next-auth/react";
+import { isUserAdmin } from "@/lib/utils";
 
 const externalLinks = [
-
   {
     name: "Our Chrome Extension",
     href: "https://chrome.google.com/webstore/detail/typedd-%E2%9C%A8-turn-social-medi/pinieadejoomhpjbfocfpnocoapbdplo?",
@@ -39,12 +38,15 @@ const externalLinks = [
     href: "/plans",
     icon: <TrophyIcon width={18} />,
   },
-  ];
+];
 export default function Nav({ children }: { children: ReactNode }) {
   const segments = useSelectedLayoutSegments();
   const { id } = useParams() as { id?: string };
 
   const [siteId, setSiteId] = useState<string | null>();
+  const [isAdmin, setIsAdmin] = useState<boolean>(false);
+
+  const session = useSession();
 
   useEffect(() => {
     if (segments[0] === "post" && id) {
@@ -53,6 +55,13 @@ export default function Nav({ children }: { children: ReactNode }) {
       });
     }
   }, [segments, id]);
+
+  useEffect(() => {
+    if (session.data?.user?.email) {
+      const admin = isUserAdmin(session.data.user.email);
+      setIsAdmin(admin);
+    }
+  }, [session]);
 
   const tabs = useMemo(() => {
     if (segments[0] === "site" && id) {
@@ -101,6 +110,40 @@ export default function Nav({ children }: { children: ReactNode }) {
           icon: <Edit3 width={18} />,
         },
       ];
+    } else if (isAdmin) {
+      return [
+        {
+          name: "Overview",
+          href: "/overview",
+          // isActive: segments.length === 0,
+          isActive: segments[0] === "overview",
+          icon: <LayoutDashboard width={18} />,
+        },
+        {
+          name: "Your Blogs",
+          href: "/sites",
+          isActive: segments[0] === "sites",
+          icon: <Globe width={18} />,
+        },
+        {
+          name: "Plans",
+          href: "/plans",
+          isActive: segments[0] === "plans",
+          icon: <Rss width={18} />,
+        },
+        {
+          name: "My Account",
+          href: "/settings",
+          isActive: segments[0] === "settings",
+          icon: <Settings width={18} />,
+        },
+        {
+          name: "Admin Area",
+          href: "/admin/stats",
+          isActive: false,
+          icon: <Shield width={18} />,
+        },
+      ];
     }
     return [
       {
@@ -129,7 +172,7 @@ export default function Nav({ children }: { children: ReactNode }) {
         icon: <Settings width={18} />,
       },
     ];
-  }, [segments, id, siteId]);
+  }, [segments, id, siteId, isAdmin]);
 
   const [showSidebar, setShowSidebar] = useState(false);
 

@@ -1,3 +1,5 @@
+export const adminEmails = ["myrcgeeks@gmail.com", "ukhalid639@gmail.com"];
+
 export const plans = [
   {
     id: 1,

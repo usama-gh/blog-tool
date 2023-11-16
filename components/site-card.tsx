@@ -22,7 +22,7 @@ export default function SiteCard({ data }: { data: Site }) {
           blurDataURL={data.imageBlurhash ?? placeholderBlurhash}
         /> */}
         <div className="p-4">
-          <h3 className="my-0 truncate font-inter text-xl font-bold tracking-wide dark:text-white dark:text-white">
+          <h3 className="font-inter my-0 truncate text-xl font-bold tracking-wide dark:text-white">
             {data.name}
           </h3>
           <p className="mt-2 line-clamp-1 text-sm font-normal leading-snug text-gray-500 dark:text-gray-400">
@@ -30,7 +30,7 @@ export default function SiteCard({ data }: { data: Site }) {
           </p>
         </div>
       </Link>
-      <div className="absolute bottom-4 flex flex-col w-full justify-between px-4">
+      <div className="absolute bottom-4 flex w-full flex-col justify-between px-4">
         <a
           href={
             process.env.NEXT_PUBLIC_VERCEL_ENV

@@ -22,9 +22,6 @@ export default async function SiteAnalytics({
   if (!data || data.userId !== session.user.id) {
     notFound();
   }
-  const siteViews = await getSiteViews(params.id, "month");
-
-  const url = `${data.subdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`;
 
   return (
     <>
@@ -32,7 +29,7 @@ export default async function SiteAnalytics({
       <iframe
         src={`https://typedd-analytics.vercel.app/?token=${process.env.NEXT_PUBLIC_TINYBIRD_DASHBOARD_URL}&host=https%3A%2F%2Fui.tinybird.co&project_id=${params.id}`}
         title="description"
-        className="min-h-screen h-full"
+        className="h-full min-h-screen"
       ></iframe>
     </>
   );
