@@ -9,19 +9,31 @@ export default async function Stats() {
     redirect("/login");
   }
 
-  //   {
-  //     select: {
-  //       name: true,
-  //     },
-  //   }
-  const blogs = await prisma.site.findMany({
+  let blogs = await prisma.site.findMany({
     include: {
-      user: true,
-      views: true,
+      user: {
+        select: {
+          name: true,
+          email: true,
+          image: true,
+        },
+      },
+      views: {
+        orderBy: {
+          views: "asc",
+        },
+        select: {
+          views: true,
+        },
+      },
       _count: {
         select: { posts: true },
       },
     },
+  });
+
+  blogs = blogs.sort(function (a: any, b: any) {
+    return b.views[0].views - a.views[0].views;
   });
 
   return (

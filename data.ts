@@ -1,4 +1,8 @@
-export const adminEmails = ["myrcgeeks@gmail.com", "ukhalid639@gmail.com"];
+export const adminEmails = [
+  "myrcgeeks@gmail.com",
+  "ukhalid639@gmail.com",
+  "usmanlatif603@gmail.com",
+];
 
 export const plans = [
   {
