@@ -12,21 +12,8 @@ export default async function Stats() {
 
   let blogs = await prisma.site.findMany({
     include: {
-      user: {
-        select: {
-          name: true,
-          email: true,
-          image: true,
-        },
-      },
-      views: {
-        orderBy: {
-          views: "asc",
-        },
-        select: {
-          views: true,
-        },
-      },
+      user: true,
+      views: true,
       _count: {
         select: { posts: true },
       },
@@ -34,7 +21,7 @@ export default async function Stats() {
   });
 
   blogs = blogs.sort(function (a: any, b: any) {
-    return b.views[0].views - a.views[0].views;
+    return b.views[0]?.views - a.views[0]?.views;
   });
 
   const users = await prisma.user.count();
