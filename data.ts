@@ -1,7 +1,7 @@
 export const adminEmails = [
   "myrcgeeks@gmail.com",
   "ukhalid639@gmail.com",
-  "usmanlatif603@gmail.com",
+  "shahjahan@teamants.com",
 ];
 
 export const plans = [
