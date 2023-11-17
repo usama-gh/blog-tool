@@ -1,4 +1,6 @@
+import { adminEmails } from "@/data";
 import { clsx, type ClassValue } from "clsx";
+import { useSession } from "next-auth/react";
 import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]) {
@@ -78,3 +80,6 @@ export function getUrlFromString(str: string) {
   }
 }
 
+export function isUserAdmin(email: string) {
+  return adminEmails.includes(email);
+}
