@@ -32,7 +32,7 @@ function ApiToken({ id, apiToken }: any) {
           API key
         </h2>
         <p className="text-sm text-slate-500 dark:text-gray-400">
-          Use this Blog API key to publish posts from different channels
+          Use this Blog API key to publish posts directly from LinkedIn & Twitter using our <a className="underline" target="_blank" href="https://chrome.google.com/webstore/detail/typedd-%E2%9C%A8-turn-social-medi/pinieadejoomhpjbfocfpnocoapbdplo?">Chrome Extension</a>
         </p>
 
         <div className="flex items-center space-x-3">

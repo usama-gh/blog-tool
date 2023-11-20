@@ -74,8 +74,8 @@ export default function SocialLinksForm({
             <h4 className="mb-1 font-inter text-sm font-medium dark:text-white">
               Facebook
             </h4>
-            <div className="absolute flex items-center rounded-l-md border border-l-0 border-gray-300 bg-gray-100 px-3 py-2.5 text-sm dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400">
-              <FacebookIcon />
+            <div className="absolute flex items-center rounded-l-md border border-l-0 border-gray-300 px-3 py-2.5 text-sm dark:border-gray-600 dark:text-gray-400">
+              <FacebookIcon strokeWidth={1} />
             </div>
             <input
               name="facebookLink"
@@ -89,8 +89,8 @@ export default function SocialLinksForm({
             <h4 className="mb-1 font-inter text-sm font-medium dark:text-white">
               Twitter
             </h4>
-            <div className="absolute flex items-center rounded-l-md border border-l-0 border-gray-300 bg-gray-100 px-3 py-2.5 text-sm dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400">
-              <TwitterIcon />
+            <div className="absolute flex items-center rounded-l-md border border-l-0 border-gray-300  px-3 py-2.5 text-sm dark:border-gray-600 dark:text-gray-400">
+              <TwitterIcon strokeWidth={1} />
             </div>
             <input
               name="twitterLink"
@@ -104,8 +104,8 @@ export default function SocialLinksForm({
             <h4 className="mb-1 font-inter text-sm font-medium dark:text-white">
               Instagram
             </h4>
-            <div className="absolute flex items-center rounded-l-md border border-l-0 border-gray-300 bg-gray-100 px-3 py-2.5 text-sm dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400">
-              <InstagramIcon />
+            <div className="absolute flex items-center rounded-l-md border border-l-0 border-gray-300 px-3 py-2.5 text-sm dark:border-gray-600  dark:text-gray-400">
+              <InstagramIcon strokeWidth={1} />
             </div>
             <input
               name="instagramLink"
@@ -119,8 +119,8 @@ export default function SocialLinksForm({
             <h4 className="mb-1 font-inter text-sm font-medium dark:text-white">
               Github
             </h4>
-            <div className="absolute flex items-center rounded-l-md border border-l-0 border-gray-300 bg-gray-100 px-3 py-2.5 text-sm dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400">
-              <GithubIcon />
+            <div className="absolute flex items-center rounded-l-md border border-l-0 border-gray-300  px-3 py-2.5 text-sm dark:border-gray-600  dark:text-gray-400">
+              <GithubIcon strokeWidth={1} />
             </div>
             <input
               name="githubLink"
@@ -134,8 +134,8 @@ export default function SocialLinksForm({
             <h4 className="mb-1 font-inter text-sm font-medium dark:text-white">
               Telegram
             </h4>
-            <div className="absolute flex items-center rounded-l-md border border-l-0 border-gray-300 bg-gray-100 px-3 py-2.5 text-sm dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400">
-              <SendIcon />
+            <div className="absolute flex items-center rounded-l-md border border-l-0 border-gray-300 px-3 py-2.5 text-sm dark:border-gray-600 dark:text-gray-400">
+              <SendIcon strokeWidth={1} />
             </div>
             <input
               name="telegramLink"
@@ -149,8 +149,8 @@ export default function SocialLinksForm({
             <h4 className="mb-1 font-inter text-sm font-medium dark:text-white">
               LinkedIn
             </h4>
-            <div className="absolute flex items-center rounded-l-md border border-l-0 border-gray-300 bg-gray-100 px-3 py-2.5 text-sm dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400">
-              <LinkedinIcon />
+            <div className="absolute flex items-center rounded-l-md border border-l-0 border-gray-300 px-3 py-2.5 text-sm dark:border-gray-600 dark:text-gray-400">
+              <LinkedinIcon strokeWidth={1} />
             </div>
             <input
               name="linkedInLink"
@@ -164,8 +164,8 @@ export default function SocialLinksForm({
             <h4 className="mb-1 font-inter text-sm font-medium dark:text-white">
               Email
             </h4>
-            <div className="absolute flex items-center rounded-l-md border border-l-0 border-gray-300 bg-gray-100 px-3 py-2.5 text-sm dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400">
-              <MailIcon />
+            <div className="absolute flex items-center rounded-l-md border border-l-0 border-gray-300  px-3 py-2.5 text-sm dark:border-gray-600 dark:text-gray-400">
+              <MailIcon strokeWidth={1} />
             </div>
             <input
               name="email"
@@ -179,8 +179,8 @@ export default function SocialLinksForm({
             <h4 className="mb-1 font-inter text-sm font-medium dark:text-white">
               Youtube
             </h4>
-            <div className="absolute flex items-center rounded-l-md border border-l-0 border-gray-300 bg-gray-100 px-3 py-2.5 text-sm dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400">
-              <YoutubeIcon />
+            <div className="absolute flex items-center rounded-l-md border border-l-0 border-gray-300 px-3 py-2.5 text-sm dark:border-gray-600  dark:text-gray-400">
+              <YoutubeIcon strokeWidth={1} />
             </div>
             <input
               name="youtubeLink"
@@ -194,8 +194,8 @@ export default function SocialLinksForm({
             <h4 className="font mb-1 font-inter text-sm font-medium dark:text-white">
               WhatsApp
             </h4>
-            <div className="absolute flex items-center rounded-l-md border border-l-0 border-gray-300 bg-gray-100 px-3 py-2.5 text-sm dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400">
-              <MessageCircleIcon />
+            <div className="absolute flex items-center rounded-l-md border border-l-0 border-gray-300 px-3 py-2.5 text-sm dark:border-gray-600 dark:text-gray-400">
+              <MessageCircleIcon strokeWidth={1} />
             </div>
             <input
               name="whatsAppLink"
@@ -209,8 +209,8 @@ export default function SocialLinksForm({
             <h4 className="mb-1 font-inter text-sm font-medium dark:text-white">
               Website
             </h4>
-            <div className="absolute flex items-center rounded-l-md border border-l-0 border-gray-300 bg-gray-100 px-3 py-2.5 text-sm dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400">
-              <LinkIcon />
+            <div className="absolute flex items-center rounded-l-md border border-l-0 border-gray-300 px-3 py-2.5 text-sm dark:border-gray-600 dark:text-gray-400">
+              <LinkIcon strokeWidth={1} />
             </div>
             <input
               name="websiteLink"
