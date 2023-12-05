@@ -1,9 +1,9 @@
 "use server";
 
 import prisma from "@/lib/prisma";
-import { Post, Site } from "@prisma/client";
+import { Lead, Post, Site } from "@prisma/client";
 import { revalidateTag } from "next/cache";
-import { withPostAuth, withSiteAuth } from "./auth";
+import { withLeadAuth, withPostAuth, withSiteAuth } from "./auth";
 import { getSession } from "@/lib/auth";
 import {
   addDomainToVercel,
@@ -12,7 +12,7 @@ import {
   // removeDomainFromVercelTeam,
   validDomainRegex,
 } from "@/lib/domains";
-import { put } from "@vercel/blob";
+import { del, put } from "@vercel/blob";
 import { customAlphabet } from "nanoid";
 import { getBlurDataURL } from "@/lib/utils";
 import { createId as cuid } from "@paralleldrive/cuid2";
@@ -666,3 +666,181 @@ export const regenerateToken = async (id: string) => {
     };
   }
 };
+
+export const createSiteLead = async (formData: FormData) => {
+  const session = await getSession();
+  if (!session?.user.id) {
+    return {
+      error: "Not authenticated",
+    };
+  }
+  const siteId = formData.get("siteId") as string;
+  const name = formData.get("name") as string;
+  const title = formData.get("title") as string;
+  const description = formData.get("description") as string;
+  const buttonCta = formData.get("buttonCta") as string;
+  const download = formData.get("download") as string;
+  let file = formData.get("file") as string;
+
+  if (
+    file !==
+    "https://public.blob.vercel-storage.com/eEZHAoPTOBSYGBE3/JRajRyC-PhBHEinQkupt02jqfKacBVHLWJq7Iy.png"
+  ) {
+    if (!process.env.BLOB_READ_WRITE_TOKEN) {
+      return {
+        error:
+          "Missing BLOB_READ_WRITE_TOKEN token. Note: Vercel Blob is currently in beta – ping @steventey on Twitter for access.",
+      };
+    }
+
+    const originalFile = formData.get("file") as File;
+    const filename = `${nanoid()}.${originalFile.type.split("/")[1]}`;
+
+    const { url } = await put(filename, file, {
+      access: "public",
+    });
+    file = url;
+  }
+
+  try {
+    // creating site lead
+    const response = await prisma.lead.create({
+      data: {
+        name,
+        title,
+        description,
+        buttonCta,
+        file,
+        download,
+        user: {
+          connect: {
+            id: session.user.id,
+          },
+        },
+        site: {
+          connect: {
+            id: siteId,
+          },
+        },
+      },
+    });
+
+    revalidateTag(`${siteId}-leads`);
+
+    return response;
+  } catch (error: any) {
+    if (error.code === "P2002") {
+      return {
+        error: `This subdomain is already taken`,
+      };
+    } else {
+      return {
+        error: error.message,
+      };
+    }
+  }
+};
+
+export const updateSiteLead = withLeadAuth(
+  async (formData: FormData, lead: Lead, key: string) => {
+    const session = await getSession();
+    if (!session?.user.id) {
+      return {
+        error: "Not authenticated",
+      };
+    }
+
+    const name = formData.get("name") as string;
+    const title = formData.get("title") as string;
+    const description = formData.get("description") as string;
+    const buttonCta = formData.get("buttonCta") as string;
+    const download = formData.get("download") as string;
+    let file = formData.get("file") as string;
+    let oldFile = formData.get("oldFile") as string;
+
+    if (file !== oldFile) {
+      if (!process.env.BLOB_READ_WRITE_TOKEN) {
+        return {
+          error:
+            "Missing BLOB_READ_WRITE_TOKEN token. Note: Vercel Blob is currently in beta – ping @steventey on Twitter for access.",
+        };
+      }
+
+      const originalFile = formData.get("file") as File;
+      const filename = `${nanoid()}.${originalFile.type.split("/")[1]}`;
+
+      // delete old file from vercel blob
+      await del(oldFile);
+      // upload new file to vercel blob
+      const { url } = await put(filename, file, {
+        access: "public",
+      });
+      file = url;
+    }
+
+    try {
+      const response = await prisma.lead.update({
+        where: {
+          id: lead.id,
+        },
+        data: {
+          name,
+          title,
+          description,
+          buttonCta,
+          file,
+          download,
+        },
+      });
+
+      await revalidateTag(`${lead.siteId}-leads`);
+      return response;
+    } catch (error: any) {
+      return {
+        error: error.message,
+      };
+    }
+  },
+);
+
+export const deleteSiteLead = withLeadAuth(async (_: FormData, lead: Lead) => {
+  try {
+    // deleting all collectors of lead
+    await prisma.leadCollector.deleteMany({
+      where: {
+        leadId: {
+          contains: lead.id,
+        },
+      },
+    });
+
+    // updating posts who contains lead data
+    await prisma.post.updateMany({
+      where: {
+        leadId: {
+          contains: lead.id,
+        },
+      },
+      data: {
+        leadId: null,
+      },
+    });
+
+    // deleteing lead
+    const file = lead.file as string;
+    const response = await prisma.lead.delete({
+      where: {
+        id: lead.id,
+      },
+    });
+    // deleting file from blob
+    await del(file);
+
+    await revalidateTag(`${lead.siteId}-leads`);
+    return response;
+  } catch (error: any) {
+    return {
+      error: error.message,
+    };
+  }
+});

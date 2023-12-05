@@ -78,6 +78,12 @@ export default function Nav({ children }: { children: ReactNode }) {
           icon: <Newspaper width={18} />,
         },
         {
+          name: "Leads",
+          href: `/site/${id}/leads`,
+          isActive: segments.includes("leads"),
+          icon: <Newspaper width={18} />,
+        },
+        {
           name: "Add Social Links",
           href: `/site/${id}/settings#socials`,
           icon: <Megaphone width={18} />,
