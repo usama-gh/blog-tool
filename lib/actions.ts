@@ -433,6 +433,28 @@ export const updatePostMetadata = withPostAuth(
             imageBlurhash: blurhash,
           },
         });
+      } else if (key === "leadId") {
+        const lead = formData.get("leadId") as string;
+
+        if (lead !== "null") {
+          response = await prisma.post.update({
+            where: {
+              id: post.id,
+            },
+            data: {
+              leadId: lead,
+            },
+          });
+        } else {
+          response = await prisma.post.update({
+            where: {
+              id: post.id,
+            },
+            data: {
+              leadId: null,
+            },
+          });
+        }
       } else {
         response = await prisma.post.update({
           where: {

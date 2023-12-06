@@ -7,10 +7,12 @@ import { ReactNode } from "react";
 export default function LeadButton({
   btnText,
   style,
+  disable,
   children,
 }: {
-  btnText: string;
+  btnText: any;
   style?: string | null;
+  disable?: boolean;
   children: ReactNode;
 }) {
   const modal = useModal();
@@ -23,6 +25,7 @@ export default function LeadButton({
           "rounded-lg border border-black bg-black px-4 py-1.5 text-sm font-medium text-white shadow-md transition-all hover:bg-white hover:text-black active:bg-stone-100 disabled:cursor-not-allowed disabled:opacity-70 dark:border-gray-700  dark:hover:border-gray-200 dark:hover:bg-black dark:hover:text-white dark:active:bg-gray-800 lg:text-base",
           style,
         )}
+        disabled={disable}
       >
         {btnText}
       </button>

@@ -11,7 +11,7 @@ import PostForm from "@/components/form/post-form";
 import { toast } from "sonner";
 import TextareaAutosize from "react-textarea-autosize";
 import { EditorBubbleMenu } from "./bubble-menu";
-import { Post } from "@prisma/client";
+import { Lead, Post } from "@prisma/client";
 import { updatePost, updatePostMetadata } from "@/lib/actions";
 import { cn } from "@/lib/utils";
 import LoadingDots from "../icons/loading-dots";
@@ -23,26 +23,38 @@ import { TiptapExtensionsAI } from "./extensions/index-ai";
 import { markdownToTxt } from "markdown-to-txt";
 import Form from "@/components/form";
 import { triggerEvent } from "../usermaven";
+import LeadButton from "../lead-button";
+import LinkLeadModal from "../modal/link-lead";
+import { useRouter } from "next/navigation";
 
 type PostWithSite = Post & { site: { subdomain: string | null } | null };
 
 export default function Editor({
   post,
   canUseAI,
+  leads,
 }: {
   post: PostWithSite;
   canUseAI: boolean;
+  leads: Lead[];
 }) {
+  const router = useRouter();
+
   let [isPendingSaving, startTransitionSaving] = useTransition();
   let [isPendingPublishing, startTransitionPublishing] = useTransition();
+  let [isPendingLead, startTransitionLead] = useTransition();
 
+  const [data, setData] = useState<PostWithSite>(post);
+  const [hydrated, setHydrated] = useState(false);
   const [textareaValue, setTextareaValue] = useState<string>(
     post?.description || "",
   );
   const [isUserEdit, setIsUserEdit] = useState<boolean>(false);
   const [isPasted, setIsPasted] = useState<boolean>(false);
+  const [leadId, setLeadId] = useState(data.leadId);
 
   const firstRender = useRef<boolean>(true);
+  const firstRenderLead = useRef<boolean>(true);
   const MAX_CHUNK_LENGTH =
     Number(process.env.NEXT_PUBLIC_MAX_CHUNK_LENGTH) || 300;
 
@@ -95,8 +107,6 @@ export default function Editor({
     }
   };
 
-  const [data, setData] = useState<PostWithSite>(post);
-  const [hydrated, setHydrated] = useState(false);
   const [slides, setSlides] = useState<Array<string>>(() => {
     try {
       return !!post.slides ? JSON.parse(post.slides) : [];
@@ -373,6 +383,25 @@ export default function Editor({
     }
   }, [debouncedData.content]);
 
+  useEffect(() => {
+    if (!firstRenderLead.current) {
+      const formData = new FormData();
+      // @ts-ignore
+      formData.append("leadId", leadId);
+      startTransitionLead(async () => {
+        await updatePostMetadata(formData, post.id, "leadId").then(() => {
+          router.refresh();
+          toast.success(`Successfully created lead magnet to post`);
+          setData((prev) => ({
+            ...prev,
+            leadId: leadId,
+          }));
+        });
+      });
+    }
+    firstRenderLead.current = false;
+  }, [leadId]);
+
   return (
     <>
       <div className="my-5 mb-0 flex items-center justify-end space-x-3 lg:my-0 lg:mb-4">
@@ -389,6 +418,13 @@ export default function Editor({
         {/* <ImportJSONButton>
           <ImportJsonModal setSlideWithJson={setSlideWithJson} />
         </ImportJSONButton> */}
+        <LeadButton
+          btnText={isPendingLead ? <LoadingDots /> : "Lead Magnet"}
+          style="rounded-lg bg-gray-100 px-2 py-1 text-xs font-normal text-gray-400 dark:bg-gray-800 dark:text-gray-500 lg:text-lg border-gray-100 shadow-none"
+          disable={isPendingLead ? true : false}
+        >
+          <LinkLeadModal leads={leads} leadId={leadId} setLeadId={setLeadId} />
+        </LeadButton>
         <div className="rounded-lg bg-gray-100 px-2 py-1 text-xs text-gray-400 dark:bg-gray-800 dark:text-gray-500 lg:text-lg">
           {isPendingSaving ? "Saving..." : "Saved"}
         </div>

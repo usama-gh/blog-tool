@@ -35,13 +35,19 @@ export default async function PostPage({ params }: { params: { id: string } }) {
     notFound();
   }
 
+  const leads = await prisma.lead.findMany({
+    where: {
+      siteId: data.siteId as string,
+    },
+  });
+
   return (
     <>
-      <div className="flex justify-between flex-wrap gap-y-2">
+      <div className="flex flex-wrap justify-between gap-y-2">
         <div className="w-full px-2 lg:px-4">
-          <Editor post={data} canUseAI={canUseAI} />
+          <Editor post={data} canUseAI={canUseAI} leads={leads} />
         </div>
-        <div className="mb-10  xl:mb-0 px-2 lg:px-4 ml-auto mt-10">
+        <div className="mb-10  ml-auto mt-10 px-2 lg:px-4 xl:mb-0">
           <div className="flex flex-col space-y-6">
             {/* <PostForm
               title="Post Slug"
