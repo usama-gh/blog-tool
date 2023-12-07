@@ -43,7 +43,7 @@ export default function UpdateLeadModal({ lead }: { lead: Lead }) {
           });
         }
       }}
-      className="w-full rounded-md bg-white pt-12 dark:bg-black md:max-w-md md:border md:border-gray-200 md:shadow dark:md:border-gray-700"
+      className="w-full rounded-md bg-white dark:bg-black md:max-w-md md:border md:border-gray-200 md:shadow dark:md:border-gray-700"
     >
       <div className="relative flex flex-col space-y-4 p-5 md:p-10">
         <h2 className="font-inter text-2xl dark:text-white">
@@ -55,7 +55,7 @@ export default function UpdateLeadModal({ lead }: { lead: Lead }) {
             htmlFor="name"
             className="text-sm font-medium text-slate-500 dark:text-gray-400"
           >
-            Compaign Name
+            Campaign Name
           </label>
           <input
             name="name"

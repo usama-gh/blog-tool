@@ -32,7 +32,7 @@ export default async function Lead({ params }: { params: { leadId: string } }) {
           <h1 className="font-inter truncate text-lg font-bold dark:text-white sm:w-auto sm:text-2xl">
             {lead.name}
           </h1>
-          <p className="mt-3 text-base font-normal text-gray-600">
+          <p className="mt-3 text-base font-normal text-slate-800 dark:text-gray-600">
             Leads collected from your resources
           </p>
         </div>

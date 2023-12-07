@@ -50,7 +50,7 @@ async function LeadsTable({
                     scope="col"
                     className="px-6 py-3 text-start text-xs font-medium uppercase text-gray-500"
                   >
-                    Compaign
+                    Campaign
                   </th>
                   <th
                     scope="col"

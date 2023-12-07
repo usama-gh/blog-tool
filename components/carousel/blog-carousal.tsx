@@ -130,26 +130,7 @@ const Carousel = ({ data, siteData, lead }: any) => {
             <div className="flex h-fit items-start ">
               <div className="h-fit min-w-full text-slate-50  dark:text-gray-400 ">
                 <div className="scrollbar-thumb-rounded-full scrollbar-track-rounded-full my-auto flex h-screen w-full items-center justify-center overflow-y-auto py-10 text-slate-600 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-gray-200 dark:text-gray-400 dark:scrollbar-thumb-gray-800 [&>*]:rounded-xl [&>*]:text-lg ">
-                  <MDX source={data.mdxSource} />
-                  {/* showing lead cta button */}
-                  {/* {lead && (
-                    <div className="flex w-full items-center justify-between gap-3 rounded-full border border-gray-700 p-3">
-                      <p className="flex-1">{lead.name}</p>
-                      <button
-                        type="button"
-                        className="inline-flex items-center gap-x-2 rounded-full border border-transparent bg-gray-800 px-4 py-2 text-sm font-semibold text-white hover:bg-gray-900 disabled:pointer-events-none disabled:opacity-50 dark:bg-white dark:text-gray-800 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
-                        onClick={() =>
-                          scrollTo(
-                            data.slides
-                              ? JSON.parse(data.slides).length + 1
-                              : 1,
-                          )
-                        }
-                      >
-                        {lead.buttonCta}
-                      </button>
-                    </div>
-                  )} */}
+                  <MDX source={data.mdxSource} /> 
                 </div>
               </div>
 
@@ -161,22 +142,6 @@ const Carousel = ({ data, siteData, lead }: any) => {
                   >
                     <div className="scrollbar-thumb-rounded-full scrollbar-track-rounded-full my-auto flex h-screen w-full flex-1 items-center justify-center overflow-y-auto py-10 text-slate-600 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-gray-200 dark:text-gray-400 dark:scrollbar-thumb-gray-800 [&>*]:text-xl">
                       <MDX source={data.slidesMdxSource[index]} />
-
-                      {/* showing lead cta button */}
-                      {/* {lead && (
-                        <div className="flex w-full items-center justify-between gap-3 rounded-full border border-gray-700 p-3">
-                          <p className="flex-1">{lead.name}</p>
-                          <button
-                            type="button"
-                            className="inline-flex items-center gap-x-2 rounded-full border border-transparent bg-gray-800 px-4 py-2 text-sm font-semibold text-white hover:bg-gray-900 disabled:pointer-events-none disabled:opacity-50 dark:bg-white dark:text-gray-800 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
-                            onClick={() =>
-                              scrollTo(JSON.parse(data.slides).length + 1)
-                            }
-                          >
-                            {lead.buttonCta}
-                          </button>
-                        </div>
-                      )} */}
                     </div>
                   </div>
                 ))}
@@ -184,15 +149,15 @@ const Carousel = ({ data, siteData, lead }: any) => {
               {/* showing lead */}
               {lead && (
                 <div className="scrollbar-thumb-rounded-full scrollbar-track-rounded-full relative mx-auto my-auto mt-10 flex h-screen w-9/12  min-w-full items-center  justify-center overflow-y-auto pb-[120px] scrollbar-thin scrollbar-track-transparent scrollbar-thumb-gray-200 dark:scrollbar-thumb-gray-800">
-                  <div className="mx-auto max-w-xl">
-                    <h4 className="pb-4 text-center text-2xl font-semibold tracking-wide text-gray-800 dark:bg-gray-800 dark:text-gray-400">
+                  <div className="mx-auto max-w-xl px-6">
+                    <h4 className="pb-4 text-center text-3xl font-bold tracking-tight text-gray-800 dark:bg-gray-800 dark:text-gray-100">
                       {lead.title}
                     </h4>
-                    <p className="text-md pb-8 text-center font-normal tracking-wide text-gray-600 dark:bg-gray-800 dark:text-gray-400">
+                    <p className="text-lg pb-8 text-center font-normal tracking-wide text-gray-600  dark:text-gray-300">
                       {lead.description}
                     </p>
                     {isDownloaded ? (
-                      <p className="text-center text-2xl font-semibold !text-green-500">
+                      <p className="text-center text-2xl font-semibold dark:text-gray-200">
                         Thank you for downloading
                       </p>
                     ) : lead.download === "email" ? (
@@ -206,10 +171,10 @@ const Carousel = ({ data, siteData, lead }: any) => {
                         <input
                           name="name"
                           type="email"
-                          placeholder="Enter Email"
+                          placeholder="Enter your email"
                           onChange={(e) => setEmail(e.target.value)}
                           required
-                          className="w-full flex-1 rounded-md border border-slate-200 bg-slate-50 px-4 py-2 text-sm text-slate-600 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-blue-400 dark:border-gray-600 dark:bg-black dark:text-white dark:placeholder-gray-700 dark:focus:ring-white"
+                          className="w-full flex-1 rounded-md border border-slate-200 bg-slate-50 px-4 py-2 text-sm text-slate-600 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-blue-400 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-300 dark:focus:ring-white"
                         />
                         <button
                           type="submit"
@@ -298,6 +263,26 @@ const Carousel = ({ data, siteData, lead }: any) => {
               )}
             </div>
           </div>
+          {lead && (
+                    <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 z-90">
+                    <div className="flex p-1 w-fit items-center justify-between gap-3 rounded-full bg-slate-200 dark:bg-gray-200">
+                      <p className="whitespace-nowrap font-semibold	 text-sm pl-4 text-dark">{lead.title}</p>
+                      <button
+                        type="button"
+                        className="whitespace-nowrap	inline-flex items-center gap-x-2 rounded-full border border-transparent bg-blue-600 px-4 py-1 text-sm font-semibold text-white hover:bg-blue-700 dark:hover:bg-blue-700 disabled:pointer-events-none disabled:opacity-50 dark:bg-blue-600 dark:text-white dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
+                        onClick={() =>
+                          scrollTo(
+                            data.slides
+                              ? JSON.parse(data.slides).length + 1
+                              : 1,
+                          )
+                        }
+                      >
+                        {lead.buttonCta}
+                      </button>
+                    </div>
+                    </div>
+                  )}
           <PrevButton onClick={scrollPrev} enabled={prevBtnEnabled} />
           <NextButton onClick={scrollNext} enabled={nextBtnEnabled} />
         </div>

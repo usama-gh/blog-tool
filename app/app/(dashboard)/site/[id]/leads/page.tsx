@@ -17,7 +17,7 @@ async function Leads({ params }: { params: { id: string } }) {
           <h1 className="font-inter truncate text-lg font-bold dark:text-white sm:w-auto sm:text-2xl">
             Leads
           </h1>
-          <p className="mt-3 text-base font-normal text-gray-600">
+          <p className="mt-3 text-base font-normal text-slate-800 dark:text-gray-600">
             Leads collected from your resources
           </p>
         </div>

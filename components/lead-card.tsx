@@ -39,14 +39,14 @@ export default function LeadCard({
   };
   return (
     <tr>
-      <td className="whitespace-nowrap px-6 py-4 text-sm font-medium text-gray-800 dark:text-gray-200">
+      <td className="whitespace-nowrap px-6 py-4 text-sm font-medium text-gray-800 dark:text-gray-300">
         {lead.name}
       </td>
       <td className="whitespace-nowrap px-6 py-4 text-sm text-gray-800 dark:text-gray-200">
         {lead.posts?.length > 0
           ? lead.posts?.map((post) => (
               <p
-                className="mb-2 rounded-md bg-slate-400/50 p-1.5 text-gray-700"
+                className="mb-2 rounded-md bg-slate-200 dark:bg-gray-900 p-1.5 text-gray-700 dark:text-gray-300"
                 key={post.id}
               >
                 {post.title}

@@ -48,13 +48,13 @@ export default function FileUploader({
     <div>
       <label
         htmlFor="leadFile"
-        className="w-100 group relative mt-2 flex h-12 cursor-pointer flex-col items-center justify-center rounded-md border border-dashed border-gray-300 bg-white shadow-sm transition-all hover:bg-gray-50 dark:border-gray-500"
+        className="w-100 group uppercase tracking-wide relative flex h-12 cursor-pointer flex-col text-xs items-center justify-center rounded-md border border-dashed border-gray-300 dark:text-gray-600 bg-white hover:dark:border-gray-500 dark:bg-transparent shadow-sm transition-all dark:border-gray-600"
       >
-        Upload file
+        Upload your file
       </label>
       {filename && (
-        <div className="mt-1 flex items-center justify-between">
-          <span>{filename}</span>
+        <span className="flex items-center justify-between text-center">
+          <span className="text-xs text-slate-600 dark:text-gray-500">{filename}</span>
           <XCircle
             width={18}
             className="cursor-pointer text-red-400"
@@ -64,7 +64,7 @@ export default function FileUploader({
               SetFileName("");
             }}
           />
-        </div>
+        </span>
       )}
 
       <div className="mt-1 flex rounded-md shadow-sm">

@@ -43,24 +43,24 @@ export default function CreateLeadModal({ siteId }: { siteId?: string }) {
           });
         }
       }}
-      className="w-full rounded-md bg-white pt-12 dark:bg-black md:max-w-md md:border md:border-gray-200 md:shadow dark:md:border-gray-700"
+      className="w-full rounded-md bg-white dark:bg-black md:max-w-md md:border md:border-gray-200 md:shadow dark:md:border-gray-700"
     >
       <div className="relative flex flex-col space-y-4 p-5 md:p-10">
-        <h2 className="font-inter text-2xl dark:text-white">
-          Add your lead magnet
+        <h2 className="font-inter font-bold text-2xl dark:text-white mb-5">
+          Create your lead magnet
         </h2>
 
         <div className="flex flex-col space-y-2">
           <label
             htmlFor="name"
-            className="text-sm font-medium text-slate-500 dark:text-gray-400"
+            className="text-xs font-medium text-slate-500 dark:text-gray-400"
           >
             Compaign Name
           </label>
           <input
             name="name"
             type="text"
-            placeholder="Saas guid #1"
+            placeholder="SaaS guide #1"
             autoFocus
             value={data.name}
             onChange={(e) => setData({ ...data, name: e.target.value })}
@@ -72,14 +72,14 @@ export default function CreateLeadModal({ siteId }: { siteId?: string }) {
         <div className="flex flex-col space-y-2">
           <label
             htmlFor="title"
-            className="text-sm font-medium text-slate-500 dark:text-gray-400"
+            className="text-xs font-medium text-slate-500 dark:text-gray-400"
           >
             Title CTA
           </label>
           <input
             name="title"
             type="text"
-            placeholder="Build your Saas in two weeks! Free Guide"
+            placeholder="Build your SaaS in just two weeks! Free Guide"
             value={data.title}
             onChange={(e) => setData({ ...data, title: e.target.value })}
             maxLength={32}
@@ -91,7 +91,7 @@ export default function CreateLeadModal({ siteId }: { siteId?: string }) {
         <div className="flex flex-col space-y-2">
           <label
             htmlFor="description"
-            className="text-sm font-medium text-slate-500"
+            className="text-xs font-medium text-slate-500  dark:text-gray-400"
           >
             Body
           </label>
@@ -107,9 +107,9 @@ export default function CreateLeadModal({ siteId }: { siteId?: string }) {
         <div className="flex flex-col space-y-2">
           <label
             htmlFor="description"
-            className="text-sm font-medium text-slate-500"
+            className="text-xs font-medium text-slate-500  dark:text-gray-400"
           >
-            Upload your file
+            Upload file
           </label>
           <FileUploader defaultValue={file} name="file" setFile={setFile} />
         </div>
@@ -117,7 +117,7 @@ export default function CreateLeadModal({ siteId }: { siteId?: string }) {
         <div className="flex flex-col space-y-2">
           <label
             htmlFor="btnCta"
-            className="text-sm font-medium text-slate-500 dark:text-gray-400"
+            className="text-xs font-medium text-slate-500 dark:text-gray-400"
           >
             Button CTA
           </label>
@@ -135,7 +135,7 @@ export default function CreateLeadModal({ siteId }: { siteId?: string }) {
         <div className="flex flex-col space-y-2">
           <label
             htmlFor="download"
-            className="text-sm font-medium text-slate-500 dark:text-gray-400"
+            className="text-xs font-medium text-slate-500 dark:text-gray-400"
           >
             Download settings
           </label>
@@ -196,7 +196,7 @@ function CreateSiteFormButton() {
       )}
       disabled={pending}
     >
-      {pending ? <LoadingDots color="#808080" /> : <p>Create Lead</p>}
+      {pending ? <LoadingDots color="#808080" /> : <p>Create Lead Magnet</p>}
     </button>
   );
 }
