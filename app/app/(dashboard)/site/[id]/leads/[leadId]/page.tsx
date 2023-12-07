@@ -37,7 +37,7 @@ export default async function Lead({ params }: { params: { leadId: string } }) {
           </p>
         </div>
       </div>
-
+      {/* @ts-ignore */}
       <LeadCollectors collectors={lead.LeadCollector} />
     </>
   );

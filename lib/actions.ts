@@ -342,6 +342,7 @@ export const createPost = withSiteAuth(async (_: FormData, site: Site) => {
   await revalidateTag(
     `${site.subdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}-posts`,
   );
+  await revalidateTag(`${response.id}-lead`);
   site.customDomain && (await revalidateTag(`${site.customDomain}-posts`));
 
   return response;
@@ -387,6 +388,7 @@ export const updatePost = async (data: Post) => {
     await revalidateTag(
       `${post.site?.subdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}-${post.slug}`,
     );
+    await revalidateTag(`${post.id}-lead`);
 
     // await revalidateTag(`${data.id}-post`);
     // if the site has a custom domain, we need to revalidate those tags too

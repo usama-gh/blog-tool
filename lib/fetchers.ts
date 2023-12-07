@@ -209,6 +209,27 @@ export async function getPostData(domain: string, slug: string) {
   )();
 }
 
+export async function getPostLead(leadId: string, postId: string) {
+  return await unstable_cache(
+    async () => {
+      const lead = await prisma.lead.findFirst({
+        where: {
+          id: leadId,
+        },
+      });
+
+      if (!lead) return null;
+
+      return lead;
+    },
+    [`${postId}-lead`],
+    {
+      revalidate: 300, // 5 minutes
+      tags: [`${postId}-lead`],
+    },
+  )();
+}
+
 async function getMdxSource(postContents: string) {
   // transforms links like <link> to [link](link) as MDX doesn't support <link> syntax
   // https://mdxjs.com/docs/what-is-mdx/#markdown

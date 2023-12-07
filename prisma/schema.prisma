@@ -97,7 +97,7 @@ model Lead {
 
 model LeadCollector {
   id        String   @id @default(cuid())
-  email     String   @db.Text
+  email     String?  @db.Text
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   lead      Lead     @relation(fields: [leadId], references: [id], onDelete: Cascade, onUpdate: Cascade)
