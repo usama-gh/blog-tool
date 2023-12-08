@@ -57,7 +57,7 @@ export default async function SitePostPage({
 
   let lead = null;
   if (data.leadId) {
-    lead = await getPostLead(data.leadId, data.id);
+    lead = await getPostLead(data.leadId, data.id, data.siteId as string);
   }
 
   return (

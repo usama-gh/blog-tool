@@ -209,7 +209,11 @@ export async function getPostData(domain: string, slug: string) {
   )();
 }
 
-export async function getPostLead(leadId: string, postId: string) {
+export async function getPostLead(
+  leadId: string,
+  postId: string,
+  siteId: string,
+) {
   return await unstable_cache(
     async () => {
       const lead = await prisma.lead.findFirst({
@@ -222,10 +226,10 @@ export async function getPostLead(leadId: string, postId: string) {
 
       return lead;
     },
-    [`${postId}-lead`],
+    [`${postId}-leads`],
     {
       revalidate: 300, // 5 minutes
-      tags: [`${postId}-lead`],
+      tags: [`${siteId}-leads`],
     },
   )();
 }

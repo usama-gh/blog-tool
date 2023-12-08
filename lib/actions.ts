@@ -850,6 +850,7 @@ export const deleteSiteLead = withLeadAuth(async (_: FormData, lead: Lead) => {
       },
     });
 
+    const siteId = lead.siteId;
     // deleteing lead
     const file = lead.file as string;
     const response = await prisma.lead.delete({
@@ -860,7 +861,7 @@ export const deleteSiteLead = withLeadAuth(async (_: FormData, lead: Lead) => {
     // deleting file from blob
     await del(file);
 
-    await revalidateTag(`${lead.siteId}-leads`);
+    await revalidateTag(`${siteId}-leads`);
     return response;
   } catch (error: any) {
     return {

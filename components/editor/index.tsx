@@ -391,7 +391,11 @@ export default function Editor({
       startTransitionLead(async () => {
         await updatePostMetadata(formData, post.id, "leadId").then(() => {
           router.refresh();
-          toast.success(`Successfully created lead magnet to post`);
+          toast.success(
+            `Successfully ${leadId ? " created " : "removed"} lead magnet ${
+              leadId ? "to" : "from"
+            } post`,
+          );
           setData((prev) => ({
             ...prev,
             leadId: leadId,
