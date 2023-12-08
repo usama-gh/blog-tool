@@ -10,7 +10,7 @@ import DomainStatus from "./domain-status";
 import DomainConfiguration from "./domain-configuration";
 import Uploader from "./uploader";
 import { useState } from "react";
-import BioEditor from "../editor/bio-editor";
+import NobelEditor from "../editor/novel-editor";
 import { triggerEvent } from "../usermaven";
 
 export default function Form({
@@ -40,7 +40,8 @@ export default function Form({
   const { update } = useSession();
 
   // eidtor setup
-  const [bio, setBio] = useState({ bio: inputAttrs.defaultValue });
+  // const [bio, setBio] = useState({ bio: inputAttrs.defaultValue });
+  const [bio, setBio] = useState(inputAttrs.defaultValue);
 
   return (
     <form
@@ -62,7 +63,8 @@ export default function Form({
           return;
         }
         handleSubmit(
-          inputAttrs.name !== "bio" ? data : bio.bio,
+          // inputAttrs.name !== "bio" ? data : bio.bio,
+          inputAttrs.name !== "bio" ? data : bio,
           id,
           inputAttrs.name,
         ).then(async (res: any) => {
@@ -140,7 +142,7 @@ export default function Form({
             className="w-full max-w-xl rounded-md border border-gray-300 text-sm text-gray-900 placeholder-gray-300 focus:border-gray-500 focus:outline-none focus:ring-gray-500 dark:border-gray-600 dark:bg-black dark:text-white dark:placeholder-gray-700"
           />
         ) : inputAttrs.name === "bio" ? (
-          <BioEditor bio={bio} setBio={setBio} canUseAI={canUseAI} />
+          <NobelEditor text={bio} setText={setBio} canUseAI={canUseAI} />
         ) : (
           <input
             {...inputAttrs}

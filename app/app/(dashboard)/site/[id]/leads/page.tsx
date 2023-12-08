@@ -2,7 +2,7 @@ import LeadButton from "@/components/lead-button";
 import { getSession } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import LeadsTable from "@/components/leads";
-import CreateLeadModal from "@/components/modal/create-lead";
+import LeadModal from "@/components/modal/lead-model";
 
 async function Leads({ params }: { params: { id: string } }) {
   const session = await getSession();
@@ -22,7 +22,7 @@ async function Leads({ params }: { params: { id: string } }) {
           </p>
         </div>
         <LeadButton btnText="Create New Lead">
-          <CreateLeadModal siteId={params.id} />
+          <LeadModal siteId={params.id} />
         </LeadButton>
       </div>
       <LeadsTable siteId={params.id} />

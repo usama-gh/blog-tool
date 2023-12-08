@@ -5,7 +5,7 @@ import Link from "next/link";
 import { toast } from "sonner";
 import { useParams, useRouter } from "next/navigation";
 import LeadButton from "./lead-button";
-import UpdateLeadModal from "./modal/update-lead";
+import LeadModal from "./modal/lead-model";
 import { Lead } from "@prisma/client";
 
 interface Post {
@@ -46,7 +46,7 @@ export default function LeadCard({
         {lead.posts?.length > 0
           ? lead.posts?.map((post) => (
               <p
-                className="mb-2 rounded-md bg-slate-200 dark:bg-gray-900 p-1.5 text-gray-700 dark:text-gray-300"
+                className="mb-2 rounded-md bg-slate-200 p-1.5 text-gray-700 dark:bg-gray-900 dark:text-gray-300"
                 key={post.id}
               >
                 {post.title}
@@ -67,7 +67,7 @@ export default function LeadCard({
           </button>
 
           <LeadButton btnText="Manage">
-            <UpdateLeadModal lead={lead} />
+            <LeadModal lead={lead} />
           </LeadButton>
           <button
             onClick={handleLeadDelete}

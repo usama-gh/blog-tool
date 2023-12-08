@@ -1,7 +1,7 @@
 "use client";
 
 import { toast } from "sonner";
-import { createSiteLead } from "@/lib/actions";
+import { createSiteLead, updateSiteLead } from "@/lib/actions";
 import { useRouter } from "next/navigation";
 import { experimental_useFormStatus as useFormStatus } from "react-dom";
 import { cn } from "@/lib/utils";
@@ -9,36 +9,56 @@ import LoadingDots from "@/components/icons/loading-dots";
 import { useModal } from "./provider";
 import { useState } from "react";
 import FileUploader from "../form/file-uploader";
+import { Lead } from "@prisma/client";
+import NovelEditor from "../editor/novel-editor";
 
-export default function CreateLeadModal({ siteId }: { siteId?: string }) {
+export default function LeadModal({
+  siteId,
+  lead,
+}: {
+  siteId?: string;
+  lead?: Lead;
+}) {
   const router = useRouter();
   const modal = useModal();
 
   const [data, setData] = useState({
-    name: "" as string,
-    title: "" as string,
-    description: "" as string,
-    buttonCta: "" as string,
-    download: "free" as string,
+    name: (lead ? lead.name : "") as string,
+    title: (lead ? lead.title : "") as string,
+    description: (lead ? lead.description : "") as string,
+    buttonCta: (lead ? lead.buttonCta : "") as string,
+    download: (lead ? lead.download : "free") as string,
   });
-  const [file, setFile] = useState("");
+  const [file, setFile] = useState(lead ? lead.file : "");
+  const [description, setDescription] = useState(data.description);
+  const type = lead ? "Update" : "Create";
 
   return (
     <form
       action={async (data: FormData) => {
+        console.log("submitted");
+
         if (!file) {
           toast.error("Please select a file");
         } else {
+          data.append("description", description);
           data.append("file", file);
           // @ts-ignore
-          data.append("siteId", siteId);
-          createSiteLead(data).then((res: any) => {
+          siteId && data.append("siteId", siteId);
+          lead && data.append("oldFile", lead.file as string);
+
+          (lead
+            ? updateSiteLead(data, lead.id, "update")
+            : createSiteLead(data)
+          ).then((res: any) => {
             if (res.error) {
               toast.error(res.error);
             } else {
               router.refresh();
               modal?.hide();
-              toast.success(`Successfully created site lead`);
+              toast.success(
+                `Successfully ${lead ? "updated" : "created"} site lead`,
+              );
             }
           });
         }
@@ -46,8 +66,8 @@ export default function CreateLeadModal({ siteId }: { siteId?: string }) {
       className="w-full rounded-md bg-white dark:bg-black md:max-w-md md:border md:border-gray-200 md:shadow dark:md:border-gray-700"
     >
       <div className="relative flex flex-col space-y-4 p-5 md:p-10">
-        <h2 className="font-inter font-bold text-2xl dark:text-white mb-5">
-          Create your lead magnet
+        <h2 className="font-inter mb-5 text-2xl font-bold dark:text-white">
+          {type} your lead magnet
         </h2>
 
         <div className="flex flex-col space-y-2">
@@ -95,14 +115,19 @@ export default function CreateLeadModal({ siteId }: { siteId?: string }) {
           >
             Body
           </label>
-          <textarea
+          <NovelEditor
+            text={description}
+            setText={setDescription}
+            canUseAI={false}
+          />
+          {/* <textarea
             name="description"
             placeholder="Description about the lead"
             value={data.description}
             onChange={(e) => setData({ ...data, description: e.target.value })}
             rows={3}
             className="bg-stslateone-50 w-full rounded-md border border-slate-200 px-4 py-2 text-sm text-slate-600 placeholder:text-slate-400 focus:border-black  focus:outline-none focus:ring-black dark:border-gray-600 dark:bg-black dark:text-white dark:placeholder-gray-700 dark:focus:ring-white"
-          />
+          /> */}
         </div>
         <div className="flex flex-col space-y-2">
           <label
@@ -179,15 +204,16 @@ export default function CreateLeadModal({ siteId }: { siteId?: string }) {
         </div>
       </div>
       <div className="flex items-center justify-end rounded-b-lg border-t border-slate-200 bg-slate-50 p-3 dark:border-gray-700 dark:bg-gray-800 md:px-10">
-        <CreateSiteFormButton />
+        <CreateSiteFormButton type={type} />
       </div>
     </form>
   );
 }
-function CreateSiteFormButton() {
+function CreateSiteFormButton({ type }: { type: string }) {
   const { pending } = useFormStatus();
   return (
     <button
+      type="submit"
       className={cn(
         "flex h-10 w-full items-center justify-center space-x-2 rounded-md border text-sm transition-all focus:outline-none",
         pending
@@ -196,7 +222,7 @@ function CreateSiteFormButton() {
       )}
       disabled={pending}
     >
-      {pending ? <LoadingDots color="#808080" /> : <p>Create Lead Magnet</p>}
+      {pending ? <LoadingDots color="#808080" /> : <p>{type} Lead Magnet</p>}
     </button>
   );
 }
