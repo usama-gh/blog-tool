@@ -142,3 +142,30 @@ export function withPostAuth(action: any) {
     return action(formData, post, key);
   };
 }
+
+export function withLeadAuth(action: any) {
+  return async (
+    formData: FormData | null,
+    leadId: string,
+    key: string | null,
+  ) => {
+    const session = await getSession();
+    if (!session?.user.id) {
+      return {
+        error: "Not authenticated",
+      };
+    }
+    const lead = await prisma.lead.findUnique({
+      where: {
+        id: leadId,
+      },
+    });
+    if (!lead || lead.userId !== session.user.id) {
+      return {
+        error: "Lead not found",
+      };
+    }
+
+    return action(formData, lead, key);
+  };
+}

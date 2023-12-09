@@ -8,8 +8,11 @@ import MDX from "../mdx";
 import BlogCard from "../blog-card";
 import SocialLinks from "../social-links";
 import useSwipe from "@/lib/hooks/useSwipe";
+import { toast } from "sonner";
+/* @ts-ignore*/
+import { MarkdownRenderer } from "markdown-react-renderer";
 
-const Carousel = ({ data, siteData }: any) => {
+const Carousel = ({ data, siteData, lead }: any) => {
   const [viewportRef, embla] = useEmblaCarousel({
     skipSnaps: false,
     watchDrag: false,
@@ -21,6 +24,9 @@ const Carousel = ({ data, siteData }: any) => {
   const [nextBtnEnabled, setNextBtnEnabled] = useState<boolean>(false);
   const [selectedIndex, setSelectedIndex] = useState<number>(0);
   const [scrollSnaps, setScrollSnaps] = useState<Array<ReactNode>>([]);
+  const [email, setEmail] = useState("");
+  const [loading, setLoading] = useState<boolean>(false);
+  const [isDownloaded, setIsDownloaded] = useState<boolean>(false);
 
   const scrollPrev = useCallback(
     () => embla && embla.scrollPrev(true),
@@ -75,6 +81,40 @@ const Carousel = ({ data, siteData }: any) => {
     onSwipedRight: () => scrollPrev(),
   });
 
+  const handleDownload = async (e: any) => {
+    e.preventDefault();
+
+    if (lead?.file) {
+      try {
+        const res = await fetch("/api/leads", {
+          method: "POST",
+          body: JSON.stringify({
+            email,
+            postId: data.id,
+            leadId: lead.id,
+          }),
+        });
+
+        const resData = await res.json();
+        if (resData.success) {
+          const link = document.createElement("a");
+          link.href = lead.file;
+          link.download = lead.fileName;
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+        }
+      } catch (error: any) {
+        toast.error(error.message);
+      }
+    } else {
+      toast.error("No file to download");
+    }
+    setEmail("");
+    setLoading(false);
+    setIsDownloaded(true);
+  };
+
   return (
     <>
       <div className="relative" {...swipeHandlers}>
@@ -100,15 +140,79 @@ const Carousel = ({ data, siteData }: any) => {
               {data.slides &&
                 JSON.parse(data.slides).map((value: string, index: number) => (
                   <div
-                    className={`relative flex  h-fit min-w-full items-start justify-center`}
+                    className={`relative flex h-fit min-w-full items-start justify-center`}
                     key={`slide-${index}`}
                   >
-                    <div className="scrollbar-thumb-rounded-full scrollbar-track-rounded-full my-auto flex h-screen w-full items-center justify-center overflow-y-auto py-10 text-slate-600 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-gray-200 dark:text-gray-400 dark:scrollbar-thumb-gray-800 [&>*]:text-xl ">
+                    <div className="scrollbar-thumb-rounded-full scrollbar-track-rounded-full my-auto flex h-screen w-full flex-1 items-center justify-center overflow-y-auto py-10 text-slate-600 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-gray-200 dark:text-gray-400 dark:scrollbar-thumb-gray-800 [&>*]:text-xl">
                       <MDX source={data.slidesMdxSource[index]} />
                     </div>
                   </div>
                 ))}
 
+              {/* showing lead */}
+              {lead && (
+                <div className="scrollbar-thumb-rounded-full scrollbar-track-rounded-full relative mx-auto my-auto mt-10 flex h-screen w-9/12  min-w-full items-center  justify-center overflow-y-auto pb-[120px] scrollbar-thin scrollbar-track-transparent scrollbar-thumb-gray-200 dark:scrollbar-thumb-gray-800">
+                  <div className="mx-auto max-w-xl px-6">
+                    <h4 className="pb-4 text-center text-3xl font-bold tracking-tight text-gray-800 dark:bg-gray-800 dark:text-gray-100">
+                      {lead.title}
+                    </h4>
+                    <div className="site-bio font-regular overflow-hidden text-lg">
+                      {/* @ts-ignore*/}
+                      <MarkdownRenderer markdown={lead.description} />
+                    </div>
+                    {/* <p className="pb-8 text-center text-lg font-normal tracking-wide text-gray-600  dark:text-gray-300">
+                      {lead.description}
+                    </p> */}
+                    {isDownloaded ? (
+                      <p className="mt-5 text-center text-2xl font-semibold dark:text-gray-200">
+                        Thank you for downloading
+                      </p>
+                    ) : lead.download === "email" ? (
+                      <form
+                        onSubmit={(e) => {
+                          setLoading(true);
+                          handleDownload(e);
+                        }}
+                        className="mt-5 flex items-center gap-3"
+                      >
+                        <input
+                          name="name"
+                          type="email"
+                          placeholder="Enter your email"
+                          onChange={(e) => setEmail(e.target.value)}
+                          required
+                          className="w-full flex-1 rounded-md border border-slate-200 bg-slate-50 px-4 py-2 text-sm text-slate-600 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-blue-400 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-300 dark:focus:ring-white"
+                        />
+                        <button
+                          type="submit"
+                          disabled={loading}
+                          className="inline-flex items-center gap-x-2 rounded-lg border border-transparent bg-blue-600 px-3 py-2 text-sm font-semibold text-white hover:bg-blue-700 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
+                        >
+                          Download
+                        </button>
+                      </form>
+                    ) : (
+                      <form
+                        onSubmit={(e) => {
+                          setLoading(true);
+                          handleDownload(e);
+                        }}
+                        className="text-center"
+                      >
+                        <button
+                          type="submit"
+                          disabled={loading}
+                          className="inline-flex items-center gap-x-2 rounded-lg border border-transparent bg-blue-600 px-3 py-2 text-sm font-semibold text-white hover:bg-blue-700 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
+                        >
+                          Download
+                        </button>
+                      </form>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {/* showing adjacent posts */}
               {data.adjacentPosts.length > 0 && (
                 <div className="scrollbar-thumb-rounded-full scrollbar-track-rounded-full relative mx-auto mt-10 h-screen w-9/12 min-w-full overflow-y-auto pb-[120px] scrollbar-thin scrollbar-track-transparent scrollbar-thumb-gray-200 dark:scrollbar-thumb-gray-800">
                   <h4 className="pb-8 text-center text-sm font-semibold uppercase tracking-wide text-slate-400 dark:bg-gray-800 dark:text-gray-400">
@@ -166,6 +270,26 @@ const Carousel = ({ data, siteData }: any) => {
               )}
             </div>
           </div>
+          {lead && (
+            <div className="z-90 fixed bottom-4 left-1/2 -translate-x-1/2 transform">
+              <div className="flex w-fit items-center justify-between gap-3 rounded-full bg-slate-200 p-1 dark:bg-gray-200">
+                <p className="text-dark whitespace-nowrap	 pl-4 text-sm font-semibold">
+                  {lead.title}
+                </p>
+                <button
+                  type="button"
+                  className="inline-flex	items-center gap-x-2 whitespace-nowrap rounded-full border border-transparent bg-blue-600 px-4 py-1 text-sm font-semibold text-white hover:bg-blue-700 disabled:pointer-events-none disabled:opacity-50 dark:bg-blue-600 dark:text-white dark:hover:bg-blue-700 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
+                  onClick={() =>
+                    scrollTo(
+                      data.slides ? JSON.parse(data.slides).length + 1 : 1,
+                    )
+                  }
+                >
+                  {lead.buttonCta}
+                </button>
+              </div>
+            </div>
+          )}
           <PrevButton onClick={scrollPrev} enabled={prevBtnEnabled} />
           <NextButton onClick={scrollNext} enabled={nextBtnEnabled} />
         </div>

@@ -46,7 +46,9 @@
 * {
   word-break: break-word;
 }
-
+.lead-body * {
+  @apply text-sm py-1 !important;
+}
 .ProseMirror .is-editor-empty:first-child::before {
   content: attr(data-placeholder);
   float: left;
