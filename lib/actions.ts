@@ -705,6 +705,7 @@ export const createSiteLead = async (formData: FormData) => {
   const buttonCta = formData.get("buttonCta") as string;
   const download = formData.get("download") as string;
   let file = formData.get("file") as string;
+  let fileName = formData.get("fileName") as string;
 
   if (
     file !==
@@ -735,6 +736,7 @@ export const createSiteLead = async (formData: FormData) => {
         description,
         buttonCta,
         file,
+        fileName,
         download,
         user: {
           connect: {
@@ -780,9 +782,10 @@ export const updateSiteLead = withLeadAuth(
     const buttonCta = formData.get("buttonCta") as string;
     const download = formData.get("download") as string;
     let file = formData.get("file") as string;
-    let oldFile = formData.get("oldFile") as string;
+    let fileName = formData.get("fileName") as string;
+    const isFileChange = lead.fileName !== fileName;
 
-    if (file !== oldFile) {
+    if (isFileChange) {
       if (!process.env.BLOB_READ_WRITE_TOKEN) {
         return {
           error:
@@ -794,7 +797,7 @@ export const updateSiteLead = withLeadAuth(
       const filename = `${nanoid()}.${originalFile.type.split("/")[1]}`;
 
       // delete old file from vercel blob
-      await del(oldFile);
+      await del(lead.file as string);
       // upload new file to vercel blob
       const { url } = await put(filename, file, {
         access: "public",
@@ -812,7 +815,8 @@ export const updateSiteLead = withLeadAuth(
           title,
           description,
           buttonCta,
-          file,
+          file: isFileChange ? file : lead.file,
+          fileName,
           download,
         },
       });

@@ -8,16 +8,18 @@ export default function FileUploader({
   defaultValue,
   name,
   setFile,
+  oldFileName,
 }: {
   defaultValue: string | null;
   name: "file";
   setFile: any;
+  oldFileName: string | null;
 }) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [data, setData] = useState({
     [name]: defaultValue,
   });
-  const [filename, SetFileName] = useState("");
+  const [filename, SetFileName] = useState(oldFileName ?? "");
   const [dragActive, setDragActive] = useState(false);
 
   const handleUpload = (file: File | null) => {
@@ -36,7 +38,10 @@ export default function FileUploader({
         const reader = new FileReader();
         reader.onload = (e) => {
           setData((prev) => ({ ...prev, [name]: e.target?.result as string }));
-          setFile(e.target?.result as string);
+          setFile({
+            file: e.target?.result as string,
+            fileName: file.name,
+          });
           SetFileName(file.name);
         };
         reader.readAsDataURL(file);
@@ -48,19 +53,24 @@ export default function FileUploader({
     <div>
       <label
         htmlFor="leadFile"
-        className="w-100 group uppercase tracking-wide relative flex h-12 cursor-pointer flex-col text-xs items-center justify-center rounded-md border border-dashed border-gray-300 dark:text-gray-600 bg-white hover:dark:border-gray-500 dark:bg-transparent shadow-sm transition-all dark:border-gray-600"
+        className="w-100 group relative flex h-12 cursor-pointer flex-col items-center justify-center rounded-md border border-dashed border-gray-300 bg-white text-xs uppercase tracking-wide shadow-sm transition-all dark:border-gray-600 dark:bg-transparent dark:text-gray-600 hover:dark:border-gray-500"
       >
         Upload your file
       </label>
       {filename && (
         <span className="flex items-center justify-between text-center">
-          <span className="text-xs text-slate-600 dark:text-gray-500">{filename}</span>
+          <span className="text-xs text-slate-600 dark:text-gray-500">
+            {filename}
+          </span>
           <XCircle
             width={18}
             className="cursor-pointer text-red-400"
             onClick={() => {
               setData((prev) => ({ ...prev, [name]: defaultValue }));
-              setFile("");
+              setFile({
+                file: "",
+                fileName: "",
+              });
               SetFileName("");
             }}
           />

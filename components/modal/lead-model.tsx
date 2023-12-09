@@ -29,7 +29,10 @@ export default function LeadModal({
     buttonCta: (lead ? lead.buttonCta : "") as string,
     download: (lead ? lead.download : "free") as string,
   });
-  const [file, setFile] = useState(lead ? lead.file : "");
+  const [file, setFile] = useState({
+    file: lead ? lead.file : "",
+    fileName: lead ? lead.fileName : "",
+  });
   const [description, setDescription] = useState(data.description);
   const type = lead ? "Update" : "Create";
 
@@ -42,10 +45,11 @@ export default function LeadModal({
           toast.error("Please select a file");
         } else {
           data.append("description", description);
-          data.append("file", file);
+          // @ts-ignore
+          data.append("file", file.file);
+          data.append("fileName", file.fileName as string);
           // @ts-ignore
           siteId && data.append("siteId", siteId);
-          lead && data.append("oldFile", lead.file as string);
 
           (lead
             ? updateSiteLead(data, lead.id, "update")
@@ -136,7 +140,12 @@ export default function LeadModal({
           >
             Upload file
           </label>
-          <FileUploader defaultValue={file} name="file" setFile={setFile} />
+          <FileUploader
+            defaultValue={file.file}
+            name="file"
+            setFile={setFile}
+            oldFileName={file.fileName}
+          />
         </div>
 
         <div className="flex flex-col space-y-2">

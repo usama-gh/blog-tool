@@ -98,7 +98,8 @@ const Carousel = ({ data, siteData, lead }: any) => {
         const resData = await res.json();
         if (resData.success) {
           const link = document.createElement("a");
-          link.href = `${lead.file}`;
+          link.href = lead.file;
+          link.download = lead.fileName;
           document.body.appendChild(link);
           link.click();
           document.body.removeChild(link);
