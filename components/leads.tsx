@@ -85,7 +85,7 @@ async function LeadsTable({
     </div>
   ) : (
     <div className="hide_onboarding flex flex-col items-center space-x-4">
-      <h1 className="font-inter text-2xl">No Leads Yet</h1>
+      <h1 className="font-inter text-2xl">No Leads Magnets Yet</h1>
       <Image
         alt="missing post"
         src="https://illustrations.popsy.co/gray/graphic-design.svg"
@@ -93,7 +93,7 @@ async function LeadsTable({
         height={400}
       />
       <p className="text-lg text-stone-500">
-        You do not have any leads yet. Create one to get started.
+        You do not have any lead magnets created yet. Create one to get started.
       </p>
     </div>
   );

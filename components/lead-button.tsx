@@ -23,7 +23,7 @@ export default function LeadButton({
       <button
         onClick={() => modal?.show(children)}
         className={cn(
-          "rounded-lg flex items-center gap-x-2 border border-black bg-white px-4 py-1.5 text-sm font-medium text-white shadow-md transition-all hover:bg-white hover:text-black active:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-70 dark:border-gray-700  dark:hover:border-gray-200 dark:hover:bg-black dark:hover:text-white dark:active:bg-gray-100 lg:text-md",
+          "rounded-lg flex items-center gap-x-2 border border-slate-600 bg-slate-600 dark:bg-gray-700 px-2 py-1.5 text-sm font-medium text-white shadow-md transition-all hover:bg-white hover:text-black active:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-70 dark:border-gray-700  dark:hover:border-gray-200 dark:hover:bg-black dark:hover:text-white dark:active:bg-gray-100 lg:text-md",
           style,
         )}
         disabled={disable}
