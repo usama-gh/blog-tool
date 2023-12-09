@@ -1,6 +1,7 @@
 "use client";
 
 import { toast } from "sonner";
+import { Info } from "lucide-react";
 import { createSiteLead, updateSiteLead } from "@/lib/actions";
 import { useRouter } from "next/navigation";
 import { experimental_useFormStatus as useFormStatus } from "react-dom";
@@ -59,7 +60,7 @@ export default function LeadModal({
               toast.error(res.error);
             } else {
               router.refresh();
-              modal?.hide();
+
               toast.success(
                 `Successfully ${lead ? "updated" : "created"} site lead`,
               );
@@ -67,9 +68,9 @@ export default function LeadModal({
           });
         }
       }}
-      className="w-full rounded-md bg-white dark:bg-black md:max-w-md md:border md:border-gray-200 md:shadow dark:md:border-gray-700"
+      className="flex w-full justify-start flex-col lg:flex-row rounded-md bg-white dark:bg-black md:max-w-4xl md:border md:border-gray-200 md:shadow dark:md:border-gray-700"
     >
-      <div className="relative flex flex-col space-y-4 p-5 md:p-10">
+      <div className="relative flex flex-col space-y-4 p-5 md:p-10 lg:min-w-[500px]">
         <h2 className="font-inter mb-5 text-2xl font-bold dark:text-white">
           {type} your lead magnet
         </h2>
@@ -79,7 +80,7 @@ export default function LeadModal({
             htmlFor="name"
             className="text-xs font-medium text-slate-500 dark:text-gray-400"
           >
-            Compaign Name
+            Campaign Name
           </label>
           <input
             name="name"
@@ -98,15 +99,16 @@ export default function LeadModal({
             htmlFor="title"
             className="text-xs font-medium text-slate-500 dark:text-gray-400"
           >
-            Title CTA
+            Title CTA (Max. 50 chars limit)
           </label>
+
           <input
             name="title"
             type="text"
             placeholder="Build your SaaS in just two weeks! Free Guide"
             value={data.title}
             onChange={(e) => setData({ ...data, title: e.target.value })}
-            maxLength={32}
+            maxLength={50}
             required
             className="w-full rounded-md border border-slate-200 bg-slate-50 px-4 py-2 text-sm text-slate-600 placeholder:text-slate-400 focus:border-black focus:outline-none focus:ring-black dark:border-gray-600 dark:bg-black dark:text-white dark:placeholder-gray-700 dark:focus:ring-white"
           />
@@ -119,11 +121,14 @@ export default function LeadModal({
           >
             Body
           </label>
-          <NovelEditor
-            text={description}
-            setText={setDescription}
-            canUseAI={false}
-          />
+          <span className="lead-body max-h-[100px] overflow-y-auto">
+            <NovelEditor
+              text={description}
+              setText={setDescription}
+              canUseAI={false}
+            />
+          </span>
+
           {/* <textarea
             name="description"
             placeholder="Description about the lead"
@@ -211,9 +216,59 @@ export default function LeadModal({
             </div>
           </div>
         </div>
+        <div className="flex items-center justify-end rounded-b-lg border-t border-slate-200 bg-slate-50 p-3 dark:border-gray-700 dark:bg-gray-800 md:px-10">
+          <CreateSiteFormButton type={type} />
+        </div>
       </div>
-      <div className="flex items-center justify-end rounded-b-lg border-t border-slate-200 bg-slate-50 p-3 dark:border-gray-700 dark:bg-gray-800 md:px-10">
-        <CreateSiteFormButton type={type} />
+      <div className="w-[400px] hidden lg:block bg-slate-100 dark:bg-gray-800 text-center px-4">
+        <h3 className="text-sm my-5 text-slate-800">Preview</h3>
+        <div className="flex flex-col gap-y-2">
+
+                <div>
+                  <div className="mx-auto mt-10 max-w-2xl rounded-b-xl shadow-lg">
+                    <div className="flex h-8 w-full bg-white dark:bg-gray-600 items-center justify-start space-x-1.5 rounded-t-lg border-b  border-slate-200 dark:border-gray-500 px-3">
+                      <span className="h-2 w-2 rounded-full bg-[#ff5f57]"></span>
+                      <span className="h-2 w-2 rounded-full bg-[#ffbe2f]"></span>
+                      <span className="h-2 w-2 rounded-full bg-[#28ca42]"></span>
+                    </div>
+                    <div className="h-52 w-full flex items-end justify-center border-t-0 rounded-b-xl bg-white dark:bg-gray-600">
+
+                    <div className="bg-slate-200  rounded-full shadow-sm mb-2 flex">
+                      <span className="px-3 py-1 text-[9px]">{data.title}</span><button className="text-[9px] px-2 rounded-full bg-blue-600 text-white">{data.buttonCta}</button>
+                  </div>
+                    </div>
+                   
+                  </div>
+                  <p className="text-[9px] mt-2 tracking-wide text-slate-500 dark:text-gray-400 py-1">Overlay popup on blog post</p>
+                </div>
+
+                <div>
+                  <div className="mx-auto mt-10 max-w-2xl rounded-b-xl shadow-lg">
+                    <div className="flex h-8 w-full bg-white dark:bg-gray-600 items-center justify-start space-x-1.5 rounded-t-lg  border-b  border-slate-200 dark:border-gray-500 px-3">
+                      <span className="h-2 w-2 rounded-full bg-[#ff5f57]"></span>
+                      <span className="h-2 w-2 rounded-full bg-[#ffbe2f]"></span>
+                      <span className="h-2 w-2 rounded-full bg-[#28ca42]"></span>
+                    </div>
+                    <div className="h-52 w-full flex items-center justify-center border-t-0 rounded-b-xl bg-white  dark:bg-gray-600">
+
+                          <div>
+                              <h2 className="text-sm text-gray-800 dark:text-white font-bold">{data.title}</h2>
+                              <p className="text-[9px] text-gray-800 dark:text-white w-[230px] mx-auto">{description}</p>
+                              <div className="justify-center rounded-full  flex mt-2">
+                      <div className="bg-gray-100 dark:bg-gray-400 h-3 w-16 flex items-center px-2 text-gray-400 dark:text-white text-[5px]">Enter email</div><div className="h-3 text-[5px] text-white  rounded-sm bg-blue-600 flex items-center px-1">{data.buttonCta}</div>
+                  </div>
+                          </div>
+                    </div>
+                  </div>
+                  <p className="text-[9px] mt-2 tracking-wide text-slate-500 dark:text-gray-400 py-1">Lead magnet slide</p>
+                </div>
+
+                
+
+        </div>
+       
+
+
       </div>
     </form>
   );

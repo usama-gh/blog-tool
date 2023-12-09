@@ -48,27 +48,27 @@ async function LeadsTable({
                 <tr>
                   <th
                     scope="col"
-                    className="px-6 py-3 text-start text-xs font-medium uppercase text-gray-500"
+                    className="whitespace-nowrap px-6 py-3 text-start text-xs font-light uppercase tracking-widest text-slate-500 dark:text-gray-600"
                   >
                     Campaign
                   </th>
                   <th
                     scope="col"
-                    className="px-6 py-3 text-start text-xs font-medium uppercase text-gray-500"
+                    className="whitespace-nowrap px-6 py-3 text-start text-xs font-light uppercase tracking-widest text-slate-500 dark:text-gray-600"
                   >
-                    Posts to appear in
+                    Linked Posts
                   </th>
                   <th
                     scope="col"
-                    className="px-6 py-3 text-start text-xs font-medium uppercase text-gray-500"
+                    className="px-6 py-3 whitespace-nowrap text-start text-xs font-light uppercase tracking-widest text-slate-500 dark:text-gray-600"
                   >
-                    Leads collected
+                    Leads Collected
                   </th>
                   <th
                     scope="col"
-                    className="px-6 py-3 text-xs font-medium uppercase text-gray-500"
+                    className="whitespace-nowrap px-6 py-3 text-start text-xs font-light uppercase tracking-widest text-slate-500 dark:text-gray-600"
                   >
-                    Action
+                    Actions
                   </th>
                 </tr>
               </thead>

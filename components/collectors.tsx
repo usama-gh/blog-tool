@@ -31,19 +31,19 @@ export default async function LeadCollectors({
                 <tr>
                   <th
                     scope="col"
-                    className="px-6 py-3 text-start text-xs font-medium uppercase text-gray-500"
+                    className="px-6 py-3 text-start text-xs font-light uppercase tracking-widest text-slate-500 dark:text-gray-600"
                   >
                     Email
                   </th>
                   <th
                     scope="col"
-                    className="px-6 py-3 text-start text-xs font-medium uppercase text-gray-500"
+                    className="px-6 py-3 text-start text-xs font-light uppercase tracking-widest text-slate-500 dark:text-gray-600"
                   >
-                    Collected Post
+                    Post's Name
                   </th>
                   <th
                     scope="col"
-                    className="px-6 py-3 text-start text-xs font-medium uppercase text-gray-500"
+                    className="px-6 py-3 text-start text-xs font-light uppercase tracking-widest text-slate-500 dark:text-gray-600"
                   >
                     Collected At
                   </th>

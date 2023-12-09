@@ -15,13 +15,13 @@ async function Leads({ params }: { params: { id: string } }) {
       <div className="mb-5 flex flex-col items-center justify-between space-y-4 sm:flex-row sm:space-y-0">
         <div className="">
           <h1 className="font-inter truncate text-lg font-bold dark:text-white sm:w-auto sm:text-2xl">
-            Leads
+            Lead Magnets
           </h1>
-          <p className="mt-3 text-base font-normal text-slate-800 dark:text-gray-600">
-            Leads collected from your resources
+          <p className="mt-3 text-base font-normal text-slate-800 dark:text-gray-400">
+           Create your lead magnet, link them with your posts & get your leads 
           </p>
         </div>
-        <LeadButton btnText="Create New Lead">
+        <LeadButton btnText="Create New Lead Magnet">
           <LeadModal siteId={params.id} />
         </LeadButton>
       </div>

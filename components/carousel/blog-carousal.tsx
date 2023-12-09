@@ -156,7 +156,7 @@ const Carousel = ({ data, siteData, lead }: any) => {
                     <h4 className="pb-4 text-center text-3xl font-bold tracking-tight text-gray-800 dark:bg-gray-800 dark:text-gray-100">
                       {lead.title}
                     </h4>
-                    <div className="site-bio font-regular overflow-hidden text-sm">
+                    <div className="site-bio font-regular overflow-hidden text-lg">
                       {/* @ts-ignore*/}
                       <MarkdownRenderer markdown={lead.description} />
                     </div>

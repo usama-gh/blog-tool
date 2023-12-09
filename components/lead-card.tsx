@@ -2,6 +2,7 @@
 
 import { deleteSiteLead } from "@/lib/actions";
 import Link from "next/link";
+import { Trash } from "lucide-react";
 import { toast } from "sonner";
 import { useParams, useRouter } from "next/navigation";
 import LeadButton from "./lead-button";
@@ -46,7 +47,7 @@ export default function LeadCard({
         {lead.posts?.length > 0
           ? lead.posts?.map((post) => (
               <p
-                className="mb-2 rounded-md bg-slate-200 p-1.5 text-gray-700 dark:bg-gray-900 dark:text-gray-300"
+                className="mb-2 rounded-full bg-slate-200 w-fit  px-2 py-1 text-gray-700 dark:bg-gray-900 dark:text-gray-300"
                 key={post.id}
               >
                 {post.title}
@@ -61,9 +62,9 @@ export default function LeadCard({
         <div className="flex gap-2">
           <button
             type="button"
-            className="rounded-lg border border-black bg-black px-2 py-0.5 text-sm font-medium text-white shadow-md transition-all hover:bg-white hover:text-black active:bg-stone-100 disabled:cursor-not-allowed disabled:opacity-70 dark:border-gray-700  dark:hover:border-gray-200 dark:hover:bg-black dark:hover:text-white dark:active:bg-gray-800 lg:text-base"
+            className="rounded-lg border border-black bg-slate-600 px-2 py-0.5 text-xs font-medium text-white shadow-md transition-all hover:bg-white hover:text-black active:bg-stone-100 disabled:cursor-not-allowed disabled:opacity-70 dark:border-gray-700  dark:hover:border-gray-200 dark:hover:bg-black dark:hover:text-white dark:active:bg-gray-800 lg:text-sm"
           >
-            <Link href={`leads/${lead.id}`}>View</Link>
+            <Link href={`leads/${lead.id}`}>View Leads</Link>
           </button>
 
           <LeadButton btnText="Manage">
@@ -72,9 +73,9 @@ export default function LeadCard({
           <button
             onClick={handleLeadDelete}
             type="button"
-            className="rounded-lg border border-black bg-black px-2 py-0.5 text-sm font-medium text-white shadow-md transition-all hover:bg-white hover:text-black active:bg-stone-100 disabled:cursor-not-allowed disabled:opacity-70 dark:border-gray-700  dark:hover:border-gray-200 dark:hover:bg-black dark:hover:text-white dark:active:bg-gray-800 lg:text-base"
+            className="rounded-lg border border-black bg-slate-600 px-2 py-0.5 text-xs font-medium text-white shadow-md transition-all hover:bg-white hover:text-black active:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-70 dark:border-gray-700  dark:hover:border-gray-200 dark:hover:bg-black dark:hover:text-white dark:active:bg-gray-800 lg:text-sm"
           >
-            Delete
+            <Trash width={18} />
           </button>
         </div>
       </td>

@@ -11,6 +11,7 @@ import {
   Menu,
   Newspaper,
   Rss,
+  Magnet,
   Settings,
   TrophyIcon,
   ChromeIcon,
@@ -78,10 +79,10 @@ export default function Nav({ children }: { children: ReactNode }) {
           icon: <Newspaper width={18} />,
         },
         {
-          name: "Leads",
+          name: "Lead Magnets",
           href: `/site/${id}/leads`,
           isActive: segments.includes("leads"),
-          icon: <Newspaper width={18} />,
+          icon: <Magnet width={18} />,
         },
         {
           name: "Add Social Links",

@@ -98,7 +98,7 @@ export const TiptapExtensions = [
       if (node.type.name === "heading") {
         return `Heading ${node.attrs.level}`;
       }
-      return "Press '/' for commands";
+      return "Write your text";
     },
     includeChildren: true,
   }),
