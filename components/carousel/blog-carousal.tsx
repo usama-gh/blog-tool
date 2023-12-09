@@ -151,12 +151,12 @@ const Carousel = ({ data, siteData, lead }: any) => {
 
               {/* showing lead */}
               {lead && (
-                <div className="scrollbar-thumb-rounded-full scrollbar-track-rounded-full relative mx-auto my-auto mt-10 flex h-screen w-9/12  min-w-full items-center  justify-center overflow-y-auto pb-[120px] scrollbar-thin scrollbar-track-transparent scrollbar-thumb-gray-200 dark:scrollbar-thumb-gray-800">
+                <div className="scrollbar-thumb-rounded-full scrollbar-track-rounded-full relative mx-auto my-auto mt-0 flex h-screen w-9/12  min-w-full items-center  justify-center overflow-y-auto pb-[120px] scrollbar-thin scrollbar-track-transparent scrollbar-thumb-gray-200 dark:scrollbar-thumb-gray-800">
                   <div className="mx-auto max-w-xl px-6">
                     <h4 className="pb-4 text-center text-3xl font-bold tracking-tight text-gray-800 dark:bg-gray-800 dark:text-gray-100">
                       {lead.title}
                     </h4>
-                    <div className="site-bio font-regular overflow-hidden text-lg">
+                    <div className="text-center text-slate-800  dark:text-gray-50 font-regular overflow-hidden text-lg">
                       {/* @ts-ignore*/}
                       <MarkdownRenderer markdown={lead.description} />
                     </div>
@@ -188,7 +188,7 @@ const Carousel = ({ data, siteData, lead }: any) => {
                           disabled={loading}
                           className="inline-flex items-center gap-x-2 rounded-lg border border-transparent bg-blue-600 px-3 py-2 text-sm font-semibold text-white hover:bg-blue-700 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
                         >
-                          Download
+                          {lead.buttonCta}
                         </button>
                       </form>
                     ) : (
@@ -204,7 +204,7 @@ const Carousel = ({ data, siteData, lead }: any) => {
                           disabled={loading}
                           className="inline-flex items-center gap-x-2 rounded-lg border border-transparent bg-blue-600 px-3 py-2 text-sm font-semibold text-white hover:bg-blue-700 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
                         >
-                          Download
+                          {lead.buttonCta}
                         </button>
                       </form>
                     )}
