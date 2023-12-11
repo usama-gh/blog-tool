@@ -62,7 +62,7 @@ export default function LeadModal({
               router.refresh();
 
               toast.success(
-                `Successfully ${lead ? "updated" : "created"} site lead`,
+                `Successfully ${lead ? "updated" : "created"} lead magnet`,
               );
             }
           });
