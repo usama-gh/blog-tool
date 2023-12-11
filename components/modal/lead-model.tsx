@@ -2,7 +2,7 @@
 
 import { toast } from "sonner";
 import { Info } from "lucide-react";
-import { createSiteLead, updateSiteLead } from "@/lib/actions";
+import { createSiteLead, updateLeadImage, updateSiteLead } from "@/lib/actions";
 import { useRouter } from "next/navigation";
 import { experimental_useFormStatus as useFormStatus } from "react-dom";
 import { cn } from "@/lib/utils";
@@ -12,6 +12,8 @@ import { useState } from "react";
 import FileUploader from "../form/file-uploader";
 import { Lead } from "@prisma/client";
 import NovelEditor from "../editor/novel-editor";
+// @ts-ignore
+import { upload } from "@vercel/blob/client";
 
 export default function LeadModal({
   siteId,
@@ -23,12 +25,13 @@ export default function LeadModal({
   const router = useRouter();
   const modal = useModal();
 
+  const [loading, setLoading] = useState(false);
   const [data, setData] = useState({
     name: (lead ? lead.name : "") as string,
     title: (lead ? lead.title : "") as string,
     description: (lead ? lead.description : "") as string,
     buttonCta: (lead ? lead.buttonCta : "") as string,
-    download: (lead ? lead.download : "free") as string,
+    download: (lead ? lead.download : "email") as string,
   });
   const [file, setFile] = useState({
     file: lead ? lead.file : "",
@@ -40,14 +43,13 @@ export default function LeadModal({
   return (
     <form
       action={async (data: FormData) => {
-        console.log("submitted");
-
-        if (!file) {
+        if (!file.file || !file.fileName) {
           toast.error("Please select a file");
         } else {
+          setLoading(true);
           data.append("description", description);
           // @ts-ignore
-          data.append("file", file.file);
+          // data.append("file", file.file);
           data.append("fileName", file.fileName as string);
           // @ts-ignore
           siteId && data.append("siteId", siteId);
@@ -55,12 +57,30 @@ export default function LeadModal({
           (lead
             ? updateSiteLead(data, lead.id, "update")
             : createSiteLead(data)
-          ).then((res: any) => {
+          ).then(async (res: any) => {
             if (res.error) {
               toast.error(res.error);
             } else {
-              router.refresh();
+              if (file.file !== lead?.file) {
+                const { url } = await upload(
+                  file.fileName as string,
+                  // @ts-ignore
+                  file.file,
+                  {
+                    access: "public",
+                    handleUploadUrl: "/api/leads/upload",
+                    clientPayload: res.id,
+                  },
+                );
+                if (url) {
+                  data.append("url", url);
+                  updateLeadImage(data, res.id, "update-image");
+                }
+              }
 
+              setLoading(false);
+              modal?.hide();
+              router.refresh();
               toast.success(
                 `Successfully ${lead ? "updated" : "created"} lead magnet`,
               );
@@ -68,7 +88,7 @@ export default function LeadModal({
           });
         }
       }}
-      className="flex w-full justify-start flex-col lg:flex-row rounded-md bg-white dark:bg-black md:max-w-4xl md:border md:border-gray-200 md:shadow dark:md:border-gray-700"
+      className="flex w-full flex-col justify-start rounded-md bg-white dark:bg-black md:max-w-4xl md:border md:border-gray-200 md:shadow dark:md:border-gray-700 lg:flex-row"
     >
       <div className="relative flex flex-col space-y-4 p-5 md:p-10 lg:min-w-[500px]">
         <h2 className="font-inter mb-5 text-2xl font-bold dark:text-white">
@@ -217,76 +237,101 @@ export default function LeadModal({
           </div>
         </div>
         <div className="flex items-center justify-end rounded-b-lg border-t border-slate-200 bg-slate-50 p-3 dark:border-gray-700 dark:bg-gray-800 md:px-10">
-          <CreateSiteFormButton type={type} />
+          <CreateSiteFormButton type={type} loading={loading} />
         </div>
       </div>
-      <div className="w-[400px] hidden lg:block bg-slate-100 dark:bg-gray-800 text-center px-4">
-        <h3 className="text-sm my-5 text-slate-800">Preview</h3>
+      <div className="hidden w-[400px] bg-slate-100 px-4 text-center dark:bg-gray-800 lg:block">
+        <h3 className="my-5 text-sm text-slate-800">Preview</h3>
         <div className="flex flex-col gap-y-2">
-
-                <div>
-                  <div className="mx-auto mt-10 max-w-2xl rounded-b-xl shadow-lg">
-                    <div className="flex h-8 w-full bg-white dark:bg-gray-600 items-center justify-start space-x-1.5 rounded-t-lg border-b  border-slate-200 dark:border-gray-500 px-3">
-                      <span className="h-2 w-2 rounded-full bg-[#ff5f57]"></span>
-                      <span className="h-2 w-2 rounded-full bg-[#ffbe2f]"></span>
-                      <span className="h-2 w-2 rounded-full bg-[#28ca42]"></span>
-                    </div>
-                    <div className="h-52 w-full flex items-end justify-center border-t-0 rounded-b-xl bg-white dark:bg-gray-600">
-
-                    <div className="bg-slate-200  rounded-full shadow-sm mb-2 flex">
-                      <span className="px-3 py-1 text-[9px]">{data.title}</span><button className="text-[9px] px-2 rounded-full bg-blue-600 text-white">{data.buttonCta}</button>
-                  </div>
-                    </div>
-                   
-                  </div>
-                  <p className="text-[9px] mt-2 tracking-wide text-slate-500 dark:text-gray-400 py-1">Overlay popup on blog post</p>
+          <div>
+            <div className="mx-auto mt-10 max-w-2xl rounded-b-xl shadow-lg">
+              <div className="flex h-8 w-full items-center justify-start space-x-1.5 rounded-t-lg border-b border-slate-200 bg-white  px-3 dark:border-gray-500 dark:bg-gray-600">
+                <span className="h-2 w-2 rounded-full bg-[#ff5f57]"></span>
+                <span className="h-2 w-2 rounded-full bg-[#ffbe2f]"></span>
+                <span className="h-2 w-2 rounded-full bg-[#28ca42]"></span>
+              </div>
+              <div className="flex h-52 w-full items-end justify-center rounded-b-xl border-t-0 bg-white dark:bg-gray-600">
+                <div className="mb-2  flex rounded-full bg-slate-200 shadow-sm">
+                  <span className="px-3 py-1 text-[9px]">{data.title}</span>
+                  <button className="rounded-full bg-blue-600 px-2 text-[9px] text-white">
+                    {data.buttonCta}
+                  </button>
                 </div>
+              </div>
+            </div>
+            <p className="mt-2 py-1 text-[9px] tracking-wide text-slate-500 dark:text-gray-400">
+              Overlay popup on blog post
+            </p>
+          </div>
 
+          <div>
+            <div className="mx-auto mt-10 max-w-2xl rounded-b-xl shadow-lg">
+              <div className="flex h-8 w-full items-center justify-start space-x-1.5 rounded-t-lg border-b border-slate-200  bg-white  px-3 dark:border-gray-500 dark:bg-gray-600">
+                <span className="h-2 w-2 rounded-full bg-[#ff5f57]"></span>
+                <span className="h-2 w-2 rounded-full bg-[#ffbe2f]"></span>
+                <span className="h-2 w-2 rounded-full bg-[#28ca42]"></span>
+              </div>
+              <div className="flex h-52 w-full items-center justify-center rounded-b-xl border-t-0 bg-white  dark:bg-gray-600">
                 <div>
-                  <div className="mx-auto mt-10 max-w-2xl rounded-b-xl shadow-lg">
-                    <div className="flex h-8 w-full bg-white dark:bg-gray-600 items-center justify-start space-x-1.5 rounded-t-lg  border-b  border-slate-200 dark:border-gray-500 px-3">
-                      <span className="h-2 w-2 rounded-full bg-[#ff5f57]"></span>
-                      <span className="h-2 w-2 rounded-full bg-[#ffbe2f]"></span>
-                      <span className="h-2 w-2 rounded-full bg-[#28ca42]"></span>
-                    </div>
-                    <div className="h-52 w-full flex items-center justify-center border-t-0 rounded-b-xl bg-white  dark:bg-gray-600">
+                  <h2 className="text-sm font-bold text-gray-800 dark:text-white">
+                    {data.title}
+                  </h2>
+                  <p className="mx-auto w-[230px] text-[9px] text-gray-800 dark:text-white">
+                    {description}
+                  </p>
+                  <div className="mt-2 flex  justify-center rounded-full">
+                    {data.download === "email" && (
+                      <div className="flex h-3 w-16 items-center bg-gray-100 px-2 text-[5px] text-gray-400 dark:bg-gray-400 dark:text-white">
+                        Enter email
+                      </div>
+                    )}
 
-                          <div>
-                              <h2 className="text-sm text-gray-800 dark:text-white font-bold">{data.title}</h2>
-                              <p className="text-[9px] text-gray-800 dark:text-white w-[230px] mx-auto">{description}</p>
-                              <div className="justify-center rounded-full  flex mt-2">
-                      <div className="bg-gray-100 dark:bg-gray-400 h-3 w-16 flex items-center px-2 text-gray-400 dark:text-white text-[5px]">Enter email</div><div className="h-3 text-[5px] text-white  rounded-sm bg-blue-600 flex items-center px-1">{data.buttonCta}</div>
-                  </div>
-                          </div>
+                    <div className="flex h-3 items-center  rounded-sm bg-blue-600 px-1 text-[5px] text-white">
+                      {data.buttonCta}
                     </div>
                   </div>
-                  <p className="text-[9px] mt-2 tracking-wide text-slate-500 dark:text-gray-400 py-1">Lead magnet slide</p>
                 </div>
-
-                
-
+              </div>
+            </div>
+            <p className="mt-2 py-1 text-[9px] tracking-wide text-slate-500 dark:text-gray-400">
+              Lead magnet slide
+            </p>
+          </div>
         </div>
-       
-
-
       </div>
     </form>
   );
 }
-function CreateSiteFormButton({ type }: { type: string }) {
+function CreateSiteFormButton({
+  type,
+  loading,
+}: {
+  type: string;
+  loading: boolean;
+}) {
   const { pending } = useFormStatus();
+  const isLoading = pending || loading;
   return (
-    <button
-      type="submit"
-      className={cn(
-        "flex h-10 w-full items-center justify-center space-x-2 rounded-md border text-sm transition-all focus:outline-none",
-        pending
-          ? "cursor-not-allowed border-slate-200 bg-slate-100 text-slate-400 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300"
-          : "border-black bg-black text-white hover:bg-white hover:text-black dark:border-gray-700 dark:hover:border-gray-600 dark:hover:bg-black dark:hover:text-white dark:active:bg-gray-800",
-      )}
-      disabled={pending}
-    >
-      {pending ? <LoadingDots color="#808080" /> : <p>{type} Lead Magnet</p>}
-    </button>
+    <>
+      <button
+        type="submit"
+        className={cn(
+          "flex h-10 w-full items-center justify-center space-x-2 rounded-md border text-sm transition-all focus:outline-none",
+          isLoading
+            ? "cursor-not-allowed border-slate-200 bg-slate-100 text-slate-400 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300"
+            : "border-black bg-black text-white hover:bg-white hover:text-black dark:border-gray-700 dark:hover:border-gray-600 dark:hover:bg-black dark:hover:text-white dark:active:bg-gray-800",
+        )}
+        disabled={isLoading}
+      >
+        {isLoading ? (
+          <>
+            <LoadingDots color="#808080" />
+            <p>Please wait</p>
+          </>
+        ) : (
+          <p>{type} Lead Magnet</p>
+        )}
+      </button>
+    </>
   );
 }

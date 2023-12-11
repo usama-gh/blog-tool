@@ -704,28 +704,28 @@ export const createSiteLead = async (formData: FormData) => {
   const description = formData.get("description") as string;
   const buttonCta = formData.get("buttonCta") as string;
   const download = formData.get("download") as string;
-  let file = formData.get("file") as string;
+  // let file = formData.get("file") as string;
   let fileName = formData.get("fileName") as string;
 
-  if (
-    file !==
-    "https://public.blob.vercel-storage.com/eEZHAoPTOBSYGBE3/JRajRyC-PhBHEinQkupt02jqfKacBVHLWJq7Iy.png"
-  ) {
-    if (!process.env.BLOB_READ_WRITE_TOKEN) {
-      return {
-        error:
-          "Missing BLOB_READ_WRITE_TOKEN token. Note: Vercel Blob is currently in beta – ping @steventey on Twitter for access.",
-      };
-    }
+  // if (
+  //   file !==
+  //   "https://public.blob.vercel-storage.com/eEZHAoPTOBSYGBE3/JRajRyC-PhBHEinQkupt02jqfKacBVHLWJq7Iy.png"
+  // ) {
+  //   if (!process.env.BLOB_READ_WRITE_TOKEN) {
+  //     return {
+  //       error:
+  //         "Missing BLOB_READ_WRITE_TOKEN token. Note: Vercel Blob is currently in beta – ping @steventey on Twitter for access.",
+  //     };
+  //   }
 
-    const originalFile = formData.get("file") as File;
-    const filename = `${nanoid()}.${originalFile.type.split("/")[1]}`;
+  //   const originalFile = formData.get("file") as File;
+  //   const filename = `${nanoid()}.${originalFile.type.split("/")[1]}`;
 
-    const { url } = await put(filename, file, {
-      access: "public",
-    });
-    file = url;
-  }
+  //   const { url } = await put(filename, file, {
+  //     access: "public",
+  //   });
+  //   file = url;
+  // }
 
   try {
     // creating site lead
@@ -735,7 +735,7 @@ export const createSiteLead = async (formData: FormData) => {
         title,
         description,
         buttonCta,
-        file,
+        // file,
         fileName,
         download,
         user: {
@@ -781,7 +781,7 @@ export const updateSiteLead = withLeadAuth(
     const description = formData.get("description") as string;
     const buttonCta = formData.get("buttonCta") as string;
     const download = formData.get("download") as string;
-    let file = formData.get("file") as string;
+    // let file = formData.get("file") as string;
     let fileName = formData.get("fileName") as string;
     const isFileChange = lead.fileName !== fileName;
 
@@ -792,17 +792,17 @@ export const updateSiteLead = withLeadAuth(
             "Missing BLOB_READ_WRITE_TOKEN token. Note: Vercel Blob is currently in beta – ping @steventey on Twitter for access.",
         };
       }
-
-      const originalFile = formData.get("file") as File;
-      const filename = `${nanoid()}.${originalFile.type.split("/")[1]}`;
-
       // delete old file from vercel blob
       await del(lead.file as string);
+
+      // const originalFile = formData.get("file") as File;
+      // const filename = `${nanoid()}.${originalFile.type.split("/")[1]}`;
+
       // upload new file to vercel blob
-      const { url } = await put(filename, file, {
-        access: "public",
-      });
-      file = url;
+      // const { url } = await put(filename, file, {
+      //   access: "public",
+      // });
+      // file = url;
     }
 
     try {
@@ -815,12 +815,35 @@ export const updateSiteLead = withLeadAuth(
           title,
           description,
           buttonCta,
-          file: isFileChange ? file : lead.file,
+          // file: isFileChange ? file : lead.file,
           fileName,
           download,
         },
       });
 
+      await revalidateTag(`${lead.siteId}-leads`);
+      return response;
+    } catch (error: any) {
+      return {
+        error: error.message,
+      };
+    }
+  },
+);
+
+export const updateLeadImage = withLeadAuth(
+  async (formData: FormData, lead: Lead) => {
+    const file = formData.get("url") as string;
+
+    try {
+      const response = await prisma.lead.update({
+        where: {
+          id: lead.id,
+        },
+        data: {
+          file,
+        },
+      });
       await revalidateTag(`${lead.siteId}-leads`);
       return response;
     } catch (error: any) {
@@ -856,14 +879,14 @@ export const deleteSiteLead = withLeadAuth(async (_: FormData, lead: Lead) => {
 
     const siteId = lead.siteId;
     // deleteing lead
-    const file = lead.file as string;
+    const file = lead.file;
     const response = await prisma.lead.delete({
       where: {
         id: lead.id,
       },
     });
     // deleting file from blob
-    await del(file);
+    file && (await del(file));
 
     await revalidateTag(`${siteId}-leads`);
     return response;
