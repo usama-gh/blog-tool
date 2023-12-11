@@ -99,7 +99,7 @@ const Carousel = ({ data, siteData, lead }: any) => {
         if (resData.success) {
           const link = document.createElement("a");
           link.href = lead.file;
-          link.download = lead.fileName;
+          link.setAttribute("download", `${lead.fileName}`);
           document.body.appendChild(link);
           link.click();
           document.body.removeChild(link);
@@ -156,7 +156,7 @@ const Carousel = ({ data, siteData, lead }: any) => {
                     <h4 className="pb-4 text-center text-3xl font-bold tracking-tight text-gray-800 dark:bg-gray-800 dark:text-gray-100">
                       {lead.title}
                     </h4>
-                    <div className="text-center text-slate-800  dark:text-gray-50 font-regular overflow-hidden text-lg">
+                    <div className="font-regular overflow-hidden  text-center text-lg text-slate-800 dark:text-gray-50">
                       {/* @ts-ignore*/}
                       <MarkdownRenderer markdown={lead.description} />
                     </div>
