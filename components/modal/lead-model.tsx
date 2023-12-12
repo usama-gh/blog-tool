@@ -56,6 +56,7 @@ export default function LeadModal({
                 {
                   access: "public",
                   handleUploadUrl: "/api/leads/upload",
+                  clientPayload:"1234",
                 },
               );
               url = blob?.url;
