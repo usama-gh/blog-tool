@@ -44,7 +44,7 @@ export async function POST(request: Request): Promise<NextResponse> {
         tokenPayload: any;
       }) => {
         try {
-          console.log("File uploaded: ", blob, tokenPayload);
+          console.log("File uploaded: ", blob, tokenPayload.leadId);
           // await prisma.user.findFirst({});
         } catch (error) {
           throw new Error("Could not update the lead");
