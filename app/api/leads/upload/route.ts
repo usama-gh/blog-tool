@@ -28,11 +28,7 @@ export async function POST(request: Request): Promise<NextResponse> {
         return {
           // allowedContentTypes: ["image/jpeg", "image/png", "application/pdf"],
           validUntil: Date.now() + 360000,
-          tokenPayload: JSON.stringify({
-            leadId:clientPayload
-            // optional, sent to your server on upload completion
-            // you could pass a user id from auth, or a value from clientPayload
-          }),
+          tokenPayload: clientPayload,
         };
       },
       // @ts-ignore
