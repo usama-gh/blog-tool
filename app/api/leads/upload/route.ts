@@ -19,16 +19,16 @@ export async function POST(request: Request): Promise<NextResponse> {
       request,
       onBeforeGenerateToken: async (
         pathname: string,
-        clientPayload?: string,
+        // clientPayload?: string,
       ) => {
         // Generate a client token for the browser to upload the file
         // ⚠️ Authenticate and authorize users before generating the token.
         // Otherwise, you're allowing anonymous uploads.
 
         return {
-          // allowedContentTypes: ["image/jpeg", "image/png", "image/gif"],
+          // allowedContentTypes: ["image/jpeg", "image/png", "application/pdf"],
+          validUntil: Date.now() + 360000,
           tokenPayload: JSON.stringify({
-            leadId: clientPayload,
             // optional, sent to your server on upload completion
             // you could pass a user id from auth, or a value from clientPayload
           }),
@@ -42,18 +42,12 @@ export async function POST(request: Request): Promise<NextResponse> {
         blob: any;
         tokenPayload: any;
       }) => {
-        // try {
-        //   await prisma.lead.update({
-        //     where: {
-        //       id: tokenPayload.leadId,
-        //     },
-        //     data: {
-        //       file: blob.url,
-        //     },
-        //   });
-        // } catch (error) {
-        //   throw new Error("Could not update the lead");
-        // }
+        try {
+          console.log("File uploaded: ", blob, tokenPayload);
+          // await prisma.user.findFirst({});
+        } catch (error) {
+          throw new Error("Could not update the lead");
+        }
       },
     });
 

@@ -704,7 +704,7 @@ export const createSiteLead = async (formData: FormData) => {
   const description = formData.get("description") as string;
   const buttonCta = formData.get("buttonCta") as string;
   const download = formData.get("download") as string;
-  // let file = formData.get("file") as string;
+  let file = formData.get("url") as string;
   let fileName = formData.get("fileName") as string;
 
   // if (
@@ -735,7 +735,7 @@ export const createSiteLead = async (formData: FormData) => {
         title,
         description,
         buttonCta,
-        // file,
+        file,
         fileName,
         download,
         user: {
@@ -757,7 +757,7 @@ export const createSiteLead = async (formData: FormData) => {
   } catch (error: any) {
     if (error.code === "P2002") {
       return {
-        error: `This subdomain is already taken`,
+        error: `Error`,
       };
     } else {
       return {
@@ -781,7 +781,7 @@ export const updateSiteLead = withLeadAuth(
     const description = formData.get("description") as string;
     const buttonCta = formData.get("buttonCta") as string;
     const download = formData.get("download") as string;
-    // let file = formData.get("file") as string;
+    const file = formData.get("url") as string;
     let fileName = formData.get("fileName") as string;
     const isFileChange = lead.fileName !== fileName;
 
@@ -794,15 +794,6 @@ export const updateSiteLead = withLeadAuth(
       }
       // delete old file from vercel blob
       await del(lead.file as string);
-
-      // const originalFile = formData.get("file") as File;
-      // const filename = `${nanoid()}.${originalFile.type.split("/")[1]}`;
-
-      // upload new file to vercel blob
-      // const { url } = await put(filename, file, {
-      //   access: "public",
-      // });
-      // file = url;
     }
 
     try {
@@ -815,7 +806,7 @@ export const updateSiteLead = withLeadAuth(
           title,
           description,
           buttonCta,
-          // file: isFileChange ? file : lead.file,
+          file,
           fileName,
           download,
         },
