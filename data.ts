@@ -52,7 +52,7 @@ export const plans = [
       "10,000 views per month",
       "5 websites",
       "Import Twitter threads, LinkedIn posts & Facebook posts",
-      "AI assistant",
+      "AI assistantance",
       "All upcoming features",
     ],
     views: 16000,
