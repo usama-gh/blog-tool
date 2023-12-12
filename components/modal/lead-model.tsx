@@ -25,7 +25,6 @@ export default function LeadModal({
   const router = useRouter();
   const modal = useModal();
 
-  const [loading, setLoading] = useState(false);
   const [data, setData] = useState({
     name: (lead ? lead.name : "") as string,
     title: (lead ? lead.title : "") as string,
@@ -46,46 +45,48 @@ export default function LeadModal({
         if (!file.file || !file.fileName) {
           toast.error("Please select a file");
         } else {
-          setLoading(true);
-          data.append("description", description);
-          // @ts-ignore
-          // data.append("file", file.file);
-          data.append("fileName", file.fileName as string);
-          // @ts-ignore
-          siteId && data.append("siteId", siteId);
-
-          (lead
-            ? updateSiteLead(data, lead.id, "update")
-            : createSiteLead(data)
-          ).then(async (res: any) => {
-            if (res.error) {
-              toast.error(res.error);
-            } else {
-              if (file.file !== lead?.file) {
-                const { url } = await upload(
-                  file.fileName as string,
-                  // @ts-ignore
-                  file.file,
-                  {
-                    access: "public",
-                    handleUploadUrl: "/api/leads/upload",
-                    clientPayload: res.id,
-                  },
-                );
-                if (url) {
-                  data.append("url", url);
-                  updateLeadImage(data, res.id, "update-image");
-                }
-              }
-
-              setLoading(false);
-              modal?.hide();
-              router.refresh();
-              toast.success(
-                `Successfully ${lead ? "updated" : "created"} lead magnet`,
+          let url = lead ? lead.file : "";
+          if (file.file !== lead?.file) {
+            try {
+              url = "";
+              const blob = await upload(
+                file.fileName as string,
+                // @ts-ignore
+                file.file,
+                {
+                  access: "public",
+                  handleUploadUrl: "/api/leads/upload",
+                },
               );
+              url = blob?.url;
+            } catch (error: any) {
+              toast.error("Error uploading file.");
+              return;
             }
-          });
+          }
+
+          if (url) {
+            data.append("description", description);
+            data.append("url", url as string);
+            data.append("fileName", file.fileName as string);
+            // @ts-ignore
+            siteId && data.append("siteId", siteId);
+
+            (lead
+              ? updateSiteLead(data, lead.id, "update")
+              : createSiteLead(data)
+            ).then(async (res: any) => {
+              if (res.error) {
+                toast.error(res.error);
+              } else {
+                modal?.hide();
+                router.refresh();
+                toast.success(
+                  `Successfully ${lead ? "updated" : "created"} lead magnet`,
+                );
+              }
+            });
+          }
         }
       }}
       className="flex w-full flex-col justify-start rounded-md bg-white dark:bg-black md:max-w-4xl md:border md:border-gray-200 md:shadow dark:md:border-gray-700 lg:flex-row"
@@ -237,7 +238,7 @@ export default function LeadModal({
           </div>
         </div>
         <div className="flex items-center justify-end rounded-b-lg border-t border-slate-200 bg-slate-50 p-3 dark:border-gray-700 dark:bg-gray-800 md:px-10">
-          <CreateSiteFormButton type={type} loading={loading} />
+          <CreateSiteFormButton type={type} />
         </div>
       </div>
       <div className="hidden w-[400px] bg-slate-100 px-4 text-center dark:bg-gray-800 lg:block">
@@ -302,28 +303,21 @@ export default function LeadModal({
     </form>
   );
 }
-function CreateSiteFormButton({
-  type,
-  loading,
-}: {
-  type: string;
-  loading: boolean;
-}) {
+function CreateSiteFormButton({ type }: { type: string }) {
   const { pending } = useFormStatus();
-  const isLoading = pending || loading;
   return (
     <>
       <button
         type="submit"
         className={cn(
           "flex h-10 w-full items-center justify-center space-x-2 rounded-md border text-sm transition-all focus:outline-none",
-          isLoading
+          pending
             ? "cursor-not-allowed border-slate-200 bg-slate-100 text-slate-400 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300"
             : "border-black bg-black text-white hover:bg-white hover:text-black dark:border-gray-700 dark:hover:border-gray-600 dark:hover:bg-black dark:hover:text-white dark:active:bg-gray-800",
         )}
-        disabled={isLoading}
+        disabled={pending}
       >
-        {isLoading ? (
+        {pending ? (
           <>
             <LoadingDots color="#808080" />
             <p>Please wait</p>
