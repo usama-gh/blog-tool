@@ -41,27 +41,29 @@ export async function POST(request: Request): Promise<NextResponse> {
         tokenPayload: any;
       }) => {
         try {
-          console.log("File uploaded: ", blob, tokenPayload);
-          const lead = await prisma.lead.findFirst({
-            where: {
-              id: tokenPayload,
-            },
-          });
-          // deleting old file from storage
-          lead?.file && (await del(lead.file as string));
-
           // updating currenct lead
-          await prisma.lead.update({
-            where: {
-              id: tokenPayload,
-            },
-            data: {
-              file: blob?.url,
-            },
-          });
-
-          console.log("File uploaded");
+          if (blob?.url) {
+            const lead = await prisma.lead.findFirst({
+              where: {
+                id: tokenPayload,
+              },
+            });
+            // // deleting old file from storage
+            lead?.file && (await del(lead.file as string));
+            await prisma.lead.update({
+              where: {
+                id: tokenPayload,
+              },
+              data: {
+                file: blob?.url,
+              },
+            });
+            console.log("File uploaded");
+          } else {
+            console.log("Error Uploading file");
+          }
         } catch (error) {
+          console.log(error);
           throw new Error("Could not update the lead");
         }
       },
