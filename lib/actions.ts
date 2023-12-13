@@ -704,7 +704,7 @@ export const createSiteLead = async (formData: FormData) => {
   const description = formData.get("description") as string;
   const buttonCta = formData.get("buttonCta") as string;
   const download = formData.get("download") as string;
-  let file = formData.get("url") as string;
+  // let file = formData.get("url") as string;
   let fileName = formData.get("fileName") as string;
 
   // if (
@@ -735,7 +735,7 @@ export const createSiteLead = async (formData: FormData) => {
         title,
         description,
         buttonCta,
-        file,
+        // file,
         fileName,
         download,
         user: {
@@ -781,20 +781,20 @@ export const updateSiteLead = withLeadAuth(
     const description = formData.get("description") as string;
     const buttonCta = formData.get("buttonCta") as string;
     const download = formData.get("download") as string;
-    const file = formData.get("url") as string;
+    // const file = formData.get("url") as string;
     let fileName = formData.get("fileName") as string;
-    const isFileChange = lead.fileName !== fileName;
+    // const isFileChange = lead.fileName !== fileName;
 
-    if (isFileChange) {
-      if (!process.env.BLOB_READ_WRITE_TOKEN) {
-        return {
-          error:
-            "Missing BLOB_READ_WRITE_TOKEN token. Note: Vercel Blob is currently in beta – ping @steventey on Twitter for access.",
-        };
-      }
-      // delete old file from vercel blob
-      await del(lead.file as string);
-    }
+    // if (isFileChange) {
+    //   if (!process.env.BLOB_READ_WRITE_TOKEN) {
+    //     return {
+    //       error:
+    //         "Missing BLOB_READ_WRITE_TOKEN token. Note: Vercel Blob is currently in beta – ping @steventey on Twitter for access.",
+    //     };
+    //   }
+    //   // delete old file from vercel blob
+    //   await del(lead.file as string);
+    // }
 
     try {
       const response = await prisma.lead.update({
@@ -806,7 +806,7 @@ export const updateSiteLead = withLeadAuth(
           title,
           description,
           buttonCta,
-          file,
+          // file,
           fileName,
           download,
         },
