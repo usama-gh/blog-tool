@@ -1,4 +1,5 @@
 import prisma from "@/lib/prisma";
+import { del } from "@vercel/blob";
 // @ts-ignore
 import { handleUpload, type HandleUploadBody } from "@vercel/blob/client";
 import { NextResponse } from "next/server";
@@ -41,7 +42,25 @@ export async function POST(request: Request): Promise<NextResponse> {
       }) => {
         try {
           console.log("File uploaded: ", blob, tokenPayload);
-          // await prisma.user.findFirst({});
+          const lead = await prisma.lead.findFirst({
+            where: {
+              id: tokenPayload,
+            },
+          });
+          // deleting old file from storage
+          lead && (await del(lead.file as string));
+
+          // updating currenct lead
+          await prisma.lead.update({
+            where: {
+              id: tokenPayload,
+            },
+            data: {
+              file: blob?.url,
+            },
+          });
+
+          console.log("File uploaded");
         } catch (error) {
           throw new Error("Could not update the lead");
         }
