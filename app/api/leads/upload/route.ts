@@ -48,7 +48,7 @@ export async function POST(request: Request): Promise<NextResponse> {
             },
           });
           // deleting old file from storage
-          lead.file && (await del(lead.file as string));
+          lead?.file && (await del(lead.file as string));
 
           // updating currenct lead
           await prisma.lead.update({
