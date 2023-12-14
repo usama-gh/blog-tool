@@ -61,7 +61,7 @@ export default function LeadModal({
           if (originalFile) {
             const filename = `${nanoid()}.${originalFile?.type.split("/")[1]}`;
             flileUrl = filename;
-            originalFile && data.append("file", originalFile);
+            // originalFile && data.append("file", originalFile);
 
 
             const response = await fetch("/api/r2", {
