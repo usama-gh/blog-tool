@@ -62,13 +62,16 @@ export default function LeadModal({
             const filename = `${nanoid()}.${originalFile?.type.split("/")[1]}`;
             flileUrl = filename;
             originalFile && data.append("file", originalFile);
+
+
             const response = await fetch("/api/r2", {
               method: "POST",
               body: JSON.stringify({ key: filename }),
             });
+
             const { url } = await response.json();
 
-            await fetch(url, {
+            fetch(url, {
               method: "PUT",
               body: data,
             });
