@@ -704,8 +704,9 @@ export const createSiteLead = async (formData: FormData) => {
   const description = formData.get("description") as string;
   const buttonCta = formData.get("buttonCta") as string;
   const download = formData.get("download") as string;
-  // let file = formData.get("url") as string;
-  let fileName = formData.get("fileName") as string;
+  const delivery = formData.get("delivery") as string;
+  const file = formData.get("url") as string;
+  const fileName = formData.get("fileName") as string;
 
   // if (
   //   file !==
@@ -735,9 +736,10 @@ export const createSiteLead = async (formData: FormData) => {
         title,
         description,
         buttonCta,
-        // file,
+        file,
         fileName,
         download,
+        delivery,
         user: {
           connect: {
             id: session.user.id,
@@ -781,8 +783,9 @@ export const updateSiteLead = withLeadAuth(
     const description = formData.get("description") as string;
     const buttonCta = formData.get("buttonCta") as string;
     const download = formData.get("download") as string;
-    // const file = formData.get("url") as string;
-    let fileName = formData.get("fileName") as string;
+    const delivery = formData.get("delivery") as string;
+    const file = formData.get("url") as string;
+    const fileName = formData.get("fileName") as string;
     // const isFileChange = lead.fileName !== fileName;
 
     // if (isFileChange) {
@@ -806,9 +809,10 @@ export const updateSiteLead = withLeadAuth(
           title,
           description,
           buttonCta,
-          // file,
+          file,
           fileName,
           download,
+          delivery,
         },
       });
 
@@ -877,7 +881,7 @@ export const deleteSiteLead = withLeadAuth(async (_: FormData, lead: Lead) => {
       },
     });
     // deleting file from blob
-    file && (await del(file));
+    // file && (await del(file));
 
     await revalidateTag(`${siteId}-leads`);
     return response;
