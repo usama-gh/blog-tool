@@ -9,10 +9,12 @@ export default function FileUploader({
   name,
   setFile,
   oldFileName,
+  setOriginalFile,
 }: {
   defaultValue: string | null;
   name: "file";
   setFile: any;
+  setOriginalFile: any;
   oldFileName: string | null;
 }) {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -35,6 +37,7 @@ export default function FileUploader({
       //   toast.error("Invalid file type (must be .png, .jpg, or .jpeg)");
       // }
       else {
+        setOriginalFile(file);
         const reader = new FileReader();
         reader.onload = (e) => {
           setData((prev) => ({ ...prev, [name]: e.target?.result as string }));

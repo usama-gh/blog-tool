@@ -14,6 +14,12 @@ import { Lead } from "@prisma/client";
 import NovelEditor from "../editor/novel-editor";
 // @ts-ignore
 import { upload } from "@vercel/blob/client";
+import { customAlphabet } from "nanoid";
+
+const nanoid = customAlphabet(
+  "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz",
+  10,
+); // 7-character random string
 
 export default function LeadModal({
   siteId,
@@ -25,30 +31,51 @@ export default function LeadModal({
   const router = useRouter();
   const modal = useModal();
 
-  const [loading, setLoading] = useState(false);
   const [data, setData] = useState({
     name: (lead ? lead.name : "") as string,
     title: (lead ? lead.title : "") as string,
     description: (lead ? lead.description : "") as string,
     buttonCta: (lead ? lead.buttonCta : "") as string,
     download: (lead ? lead.download : "email") as string,
+    delivery: (lead ? lead.delivery : "file") as string,
+    link: (lead && lead.delivery === "link" ? lead.file : "") as string,
   });
   const [file, setFile] = useState({
     file: lead ? lead.file : "",
     fileName: lead ? lead.fileName : "",
   });
+  const [originalFile, setOriginalFile] = useState<File>();
   const [description, setDescription] = useState(data.description);
   const type = lead ? "Update" : "Create";
 
   return (
     <form
       action={async (data: FormData) => {
-        if (!file.file || !file.fileName) {
+        const delivery = data.get("delivery") as string;
+        const link = data.get("link") as string;
+
+        if (delivery === "file" && (!file.file || !file.fileName)) {
           toast.error("Please select a file");
         } else {
+          let flileUrl = file.file;
+          if (originalFile) {
+            const filename = `${nanoid()}.${originalFile?.type.split("/")[1]}`;
+            flileUrl = filename;
+            originalFile && data.append("file", originalFile);
+            const response = await fetch("/api/r2", {
+              method: "POST",
+              body: JSON.stringify({ key: filename }),
+            });
+            const { url } = await response.json();
+
+            await fetch(url, {
+              method: "PUT",
+              body: data,
+            });
+          }
           data.append("description", description);
           data.append("fileName", file.fileName as string);
-          // @ts-ignore
+          data.append("url", (delivery === "file" ? flileUrl : link) as string);
           siteId && data.append("siteId", siteId);
 
           (lead
@@ -58,25 +85,6 @@ export default function LeadModal({
             if (res.error) {
               toast.error(res.error);
             } else {
-              if (file.file !== lead?.file) {
-                setLoading(true);
-                try {
-                  const blob = await upload(
-                    file.fileName as string,
-                    // @ts-ignore
-                    file.file,
-                    {
-                      access: "public",
-                      handleUploadUrl: "/api/leads/upload",
-                      clientPayload: res.id,
-                    },
-                  );
-                  setLoading(false);
-                } catch (error: any) {
-                  toast.error("Error uploading file.");
-                  return;
-                }
-              }
               modal?.hide();
               router.refresh();
               toast.success(
@@ -146,30 +154,89 @@ export default function LeadModal({
               canUseAI={false}
             />
           </span>
-
-          {/* <textarea
-            name="description"
-            placeholder="Description about the lead"
-            value={data.description}
-            onChange={(e) => setData({ ...data, description: e.target.value })}
-            rows={3}
-            className="bg-stslateone-50 w-full rounded-md border border-slate-200 px-4 py-2 text-sm text-slate-600 placeholder:text-slate-400 focus:border-black  focus:outline-none focus:ring-black dark:border-gray-600 dark:bg-black dark:text-white dark:placeholder-gray-700 dark:focus:ring-white"
-          /> */}
         </div>
+
         <div className="flex flex-col space-y-2">
           <label
-            htmlFor="description"
-            className="text-xs font-medium text-slate-500  dark:text-gray-400"
+            htmlFor="delivery"
+            className="text-xs font-medium text-slate-500 dark:text-gray-400"
           >
-            Upload file
+            Delivery Method
           </label>
-          <FileUploader
-            defaultValue={file.file}
-            name="file"
-            setFile={setFile}
-            oldFileName={file.fileName}
-          />
+          <div className="flex gap-x-6">
+            <div className="flex">
+              <input
+                type="radio"
+                name="delivery"
+                className="mt-0.5 shrink-0 rounded-full border-gray-200 text-blue-600 focus:ring-blue-500 disabled:pointer-events-none disabled:opacity-50 dark:border-gray-700 dark:bg-gray-800 dark:checked:border-blue-500 dark:checked:bg-blue-500 dark:focus:ring-offset-gray-800"
+                id="file"
+                value="file"
+                onChange={(e) => setData({ ...data, delivery: e.target.value })}
+                checked={data.delivery === "file"}
+              />
+              <label
+                htmlFor="file"
+                className="ms-2 text-sm text-gray-500 dark:text-gray-400"
+              >
+                File Download
+              </label>
+            </div>
+
+            <div className="flex">
+              <input
+                type="radio"
+                name="delivery"
+                className="mt-0.5 shrink-0 rounded-full border-gray-200 text-blue-600 focus:ring-blue-500 disabled:pointer-events-none disabled:opacity-50 dark:border-gray-700 dark:bg-gray-800 dark:checked:border-blue-500 dark:checked:bg-blue-500 dark:focus:ring-offset-gray-800"
+                id="link"
+                value="link"
+                onChange={(e) => setData({ ...data, delivery: e.target.value })}
+                checked={data.delivery === "link"}
+              />
+              <label
+                htmlFor="link"
+                className="ms-2 text-sm text-gray-500 dark:text-gray-400"
+              >
+                Links
+              </label>
+            </div>
+          </div>
         </div>
+
+        {data.delivery === "file" ? (
+          <div className="flex flex-col space-y-2">
+            <label
+              htmlFor="description"
+              className="text-xs font-medium text-slate-500  dark:text-gray-400"
+            >
+              Upload file
+            </label>
+            <FileUploader
+              defaultValue={file.file}
+              name="file"
+              setFile={setFile}
+              oldFileName={file.fileName}
+              setOriginalFile={setOriginalFile}
+            />
+          </div>
+        ) : (
+          <div className="flex flex-col space-y-2">
+            <label
+              htmlFor="description"
+              className="text-xs font-medium text-slate-500  dark:text-gray-400"
+            >
+              Links
+            </label>
+            <textarea
+              name="link"
+              placeholder="Link"
+              value={data.link}
+              onChange={(e) => setData({ ...data, link: e.target.value })}
+              rows={3}
+              className="bg-stslateone-50 w-full rounded-md border border-slate-200 px-4 py-2 text-sm text-slate-600 placeholder:text-slate-400 focus:border-black  focus:outline-none focus:ring-black dark:border-gray-600 dark:bg-black dark:text-white dark:placeholder-gray-700 dark:focus:ring-white"
+              required={data.delivery === "link"}
+            />
+          </div>
+        )}
 
         <div className="flex flex-col space-y-2">
           <label
@@ -234,8 +301,9 @@ export default function LeadModal({
             </div>
           </div>
         </div>
+
         <div className="flex items-center justify-end rounded-b-lg border-t border-slate-200 bg-slate-50 p-3 dark:border-gray-700 dark:bg-gray-800 md:px-10">
-          <CreateSiteFormButton type={type} loading={loading} />
+          <CreateSiteFormButton type={type} />
         </div>
       </div>
       <div className="hidden w-[400px] bg-slate-100 px-4 text-center dark:bg-gray-800 lg:block">
@@ -300,28 +368,21 @@ export default function LeadModal({
     </form>
   );
 }
-function CreateSiteFormButton({
-  type,
-  loading,
-}: {
-  type: string;
-  loading: boolean;
-}) {
+function CreateSiteFormButton({ type }: { type: string }) {
   const { pending } = useFormStatus();
-  const isLoading = pending || loading ? true : false;
   return (
     <>
       <button
         type="submit"
         className={cn(
           "flex h-10 w-full items-center justify-center space-x-2 rounded-md border text-sm transition-all focus:outline-none",
-          isLoading
+          pending
             ? "cursor-not-allowed border-slate-200 bg-slate-100 text-slate-400 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300"
             : "border-black bg-black text-white hover:bg-white hover:text-black dark:border-gray-700 dark:hover:border-gray-600 dark:hover:bg-black dark:hover:text-white dark:active:bg-gray-800",
         )}
-        disabled={isLoading}
+        disabled={pending}
       >
-        {isLoading ? (
+        {pending ? (
           <>
             <LoadingDots color="#808080" />
             <p>Please wait</p>
