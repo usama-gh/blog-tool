@@ -5,47 +5,27 @@ import { useRef, useState } from "react";
 import { toast } from "sonner";
 
 export default function FileUploader({
-  defaultValue,
-  name,
-  setFile,
-  oldFileName,
+  fileName,
+  setFileName,
   setOriginalFile,
 }: {
-  defaultValue: string | null;
-  name: "file";
-  setFile: any;
+  fileName: string | null;
+  setFileName: any;
   setOriginalFile: any;
-  oldFileName: string | null;
 }) {
   const inputRef = useRef<HTMLInputElement>(null);
-  const [data, setData] = useState({
-    [name]: defaultValue,
-  });
-  const [filename, SetFileName] = useState(oldFileName ?? "");
+  const [data, setData] = useState();
   const [dragActive, setDragActive] = useState(false);
 
   const handleUpload = (file: File | null) => {
     if (file) {
       if (file.size / 1024 / 1024 > 50) {
         toast.error("File size too big (max 50MB)");
-      }
-      //  else if (
-      //   !file.type.includes("png") &&
-      //   !file.type.includes("jpg") &&
-      //   !file.type.includes("jpeg")
-      // ) {
-      //   toast.error("Invalid file type (must be .png, .jpg, or .jpeg)");
-      // }
-      else {
+      } else {
         setOriginalFile(file);
         const reader = new FileReader();
         reader.onload = (e) => {
-          setData((prev) => ({ ...prev, [name]: e.target?.result as string }));
-          setFile({
-            file: e.target?.result as string,
-            fileName: file.name,
-          });
-          SetFileName(file.name);
+          setFileName(file.name);
         };
         reader.readAsDataURL(file);
       }
@@ -60,21 +40,16 @@ export default function FileUploader({
       >
         Upload your file
       </label>
-      {filename && (
+      {fileName && (
         <span className="flex items-center justify-between text-center">
           <span className="text-xs text-slate-600 dark:text-gray-500">
-            {filename}
+            {fileName}
           </span>
           <XCircle
             width={18}
             className="cursor-pointer text-red-400"
             onClick={() => {
-              setData((prev) => ({ ...prev, [name]: defaultValue }));
-              setFile({
-                file: "",
-                fileName: "",
-              });
-              SetFileName("");
+              setFileName("");
             }}
           />
         </span>
@@ -84,14 +59,11 @@ export default function FileUploader({
         <input
           id="leadFile"
           ref={inputRef}
-          name={name}
           type="file"
-          // accept="image/*"
           className="sr-only"
-          onChange={(e) => {
-            const file = e.currentTarget.files && e.currentTarget.files[0];
-            handleUpload(file);
-          }}
+          onChange={(e) =>
+            handleUpload(e.currentTarget.files && e.currentTarget.files[0])
+          }
         />
       </div>
     </div>

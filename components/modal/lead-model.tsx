@@ -15,6 +15,7 @@ import NovelEditor from "../editor/novel-editor";
 // @ts-ignore
 import { upload } from "@vercel/blob/client";
 import { customAlphabet } from "nanoid";
+import { LeadData } from "@/types";
 
 const nanoid = customAlphabet(
   "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz",
@@ -40,47 +41,48 @@ export default function LeadModal({
     delivery: (lead ? lead.delivery : "file") as string,
     link: (lead && lead.delivery === "link" ? lead.file : "") as string,
   });
-  const [file, setFile] = useState({
-    file: lead ? lead.file : "",
-    fileName: lead ? lead.fileName : "",
-  });
+  const [fileName, setFileName] = useState(lead ? lead.fileName : "");
   const [originalFile, setOriginalFile] = useState<File>();
   const [description, setDescription] = useState(data.description);
   const type = lead ? "Update" : "Create";
 
   return (
     <form
-      action={async (data: FormData) => {
-        const delivery = data.get("delivery") as string;
-        const link = data.get("link") as string;
-
-        if (delivery === "file" && (!file.file || !file.fileName)) {
+      action={async () => {
+        if (data.delivery === "file" && !fileName) {
           toast.error("Please select a file");
         } else {
-          let flileUrl = file.file;
+          let flileUrl = lead ? lead.file : "";
           if (originalFile) {
-            const filename = `${nanoid()}.${originalFile?.type.split("/")[1]}`;
-            flileUrl = filename;
-            originalFile && data.append("file", originalFile);
+            flileUrl = `${nanoid()}.${originalFile?.type.split("/")[1]}`;
+            let formData = new FormData();
+            originalFile && formData.append("file", originalFile);
             const response = await fetch("/api/r2", {
               method: "POST",
-              body: JSON.stringify({ key: filename }),
+              body: JSON.stringify({ key: flileUrl }),
             });
             const { url } = await response.json();
 
             await fetch(url, {
               method: "PUT",
-              body: data,
+              body: formData,
             });
           }
-          data.append("description", description);
-          data.append("fileName", file.fileName as string);
-          data.append("url", (delivery === "file" ? flileUrl : link) as string);
-          siteId && data.append("siteId", siteId);
+          const body: LeadData = {
+            siteId: (lead ? lead.siteId : siteId) as string,
+            name: data.name,
+            title: data.title,
+            description: description as string,
+            buttonCta: data.buttonCta,
+            download: data.download,
+            delivery: data.delivery,
+            url: (data.delivery === "file" ? flileUrl : data.link) as string,
+            fileName: fileName as string,
+          };
 
           (lead
-            ? updateSiteLead(data, lead.id, "update")
-            : createSiteLead(data)
+            ? updateSiteLead(body, lead.id, "update")
+            : createSiteLead(body)
           ).then(async (res: any) => {
             if (res.error) {
               toast.error(res.error);
@@ -211,10 +213,8 @@ export default function LeadModal({
               Upload file
             </label>
             <FileUploader
-              defaultValue={file.file}
-              name="file"
-              setFile={setFile}
-              oldFileName={file.fileName}
+              fileName={fileName}
+              setFileName={setFileName}
               setOriginalFile={setOriginalFile}
             />
           </div>

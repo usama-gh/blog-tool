@@ -3,7 +3,7 @@ import GitHubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import prisma from "@/lib/prisma";
-import { plans } from "@/data";
+import { LeadData } from "@/types";
 
 const VERCEL_DEPLOYMENT = !!process.env.VERCEL_URL;
 
@@ -144,11 +144,7 @@ export function withPostAuth(action: any) {
 }
 
 export function withLeadAuth(action: any) {
-  return async (
-    formData: FormData | null,
-    leadId: string,
-    key: string | null,
-  ) => {
+  return async (data: LeadData | null, leadId: string, key: string | null) => {
     const session = await getSession();
     if (!session?.user.id) {
       return {
@@ -166,6 +162,6 @@ export function withLeadAuth(action: any) {
       };
     }
 
-    return action(formData, lead, key);
+    return action(data, lead, key);
   };
 }

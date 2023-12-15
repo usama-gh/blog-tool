@@ -16,6 +16,7 @@ import { del, put } from "@vercel/blob";
 import { customAlphabet } from "nanoid";
 import { getBlurDataURL } from "@/lib/utils";
 import { createId as cuid } from "@paralleldrive/cuid2";
+import { LeadData } from "@/types";
 
 const nanoid = customAlphabet(
   "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz",
@@ -691,55 +692,26 @@ export const regenerateToken = async (id: string) => {
   }
 };
 
-export const createSiteLead = async (formData: FormData) => {
+export const createSiteLead = async (data: LeadData) => {
   const session = await getSession();
   if (!session?.user.id) {
     return {
       error: "Not authenticated",
     };
   }
-  const siteId = formData.get("siteId") as string;
-  const name = formData.get("name") as string;
-  const title = formData.get("title") as string;
-  const description = formData.get("description") as string;
-  const buttonCta = formData.get("buttonCta") as string;
-  const download = formData.get("download") as string;
-  const delivery = formData.get("delivery") as string;
-  const file = formData.get("url") as string;
-  const fileName = formData.get("fileName") as string;
-
-  // if (
-  //   file !==
-  //   "https://public.blob.vercel-storage.com/eEZHAoPTOBSYGBE3/JRajRyC-PhBHEinQkupt02jqfKacBVHLWJq7Iy.png"
-  // ) {
-  //   if (!process.env.BLOB_READ_WRITE_TOKEN) {
-  //     return {
-  //       error:
-  //         "Missing BLOB_READ_WRITE_TOKEN token. Note: Vercel Blob is currently in beta – ping @steventey on Twitter for access.",
-  //     };
-  //   }
-
-  //   const originalFile = formData.get("file") as File;
-  //   const filename = `${nanoid()}.${originalFile.type.split("/")[1]}`;
-
-  //   const { url } = await put(filename, file, {
-  //     access: "public",
-  //   });
-  //   file = url;
-  // }
 
   try {
     // creating site lead
     const response = await prisma.lead.create({
       data: {
-        name,
-        title,
-        description,
-        buttonCta,
-        file,
-        fileName,
-        download,
-        delivery,
+        name: data.name,
+        title: data.title,
+        description: data.description,
+        buttonCta: data.buttonCta,
+        file: data.url,
+        fileName: data.fileName,
+        download: data.download,
+        delivery: data.delivery,
         user: {
           connect: {
             id: session.user.id,
@@ -747,13 +719,13 @@ export const createSiteLead = async (formData: FormData) => {
         },
         site: {
           connect: {
-            id: siteId,
+            id: data.siteId,
           },
         },
       },
     });
 
-    revalidateTag(`${siteId}-leads`);
+    revalidateTag(`${data.siteId}-leads`);
 
     return response;
   } catch (error: any) {
@@ -770,7 +742,7 @@ export const createSiteLead = async (formData: FormData) => {
 };
 
 export const updateSiteLead = withLeadAuth(
-  async (formData: FormData, lead: Lead, key: string) => {
+  async (data: LeadData, lead: Lead, key: string) => {
     const session = await getSession();
     if (!session?.user.id) {
       return {
@@ -778,14 +750,6 @@ export const updateSiteLead = withLeadAuth(
       };
     }
 
-    const name = formData.get("name") as string;
-    const title = formData.get("title") as string;
-    const description = formData.get("description") as string;
-    const buttonCta = formData.get("buttonCta") as string;
-    const download = formData.get("download") as string;
-    const delivery = formData.get("delivery") as string;
-    const file = formData.get("url") as string;
-    const fileName = formData.get("fileName") as string;
     // const isFileChange = lead.fileName !== fileName;
 
     // if (isFileChange) {
@@ -805,14 +769,14 @@ export const updateSiteLead = withLeadAuth(
           id: lead.id,
         },
         data: {
-          name,
-          title,
-          description,
-          buttonCta,
-          file,
-          fileName,
-          download,
-          delivery,
+          name: data.name,
+          title: data.title,
+          description: data.description,
+          buttonCta: data.buttonCta,
+          file: data.url,
+          fileName: data.fileName,
+          download: data.download,
+          delivery: data.delivery,
         },
       });
 

@@ -11,3 +11,15 @@ interface Collector {
   updatedAt: Date;
   post: Post;
 }
+
+interface LeadData {
+  siteId: string;
+  name: string;
+  title: string;
+  description: string;
+  buttonCta: string;
+  download: string;
+  delivery: string;
+  url: string;
+  fileName: string;
+}
