@@ -27,7 +27,7 @@ export default function LinkLeadModal({
     >
       <div className="relative flex flex-col space-y-4 p-5 md:p-10">
         <h2 className="font-inter text-2xl font-semibold dark:text-white">
-          Link your lead magnet post
+          Attach your lead magnet
         </h2>
 
         <div className="flex flex-col space-y-2 pt-6">
@@ -35,7 +35,7 @@ export default function LinkLeadModal({
             htmlFor="lead"
             className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
           >
-            Select the lead magnet to link
+            Select the lead magnet which you want to link
           </label>
           <select
             id="lead"

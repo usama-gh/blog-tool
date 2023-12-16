@@ -191,7 +191,7 @@ const Carousel = ({ data, siteData, lead }: any) => {
             </div>
           </div>
           {lead && (
-            <div className="z-90 fixed bottom-4 left-1/2 -translate-x-1/2 transform">
+            <div className="z-90 fixed bottom-12 lg:bottom-4  left-1/2 -translate-x-1/2 transform">
               <div className="flex w-fit items-center justify-between gap-3 rounded-full bg-slate-200 p-1 dark:bg-gray-200">
                 <p className="text-dark whitespace-nowrap	 pl-4 text-sm font-semibold">
                   {lead.title}

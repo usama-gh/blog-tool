@@ -51,13 +51,16 @@ export const LeadDownload = ({
     <>
       {isCollected ? (
         lead.delivery === "file" ? (
-          <p className="mt-5 text-center text-2xl font-semibold dark:text-gray-200">
+          <p className="mt-5 text-center text-sm font-semibold dark:text-gray-200">
             Thank you for downloading
           </p>
         ) : (
           <div className="mt-5 text-center">
-            <p className="text-xl dark:text-gray-200">Here's the link</p>
-            <div className="mt-4 rounded-md bg-gray-300/80 p-2">
+            <p className="text-sm text-slate-700 dark:text-gray-200 text-center flex justify-center"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 13.5L12 21m0 0l-7.5-7.5M12 21V3" />
+</svg>
+</p>
+            <div className="mt-4 rounded-md bg-slate-100 text-slate-800 dark:bg-gray-600 dark:text-gray-100 p-2">
               {lead.file}
             </div>
           </div>
