@@ -43,6 +43,7 @@ export default function CreateSiteModal() {
             toast.error(res.error);
           } else {
             triggerEvent("new_blog_created", {});
+            sessionStorage.removeItem("username");
             const { id } = res;
             router.refresh();
             router.push(`/site/${id}`);
@@ -90,7 +91,11 @@ export default function CreateSiteModal() {
               name="subdomain"
               type="text"
               placeholder="subdomain"
-              value={data.subdomain}
+              value={
+                sessionStorage.getItem("username")
+                  ? (sessionStorage.getItem("username") as string)
+                  : data.subdomain
+              }
               onChange={(e) => setData({ ...data, subdomain: e.target.value })}
               autoCapitalize="off"
               pattern="[a-zA-Z0-9\-]+" // only allow lowercase letters, numbers, and dashes

@@ -8,6 +8,7 @@ import { getSession } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { getUserDetails } from "@/lib/fetchers";
 import CreateUsermavenUser from "@/components/usermaven";
+import { QueryBlog } from "@/components/query-blog";
 
 export default async function Overview() {
   const session = await getSession();
@@ -19,6 +20,7 @@ export default async function Overview() {
 
   return (
     <>
+      <QueryBlog />
       <CreateUsermavenUser user={user} />
       <div className="flex max-w-screen-xl flex-col space-y-12 p-8">
         <div className="flex flex-col space-y-6">
