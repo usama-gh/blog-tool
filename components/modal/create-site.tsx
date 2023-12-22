@@ -96,7 +96,9 @@ export default function CreateSiteModal() {
                   ? (sessionStorage.getItem("username") as string)
                   : data.subdomain
               }
-              onChange={(e) => setData({ ...data, subdomain: e.target.value })}
+              onChange={(e) =>
+                setData({ ...data, subdomain: e.target.value.toLowerCase() })
+              }
               autoCapitalize="off"
               pattern="[a-zA-Z0-9\-]+" // only allow lowercase letters, numbers, and dashes
               maxLength={32}
