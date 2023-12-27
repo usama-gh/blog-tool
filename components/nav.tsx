@@ -90,6 +90,12 @@ export default function Nav({ children }: { children: ReactNode }) {
           icon: <Megaphone width={18} />,
         },
         {
+          name: "Subscribers",
+          href: `/site/${id}/subscribers`,
+          isActive: segments.includes("subscribers"),
+          icon: <BarChart3 width={18} />,
+        },
+        {
           name: "Analytics",
           href: `/site/${id}/analytics`,
           isActive: segments.includes("analytics"),
