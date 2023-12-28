@@ -28,3 +28,8 @@ interface SubscribeData {
   siteId: string;
   email: string;
 }
+
+interface SubscribeReponse {
+  success: boolean;
+  message: string;
+}

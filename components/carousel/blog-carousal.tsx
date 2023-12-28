@@ -139,7 +139,7 @@ const Carousel = ({ data, siteData, lead }: any) => {
                   <h4 className="pb-8 text-center text-sm font-semibold uppercase tracking-wide text-slate-400 dark:bg-gray-800 dark:text-gray-400">
                     More from {siteData?.name}
                   </h4>
-                  {/* susbcribe to post */}
+                  {/* susbcribe to blog */}
                   <Subscribe siteId={data.siteId} />
 
                   <div className="relative mx-auto w-9/12 rounded-2xl border border-slate-200 px-8 py-8 text-slate-400 dark:border-gray-600 dark:text-gray-400">

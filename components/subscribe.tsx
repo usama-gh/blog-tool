@@ -1,6 +1,6 @@
 "use client";
 
-import { addSubscriber } from "@/lib/actions";
+import { SubscribeReponse } from "@/types";
 import LoadingDots from "./icons/loading-dots";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
@@ -13,17 +13,22 @@ export const Subscribe = ({ siteId }: { siteId: string }) => {
   const addToSubscribe = async (e: any) => {
     e.preventDefault();
 
-    addSubscriber({
-      email,
-      siteId,
-    }).then(async (res: any) => {
-      if (res.error) {
-        toast.error(res.error);
-      } else {
-        toast.success("Successfully added to subscribers list");
-        setEmail("");
-      }
+    const res = await fetch("/api/subscribe", {
+      method: "POST",
+      body: JSON.stringify({
+        email,
+        siteId,
+      }),
     });
+
+    const response: SubscribeReponse = await res.json();
+
+    if (!response.success) {
+      toast.error(response.message);
+    } else {
+      toast.success(response.message);
+      setEmail("");
+    }
   };
 
   return (
@@ -51,6 +56,7 @@ function SubscribeButton() {
   const { pending } = useFormStatus();
   return (
     <button
+      type="submit"
       className={cn(
         "flex h-10 items-center justify-center space-x-2 rounded-md border text-sm transition-all focus:outline-none",
         pending

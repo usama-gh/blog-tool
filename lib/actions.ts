@@ -855,27 +855,3 @@ export const deleteSiteLead = withLeadAuth(async (_: FormData, lead: Lead) => {
     };
   }
 });
-
-export const addSubscriber = async (data: SubscribeData) => {
-  try {
-    // creating site subscriber
-    const response = await prisma.subscriber.create({
-      data: {
-        email: data.email,
-        site: {
-          connect: {
-            id: data.siteId,
-          },
-        },
-      },
-    });
-
-    revalidateTag(`${data.siteId}-subscribers`);
-
-    return response;
-  } catch (error: any) {
-    return {
-      error: error.message,
-    };
-  }
-};
