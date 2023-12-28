@@ -48,7 +48,7 @@ export default async function SiteHomePage({
                 {data.name}
               </h1>
               <div
-                className="font-regular site-bio overflow-hidden text-sm  "
+                className="font-regular site-bio overflow-hidden text-md  "
                 // style={{
                 //   display: "-webkit-box",
                 //   WebkitLineClamp: 2,

@@ -14,6 +14,7 @@ import {
   Magnet,
   Settings,
   TrophyIcon,
+  Users,
   ChromeIcon,
   Shield,
 } from "lucide-react";
@@ -93,7 +94,7 @@ export default function Nav({ children }: { children: ReactNode }) {
           name: "Subscribers",
           href: `/site/${id}/subscribers`,
           isActive: segments.includes("subscribers"),
-          icon: <BarChart3 width={18} />,
+          icon: <Users width={18} />,
         },
         {
           name: "Analytics",
