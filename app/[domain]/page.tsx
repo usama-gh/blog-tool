@@ -7,6 +7,7 @@ import Image from "next/image";
 import SocialLinks from "@/components/social-links";
 /* @ts-ignore*/
 import { MarkdownRenderer } from "markdown-react-renderer";
+import { Subscribe } from "@/components/subscribe";
 
 export default async function SiteHomePage({
   params,
@@ -26,7 +27,7 @@ export default async function SiteHomePage({
     <>
       <div className="">
         <div className="ease left-0 right-0 top-0 z-30 flex w-full transition-all duration-150 dark:bg-gray-800 dark:text-white">
-          <div className="mx-auto md:w-2/6 py-12">
+          <div className="mx-auto py-12 md:w-2/6">
             <div className="m-auto flex w-full flex-col items-center justify-center">
               <div className="h-50 w-50 mb-5 overflow-hidden rounded-full align-middle">
                 {data.logo ? (
@@ -43,11 +44,11 @@ export default async function SiteHomePage({
                   </div>
                 )}
               </div>
-              <h1 className="text-lg   dark:drop-shadow-md text-transparent bg-clip-text bg-gradient-to-br from-slate-600 to-slate-600 dark:from-gray-50 dark:to-gray-500  font-bold">
+              <h1 className="bg-gradient-to-br   from-slate-600 to-slate-600 bg-clip-text text-lg font-bold text-transparent dark:from-gray-50 dark:to-gray-500  dark:drop-shadow-md">
                 {data.name}
               </h1>
               <div
-                className="font-regular site-bio overflow-hidden text-sm  "
+                className="font-regular site-bio overflow-hidden text-md  "
                 // style={{
                 //   display: "-webkit-box",
                 //   WebkitLineClamp: 2,
@@ -59,17 +60,19 @@ export default async function SiteHomePage({
               </div>
               <SocialLinks linksData={data.links} />
             </div>
+            {/* susbcribe to blog */}
+            <Subscribe siteId={data.id} />
           </div>
         </div>
 
-        <div className="w-full px-2 pb-16 max-w-2xl mx-auto">
+        <div className="mx-auto w-full max-w-2xl px-2 pb-16">
           {posts.length > 0 ? (
             posts.map((post, index) => (
               <div key={`post-${index}`}>
                 <Link href={`/${post.slug}`}>
                   <div
-                    className="ease transition-all md:w-full mx-auto mb-5  max-w-screen-xl rounded-3xl border border-slate-200 hover:border-slate-300 px-4 py-8
-               dark:overflow-hidden dark:border-gray-700 dark:bg-gray-800 dark:shadow-none dark:hover:border-gray-600"
+                    className="ease mx-auto mb-5 max-w-screen-xl rounded-3xl  border border-slate-200 px-4 py-8 transition-all hover:border-slate-300 dark:overflow-hidden
+               dark:border-gray-700 dark:bg-gray-800 dark:shadow-none dark:hover:border-gray-600 md:w-full"
                   >
                     {/* {index == 0 ? (
                     <div className="sm:h-120 group relative mx-auto h-52 w-full overflow-hidden rounded-3xl">
@@ -86,17 +89,19 @@ export default async function SiteHomePage({
                   ) : (
                     <></>
                   )} */}
-                    <div className="m-auto w-full px-8 text-center flex flex-col justify-center items-center gap-y-2">
+                    <div className="m-auto flex w-full flex-col items-center justify-center gap-y-2 px-8 text-center">
                       <p className="m-auto text-sm tracking-normal text-slate-500 dark:text-gray-400">
                         {toDateString(post.createdAt, "long")}
                       </p>
-                      <h2 className="text-2xl md:text-3xl tracking-tight font-semibold  text-slate-600 dark:text-white">
+                      <h2 className="text-2xl font-semibold tracking-tight text-slate-600  dark:text-white md:text-3xl">
                         {post.title}
                       </h2>
-                      <p className="w-full leading-6 text-base text-slate-500 dark:text-gray-300 line-clamp-3">
+                      <p className="line-clamp-3 w-full text-base leading-6 text-slate-500 dark:text-gray-300">
                         {post.description}
                       </p>
-                      <button  className="mt-2 w-auto text-center text-sm px-4 py-2 rounded-full dark:bg-transparent border border-slate-500 text-slate-500 dark:border-gray-600 hover:text-slate-600 hover:border-slate-700 dark:hover:border-gray-300 dark:hover:text-gray-300 dark:text-gray-300">Read More</button>
+                      <button className="mt-2 w-auto rounded-full border border-slate-500 px-4 py-2 text-center text-sm text-slate-500 hover:border-slate-700 hover:text-slate-600 dark:border-gray-600 dark:bg-transparent dark:text-gray-300 dark:hover:border-gray-300 dark:hover:text-gray-300">
+                        Read More
+                      </button>
                     </div>
                   </div>
                 </Link>

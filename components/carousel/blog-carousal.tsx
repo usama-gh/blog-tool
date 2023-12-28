@@ -12,6 +12,7 @@ import { toast } from "sonner";
 /* @ts-ignore*/
 import { MarkdownRenderer } from "markdown-react-renderer";
 import { LeadDownload } from "../lead-download";
+import { Subscribe } from "../subscribe";
 
 const Carousel = ({ data, siteData, lead }: any) => {
   const [viewportRef, embla] = useEmblaCarousel({
@@ -138,6 +139,9 @@ const Carousel = ({ data, siteData, lead }: any) => {
                   <h4 className="pb-8 text-center text-sm font-semibold uppercase tracking-wide text-slate-400 dark:bg-gray-800 dark:text-gray-400">
                     More from {siteData?.name}
                   </h4>
+                  {/* susbcribe to blog */}
+                  <Subscribe siteId={data.siteId} />
+
                   <div className="relative mx-auto w-9/12 rounded-2xl border border-slate-200 px-8 py-8 text-slate-400 dark:border-gray-600 dark:text-gray-400">
                     {data.adjacentPosts && (
                       <>
@@ -185,13 +189,14 @@ const Carousel = ({ data, siteData, lead }: any) => {
                         </div>
                       </>
                     )}
+                    Subscribe
                   </div>
                 </div>
               )}
             </div>
           </div>
           {lead && (
-            <div className="z-90 fixed bottom-12 lg:bottom-4  left-1/2 -translate-x-1/2 transform">
+            <div className="z-90 fixed bottom-12 left-1/2  -translate-x-1/2 transform lg:bottom-4">
               <div className="flex w-fit items-center justify-between gap-3 rounded-full bg-slate-200 p-1 dark:bg-gray-200">
                 <p className="text-dark whitespace-nowrap	 pl-4 text-sm font-semibold">
                   {lead.title}

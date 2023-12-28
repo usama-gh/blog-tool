@@ -14,6 +14,7 @@ import {
   Magnet,
   Settings,
   TrophyIcon,
+  Users,
   ChromeIcon,
   Shield,
 } from "lucide-react";
@@ -88,6 +89,12 @@ export default function Nav({ children }: { children: ReactNode }) {
           name: "Add Social Links",
           href: `/site/${id}/settings#socials`,
           icon: <Megaphone width={18} />,
+        },
+        {
+          name: "Subscribers",
+          href: `/site/${id}/subscribers`,
+          isActive: segments.includes("subscribers"),
+          icon: <Users width={18} />,
         },
         {
           name: "Analytics",
