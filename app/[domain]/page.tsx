@@ -61,7 +61,11 @@ export default async function SiteHomePage({
               <SocialLinks linksData={data.links} />
             </div>
             {/* susbcribe to blog */}
+            <div className="mt-8">
             <Subscribe siteId={data.id} />
+            </div>
+          
+
           </div>
         </div>
 

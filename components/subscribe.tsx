@@ -35,7 +35,7 @@ export const Subscribe = ({ siteId }: { siteId: string }) => {
   };
 
   return (
-    <div className="mt-8">
+    <div className="max-w-lg mx-auto">
     <div className="h-[2px] w-8 bg-slate-300 dark:bg-gray-600 mx-auto"></div>
     <div className="relative mx-auto w-full rounded-2xl  px-8 py-4 text-center text-slate-400 dark:text-gray-400">
       
