@@ -46,7 +46,11 @@ export default async function PostOG({
       
         data.image !== "https://ige9ec25vizexnyy.public.blob.vercel-storage.com/tQidqrn-Z2Nd3W4IJXq3XBZZMOllnA06WIkhlq.jpeg" ? (
           <div tw="flex flex-col justify-center items-center w-full h-screen">
-           
+            <img
+              tw="w-full"
+              src={data.image}
+              alt={data.title}
+            />
           </div>
         ) : (
           <div style={{background:'linear-gradient(90deg, #0f172a, #334155)'}} tw="flex flex-col justify-center items-start relative  px-24 w-full h-screen ">
