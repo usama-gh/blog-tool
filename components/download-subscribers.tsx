@@ -11,7 +11,7 @@ export default function DownloadSubscibers({
   name: string;
 }) {
   const handleDownload = async () => {
-    const subscribersList = [["Blog's Name", "Email", , "Subscribed At"]];
+    const subscribersList = [["Blog's Name", "Email", "Subscribed At"]];
     await subscribers.map((item: Subscriber) => {
       let subscriber = [
         // @ts-ignore
