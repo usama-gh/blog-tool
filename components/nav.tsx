@@ -215,7 +215,7 @@ export default function Nav({ children }: { children: ReactNode }) {
       <div
         className={`transform ${
           showSidebar ? "translate-x-0" : "-translate-x-full"
-        } fixed z-10 flex h-full w-full flex-col justify-between border-r border-slate-200 bg-slate-100 p-4 transition-all dark:border-gray-700 dark:bg-gray-900 sm:w-60 sm:translate-x-0`}
+        } fixed z-10 flex h-full w-full flex-col justify-between bg-slate-100 p-4 transition-all  dark:bg-gray-900 rounded-r-2xl sm:w-60 sm:translate-x-0`}
       >
         <div className="grid gap-2">
           <div className="flex items-center space-x-2 rounded-lg px-2 py-1.5">
@@ -241,7 +241,7 @@ export default function Nav({ children }: { children: ReactNode }) {
                 key={name}
                 href={href}
                 className={`flex items-center space-x-3 ${
-                  isActive ? "bg-slate-200 text-black dark:bg-gray-700" : ""
+                  isActive ? "bg-slate-200 text-black dark:bg-gray-800" : ""
                 } rounded-lg px-2 py-1.5 transition-all duration-150 ease-in-out hover:bg-slate-200 active:bg-slate-300 dark:text-white dark:hover:bg-gray-700 dark:active:bg-gray-800`}
               >
                 {icon}

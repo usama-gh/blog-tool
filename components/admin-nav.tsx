@@ -93,7 +93,7 @@ export default function AdminNav({ children }: { children: ReactNode }) {
                 key={name}
                 href={href}
                 className={`flex items-center space-x-3 ${
-                  isActive ? "bg-slate-200 text-black dark:bg-gray-700" : ""
+                  isActive ? "bg-slate-200 text-black dark:bg-gray-800" : ""
                 } rounded-lg px-2 py-1.5 transition-all duration-150 ease-in-out hover:bg-slate-200 active:bg-slate-300 dark:text-white dark:hover:bg-gray-700 dark:active:bg-gray-800`}
               >
                 {icon}

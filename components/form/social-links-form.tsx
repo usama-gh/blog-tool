@@ -61,7 +61,7 @@ export default function SocialLinksForm({
           }
         });
       }}
-      className="rounded-lg border  border-slate-200 dark:border-gray-700"
+      className="rounded-lg bg-slate-100 dark:bg-gray-950"
       id="socials"
     >
       <div className="relative flex flex-col space-y-4 p-5 sm:p-10">

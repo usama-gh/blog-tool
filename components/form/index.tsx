@@ -84,7 +84,7 @@ export default function Form({
           }
         });
       }}
-      className="rounded-lg border  border-slate-200 dark:border-gray-700"
+      className="rounded-lg bg-slate-100 dark:bg-gray-950"
     >
       <div className="relative flex flex-col space-y-4 p-5 sm:p-10">
         <h2 className="font-inter text-xl font-semibold text-slate-500 dark:text-white">

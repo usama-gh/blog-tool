@@ -26,7 +26,7 @@ function ApiToken({ id, apiToken }: any) {
   };
 
   return (
-    <div className="rounded-lg border  border-slate-200 dark:border-gray-700">
+    <div className="rounded-lg bg-slate-100 dark:bg-gray-900">
       <div className="relative flex flex-col space-y-4 p-5 sm:p-10">
         <h2 className="font-inter text-xl font-semibold text-slate-500 dark:text-white">
           API key

@@ -15,7 +15,7 @@ import { Lead, Post } from "@prisma/client";
 import { updatePost, updatePostMetadata } from "@/lib/actions";
 import { cn } from "@/lib/utils";
 import LoadingDots from "../icons/loading-dots";
-import { ExternalLink, PlusCircleIcon, XCircle } from "lucide-react";
+import { ExternalLink, PlusCircleIcon, XCircle,Trash,Plus } from "lucide-react";
 import { EditorContents } from "./editor-content";
 import ImportJSONButton from "../import-json-btn";
 import ImportJsonModal from "../modal/import-json";
@@ -84,12 +84,15 @@ export default function Editor({
       // @ts-ignore
       abc = abc?.replace(/!\[.*\]\(.*\)/g, "");
       // @ts-ignore
-      let plainText = markdownToTxt(abc)?.replaceAll("\n", " ");
+      if(abc){
+        let plainText = markdownToTxt(abc)?.replaceAll("\n", " ");
       const first170Characters = plainText?.substring(0, 170) || "";
       if (textareaValue !== first170Characters) {
         setTextareaValue(first170Characters);
         setData({ ...data, description: first170Characters });
       }
+      }
+      
     }
     firstRender.current = false;
   }, [post.description, textareaValue, isUserEdit, post.content]);
@@ -422,8 +425,8 @@ export default function Editor({
         {/* <ImportJSONButton>
           <ImportJsonModal setSlideWithJson={setSlideWithJson} />
         </ImportJSONButton> */}
-         <div className="rounded-lg px-2 py-1 text-xs text-gray-400 dark:bg-gray-800 dark:text-gray-500">
-          {isPendingSaving ? "Saving..." : "Saved"}
+         <div className="rounded-lg px-2 py-1 text-xs tracking-widest text-gray-400 dark:bg-gray-800 dark:text-gray-500">
+          {isPendingSaving ? "Saving..." : "SAVED"}
         </div>
         <LeadButton
           btnText={isPendingLead ? <LoadingDots /> : "Lead Magnet"}
@@ -470,34 +473,53 @@ export default function Editor({
         </button>
       </div>
 
-      <div className="relative mb-5 mt-5 min-h-[320px] w-full max-w-screen-xl border border-gray-200 p-4  dark:border-gray-700 sm:rounded-lg lg:mt-0 lg:p-12">
-        <div className="mb-5 flex flex-col space-y-3 border-b border-gray-200 pb-5 dark:border-gray-700">
+   
           <input
             type="text"
             placeholder="Title"
             defaultValue={post?.title || ""}
             autoFocus
             onChange={(e) => setData({ ...data, title: e.target.value })}
-            className="dark:placeholder-text-600 font-inter border-none px-0 text-3xl font-bold placeholder:text-gray-400 focus:outline-none focus:ring-0 dark:bg-black dark:text-white"
+            className="bg-slate-100 dark:bg-gray-950 w-full mb-2 dark:placeholder-text-600 rounded-md font-inter border-none px-8 py-4 text-3xl font-bold placeholder:text-gray-400 focus:outline-none focus:ring-0 dark:bg-black dark:text-white"
           />
-        </div>
-        {editor && <EditorBubbleMenu editor={editor} />}
-        <div onPasteCapture={() => setIsPasted(true)}>
-          <EditorContent editor={editor} />
-        </div>
-      </div>
+  
+
+
+        <div className="flex flex-col items-center justify-center w-full">
+        <div className="carousel-wrapper overflow-x-scroll flex flex-nowrap space-x-4 pb-4 w-full mb-2 mt-2">
+         
+            <div className="carousel-item    flex-shrink-0   w-[90%] md:h-full">
+
+            <div className="relative rounded-lg  bg-slate-100  dark:bg-gray-950 min-h-[500px] max-w-screen-xl  p-8 lg:mt-0">
+       
+       {editor && <EditorBubbleMenu editor={editor} />}
+       <div onPasteCapture={() => setIsPasted(true)}>
+         <EditorContent editor={editor} />
+       </div>
+     </div>
+
+            </div>
+
+            
       {slides.map((slideData: string, index: number) => (
         <div
+        key={`divslide-${index}`}
+        className="carousel-item    flex-shrink-0  h-48  w-[90%] md:h-full">
+        <div
           key={`slide-${index}`}
-          className="relative mb-5 mt-5 min-h-[300px] w-full max-w-screen-xl border border-gray-200 p-4  dark:border-gray-700 sm:rounded-lg lg:mt-0 lg:p-12"
+          className="snap-center w-full	rounded-lg bg-slate-100  dark:bg-gray-950 relative min-h-[500px]  max-w-screen-xl  p-8  dark:border-gray-700  lg:mt-0"
         >
-          <XCircle
-            width={24}
-            className="absolute right-4 top-4 z-20 cursor-pointer dark:text-white"
-            onClick={() => {
-              updateSlides("delete", Number(index), "");
-            }}
-          ></XCircle>
+        <Trash
+  width={18}
+  className="absolute right-4 top-4 z-20 cursor-pointer text-red-300 hover:text-red-500"
+  onClick={() => {
+    const confirmation = window.confirm("Are you sure you want to delete?");
+    if (confirmation) {
+      updateSlides("delete", Number(index), "");
+    }
+  }}
+/>
+
           <EditorContents
             data={data}
             slideData={slideData}
@@ -509,21 +531,42 @@ export default function Editor({
             canUseAI={canUseAI}
           />
         </div>
+
+        </div>
       ))}
-      <div className="mb-4 flex w-full justify-end">
-        <button
+
+<div className="carousel-item h-auto text-slate-600 rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-gray-950 hover:dark:bg-gray-900 dark:text-gray-200  flex-shrink-0 w-20 flex flex-col items-center justify-center  md:w-18">
+<button
           type="button"
           onClick={(e) => {
             updateSlides("add", 0, "");
           }}
-          className="lg:text-md flex items-center gap-x-2 rounded-full border border-gray-400 px-4 py-1 text-sm dark:border-gray-500 dark:text-gray-400"
+         className="h-full text-xs font-semibold tracking-tight flex flex-col justify-center items-center"
         >
-          Add slide
+           <Plus
+           strokeWidth={'2.5px'}
+  width={18}
+  />
+          Add Slide
         </button>
+        </div>
+
+           
+           
+        </div>
+    </div>
+
+
+      <div className="flex overflow-x-auto snap-proximity snap-x">
+     
+      
+      <div className="mb-4 flex w-full justify-end">
+       
+      </div>
       </div>
 
       <div className="grid w-full grid-cols-1 gap-x-2 gap-y-2 lg:grid-cols-3">
-        <div className="rounded-lg border  border-slate-200 dark:border-gray-700">
+        <div className="rounded-lg bg-slate-100 dark:bg-gray-950">
           <div className="relative flex flex-col space-y-4 p-2 lg:p-10">
             <div className="flex justify-between">
               <h2 className="font-inter text-xl font-semibold text-slate-500 dark:text-white">
