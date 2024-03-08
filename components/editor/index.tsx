@@ -15,7 +15,14 @@ import { Lead, Post } from "@prisma/client";
 import { updatePost, updatePostMetadata } from "@/lib/actions";
 import { cn } from "@/lib/utils";
 import LoadingDots from "../icons/loading-dots";
-import { ExternalLink, PlusCircleIcon, XCircle,Trash,Plus } from "lucide-react";
+import {
+  ExternalLink,
+  PlusCircleIcon,
+  XCircle,
+  Trash,
+  Image,
+  Plus,
+} from "lucide-react";
 import { EditorContents } from "./editor-content";
 import ImportJSONButton from "../import-json-btn";
 import ImportJsonModal from "../modal/import-json";
@@ -84,15 +91,14 @@ export default function Editor({
       // @ts-ignore
       abc = abc?.replace(/!\[.*\]\(.*\)/g, "");
       // @ts-ignore
-      if(abc){
+      if (abc) {
         let plainText = markdownToTxt(abc)?.replaceAll("\n", " ");
-      const first170Characters = plainText?.substring(0, 170) || "";
-      if (textareaValue !== first170Characters) {
-        setTextareaValue(first170Characters);
-        setData({ ...data, description: first170Characters });
+        const first170Characters = plainText?.substring(0, 170) || "";
+        if (textareaValue !== first170Characters) {
+          setTextareaValue(first170Characters);
+          setData({ ...data, description: first170Characters });
+        }
       }
-      }
-      
     }
     firstRender.current = false;
   }, [post.description, textareaValue, isUserEdit, post.content]);
@@ -425,7 +431,7 @@ export default function Editor({
         {/* <ImportJSONButton>
           <ImportJsonModal setSlideWithJson={setSlideWithJson} />
         </ImportJSONButton> */}
-         <div className="rounded-lg px-2 py-1 text-xs tracking-widest text-gray-400 dark:bg-gray-800 dark:text-gray-500">
+        <div className="rounded-lg px-2 py-1 text-xs tracking-widest text-gray-400 dark:bg-gray-800 dark:text-gray-500">
           {isPendingSaving ? "Saving..." : "SAVED"}
         </div>
         <LeadButton
@@ -435,7 +441,7 @@ export default function Editor({
         >
           <LinkLeadModal leads={leads} leadId={leadId} setLeadId={setLeadId} />
         </LeadButton>
-       
+
         <button
           onClick={() => {
             const formData = new FormData();
@@ -473,96 +479,99 @@ export default function Editor({
         </button>
       </div>
 
-   
-          <input
-            type="text"
-            placeholder="Title"
-            defaultValue={post?.title || ""}
-            autoFocus
-            onChange={(e) => setData({ ...data, title: e.target.value })}
-            className="bg-slate-100 dark:bg-gray-950 w-full mb-2 dark:placeholder-text-600 rounded-md font-inter border-none px-8 py-4 text-3xl font-bold placeholder:text-gray-400 focus:outline-none focus:ring-0 dark:bg-black dark:text-white"
-          />
-  
+      <input
+        type="text"
+        placeholder="Title"
+        defaultValue={post?.title || ""}
+        autoFocus
+        onChange={(e) => setData({ ...data, title: e.target.value })}
+        className="dark:placeholder-text-600 font-inter mb-2 w-full rounded-md border-none bg-slate-100 px-8 py-4 text-3xl font-bold placeholder:text-gray-400 focus:outline-none focus:ring-0 dark:bg-black dark:bg-gray-950 dark:text-white"
+      />
 
-
-        <div className="flex flex-col items-center justify-center w-full">
-        <div className="carousel-wrapper overflow-x-scroll flex flex-nowrap space-x-4 pb-4 w-full mb-2 mt-2">
-         
-            <div className="carousel-item    flex-shrink-0   w-[90%] md:h-full">
-
-            <div className="relative rounded-lg  bg-slate-100  dark:bg-gray-950 min-h-[500px] max-w-screen-xl  p-8 lg:mt-0">
-       
-       {editor && <EditorBubbleMenu editor={editor} />}
-       <div onPasteCapture={() => setIsPasted(true)}>
-         <EditorContent editor={editor} />
-       </div>
-     </div>
-
+      <div className="flex w-full flex-col items-center justify-center">
+        <div className="carousel-wrapper mb-2 mt-2 flex w-full flex-nowrap space-x-4 overflow-x-scroll pb-4">
+          <div className="carousel-item    w-[90%]   flex-shrink-0 md:h-full">
+            <div className="relative min-h-[500px]  max-w-screen-xl  rounded-lg bg-slate-100 p-8  dark:bg-gray-950 lg:mt-0">
+              {editor && <EditorBubbleMenu editor={editor} />}
+              <div onPasteCapture={() => setIsPasted(true)}>
+                <EditorContent editor={editor} />
+              </div>
+              <div className="bg-white absolute bottom-5 right-5 shadow-sm px-3 py-2 rounded-full">
+                <div className="flex gap-x-2 items-center">
+                      <div className="flex space-x-2 items-center">
+                        <p className="text-xs text-gray-500">TEXT</p>
+                        <div className="h-5 w-5 bg-green-600 rounded-full shadow-base"></div>
+                      </div>
+                      <div className="h-4 w-[2px] bg-gray-200"></div>
+                      <div className="flex space-x-2 items-center">
+                        <p className="text-xs text-gray-500">BG</p>
+                        <div className="h-5 w-5 bg-red-600 rounded-full shadow-base"></div>
+                        <button type="button" className="text-gray-500 hover:text-gray-600">
+                        <Image strokeWidth={"1.5px"} width={18}/></button>
+                        <img className="h-6 rounded-lg" src="https://lh3.googleusercontent.com/JjewRHousCsko0Q3ZgeYV63GurlKuHv_m7eCMSjTOeQIs_M4CEINyAsc9qmh4P04Bg8gOlDRa9LjaHDT8IvjSWmoZGZ0ny8S5aAAweM=s3000"/>
+                        <button type="button" className="text-xs text-red-400">
+                        Remove
+                        </button>
+                      
+                      </div>
+                </div>
+              </div>
             </div>
+          </div>
 
-            
-      {slides.map((slideData: string, index: number) => (
-        <div
-        key={`divslide-${index}`}
-        className="carousel-item    flex-shrink-0  h-48  w-[90%] md:h-full">
-        <div
-          key={`slide-${index}`}
-          className="snap-center w-full	rounded-lg bg-slate-100  dark:bg-gray-950 relative min-h-[500px]  max-w-screen-xl  p-8  dark:border-gray-700  lg:mt-0"
-        >
-        <Trash
-  width={18}
-  className="absolute right-4 top-4 z-20 cursor-pointer text-red-300 hover:text-red-500"
-  onClick={() => {
-    const confirmation = window.confirm("Are you sure you want to delete?");
-    if (confirmation) {
-      updateSlides("delete", Number(index), "");
-    }
-  }}
-/>
+          {slides.map((slideData: string, index: number) => (
+            <div
+              key={`divslide-${index}`}
+              className="carousel-item    h-48  w-[90%]  flex-shrink-0 md:h-full"
+            >
+              <div
+                key={`slide-${index}`}
+                className="relative min-h-[500px]	w-full max-w-screen-xl  snap-center rounded-lg bg-slate-100  p-8  dark:border-gray-700  dark:bg-gray-950  lg:mt-0"
+              >
+                <Trash
+                  width={18}
+                  className="absolute right-4 top-4 z-20 cursor-pointer text-red-300 hover:text-red-500"
+                  onClick={() => {
+                    const confirmation = window.confirm(
+                      "Are you sure you want to delete?",
+                    );
+                    if (confirmation) {
+                      updateSlides("delete", Number(index), "");
+                    }
+                  }}
+                />
 
-          <EditorContents
-            data={data}
-            slideData={slideData}
-            post={post}
-            slides={slides}
-            setData={setData}
-            updateSlides={updateSlides}
-            index={index}
-            canUseAI={canUseAI}
-          />
+                <EditorContents
+                  data={data}
+                  slideData={slideData}
+                  post={post}
+                  slides={slides}
+                  setData={setData}
+                  updateSlides={updateSlides}
+                  index={index}
+                  canUseAI={canUseAI}
+                />
+              </div>
+            </div>
+          ))}
+
+          <div className="carousel-item md:w-18 flex h-auto w-20 flex-shrink-0 flex-col items-center justify-center  rounded-lg bg-slate-100 text-slate-600 hover:bg-slate-200 dark:bg-gray-950 dark:text-gray-200  hover:dark:bg-gray-900">
+            <button
+              type="button"
+              onClick={(e) => {
+                updateSlides("add", 0, "");
+              }}
+              className="flex h-full flex-col items-center justify-center text-xs font-semibold tracking-tight"
+            >
+              <Plus strokeWidth={"2.5px"} width={18} />
+              Add Slide
+            </button>
+          </div>
         </div>
-
-        </div>
-      ))}
-
-<div className="carousel-item h-auto text-slate-600 rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-gray-950 hover:dark:bg-gray-900 dark:text-gray-200  flex-shrink-0 w-20 flex flex-col items-center justify-center  md:w-18">
-<button
-          type="button"
-          onClick={(e) => {
-            updateSlides("add", 0, "");
-          }}
-         className="h-full text-xs font-semibold tracking-tight flex flex-col justify-center items-center"
-        >
-           <Plus
-           strokeWidth={'2.5px'}
-  width={18}
-  />
-          Add Slide
-        </button>
-        </div>
-
-           
-           
-        </div>
-    </div>
-
-
-      <div className="flex overflow-x-auto snap-proximity snap-x">
-     
-      
-      <div className="mb-4 flex w-full justify-end">
-       
       </div>
+
+      <div className="flex snap-x snap-proximity overflow-x-auto">
+        <div className="mb-4 flex w-full justify-end"></div>
       </div>
 
       <div className="grid w-full grid-cols-1 gap-x-2 gap-y-2 lg:grid-cols-3">
