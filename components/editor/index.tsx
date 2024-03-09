@@ -20,7 +20,7 @@ import {
   PlusCircleIcon,
   XCircle,
   Trash,
-  Image,
+  Image as ImageIcon,
   Plus,
 } from "lucide-react";
 import { EditorContents } from "./editor-content";
@@ -33,6 +33,8 @@ import { triggerEvent } from "../usermaven";
 import LeadButton from "../lead-button";
 import LinkLeadModal from "../modal/link-lead";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
+import SlideCustomizer from "../slide-customizer";
 
 type PostWithSite = Post & { site: { subdomain: string | null } | null };
 
@@ -496,26 +498,7 @@ export default function Editor({
               <div onPasteCapture={() => setIsPasted(true)}>
                 <EditorContent editor={editor} />
               </div>
-              <div className="bg-white absolute bottom-5 right-5 shadow-sm px-3 py-2 rounded-full">
-                <div className="flex gap-x-2 items-center">
-                      <div className="flex space-x-2 items-center">
-                        <p className="text-xs text-gray-500">TEXT</p>
-                        <div className="h-5 w-5 bg-green-600 rounded-full shadow-base"></div>
-                      </div>
-                      <div className="h-4 w-[2px] bg-gray-200"></div>
-                      <div className="flex space-x-2 items-center">
-                        <p className="text-xs text-gray-500">BG</p>
-                        <div className="h-5 w-5 bg-red-600 rounded-full shadow-base"></div>
-                        <button type="button" className="text-gray-500 hover:text-gray-600">
-                        <Image strokeWidth={"1.5px"} width={18}/></button>
-                        <img className="h-6 rounded-lg" src="https://lh3.googleusercontent.com/JjewRHousCsko0Q3ZgeYV63GurlKuHv_m7eCMSjTOeQIs_M4CEINyAsc9qmh4P04Bg8gOlDRa9LjaHDT8IvjSWmoZGZ0ny8S5aAAweM=s3000"/>
-                        <button type="button" className="text-xs text-red-400">
-                        Remove
-                        </button>
-                      
-                      </div>
-                </div>
-              </div>
+              <SlideCustomizer />
             </div>
           </div>
 
