@@ -139,14 +139,16 @@ export default function Editor({
       debouncedData.title === post.title &&
       debouncedData.description === post.description &&
       debouncedData.content === post.content &&
-      debouncedData.slides === post.slides
+      debouncedData.slides === post.slides &&
+      debouncedData.styling === post.styling
     ) {
       return;
     }
-    console.log("112: ", "slides changes");
+    console.log("147: ", "slides changes");
 
     startTransitionSaving(async () => {
-      await updatePost(debouncedData);
+      const response = await updatePost(debouncedData);
+      console.log(response);
     });
   }, [debouncedData, post]);
 
@@ -331,7 +333,7 @@ export default function Editor({
 
   // Split the content into required character
   const splitTextIntoChunks = (text: string) => {
-    const MAX_CHUNK_LENGTH = 300;
+    // const MAX_CHUNK_LENGTH = 300;
     const sentences = nlp(text).sentences().out("array");
     const chunks = [];
     let currentChunk = "";
@@ -498,7 +500,7 @@ export default function Editor({
               <div onPasteCapture={() => setIsPasted(true)}>
                 <EditorContent editor={editor} />
               </div>
-              <SlideCustomizer />
+              <SlideCustomizer data={data} setData={setData} index={0} />
             </div>
           </div>
 

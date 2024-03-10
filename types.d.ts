@@ -33,3 +33,11 @@ interface SubscribeReponse {
   success: boolean;
   message: string;
 }
+
+interface SlideStyle {
+  id: number;
+  textColor: string;
+  bgColor: string;
+  bgImage: string;
+  content: string;
+}
