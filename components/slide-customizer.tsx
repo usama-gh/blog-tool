@@ -128,20 +128,20 @@ const SlideCustomizer = ({
   return (
     <>
       {/* text color picker wrapper */}
-      {showTextColorPicker && (
-        <div className="">
-          <RgbaColorPicker color={textColor} onChange={setTextColor} />
-        </div>
-      )}
-      {showBgColorPicker && (
-        <div className="">
-          <RgbaColorPicker color={bgColor} onChange={setBgColor} />
-        </div>
-      )}
+    
 
       <div className="absolute bottom-5 right-5 rounded-full bg-white px-3 py-2 shadow-sm">
         <div className="flex items-center gap-x-2">
-          <div className="flex items-center space-x-2">
+
+      
+    
+
+          <div className="flex items-center gap-x-2 relative">
+          {showTextColorPicker && (
+        <span className="absolute -top-4 left-0 -translate-y-full  -translate-x-1/2 bg-white shadow-sm	p-2 shadow-xl z-20 rounded-xl">
+          <RgbaColorPicker color={textColor} onChange={setTextColor} />
+        </span>
+      )}
             <p className="text-xs text-gray-500">TEXT</p>
             <div
               onClick={() => {
@@ -159,7 +159,13 @@ const SlideCustomizer = ({
           /> */}
           </div>
           <div className="h-4 w-[2px] bg-gray-200"></div>
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center gap-x-2 relative">
+          {showBgColorPicker && (
+        <span className="absolute -top-4 left-0  -translate-y-full  -translate-x-1/2  bg-white shadow-sm p-2 shadow-xl z-20  rounded-xl">
+          <RgbaColorPicker color={bgColor} onChange={setBgColor} />
+        </span>
+      )}
+
             <p className="text-xs text-gray-500">BG</p>
             <div
               onClick={() => {
