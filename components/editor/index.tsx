@@ -13,7 +13,7 @@ import TextareaAutosize from "react-textarea-autosize";
 import { EditorBubbleMenu } from "./bubble-menu";
 import { Lead, Post } from "@prisma/client";
 import { updatePost, updatePostMetadata } from "@/lib/actions";
-import { cn } from "@/lib/utils";
+import { cn, convertToRgba } from "@/lib/utils";
 import LoadingDots from "../icons/loading-dots";
 import {
   ExternalLink,
@@ -35,6 +35,7 @@ import LinkLeadModal from "../modal/link-lead";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import SlideCustomizer from "../slide-customizer";
+import { SlideStyle } from "@/types";
 
 type PostWithSite = Post & { site: { subdomain: string | null } | null };
 
@@ -66,6 +67,18 @@ export default function Editor({
   const firstRenderLead = useRef<boolean>(true);
   const MAX_CHUNK_LENGTH =
     Number(process.env.NEXT_PUBLIC_MAX_CHUNK_LENGTH) || 300;
+
+  const [slidesStyles, setSlidesStyles] = useState<SlideStyle[] | []>(() => {
+    try {
+      return !!data.styling ? JSON.parse(data.styling) : [];
+    } catch (error) {
+      console.error("Error parsing slides styling JSON:", error);
+      return [];
+    }
+  });
+  // const slidesStyles: SlideStyle[] | [] = data.styling
+  //   ? JSON.parse(data.styling)
+  //   : [];
 
   useEffect(() => {
     // @ts-ignore
@@ -131,9 +144,13 @@ export default function Editor({
     ? `https://${data.site?.subdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}/${post.slug}`
     : `http://${data.site?.subdomain}.localhost:3000/${post.slug}`;
 
+  // console.log(JSON.parse(data.styling));
+
   const [debouncedData] = useDebounce(data, 1000);
 
   useEffect(() => {
+    // console.log(debouncedData.styling);
+
     // compare the title, description and content only
     if (
       debouncedData.title === post.title &&
@@ -419,6 +436,56 @@ export default function Editor({
     firstRenderLead.current = false;
   }, [leadId]);
 
+  function styledSlide(index: number, content: string) {
+    return {
+      id: index,
+      textColor: convertToRgba({ r: 0, g: 0, b: 0, a: 1 }),
+      bgColor: convertToRgba({ r: 241, g: 245, b: 249, a: 1 }),
+      bgImage: "",
+      content: content,
+    };
+  }
+
+  function updateStyleSlides(index: number, style: any) {
+    const updatedSlides = slidesStyles.map((slide: SlideStyle) =>
+      slide.id == index
+        ? {
+            ...slide,
+            textColor: convertToRgba(style.textColor),
+            bgColor: convertToRgba(style.bgColor),
+          }
+        : slide,
+    );
+    setSlidesStyles(updatedSlides);
+    setData({ ...data, styling: JSON.stringify(updatedSlides) });
+  }
+
+  // for slides styles
+  useEffect(() => {
+    // checkecking for content slide
+    const contentSlide: SlideStyle | undefined = slidesStyles.find(
+      (item: SlideStyle) => item.id == 0,
+    );
+    if (!contentSlide) {
+      const slide: SlideStyle = styledSlide(0, data.content as string);
+      setSlidesStyles([...slidesStyles, slide]);
+    }
+
+    slides.map((slideData: string, index: number) => {
+      const slideStyle: SlideStyle | undefined = slidesStyles.find(
+        (item: SlideStyle) => item.id == index + 1,
+      );
+
+      if (!slideStyle) {
+        const slideStyle: SlideStyle = styledSlide(
+          index + 1,
+          slideData as string,
+        );
+        setSlidesStyles([...slidesStyles, slideStyle]);
+      }
+    });
+  }, [slides, slidesStyles]);
+
   return (
     <>
       <div className="my-5 mb-0 flex items-center justify-end space-x-3 lg:my-0 lg:mb-4">
@@ -500,7 +567,13 @@ export default function Editor({
               <div onPasteCapture={() => setIsPasted(true)}>
                 <EditorContent editor={editor} />
               </div>
-              <SlideCustomizer data={data} setData={setData} index={0} />
+              <SlideCustomizer
+                slidesStyles={slidesStyles}
+                data={data}
+                setData={setData}
+                index={0}
+                updateStyleSlides={updateStyleSlides}
+              />
             </div>
           </div>
 
@@ -535,6 +608,8 @@ export default function Editor({
                   updateSlides={updateSlides}
                   index={index}
                   canUseAI={canUseAI}
+                  slidesStyles={slidesStyles}
+                  updateStyleSlides={updateStyleSlides}
                 />
               </div>
             </div>

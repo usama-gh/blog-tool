@@ -1,4 +1,5 @@
 import { adminEmails } from "@/data";
+import { RgbaColorType } from "@/types";
 import { clsx, type ClassValue } from "clsx";
 import { useSession } from "next-auth/react";
 import { twMerge } from "tailwind-merge";
@@ -18,6 +19,14 @@ export async function fetcher<JSON = any>(
 export const capitalize = (s: string) => {
   if (typeof s !== "string") return "";
   return s.charAt(0).toUpperCase() + s.slice(1);
+};
+
+export const convertToRgba = (color: RgbaColorType) => {
+  return `rgba(${color.r},${color.g},${color.b},${color.a})`;
+};
+
+export const convertRgba = (rgba: string) => {
+  return rgba.replace("rgba(", "").replace(")", "").split(",");
 };
 
 export const truncate = (str: string, num: number) => {

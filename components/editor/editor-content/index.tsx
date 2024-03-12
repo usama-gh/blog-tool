@@ -13,6 +13,8 @@ import { toast } from "sonner";
 import { Post } from "@prisma/client";
 import { EditorBubbleMenu } from "../bubble-menu";
 import { TiptapExtensionsAI } from "../extensions/index-ai";
+import SlideCustomizer from "@/components/slide-customizer";
+import { SlideStyle } from "@/types";
 
 type PostWithSite = Post & { site: { subdomain: string | null } | null };
 
@@ -25,6 +27,8 @@ interface Props {
   slides: Array<string>;
   slideData: string;
   canUseAI: boolean;
+  slidesStyles: SlideStyle[] | [];
+  updateStyleSlides: any;
 }
 
 export const EditorContents = (props: Props) => {
@@ -148,6 +152,13 @@ export const EditorContents = (props: Props) => {
     <>
       {editor && <EditorBubbleMenu editor={editor} />}
       <EditorContent editor={editor}></EditorContent>
+      <SlideCustomizer
+        slidesStyles={props.slidesStyles}
+        data={props.data}
+        setData={props.setData}
+        index={props.index + 1}
+        updateStyleSlides={props.updateStyleSlides}
+      />
     </>
   );
 };

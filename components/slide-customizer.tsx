@@ -1,46 +1,31 @@
 "use client";
 
+import { convertRgba, convertToRgba } from "@/lib/utils";
 import { SlideStyle } from "@/types";
 import { Image as ImageIcon } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { RgbaColorPicker, HexColorPicker } from "react-colorful";
 
-interface RgbaColorType {
-  r: number;
-  g: number;
-  b: number;
-  a: number;
-}
-
 const SlideCustomizer = ({
+  slidesStyles,
   data,
   setData,
   index,
+  updateStyleSlides,
 }: {
+  slidesStyles: SlideStyle[] | [];
   data: any;
   setData: any;
   index: number;
+  updateStyleSlides: any;
 }) => {
-  const [slides, setSlides] = useState<SlideStyle[] | []>([]);
-  const [style, setStyle] = useState<SlideStyle | null>(null);
   const [textColor, setTextColor] = useState({ r: 0, g: 0, b: 0, a: 1 });
   const [bgColor, setBgColor] = useState({ r: 241, g: 245, b: 249, a: 1 });
   const [showTextColorPicker, setShowTextColorPicker] = useState(false);
   const [showBgColorPicker, setShowBgColorPicker] = useState(false);
   const [image, setImage] = useState("");
   const imageRef = useRef(null);
-  const firstRenderLead = useRef<boolean>(true);
-
-  function convertToRgba(color: RgbaColorType) {
-    return `rgba(${color.r},${color.g},${color.b},${color.a})`;
-  }
-
-  function convertRgba(rgba: string) {
-    const colors = rgba.replace("rgba(", "").replace(")", "").split(",");
-
-    return colors;
-  }
 
   function openImageDialog() {
     // @ts-ignore
@@ -57,16 +42,33 @@ const SlideCustomizer = ({
     };
   }
 
+  function handleValueChange(type: string, value: any) {
+    if (type === "text") {
+      setTextColor(value);
+    }
+
+    if (type === "bg") {
+      setBgColor(value);
+    }
+
+    const slide = {
+      textColor: type === "text" ? value : textColor,
+      bgColor: type === "bg" ? value : bgColor,
+      image: image,
+    };
+
+    updateStyleSlides(index, slide);
+  }
+
   // arrange original data from databse
   useEffect(() => {
-    const stylings = data.styling ? JSON.parse(data.styling) : [];
-    setSlides(stylings);
-
-    const style: SlideStyle | null = stylings.find(
+    // @ts-ignore
+    const slide: SlideStyle | null = slidesStyles.find(
       (item: SlideStyle) => item.id == index,
     );
-    if (style) {
-      const text = convertRgba(style.textColor);
+
+    if (slide) {
+      const text = convertRgba(slide.textColor);
       setTextColor({
         r: Number(text[0]),
         g: Number(text[1]),
@@ -74,7 +76,7 @@ const SlideCustomizer = ({
         a: Number(text[3]),
       });
 
-      const bg = convertRgba(style.bgColor);
+      const bg = convertRgba(slide.bgColor);
       setBgColor({
         r: Number(bg[0]),
         g: Number(bg[1]),
@@ -82,66 +84,22 @@ const SlideCustomizer = ({
         a: Number(bg[3]),
       });
     }
-
-    setStyle(style);
-
-    firstRenderLead.current = false;
   }, []);
-
-  // update default values
-  // useEffect(() => {
-  //   console.log(style);
-  // }, [style]);
-
-  // customizing slides when changes occur
-  useEffect(() => {
-    if (!firstRenderLead.current) {
-      const customizedSlide = {
-        id: index,
-        textColor: convertToRgba(textColor),
-        bgColor: convertToRgba(bgColor),
-        bgImage: "",
-        content: data.content,
-      };
-
-      // style already exist so update
-      if (style) {
-        const updatedSlides = slides.map((slide: SlideStyle) =>
-          slide.id == index ? customizedSlide : slide,
-        );
-        setSlides(updatedSlides);
-      } else {
-        // style not exist so add it
-        setStyle(customizedSlide);
-        setSlides([customizedSlide]);
-      }
-    }
-  }, [textColor, bgColor, index, data.styling, data.content]);
-
-  // when changes occur update data in database
-  useEffect(() => {
-    if (!firstRenderLead.current) {
-      setData({ ...data, styling: JSON.stringify(slides) });
-    }
-  }, [slides]);
 
   return (
     <>
       {/* text color picker wrapper */}
-    
-
       <div className="absolute bottom-5 right-5 rounded-full bg-white px-3 py-2 shadow-sm">
         <div className="flex items-center gap-x-2">
-
-      
-    
-
-          <div className="flex items-center gap-x-2 relative">
-          {showTextColorPicker && (
-        <span className="absolute -top-4 left-0 -translate-y-full  -translate-x-1/2 bg-white shadow-sm	p-2 shadow-xl z-20 rounded-xl">
-          <RgbaColorPicker color={textColor} onChange={setTextColor} />
-        </span>
-      )}
+          <div className="relative flex items-center gap-x-2">
+            {showTextColorPicker && (
+              <span className="absolute -top-4 left-0 z-20  -translate-x-1/2 -translate-y-full rounded-xl	bg-white p-2 shadow-sm shadow-xl">
+                <RgbaColorPicker
+                  color={textColor}
+                  onChange={(color) => handleValueChange("text", color)}
+                />
+              </span>
+            )}
             <p className="text-xs text-gray-500">TEXT</p>
             <div
               onClick={() => {
@@ -159,12 +117,15 @@ const SlideCustomizer = ({
           /> */}
           </div>
           <div className="h-4 w-[2px] bg-gray-200"></div>
-          <div className="flex items-center gap-x-2 relative">
-          {showBgColorPicker && (
-        <span className="absolute -top-4 left-0  -translate-y-full  -translate-x-1/2  bg-white shadow-sm p-2 shadow-xl z-20  rounded-xl">
-          <RgbaColorPicker color={bgColor} onChange={setBgColor} />
-        </span>
-      )}
+          <div className="relative flex items-center gap-x-2">
+            {showBgColorPicker && (
+              <span className="absolute -top-4 left-0  z-20  -translate-x-1/2  -translate-y-full rounded-xl bg-white p-2 shadow-sm  shadow-xl">
+                <RgbaColorPicker
+                  color={bgColor}
+                  onChange={(color) => handleValueChange("bg", color)}
+                />
+              </span>
+            )}
 
             <p className="text-xs text-gray-500">BG</p>
             <div
