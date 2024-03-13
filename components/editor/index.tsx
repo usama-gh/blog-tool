@@ -76,9 +76,9 @@ export default function Editor({
       return [];
     }
   });
-  // const slidesStyles: SlideStyle[] | [] = data.styling
-  //   ? JSON.parse(data.styling)
-  //   : [];
+  const [contentStyling, setContentStyling] = useState<SlideStyle | undefined>(
+    slidesStyles.find((item: SlideStyle) => item.id == 0),
+  );
 
   useEffect(() => {
     // @ts-ignore
@@ -165,7 +165,7 @@ export default function Editor({
 
     startTransitionSaving(async () => {
       const response = await updatePost(debouncedData);
-      console.log(response);
+      // console.log(response);
     });
   }, [debouncedData, post]);
 
@@ -188,6 +188,8 @@ export default function Editor({
     extensions: canUseAI ? TiptapExtensionsAI : TiptapExtensions,
     editorProps: TiptapEditorProps,
     onUpdate: (e) => {
+      console.log(e.editor.storage.markdown.getMarkdown());
+
       const selection = e.editor.state.selection;
       const lastTwo = e.editor.state.doc.textBetween(
         selection.from - 2,
@@ -466,10 +468,17 @@ export default function Editor({
     const contentSlide: SlideStyle | undefined = slidesStyles.find(
       (item: SlideStyle) => item.id == 0,
     );
-    if (!contentSlide) {
+    if (contentSlide) {
+      // if found then update
+      setContentStyling(contentSlide);
+    } else {
       const slide: SlideStyle = styledSlide(0, data.content as string);
       setSlidesStyles([...slidesStyles, slide]);
     }
+    // if (!contentSlide) {
+    //   const slide: SlideStyle = styledSlide(0, data.content as string);
+    //   setSlidesStyles([...slidesStyles, slide]);
+    // }
 
     slides.map((slideData: string, index: number) => {
       const slideStyle: SlideStyle | undefined = slidesStyles.find(
@@ -485,6 +494,8 @@ export default function Editor({
       }
     });
   }, [slides, slidesStyles]);
+
+  // console.log(contentStyling);
 
   return (
     <>
@@ -561,8 +572,11 @@ export default function Editor({
 
       <div className="flex w-full flex-col items-center justify-center">
         <div className="carousel-wrapper mb-2 mt-2 flex w-full flex-nowrap space-x-4 overflow-x-scroll pb-4">
-          <div className="carousel-item    w-[90%]   flex-shrink-0 md:h-full">
-            <div className="relative min-h-[500px]  max-w-screen-xl  rounded-lg bg-slate-100 p-8  dark:bg-gray-950 lg:mt-0">
+          <div className="carousel-item w-[90%] flex-shrink-0 md:h-full">
+            <div
+              className="relative min-h-[500px] max-w-screen-xl rounded-lg bg-slate-100 p-8 dark:bg-gray-950 lg:mt-0"
+              style={{ backgroundColor: contentStyling?.bgColor }}
+            >
               {editor && <EditorBubbleMenu editor={editor} />}
               <div onPasteCapture={() => setIsPasted(true)}>
                 <EditorContent editor={editor} />
@@ -585,6 +599,11 @@ export default function Editor({
               <div
                 key={`slide-${index}`}
                 className="relative min-h-[500px]	w-full max-w-screen-xl  snap-center rounded-lg bg-slate-100  p-8  dark:border-gray-700  dark:bg-gray-950  lg:mt-0"
+                style={{
+                  backgroundColor: slidesStyles.find(
+                    (item: SlideStyle) => item.id == index + 1,
+                  )?.bgColor,
+                }}
               >
                 <Trash
                   width={18}
