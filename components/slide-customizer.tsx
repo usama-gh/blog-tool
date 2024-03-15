@@ -5,18 +5,15 @@ import { SlideStyle } from "@/types";
 import { Image as ImageIcon } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
-import { RgbaColorPicker, HexColorPicker } from "react-colorful";
+import { RgbaColorPicker } from "react-colorful";
+import { upload } from "@vercel/blob/client";
 
 const SlideCustomizer = ({
   slidesStyles,
-  data,
-  setData,
   index,
   updateStyleSlides,
 }: {
   slidesStyles: SlideStyle[] | [];
-  data: any;
-  setData: any;
   index: number;
   updateStyleSlides: any;
 }) => {
@@ -26,39 +23,6 @@ const SlideCustomizer = ({
   const [showBgColorPicker, setShowBgColorPicker] = useState(false);
   const [image, setImage] = useState("");
   const imageRef = useRef(null);
-
-  function openImageDialog() {
-    // @ts-ignore
-    imageRef?.current?.click();
-  }
-
-  function handleImageUpload(e: any) {
-    const file = e.target.files[0];
-    let reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = function () {
-      const dataURL = reader.result;
-      setImage(dataURL as string);
-    };
-  }
-
-  function handleValueChange(type: string, value: any) {
-    if (type === "text") {
-      setTextColor(value);
-    }
-
-    if (type === "bg") {
-      setBgColor(value);
-    }
-
-    const slide = {
-      textColor: type === "text" ? value : textColor,
-      bgColor: type === "bg" ? value : bgColor,
-      image: image,
-    };
-
-    updateStyleSlides(index, slide);
-  }
 
   // arrange original data from databse
   useEffect(() => {
@@ -83,17 +47,83 @@ const SlideCustomizer = ({
         b: Number(bg[2]),
         a: Number(bg[3]),
       });
+
+      setImage(slide.bgImage);
     }
   }, []);
+
+  function openImageDialog() {
+    // @ts-ignore
+    imageRef?.current?.click();
+  }
+
+  async function handleImageUpload(e: any) {
+    // delete image from vercel blob if exists
+    if (image) {
+      await deleteImage();
+    }
+
+    // get image url from file reader
+    const file = e.target.files[0];
+    let reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = function () {
+      const dataURL = reader.result;
+      setImage(dataURL as string);
+    };
+
+    // upload image to vercel blob
+    const newBlob = await upload(file.name, file, {
+      access: "public",
+      handleUploadUrl: "/api/upload",
+    });
+
+    if (newBlob.url) {
+      handleValueChange("image", newBlob.url);
+    }
+  }
+
+  async function deleteImage() {
+    const response = await fetch("/api/upload", {
+      method: "DELETE",
+      body: JSON.stringify({ image }),
+    });
+    const { success } = await response.json();
+    if (success) {
+      setImage("");
+      handleValueChange("image", "");
+    }
+  }
+
+  function handleValueChange(type: string, value: any) {
+    if (type === "text") {
+      setTextColor(value);
+    }
+
+    if (type === "bg") {
+      setBgColor(value);
+    }
+    if (type === "image") {
+      setImage(value);
+    }
+
+    const slide = {
+      textColor: convertToRgba(type === "text" ? value : textColor),
+      bgColor: convertToRgba(type === "bg" ? value : bgColor),
+      bgImage: type === "image" ? value : image,
+    };
+
+    updateStyleSlides(index, slide);
+  }
 
   return (
     <>
       {/* text color picker wrapper */}
       <div className="absolute bottom-5 right-5 rounded-full bg-white px-3 py-2 shadow-sm">
         <div className="flex items-center gap-x-2">
-          <div className="relative flex items-center gap-x-2">
+          {/* <div className="relative flex items-center gap-x-2">
             {showTextColorPicker && (
-              <span className="absolute -top-4 left-0 z-20  -translate-x-1/2 -translate-y-full rounded-xl	bg-white p-2 shadow-sm shadow-xl">
+              <span className="absolute -top-4 left-0 z-20  -translate-x-1/2 -translate-y-full rounded-xl	bg-white p-2 shadow-sm">
                 <RgbaColorPicker
                   color={textColor}
                   onChange={(color) => handleValueChange("text", color)}
@@ -109,17 +139,11 @@ const SlideCustomizer = ({
               className="shadow-base h-5 w-5 cursor-pointer rounded-full"
               style={{ backgroundColor: convertToRgba(textColor) }}
             ></div>
-            {/* <input
-            type="color"
-            className="input-color"
-            defaultValue={textColor}
-            onChange={(e) => setTextColor(e.target.value)}
-          /> */}
           </div>
-          <div className="h-4 w-[2px] bg-gray-200"></div>
+          <div className="h-4 w-[2px] bg-gray-200"></div> */}
           <div className="relative flex items-center gap-x-2">
             {showBgColorPicker && (
-              <span className="absolute -top-4 left-0  z-20  -translate-x-1/2  -translate-y-full rounded-xl bg-white p-2 shadow-sm  shadow-xl">
+              <span className="absolute -top-4 left-0  z-20  -translate-x-1/2  -translate-y-full rounded-xl bg-white p-2 shadow-sm">
                 <RgbaColorPicker
                   color={bgColor}
                   onChange={(color) => handleValueChange("bg", color)}
@@ -136,12 +160,6 @@ const SlideCustomizer = ({
               className="shadow-base h-5 w-5 cursor-pointer rounded-full"
               style={{ backgroundColor: convertToRgba(bgColor) }}
             ></div>
-            {/* <input
-              type="color"
-              className="input-color"
-              defaultValue={bgColor}
-              onChange={(e) => setBgColor(e.target.value)}
-            /> */}
             <button
               type="button"
               className="text-gray-500 hover:text-gray-600"
@@ -172,7 +190,7 @@ const SlideCustomizer = ({
                 <button
                   type="button"
                   className="text-xs text-red-400"
-                  onClick={() => setImage("")}
+                  onClick={deleteImage}
                 >
                   Remove
                 </button>

@@ -46,5 +46,5 @@ interface SlideStyle {
   textColor: string;
   bgColor: string;
   bgImage: string;
-  content: string;
+  content?: string;
 }

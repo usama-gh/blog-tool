@@ -188,8 +188,6 @@ export default function Editor({
     extensions: canUseAI ? TiptapExtensionsAI : TiptapExtensions,
     editorProps: TiptapEditorProps,
     onUpdate: (e) => {
-      // console.log(e.editor.getText());
-
       const selection = e.editor.state.selection;
       const lastTwo = e.editor.state.doc.textBetween(
         selection.from - 2,
@@ -301,6 +299,8 @@ export default function Editor({
 
     switch (action) {
       case "add":
+        // const slideStyle: SlideStyle = styledSlide(index);
+        // setSlidesStyles([...slidesStyles, slideStyle]);
         setSlides([...slides, value]);
         break;
       case "update":
@@ -310,6 +310,11 @@ export default function Editor({
       case "delete":
         updatedSlides.splice(index, 1);
         setSlides(updatedSlides);
+        const styledSlides = slidesStyles.filter(
+          (slide: SlideStyle) => slide.id != index + 1,
+        );
+        setSlidesStyles(styledSlides);
+        setData({ ...data, styling: JSON.stringify(styledSlides) });
         break;
     }
   };
@@ -438,13 +443,13 @@ export default function Editor({
     firstRenderLead.current = false;
   }, [leadId]);
 
-  function styledSlide(index: number, content: string) {
+  function styledSlide(index: number) {
     return {
       id: index,
       textColor: convertToRgba({ r: 0, g: 0, b: 0, a: 1 }),
       bgColor: convertToRgba({ r: 241, g: 245, b: 249, a: 1 }),
       bgImage: "",
-      content: content,
+      // content: content,
     };
   }
 
@@ -453,11 +458,11 @@ export default function Editor({
       slide.id == index
         ? {
             ...slide,
-            textColor: convertToRgba(style.textColor),
-            bgColor: convertToRgba(style.bgColor),
+            ...style,
           }
         : slide,
     );
+
     setSlidesStyles(updatedSlides);
     setData({ ...data, styling: JSON.stringify(updatedSlides) });
   }
@@ -472,7 +477,7 @@ export default function Editor({
       // if found then update
       setContentStyling(contentSlide);
     } else {
-      const slide: SlideStyle = styledSlide(0, data.content as string);
+      const slide: SlideStyle = styledSlide(0);
       setSlidesStyles([...slidesStyles, slide]);
     }
     // if (!contentSlide) {
@@ -486,10 +491,7 @@ export default function Editor({
       );
 
       if (!slideStyle) {
-        const slideStyle: SlideStyle = styledSlide(
-          index + 1,
-          slideData as string,
-        );
+        const slideStyle: SlideStyle = styledSlide(index + 1);
         setSlidesStyles([...slidesStyles, slideStyle]);
       }
     });
@@ -575,7 +577,17 @@ export default function Editor({
           <div className="carousel-item w-[90%] flex-shrink-0 md:h-full">
             <div
               className="relative min-h-[500px] max-w-screen-xl rounded-lg bg-slate-100 p-8 dark:bg-gray-950 lg:mt-0"
-              style={{ backgroundColor: contentStyling?.bgColor }}
+              // style={{ backgroundColor: contentStyling?.bgColor }}
+              style={{
+                backgroundImage: `url(${contentStyling?.bgImage})`,
+                backgroundColor: contentStyling?.bgColor,
+                backgroundBlendMode: "overlay",
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+                width: "100%",
+                height: "500px",
+                position: "relative",
+              }}
             >
               {editor && <EditorBubbleMenu editor={editor} />}
               <div onPasteCapture={() => setIsPasted(true)}>
@@ -583,8 +595,6 @@ export default function Editor({
               </div>
               <SlideCustomizer
                 slidesStyles={slidesStyles}
-                data={data}
-                setData={setData}
                 index={0}
                 updateStyleSlides={updateStyleSlides}
               />
@@ -599,10 +609,26 @@ export default function Editor({
               <div
                 key={`slide-${index}`}
                 className="relative min-h-[500px]	w-full max-w-screen-xl  snap-center rounded-lg bg-slate-100  p-8  dark:border-gray-700  dark:bg-gray-950  lg:mt-0"
+                // style={{
+                //   backgroundColor: slidesStyles.find(
+                //     (item: SlideStyle) => item.id == index + 1,
+                //   )?.bgColor,
+                // }}
                 style={{
+                  backgroundImage: `url(${
+                    slidesStyles.find(
+                      (item: SlideStyle) => item.id == index + 1,
+                    )?.bgImage
+                  })`,
                   backgroundColor: slidesStyles.find(
                     (item: SlideStyle) => item.id == index + 1,
                   )?.bgColor,
+                  backgroundBlendMode: "overlay",
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                  width: "100%",
+                  height: "500px",
+                  position: "relative",
                 }}
               >
                 <Trash
@@ -638,7 +664,7 @@ export default function Editor({
             <button
               type="button"
               onClick={(e) => {
-                updateSlides("add", 0, "");
+                updateSlides("add", slides.length + 1, "");
               }}
               className="flex h-full flex-col items-center justify-center text-xs font-semibold tracking-tight"
             >

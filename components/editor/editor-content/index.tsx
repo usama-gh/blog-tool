@@ -154,8 +154,6 @@ export const EditorContents = (props: Props) => {
       <EditorContent editor={editor}></EditorContent>
       <SlideCustomizer
         slidesStyles={props.slidesStyles}
-        data={props.data}
-        setData={props.setData}
         index={props.index + 1}
         updateStyleSlides={props.updateStyleSlides}
       />

@@ -118,33 +118,6 @@ export const ColorSelector: FC<ColorSelectorProps> = ({
     editor.isActive("highlight", { color }),
   );
 
-  const hanldeClick = (name: string, color: string) => {
-    // editor.commands.removeEmptyTextStyle();
-    // editor.commands.unsetColor();
-    // name !== "Default" &&
-    //   editor
-    //     .chain()
-    //     .setColor(color || "")
-    //     .run();
-    // editor.commands.setColor(color || "");
-    editor.commands.unsetColor();
-    editor
-      .chain()
-      .focus()
-      .setColor(color || "")
-      .run();
-    // console.log(editor.storage.markdown.getMarkdown());
-  };
-  const handleHighlightColor = (name: string, color: string) => {
-
-    // editor
-    // .chain()
-    // .focus()
-    // .setHighlight(color || "")
-    // .run();
-
-  }
-
   return (
     <Popover modal={true} open={open} onOpenChange={onOpenChange}>
       <PopoverTrigger asChild>
@@ -168,13 +141,21 @@ export const ColorSelector: FC<ColorSelectorProps> = ({
         align="start"
       >
         <div className="flex flex-col bg-white">
-          <div className="text-muted-foreground bg-white my-1 px-2 text-sm font-semibold">
+          <div className="text-muted-foreground my-1 bg-white px-2 text-sm font-semibold">
             Color
           </div>
           {TEXT_COLORS.map(({ name, color }, index) => (
             <span
               key={index}
-              onClick={() => hanldeClick(name, color)}
+              onClick={() => {
+                editor.commands.unsetColor();
+                name !== "Default" &&
+                  editor
+                    .chain()
+                    .focus()
+                    .setColor(color || "")
+                    .run();
+              }}
               className="hover:bg-accent flex cursor-pointer items-center justify-between px-2 py-1 text-sm"
             >
               <div className="flex items-center gap-2">
@@ -191,13 +172,16 @@ export const ColorSelector: FC<ColorSelectorProps> = ({
         </div>
 
         <div className="flex flex-col bg-white">
-          <div className="text-muted-foreground bg-white my-1 px-2 text-sm font-semibold">
+          <div className="text-muted-foreground my-1 bg-white px-2 text-sm font-semibold">
             Background
           </div>
           {HIGHLIGHT_COLORS.map(({ name, color }, index) => (
             <span
               key={index}
-              onClick={() => handleHighlightColor(name, color)}
+              onClick={() => {
+                editor.commands.unsetHighlight();
+                name !== "Default" && editor.commands.setHighlight({ color });
+              }}
               className="hover:bg-accent flex cursor-pointer items-center justify-between px-2 py-1 text-sm"
             >
               <div className="flex items-center gap-2">
@@ -212,10 +196,6 @@ export const ColorSelector: FC<ColorSelectorProps> = ({
             </span>
           ))}
         </div>
-
-
-
-      
       </PopoverContent>
     </Popover>
   );
