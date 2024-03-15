@@ -127,6 +127,7 @@ export const ColorSelector: FC<ColorSelectorProps> = ({
     //     .setColor(color || "")
     //     .run();
     // editor.commands.setColor(color || "");
+    editor.commands.unsetColor();
     editor
       .chain()
       .focus()
@@ -134,11 +135,20 @@ export const ColorSelector: FC<ColorSelectorProps> = ({
       .run();
     // console.log(editor.storage.markdown.getMarkdown());
   };
+  const handleHighlightColor = (name: string, color: string) => {
+
+    // editor
+    // .chain()
+    // .focus()
+    // .setHighlight(color || "")
+    // .run();
+
+  }
 
   return (
     <Popover modal={true} open={open} onOpenChange={onOpenChange}>
       <PopoverTrigger asChild>
-        <button className="flex h-full items-center gap-1 p-2 text-sm font-medium text-stone-600 hover:bg-stone-100 active:bg-stone-200">
+        <button className="flex h-full items-center gap-1 p-2 text-sm font-medium hover:bg-stone-100 active:bg-stone-200">
           <span
             className="rounded-sm px-1"
             style={{
@@ -154,11 +164,11 @@ export const ColorSelector: FC<ColorSelectorProps> = ({
 
       <PopoverContent
         sideOffset={5}
-        className="my-1 flex max-h-80 w-48 flex-col overflow-hidden overflow-y-auto rounded border p-1 shadow-xl "
+        className="my-1 flex max-h-80 w-48 flex-col  overflow-y-auto rounded border p-1 shadow-xl "
         align="start"
       >
-        <div className="flex flex-col">
-          <div className="text-muted-foreground my-1 px-2 text-sm font-semibold">
+        <div className="flex flex-col bg-white">
+          <div className="text-muted-foreground bg-white my-1 px-2 text-sm font-semibold">
             Color
           </div>
           {TEXT_COLORS.map(({ name, color }, index) => (
@@ -179,6 +189,33 @@ export const ColorSelector: FC<ColorSelectorProps> = ({
             </span>
           ))}
         </div>
+
+        <div className="flex flex-col bg-white">
+          <div className="text-muted-foreground bg-white my-1 px-2 text-sm font-semibold">
+            Background
+          </div>
+          {HIGHLIGHT_COLORS.map(({ name, color }, index) => (
+            <span
+              key={index}
+              onClick={() => handleHighlightColor(name, color)}
+              className="hover:bg-accent flex cursor-pointer items-center justify-between px-2 py-1 text-sm"
+            >
+              <div className="flex items-center gap-2">
+                <div
+                  className="rounded-sm border px-2 py-px font-medium"
+                  style={{ backgroundColor: color }}
+                >
+                  A
+                </div>
+                <span>{name}</span>
+              </div>
+            </span>
+          ))}
+        </div>
+
+
+
+      
       </PopoverContent>
     </Popover>
   );

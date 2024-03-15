@@ -9,6 +9,7 @@ import { Color } from "@tiptap/extension-color";
 import TaskItem from "@tiptap/extension-task-item";
 import TaskList from "@tiptap/extension-task-list";
 import { Markdown } from "tiptap-markdown";
+import Highlight from "@tiptap/extension-highlight";
 
 import SlashCommand from "./slash-command";
 import { InputRule } from "@tiptap/core";
@@ -117,8 +118,11 @@ export const TiptapExtensions = [
     },
     nested: true,
   }),
+  Highlight.configure({
+    multicolor: true,
+  }),
   Markdown.configure({
-    html: false,
+    html: true,
     linkify: true,
     transformCopiedText: true,
     transformPastedText: true,
