@@ -188,7 +188,7 @@ export default function Editor({
     extensions: canUseAI ? TiptapExtensionsAI : TiptapExtensions,
     editorProps: TiptapEditorProps,
     onUpdate: (e) => {
-      console.log(e.editor.storage.markdown.getMarkdown());
+      // console.log(e.editor.getText());
 
       const selection = e.editor.state.selection;
       const lastTwo = e.editor.state.doc.textBetween(

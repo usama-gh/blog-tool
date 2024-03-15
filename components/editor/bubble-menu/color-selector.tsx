@@ -1,6 +1,5 @@
 import { Check, ChevronDown } from "lucide-react";
 import type { Dispatch, SetStateAction, FC } from "react";
-import { EditorBubbleItem, useEditor } from "novel";
 import { Editor } from "@tiptap/core";
 import {
   PopoverTrigger,
@@ -119,15 +118,21 @@ export const ColorSelector: FC<ColorSelectorProps> = ({
     editor.isActive("highlight", { color }),
   );
 
-  const handleClick = (name: string, color: string) => {
-    console.log(name, color);
-    editor.commands.unsetColor();
-    name !== "Default" &&
-      editor
-        .chain()
-        .focus()
-        .setColor(color || "")
-        .run();
+  const hanldeClick = (name: string, color: string) => {
+    // editor.commands.removeEmptyTextStyle();
+    // editor.commands.unsetColor();
+    // name !== "Default" &&
+    //   editor
+    //     .chain()
+    //     .setColor(color || "")
+    //     .run();
+    // editor.commands.setColor(color || "");
+    editor
+      .chain()
+      .focus()
+      .setColor(color || "")
+      .run();
+    // console.log(editor.storage.markdown.getMarkdown());
   };
 
   return (
@@ -157,17 +162,9 @@ export const ColorSelector: FC<ColorSelectorProps> = ({
             Color
           </div>
           {TEXT_COLORS.map(({ name, color }, index) => (
-            <EditorBubbleItem
+            <span
               key={index}
-              onSelect={() => {
-                editor.commands.unsetColor();
-                name !== "Default" &&
-                  editor
-                    .chain()
-                    .focus()
-                    .setColor(color || "")
-                    .run();
-              }}
+              onClick={() => hanldeClick(name, color)}
               className="hover:bg-accent flex cursor-pointer items-center justify-between px-2 py-1 text-sm"
             >
               <div className="flex items-center gap-2">
@@ -179,7 +176,7 @@ export const ColorSelector: FC<ColorSelectorProps> = ({
                 </div>
                 <span>{name}</span>
               </div>
-            </EditorBubbleItem>
+            </span>
           ))}
         </div>
       </PopoverContent>
