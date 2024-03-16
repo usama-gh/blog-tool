@@ -129,7 +129,7 @@ const Carousel = ({ data, siteData, lead }: any) => {
                   />
                 )}
 
-                <div className="scrollbar-thumb-rounded-full scrollbar-track-rounded-full relative my-auto flex h-screen w-full items-center justify-center overflow-y-auto py-10 text-slate-600 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-gray-200 dark:text-gray-400 dark:scrollbar-thumb-gray-800 [&>*]:rounded-xl [&>*]:text-lg ">
+                <div className="mt-20 scrollbar-thumb-rounded-full scrollbar-track-rounded-full relative my-auto flex h-screen w-full items-center justify-center overflow-y-auto py-10 text-slate-600 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-gray-200 dark:text-gray-400 dark:scrollbar-thumb-gray-800 [&>*]:rounded-xl [&>*]:text-lg ">
                   <MDX source={data.mdxSource} />
                 </div>
               </div>
@@ -137,7 +137,7 @@ const Carousel = ({ data, siteData, lead }: any) => {
               {data.slides &&
                 JSON.parse(data.slides).map((value: string, index: number) => (
                   <div
-                    className={`relative flex h-fit min-w-full items-start justify-center`}
+                    className={`relative flex h-fit min-w-full items-start justify-center relative`}
                     key={`slide-${index}`}
                   >
                     <SlideContent

@@ -23,6 +23,7 @@ const SlideCustomizer = ({
   const [showBgColorPicker, setShowBgColorPicker] = useState(false);
   const [image, setImage] = useState("");
   const imageRef = useRef(null);
+  const presetColors = ["#cd9323", "#1a53d8", "#9a2151", "#0d6416", "#8d2808"];
 
   // arrange original data from databse
   useEffect(() => {
@@ -102,6 +103,7 @@ const SlideCustomizer = ({
 
     if (type === "bg") {
       setBgColor(value);
+      console.log(value)
     }
     if (type === "image") {
       setImage(value);
@@ -144,10 +146,24 @@ const SlideCustomizer = ({
           <div className="relative flex items-center gap-x-2">
             {showBgColorPicker && (
               <span className="absolute -top-4 left-0  z-20  -translate-x-1/2  -translate-y-full rounded-xl bg-white p-2 shadow-sm">
+                  <div className="picker">
+
+
+                 
                 <RgbaColorPicker
                   color={bgColor}
                   onChange={(color) => handleValueChange("bg", color)}
                 />
+                
+                {presetColors.map((presetColor) => (
+          <button
+            key={presetColor}
+            className="picker__swatch"
+            style={{ background: presetColor }}
+            onClick={(presetColor) => setBgColor(presetColor)}
+          />
+        ))}
+         </div>
               </span>
             )}
 
