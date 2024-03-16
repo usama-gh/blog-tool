@@ -4,6 +4,7 @@ import React, { useState, useEffect, useCallback, ReactNode } from "react";
 import { DotButton, NextButton, PrevButton } from "./carousel-buttons";
 import useEmblaCarousel from "embla-carousel-react";
 import BlurImage from "@/components/blur-image";
+import Image from "next/image";
 import MDX from "../mdx";
 import BlogCard from "../blog-card";
 import SocialLinks from "../social-links";
@@ -96,9 +97,33 @@ const Carousel = ({ data, siteData, lead }: any) => {
         <div className="mx-auto my-auto flex items-center">
           <div className="w-full overflow-hidden" ref={viewportRef}>
             <div className="flex h-fit items-start ">
-              <div className="h-fit min-w-full text-slate-50  dark:text-gray-400 ">
-                <div className="scrollbar-thumb-rounded-full scrollbar-track-rounded-full my-auto flex h-screen w-full items-center justify-center overflow-y-auto py-10 text-slate-600 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-gray-200 dark:text-gray-400 dark:scrollbar-thumb-gray-800 [&>*]:rounded-xl [&>*]:text-lg ">
-                  <MDX source={data.mdxSource} />
+              <div className="h-fit min-w-full text-slate-50  dark:text-gray-400 relative ">
+              <Image
+      layout="fill"
+      className="object-center object-cover pointer-events-none"
+      src='https://images.unsplash.com/photo-1706820643404-71812d9d7d3a?q=80&w=3029&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
+      alt='image'
+    />
+     <div
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          backgroundColor: "#4f3bf685", // Adjust the color and opacity here
+        }}
+      />
+
+                <div className="relative scrollbar-thumb-rounded-full scrollbar-track-rounded-full my-auto flex h-screen w-full items-center justify-center overflow-y-auto py-10 text-slate-600 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-gray-200 dark:text-gray-400 dark:scrollbar-thumb-gray-800 [&>*]:rounded-xl [&>*]:text-lg "
+               
+                >
+                 
+
+            
+              <MDX source={data.mdxSource} />
+         
+                
                 </div>
               </div>
 

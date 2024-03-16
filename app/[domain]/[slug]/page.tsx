@@ -69,7 +69,8 @@ export default async function SitePostPage({
         data-project={`${data?.siteId}`}
         data-token={`${process.env.NEXT_PUBLIC_TINYBIRD_TRACKER_TOKEN}`}
       />
-      <div className="animate-fade	mx-auto flex w-screen items-center justify-between px-2 py-3 lg:px-4">
+      
+      <div className="absolute top-0 left-0 w-full z-30 bg-gradient-to-r from-[#0000005e] via-transparent to-[#0000005e] backdrop-blur-xl animate-fade	mx-auto flex w-screen items-center justify-between px-2 py-3 lg:px-4">
         <div className="flex items-center gap-x-2">
           <div className="flex items-center gap-x-2">
             <Link href="/">
@@ -93,18 +94,18 @@ export default async function SitePostPage({
               </div>
             </Link>
             <Link href="/">
-              <p className="max-w-sm truncate  text-xs font-semibold tracking-normal text-slate-500 hover:text-slate-600 dark:text-gray-400 dark:hover:text-gray-300 lg:text-sm">
+              <p className="max-w-sm truncate  text-xs font-semibold tracking-normal text-gray-100 drop-shadow-sm hover:text-slate-600 dark:text-gray-400 dark:hover:text-gray-300 lg:text-sm">
                 {" "}
                 {siteData?.name}
               </p>
             </Link>
           </div>
-          <div className="h-7 w-[1px] bg-slate-200 dark:bg-gray-700 lg:w-[2px]"></div>
-          <p className="font-regular truncate text-xs  text-slate-500 dark:text-gray-400 lg:text-sm">
+          <div className="h-7 w-[0.5px] bg-gray-400 dark:bg-gray-700 lg:w-[1px]"></div>
+          <p className="font-regular truncate text-xs drop-shadow-sm text-gray-100 dark:text-gray-400 lg:text-sm">
             {data.title}
           </p>
         </div>
-        <p className="font-regular hidden overflow-hidden text-ellipsis text-xs text-slate-500 dark:text-gray-400 md:block lg:block lg:text-sm">
+        <p className="font-regular hidden overflow-hidden text-ellipsis drop-shadow-sm text-xs text-gray-100 dark:text-gray-400 md:block lg:block lg:text-sm">
           {toDateString(data.createdAt, "short")}
         </p>
       </div>
