@@ -156,6 +156,7 @@ export const EditorContents = (props: Props) => {
         slidesStyles={props.slidesStyles}
         index={props.index + 1}
         updateStyleSlides={props.updateStyleSlides}
+        editor={editor}
       />
     </>
   );

@@ -578,31 +578,29 @@ export default function Editor({
         <div className="carousel-wrapper mb-2 mt-2 flex w-full flex-nowrap space-x-4 overflow-x-scroll pb-4">
           <div className="carousel-item w-[90%] flex-shrink-0 md:h-full">
             <div
-              className="relative min-h-[500px] max-h-[500px] overflow-y-auto max-w-screen-xl rounded-lg bg-slate-100 p-8 dark:bg-gray-950 lg:mt-0"
+              className="relative max-h-[500px] min-h-[500px] max-w-screen-xl overflow-y-auto rounded-lg bg-slate-100 p-8 dark:bg-gray-950 lg:mt-0"
               // style={{ backgroundColor: contentStyling?.bgColor }}
-            
             >
-                {contentStyling?.bgImage && (
-                  <Image
-                    layout="fill"
-                    className="pointer-events-none object-cover object-center"
-                    src={contentStyling.bgImage}
-                    alt="image"
-                  />
-                )}
-                {contentStyling?.bgColor && (
-                  <div
-                    style={{
-                      position: "absolute",
-                      top: 0,
-                      left: 0,
-                      width: "100%",
-                      height: "100%",
-                      backgroundColor: contentStyling.bgColor,
-                    }}
-                  />
-                )}
-
+              {contentStyling?.bgImage && (
+                <Image
+                  layout="fill"
+                  className="pointer-events-none object-cover object-center"
+                  src={contentStyling.bgImage}
+                  alt="image"
+                />
+              )}
+              {contentStyling?.bgColor && (
+                <div
+                  style={{
+                    position: "absolute",
+                    top: 0,
+                    left: 0,
+                    width: "100%",
+                    height: "100%",
+                    backgroundColor: contentStyling.bgColor,
+                  }}
+                />
+              )}
 
               {editor && <EditorBubbleMenu editor={editor} />}
               <div onPasteCapture={() => setIsPasted(true)}>
@@ -612,6 +610,7 @@ export default function Editor({
                 slidesStyles={slidesStyles}
                 index={0}
                 updateStyleSlides={updateStyleSlides}
+                editor={editor}
               />
             </div>
           </div>
