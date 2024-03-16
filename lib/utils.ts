@@ -29,6 +29,16 @@ export const convertRgba = (rgba: string) => {
   return rgba.replace("rgba(", "").replace(")", "").split(",");
 };
 
+export const styledSlide = (index: number) => {
+  return {
+    id: index,
+    textColor: convertToRgba({ r: 0, g: 0, b: 0, a: 1 }),
+    bgColor: convertToRgba({ r: 241, g: 245, b: 249, a: 1 }),
+    bgImage: "",
+    // content: content,
+  };
+};
+
 export const truncate = (str: string, num: number) => {
   if (!str) return "";
   if (str.length <= num) {

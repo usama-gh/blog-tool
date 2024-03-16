@@ -14,8 +14,18 @@ import { toast } from "sonner";
 import { MarkdownRenderer } from "markdown-react-renderer";
 import { LeadDownload } from "../lead-download";
 import { Subscribe } from "../subscribe";
+import { SlideStyle } from "@/types";
+import SlideContent from "./slide-content";
 
 const Carousel = ({ data, siteData, lead }: any) => {
+  const stylings: SlideStyle[] | [] = !!data.styling
+    ? JSON.parse(data.styling)
+    : [];
+
+  const contentStyling: SlideStyle | undefined = stylings.find(
+    (item: SlideStyle) => item.id == 0,
+  );
+
   const [viewportRef, embla] = useEmblaCarousel({
     skipSnaps: false,
     watchDrag: false,
@@ -97,33 +107,30 @@ const Carousel = ({ data, siteData, lead }: any) => {
         <div className="mx-auto my-auto flex items-center">
           <div className="w-full overflow-hidden" ref={viewportRef}>
             <div className="flex h-fit items-start ">
-              <div className="h-fit min-w-full text-slate-50  dark:text-gray-400 relative ">
-              <Image
-      layout="fill"
-      className="object-center object-cover pointer-events-none"
-      src='https://images.unsplash.com/photo-1706820643404-71812d9d7d3a?q=80&w=3029&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
-      alt='image'
-    />
-     <div
-        style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          width: "100%",
-          height: "100%",
-          backgroundColor: "#4f3bf685", // Adjust the color and opacity here
-        }}
-      />
+              <div className="relative h-fit min-w-full  text-slate-50 dark:text-gray-400 ">
+                {contentStyling?.bgImage && (
+                  <Image
+                    layout="fill"
+                    className="pointer-events-none object-cover object-center"
+                    src={contentStyling.bgImage}
+                    alt="image"
+                  />
+                )}
+                {contentStyling?.bgColor && (
+                  <div
+                    style={{
+                      position: "absolute",
+                      top: 0,
+                      left: 0,
+                      width: "100%",
+                      height: "100%",
+                      backgroundColor: contentStyling.bgColor,
+                    }}
+                  />
+                )}
 
-                <div className="relative scrollbar-thumb-rounded-full scrollbar-track-rounded-full my-auto flex h-screen w-full items-center justify-center overflow-y-auto py-10 text-slate-600 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-gray-200 dark:text-gray-400 dark:scrollbar-thumb-gray-800 [&>*]:rounded-xl [&>*]:text-lg "
-               
-                >
-                 
-
-            
-              <MDX source={data.mdxSource} />
-         
-                
+                <div className="scrollbar-thumb-rounded-full scrollbar-track-rounded-full relative my-auto flex h-screen w-full items-center justify-center overflow-y-auto py-10 text-slate-600 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-gray-200 dark:text-gray-400 dark:scrollbar-thumb-gray-800 [&>*]:rounded-xl [&>*]:text-lg ">
+                  <MDX source={data.mdxSource} />
                 </div>
               </div>
 
@@ -133,9 +140,16 @@ const Carousel = ({ data, siteData, lead }: any) => {
                     className={`relative flex h-fit min-w-full items-start justify-center`}
                     key={`slide-${index}`}
                   >
-                    <div className="scrollbar-thumb-rounded-full scrollbar-track-rounded-full my-auto flex h-screen w-full flex-1 items-center justify-center overflow-y-auto py-10 text-slate-600 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-gray-200 dark:text-gray-400 dark:scrollbar-thumb-gray-800 [&>*]:text-xl">
+                    <SlideContent
+                      key={index + 1}
+                      content={data.slidesMdxSource[index]}
+                      style={stylings.find(
+                        (item: SlideStyle) => item.id == index + 1,
+                      )}
+                    />
+                    {/* <div className="scrollbar-thumb-rounded-full scrollbar-track-rounded-full my-auto flex h-screen w-full flex-1 items-center justify-center overflow-y-auto py-10 text-slate-600 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-gray-200 dark:text-gray-400 dark:scrollbar-thumb-gray-800 [&>*]:text-xl">
                       <MDX source={data.slidesMdxSource[index]} />
-                    </div>
+                    </div> */}
                   </div>
                 ))}
 

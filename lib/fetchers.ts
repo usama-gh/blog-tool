@@ -5,8 +5,9 @@ import { replaceExamples, replaceTweets } from "@/lib/remark-plugins";
 import { plans } from "@/data";
 import { getSession } from "./auth";
 import { redirect } from "next/navigation";
-import rehypeRaw from 'rehype-raw'
-
+import rehypeRaw from "rehype-raw";
+import { SlideStyle } from "@/types";
+import { styledSlide } from "./utils";
 
 export async function getSiteData(domain: string) {
   const subdomain = domain.endsWith(`.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`)
@@ -244,6 +245,7 @@ async function getMdxSource(postContents: string) {
   // Serialize the content string into MDX
   const mdxSource = await serialize(content, {
     mdxOptions: {
+      // @ts-ignore
       rehypePlugins: [rehypeRaw],
       format: "md",
     },
@@ -266,10 +268,17 @@ async function getSlidesMdxSource(slides: string) {
   for (const slide of slidesArr) {
     const content = slide?.replaceAll(/<(https?:\/\/\S+)>/g, "[$1]($1)") ?? "";
     // Serialize the content string into MDX
+    // const mdxSource = await serialize(content, {
+    //   mdxOptions: {
+    //     remarkPlugins: [replaceTweets, () => replaceExamples(prisma)],
+    //     format: "mdx",
+    //   },
+    // });
     const mdxSource = await serialize(content, {
       mdxOptions: {
-        remarkPlugins: [replaceTweets, () => replaceExamples(prisma)],
-        format: "mdx",
+        // @ts-ignore
+        rehypePlugins: [rehypeRaw],
+        format: "md",
       },
     });
     slidesMdxSource.push(mdxSource);

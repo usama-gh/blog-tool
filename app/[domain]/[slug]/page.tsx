@@ -47,13 +47,14 @@ export default async function SitePostPage({
 
   const data = await getPostData(domain, slug);
 
+  if (!data) {
+    notFound();
+  }
+
   // increment the views count to visit row
   await addVisitor(data?.siteId as string);
 
   const siteData = await getSiteData(params.domain);
-  if (!data) {
-    notFound();
-  }
 
   let lead = null;
   if (data.leadId) {
@@ -69,8 +70,8 @@ export default async function SitePostPage({
         data-project={`${data?.siteId}`}
         data-token={`${process.env.NEXT_PUBLIC_TINYBIRD_TRACKER_TOKEN}`}
       />
-      
-      <div className="absolute top-0 left-0 w-full z-30 bg-gradient-to-r from-[#0000005e] via-transparent to-[#0000005e] backdrop-blur-xl animate-fade	mx-auto flex w-screen items-center justify-between px-2 py-3 lg:px-4">
+
+      <div className="animate-fade absolute left-0 top-0 z-30 mx-auto flex w-full w-screen items-center justify-between	bg-gradient-to-r from-[#0000005e] via-transparent to-[#0000005e] px-2 py-3 backdrop-blur-xl lg:px-4">
         <div className="flex items-center gap-x-2">
           <div className="flex items-center gap-x-2">
             <Link href="/">
@@ -101,11 +102,11 @@ export default async function SitePostPage({
             </Link>
           </div>
           <div className="h-7 w-[0.5px] bg-gray-400 dark:bg-gray-700 lg:w-[1px]"></div>
-          <p className="font-regular truncate text-xs drop-shadow-sm text-gray-100 dark:text-gray-400 lg:text-sm">
+          <p className="font-regular truncate text-xs text-gray-100 drop-shadow-sm dark:text-gray-400 lg:text-sm">
             {data.title}
           </p>
         </div>
-        <p className="font-regular hidden overflow-hidden text-ellipsis drop-shadow-sm text-xs text-gray-100 dark:text-gray-400 md:block lg:block lg:text-sm">
+        <p className="font-regular hidden overflow-hidden text-ellipsis text-xs text-gray-100 drop-shadow-sm dark:text-gray-400 md:block lg:block lg:text-sm">
           {toDateString(data.createdAt, "short")}
         </p>
       </div>

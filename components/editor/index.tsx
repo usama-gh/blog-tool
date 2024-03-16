@@ -13,7 +13,7 @@ import TextareaAutosize from "react-textarea-autosize";
 import { EditorBubbleMenu } from "./bubble-menu";
 import { Lead, Post } from "@prisma/client";
 import { updatePost, updatePostMetadata } from "@/lib/actions";
-import { cn, convertToRgba } from "@/lib/utils";
+import { cn, convertToRgba, styledSlide } from "@/lib/utils";
 import LoadingDots from "../icons/loading-dots";
 import {
   ExternalLink,
@@ -308,8 +308,20 @@ export default function Editor({
         setSlides(updatedSlides);
         break;
       case "delete":
+        const slideStyle: SlideStyle | undefined = slidesStyles.find(
+          (slide: SlideStyle) => slide.id == index + 1,
+        );
+        // delete image if slide style has
+        if (slideStyle?.bgImage) {
+          await fetch("/api/upload", {
+            method: "DELETE",
+            body: JSON.stringify({ image: slideStyle.bgImage }),
+          });
+        }
+
         updatedSlides.splice(index, 1);
         setSlides(updatedSlides);
+
         const styledSlides = slidesStyles.filter(
           (slide: SlideStyle) => slide.id != index + 1,
         );
@@ -442,16 +454,6 @@ export default function Editor({
     }
     firstRenderLead.current = false;
   }, [leadId]);
-
-  function styledSlide(index: number) {
-    return {
-      id: index,
-      textColor: convertToRgba({ r: 0, g: 0, b: 0, a: 1 }),
-      bgColor: convertToRgba({ r: 241, g: 245, b: 249, a: 1 }),
-      bgImage: "",
-      // content: content,
-    };
-  }
 
   function updateStyleSlides(index: number, style: any) {
     const updatedSlides = slidesStyles.map((slide: SlideStyle) =>
