@@ -5,6 +5,8 @@ import { replaceExamples, replaceTweets } from "@/lib/remark-plugins";
 import { plans } from "@/data";
 import { getSession } from "./auth";
 import { redirect } from "next/navigation";
+import rehypeRaw from 'rehype-raw'
+
 
 export async function getSiteData(domain: string) {
   const subdomain = domain.endsWith(`.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`)
@@ -242,7 +244,8 @@ async function getMdxSource(postContents: string) {
   // Serialize the content string into MDX
   const mdxSource = await serialize(content, {
     mdxOptions: {
-      remarkPlugins: [replaceTweets, () => replaceExamples(prisma)],
+      rehypePlugins: [rehypeRaw],
+      format: "md",
     },
   });
 
@@ -266,6 +269,7 @@ async function getSlidesMdxSource(slides: string) {
     const mdxSource = await serialize(content, {
       mdxOptions: {
         remarkPlugins: [replaceTweets, () => replaceExamples(prisma)],
+        format: "mdx",
       },
     });
     slidesMdxSource.push(mdxSource);
