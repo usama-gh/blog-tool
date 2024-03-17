@@ -92,7 +92,7 @@ export const EditorBubbleMenu: FC<EditorBubbleMenuProps> = (props) => {
   return (
     <BubbleMenu
       {...bubbleMenuProps}
-      className="flex rounded border border-stone-200 bg-white shadow-xl whitespace-nowrap"
+      className="flex rounded border border-stone-200 bg-white shadow-xl whitespace-nowrap w-max"
     >
       <NodeSelector
         // @ts-ignore

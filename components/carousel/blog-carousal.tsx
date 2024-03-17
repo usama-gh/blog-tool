@@ -110,7 +110,8 @@ const Carousel = ({ data, siteData, lead }: any) => {
               <div className="relative h-fit min-w-full  text-slate-50 dark:text-gray-400 ">
                 {contentStyling?.bgImage && (
                   <Image
-                    layout="fill"
+                    width={1000}
+                    height={1000}
                     className="pointer-events-none object-cover object-center"
                     src={contentStyling.bgImage}
                     alt="image"

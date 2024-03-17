@@ -583,7 +583,7 @@ export default function Editor({
             >
               {contentStyling?.bgImage && (
                 <Image
-                  layout="fill"
+                sizes="(max-width: 768px) 100vw, 33vw"	
                   className="pointer-events-none object-cover object-center"
                   src={contentStyling.bgImage}
                   alt="image"
