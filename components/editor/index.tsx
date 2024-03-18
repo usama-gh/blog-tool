@@ -13,7 +13,7 @@ import TextareaAutosize from "react-textarea-autosize";
 import { EditorBubbleMenu } from "./bubble-menu";
 import { Lead, Post } from "@prisma/client";
 import { updatePost, updatePostMetadata } from "@/lib/actions";
-import { cn, convertToRgba, styledSlide } from "@/lib/utils";
+import { cn, convertToRgba, isDefultStyle, styledSlide } from "@/lib/utils";
 import LoadingDots from "../icons/loading-dots";
 import {
   ExternalLink,
@@ -587,18 +587,19 @@ export default function Editor({
                   alt="image"
                 />
               )}
-              {contentStyling?.bgColor && (
-                <div
-                  style={{
-                    position: "absolute",
-                    top: 0,
-                    left: 0,
-                    width: "100%",
-                    height: "100%",
-                    backgroundColor: contentStyling.bgColor,
-                  }}
-                />
-              )}
+              {contentStyling?.bgColor &&
+                !isDefultStyle("bg", contentStyling?.bgColor as string) && (
+                  <div
+                    style={{
+                      position: "absolute",
+                      top: 0,
+                      left: 0,
+                      width: "100%",
+                      height: "100%",
+                      backgroundColor: contentStyling.bgColor,
+                    }}
+                  />
+                )}
 
               {editor && <EditorBubbleMenu editor={editor} />}
               <div onPasteCapture={() => setIsPasted(true)}>
@@ -634,7 +635,18 @@ export default function Editor({
                   })`,
                   backgroundColor: slidesStyles.find(
                     (item: SlideStyle) => item.id == index + 1,
-                  )?.bgColor,
+                  )
+                    ? isDefultStyle(
+                        "bg",
+                        slidesStyles.find(
+                          (item: SlideStyle) => item.id == index + 1,
+                        )?.bgColor as string,
+                      )
+                      ? ""
+                      : slidesStyles.find(
+                          (item: SlideStyle) => item.id == index + 1,
+                        )?.bgColor
+                    : "",
                   backgroundBlendMode: "overlay",
                   backgroundSize: "cover",
                   backgroundPosition: "center",
