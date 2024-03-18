@@ -39,6 +39,19 @@ export const styledSlide = (index: number) => {
   };
 };
 
+export const isDefultStyle = (type: string, style: string) => {
+  if (type === "text") {
+    return style === "rgba(0,0,0,1)";
+  }
+  if (type === "bg") {
+    return style === "rgba(241,245,249,1)";
+  }
+};
+
+// export const isDefultBgStyle = (style: string) => {
+//   return style === "rgba(241,245,249,1)";
+// };
+
 export const truncate = (str: string, num: number) => {
   if (!str) return "";
   if (str.length <= num) {

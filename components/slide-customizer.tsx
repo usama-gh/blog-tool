@@ -29,156 +29,152 @@ const SlideCustomizer = ({
   const [image, setImage] = useState("");
   const [showResetBtn, setShowResetBtn] = useState(false);
   const imageRef = useRef(null);
-  // const presetColors = ["#cd9323", "#1a53d8", "#9a2151", "#0d6416", "#8d2808"];
   const presetColors = [
     {
-        r: 0,
-        g: 0,
-        b: 0,
-        a: 1,
+      r: 0,
+      g: 0,
+      b: 0,
+      a: 1,
     },
     {
-        r: 2,
-        g: 159,
-        b: 93,
-        a: 1,
+      r: 2,
+      g: 159,
+      b: 93,
+      a: 1,
     },
     {
-        r: 38,
-        g: 118,
-        b: 118,
-        a: 1,
+      r: 38,
+      g: 118,
+      b: 118,
+      a: 1,
     },
     {
-        r: 63,
-        g: 119,
-        b: 6,
-        a: 1,
+      r: 63,
+      g: 119,
+      b: 6,
+      a: 1,
     },
     {
-        r: 93,
-        g: 93,
-        b: 93,
-        a: 1,
+      r: 93,
+      g: 93,
+      b: 93,
+      a: 1,
     },
     {
-        r: 95,
-        g: 27,
-        b: 206,
-        a: 1,
+      r: 95,
+      g: 27,
+      b: 206,
+      a: 1,
     },
     {
-        r: 96,
-        g: 83,
-        b: 16,
-        a: 1,
+      r: 96,
+      g: 83,
+      b: 16,
+      a: 1,
     },
     {
-        r: 129,
-        g: 62,
-        b: 13,
-        a: 1,
+      r: 129,
+      g: 62,
+      b: 13,
+      a: 1,
     },
     {
-        r: 146,
-        g: 59,
-        b: 10,
-        a: 1,
+      r: 146,
+      g: 59,
+      b: 10,
+      a: 1,
     },
     {
-        r: 198,
-        g: 255,
-        b: 255,
-        a: 1,
+      r: 198,
+      g: 255,
+      b: 255,
+      a: 1,
     },
     {
-        r: 205,
-        g: 112,
-        b: 4,
-        a: 1,
+      r: 205,
+      g: 112,
+      b: 4,
+      a: 1,
     },
     {
-        r: 215,
-        g: 255,
-        b: 238,
-        a: 1,
+      r: 215,
+      g: 255,
+      b: 238,
+      a: 1,
     },
     {
-        r: 220,
-        g: 78,
-        b: 121,
-        a: 1,
+      r: 220,
+      g: 78,
+      b: 121,
+      a: 1,
     },
     {
-        r: 227,
-        g: 255,
-        b: 198,
-        a: 1,
+      r: 227,
+      g: 255,
+      b: 198,
+      a: 1,
     },
     {
-        r: 233,
-        g: 219,
-        b: 255,
-        a: 1,
+      r: 233,
+      g: 219,
+      b: 255,
+      a: 1,
     },
     {
-        r: 243,
-        g: 243,
-        b: 243,
-        a: 1,
+      r: 243,
+      g: 243,
+      b: 243,
+      a: 1,
     },
     {
-        r: 251,
-        g: 56,
-        b: 80,
-        a: 1,
+      r: 251,
+      g: 56,
+      b: 80,
+      a: 1,
     },
     {
-        r: 255,
-        g: 197,
-        b: 204,
-        a: 1,
+      r: 255,
+      g: 197,
+      b: 204,
+      a: 1,
     },
     {
-        r: 255,
-        g: 219,
-        b: 230,
-        a: 1,
+      r: 255,
+      g: 219,
+      b: 230,
+      a: 1,
     },
     {
-        r: 255,
-        g: 220,
-        b: 200,
-        a: 1,
+      r: 255,
+      g: 220,
+      b: 200,
+      a: 1,
     },
     {
-        r: 255,
-        g: 229,
-        b: 197,
-        a: 1,
+      r: 255,
+      g: 229,
+      b: 197,
+      a: 1,
     },
     {
-        r: 255,
-        g: 234,
-        b: 219,
-        a: 1,
+      r: 255,
+      g: 234,
+      b: 219,
+      a: 1,
     },
     {
       r: 255,
       g: 255,
       b: 255,
       a: 1,
-  },
+    },
     {
-        r: 255,
-        g: 240,
-        b: 163,
-        a: 1,
-    }
-   
-];
-
-
+      r: 255,
+      g: 240,
+      b: 163,
+      a: 1,
+    },
+  ];
 
   // arrange original data from databse
   useEffect(() => {
@@ -257,6 +253,7 @@ const SlideCustomizer = ({
     // select all the text in editor and change the color
     const textLength = editor.storage.markdown.getMarkdown().length;
     editor.commands.unsetColor();
+    // editor.commands;
     editor.commands.setTextSelection({
       from: 0,
       to: textLength,
@@ -271,7 +268,7 @@ const SlideCustomizer = ({
   async function resetStyle() {
     // delete image from vercel blob if exists
     if (slideStyle?.bgImage) {
-      await deleteImage();
+      deleteImage();
     }
 
     setTextColor(defaultTextColor);

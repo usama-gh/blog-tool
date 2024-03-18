@@ -149,8 +149,6 @@ export default function Editor({
   const [debouncedData] = useDebounce(data, 1000);
 
   useEffect(() => {
-    // console.log(debouncedData.styling);
-
     // compare the title, description and content only
     if (
       debouncedData.title === post.title &&
@@ -466,7 +464,7 @@ export default function Editor({
     );
 
     setSlidesStyles(updatedSlides);
-    setData({ ...data, styling: JSON.stringify(updatedSlides) });
+    setData((prev) => ({ ...prev, styling: JSON.stringify(updatedSlides) }));
   }
 
   // for slides styles
@@ -583,7 +581,7 @@ export default function Editor({
             >
               {contentStyling?.bgImage && (
                 <Image
-                sizes="(max-width: 768px) 100vw, 33vw"	
+                  sizes="(max-width: 768px) 100vw, 33vw"
                   className="pointer-events-none object-cover object-center"
                   src={contentStyling.bgImage}
                   alt="image"

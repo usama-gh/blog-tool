@@ -16,6 +16,7 @@ import { LeadDownload } from "../lead-download";
 import { Subscribe } from "../subscribe";
 import { SlideStyle } from "@/types";
 import SlideContent from "./slide-content";
+import { isDefultStyle } from "@/lib/utils";
 
 const Carousel = ({ data, siteData, lead }: any) => {
   const stylings: SlideStyle[] | [] = !!data.styling
@@ -117,18 +118,19 @@ const Carousel = ({ data, siteData, lead }: any) => {
                     alt="image"
                   />
                 )}
-                {contentStyling?.bgColor && (
-                  <div
-                    style={{
-                      position: "absolute",
-                      top: 0,
-                      left: 0,
-                      width: "100%",
-                      height: "100%",
-                      backgroundColor: contentStyling.bgColor,
-                    }}
-                  />
-                )}
+                {contentStyling?.bgColor &&
+                  !isDefultStyle("bg", contentStyling?.bgColor as string) && (
+                    <div
+                      style={{
+                        position: "absolute",
+                        top: 0,
+                        left: 0,
+                        width: "100%",
+                        height: "100%",
+                        backgroundColor: contentStyling.bgColor,
+                      }}
+                    />
+                  )}
 
                 <div className="scrollbar-thumb-rounded-full scrollbar-track-rounded-full relative my-auto mt-20 flex h-screen w-full items-center justify-center overflow-y-auto py-10 text-slate-600 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-gray-200 dark:text-gray-400 dark:scrollbar-thumb-gray-800 [&>*]:rounded-xl [&>*]:text-lg ">
                   <MDX source={data.mdxSource} />

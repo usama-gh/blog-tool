@@ -4,6 +4,7 @@
 import Image from "next/image";
 import MDX from "../mdx";
 import { SlideStyle } from "@/types";
+import { isDefultStyle } from "@/lib/utils";
 
 const SlideContent = ({
   content,
@@ -22,7 +23,7 @@ const SlideContent = ({
           alt="image"
         />
       )}
-      {style?.bgColor && (
+      {style?.bgColor && !isDefultStyle("bg", style?.bgColor as string) && (
         <div
           style={{
             position: "absolute",
@@ -34,7 +35,7 @@ const SlideContent = ({
           }}
         />
       )}
-      <div className="mt-20 scrollbar-thumb-rounded-full relative z-20 scrollbar-track-rounded-full my-auto flex h-screen w-full flex-1 items-center justify-center overflow-y-auto py-10 text-slate-600 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-gray-200 dark:text-gray-400 dark:scrollbar-thumb-gray-800 [&>*]:text-xl">
+      <div className="scrollbar-thumb-rounded-full scrollbar-track-rounded-full relative z-20 my-auto mt-20 flex h-screen w-full flex-1 items-center justify-center overflow-y-auto py-10 text-slate-600 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-gray-200 dark:text-gray-400 dark:scrollbar-thumb-gray-800 [&>*]:text-xl">
         <MDX source={content} />
       </div>
     </>
