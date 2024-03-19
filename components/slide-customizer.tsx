@@ -266,11 +266,7 @@ const SlideCustomizer = ({
   }
 
   async function resetStyle() {
-    // delete image from vercel blob if exists
-    if (slideStyle?.bgImage) {
-      deleteImage();
-    }
-
+    setImage("");
     setTextColor(defaultTextColor);
     changeEditorTextColor("reset", defaultTextColor);
     setBgColor(defaultBgColor);
@@ -283,6 +279,15 @@ const SlideCustomizer = ({
 
     updateStyleSlides(index, slide);
     setShowResetBtn(false);
+
+    // delete image from vercel blob if exists
+    if (slideStyle?.bgImage) {
+      const oldImage = slideStyle.bgImage;
+      const response = await fetch("/api/upload", {
+        method: "DELETE",
+        body: JSON.stringify({ image: oldImage }),
+      });
+    }
   }
 
   function handleValueChange(type: string, value: any) {

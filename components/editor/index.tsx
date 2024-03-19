@@ -36,6 +36,8 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import SlideCustomizer from "../slide-customizer";
 import { SlideStyle } from "@/types";
+import ContentCustomizer from "./editor-content/content-customizer";
+import EditorCustomizer from "./editor-customizer";
 
 type PostWithSite = Post & { site: { subdomain: string | null } | null };
 
@@ -575,31 +577,10 @@ export default function Editor({
       <div className="flex w-full flex-col items-center justify-center">
         <div className="carousel-wrapper mb-2 mt-2 flex w-full flex-nowrap space-x-4 overflow-x-scroll pb-4">
           <div className="carousel-item w-[90%] flex-shrink-0 md:h-full">
-            <div
-              className="relative max-h-[500px] min-h-[500px] max-w-screen-xl overflow-y-auto rounded-lg bg-slate-100 p-8 dark:bg-gray-950 lg:mt-0"
-              // style={{ backgroundColor: contentStyling?.bgColor }}
-            >
-              {contentStyling?.bgImage && (
-                <Image
-                  sizes="(max-width: 768px) 100vw, 33vw"
-                  className="pointer-events-none object-cover object-center"
-                  src={contentStyling.bgImage}
-                  alt="image"
-                />
-              )}
-              {contentStyling?.bgColor &&
-                !isDefultStyle("bg", contentStyling?.bgColor as string) && (
-                  <div
-                    style={{
-                      position: "absolute",
-                      top: 0,
-                      left: 0,
-                      width: "100%",
-                      height: "100%",
-                      backgroundColor: contentStyling.bgColor,
-                    }}
-                  />
-                )}
+            <div className="relative max-h-[500px] min-h-[500px] max-w-screen-xl overflow-y-auto rounded-lg bg-slate-100 p-8 dark:bg-gray-950 lg:mt-0">
+              <EditorCustomizer
+                style={slidesStyles.find((item: SlideStyle) => item.id == 0)}
+              />
 
               {editor && <EditorBubbleMenu editor={editor} />}
               <div onPasteCapture={() => setIsPasted(true)}>
@@ -619,68 +600,39 @@ export default function Editor({
               key={`divslide-${index}`}
               className="carousel-item    h-48  w-[90%]  flex-shrink-0 md:h-full"
             >
-              <div
+              <ContentCustomizer
                 key={`slide-${index}`}
-                className="relative min-h-[500px]	w-full max-w-screen-xl  snap-center rounded-lg bg-slate-100  p-8  dark:border-gray-700  dark:bg-gray-950  lg:mt-0"
-                // style={{
-                //   backgroundColor: slidesStyles.find(
-                //     (item: SlideStyle) => item.id == index + 1,
-                //   )?.bgColor,
-                // }}
-                style={{
-                  backgroundImage: `url(${
-                    slidesStyles.find(
-                      (item: SlideStyle) => item.id == index + 1,
-                    )?.bgImage
-                  })`,
-                  backgroundColor: slidesStyles.find(
-                    (item: SlideStyle) => item.id == index + 1,
-                  )
-                    ? isDefultStyle(
-                        "bg",
-                        slidesStyles.find(
-                          (item: SlideStyle) => item.id == index + 1,
-                        )?.bgColor as string,
-                      )
-                      ? ""
-                      : slidesStyles.find(
-                          (item: SlideStyle) => item.id == index + 1,
-                        )?.bgColor
-                    : "",
-                  backgroundBlendMode: "overlay",
-                  backgroundSize: "cover",
-                  backgroundPosition: "center",
-                  width: "100%",
-                  height: "500px",
-                  position: "relative",
-                }}
+                style={slidesStyles.find(
+                  (item: SlideStyle) => item.id == index + 1,
+                )}
               >
-                <Trash
-                  width={18}
-                  className="absolute right-4 top-4 z-20 cursor-pointer text-red-300 hover:text-red-500"
-                  onClick={() => {
-                    const confirmation = window.confirm(
-                      "Are you sure you want to delete?",
-                    );
-                    if (confirmation) {
-                      updateSlides("delete", Number(index), "");
-                    }
-                  }}
-                />
-
-                <EditorContents
-                  data={data}
-                  slideData={slideData}
-                  post={post}
-                  slides={slides}
-                  setData={setData}
-                  updateSlides={updateSlides}
-                  index={index}
-                  canUseAI={canUseAI}
-                  slidesStyles={slidesStyles}
-                  updateStyleSlides={updateStyleSlides}
-                />
-              </div>
+                <>
+                  <Trash
+                    width={18}
+                    className="absolute right-4 top-4 z-20 cursor-pointer text-red-300 hover:text-red-500"
+                    onClick={() => {
+                      const confirmation = window.confirm(
+                        "Are you sure you want to delete?",
+                      );
+                      if (confirmation) {
+                        updateSlides("delete", Number(index), "");
+                      }
+                    }}
+                  />
+                  <EditorContents
+                    data={data}
+                    slideData={slideData}
+                    post={post}
+                    slides={slides}
+                    setData={setData}
+                    updateSlides={updateSlides}
+                    index={index}
+                    canUseAI={canUseAI}
+                    slidesStyles={slidesStyles}
+                    updateStyleSlides={updateStyleSlides}
+                  />
+                </>
+              </ContentCustomizer>
             </div>
           ))}
 
