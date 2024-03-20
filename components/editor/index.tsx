@@ -37,7 +37,6 @@ import Image from "next/image";
 import SlideCustomizer from "../slide-customizer";
 import { SlideStyle } from "@/types";
 import ContentCustomizer from "./editor-content/content-customizer";
-import EditorCustomizer from "./editor-customizer";
 
 type PostWithSite = Post & { site: { subdomain: string | null } | null };
 
@@ -78,9 +77,6 @@ export default function Editor({
       return [];
     }
   });
-  const [contentStyling, setContentStyling] = useState<SlideStyle | undefined>(
-    slidesStyles.find((item: SlideStyle) => item.id == 0),
-  );
 
   useEffect(() => {
     // @ts-ignore
@@ -475,17 +471,10 @@ export default function Editor({
     const contentSlide: SlideStyle | undefined = slidesStyles.find(
       (item: SlideStyle) => item.id == 0,
     );
-    if (contentSlide) {
-      // if found then update
-      setContentStyling(contentSlide);
-    } else {
+    if (!contentSlide) {
       const slide: SlideStyle = styledSlide(0);
       setSlidesStyles([...slidesStyles, slide]);
     }
-    // if (!contentSlide) {
-    //   const slide: SlideStyle = styledSlide(0, data.content as string);
-    //   setSlidesStyles([...slidesStyles, slide]);
-    // }
 
     slides.map((slideData: string, index: number) => {
       const slideStyle: SlideStyle | undefined = slidesStyles.find(
@@ -498,8 +487,6 @@ export default function Editor({
       }
     });
   }, [slides, slidesStyles]);
-
-  // console.log(contentStyling);
 
   return (
     <>
@@ -577,11 +564,10 @@ export default function Editor({
       <div className="flex w-full flex-col items-center justify-center">
         <div className="carousel-wrapper mb-2 mt-2 flex w-full flex-nowrap space-x-4 overflow-x-scroll pb-4">
           <div className="carousel-item w-[90%] flex-shrink-0 md:h-full">
-            <div className="relative max-h-[500px] min-h-[500px] max-w-screen-xl overflow-y-auto rounded-lg bg-slate-100 p-8 dark:bg-gray-950 lg:mt-0">
-              <EditorCustomizer
-                style={slidesStyles.find((item: SlideStyle) => item.id == 0)}
-              />
-
+            <ContentCustomizer
+              style={slidesStyles.find((item: SlideStyle) => item.id == 0)}
+              className="relative max-h-[500px] min-h-[500px] max-w-screen-xl overflow-y-auto rounded-lg bg-slate-100 p-8 dark:bg-gray-950 lg:mt-0"
+            >
               {editor && <EditorBubbleMenu editor={editor} />}
               <div onPasteCapture={() => setIsPasted(true)}>
                 <EditorContent editor={editor} />
@@ -592,7 +578,7 @@ export default function Editor({
                 updateStyleSlides={updateStyleSlides}
                 editor={editor}
               />
-            </div>
+            </ContentCustomizer>
           </div>
 
           {slides.map((slideData: string, index: number) => (
@@ -605,6 +591,7 @@ export default function Editor({
                 style={slidesStyles.find(
                   (item: SlideStyle) => item.id == index + 1,
                 )}
+                className="relative min-h-[500px] w-full max-w-screen-xl  snap-center rounded-lg bg-slate-100  p-8  dark:border-gray-700  dark:bg-gray-950  lg:mt-0"
               >
                 <>
                   <Trash
