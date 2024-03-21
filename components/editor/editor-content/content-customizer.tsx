@@ -11,23 +11,26 @@ export default function ContentCustomizer({
   children: React.ReactNode;
 }) {
   return (
-    <div
-      // className="relative min-h-[500px] w-full max-w-screen-xl  snap-center rounded-lg bg-slate-100  p-8  dark:border-gray-700  dark:bg-gray-950  lg:mt-0"
-      className={className}
-      style={{
-        backgroundImage: `url(${style?.bgImage})`,
-        backgroundColor: isDefultStyle("bg", style?.bgColor as string)
-          ? ""
-          : style?.bgColor,
-        backgroundBlendMode: "overlay",
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        width: "100%",
-        height: "500px",
-        position: "relative",
+    <div className={`${className} relative w-full h-500`} style={{
+      backgroundImage: `url(${style?.bgImage})`,
+      backgroundSize: "cover",
+      backgroundPosition: "center",
+    }}>
+      {/* Overlay */}
+      <div
+       style={{
+        backgroundColor: style?.bgColor, // Use the provided RGBA value
+        opacity: isDefultStyle("bg", style?.bgColor as string) ? 0 : 0.8, // Adjust overlay opacity
       }}
-    >
+        className={`absolute top-0 left-0 w-full h-full ${
+          isDefultStyle("bg", style?.bgColor as string) ? "" : "bg-" + style?.bgColor
+        }}`} // Adjust overlay opacity
+      ></div>
+    
+      {/* Content */}
       {children}
     </div>
+    
+    
   );
 }

@@ -95,7 +95,7 @@ const Carousel = ({ data, siteData, lead }: any) => {
   return (
     <>
       <div className="relative" {...swipeHandlers}>
-        <div className="flex list-none justify-between space-x-2">
+        <div className="flex list-none justify-between space-x-2 relative z-30">
           {scrollSnaps.map((_, index: number) => (
             <DotButton
               key={index}
@@ -106,33 +106,32 @@ const Carousel = ({ data, siteData, lead }: any) => {
           ))}
         </div>
         <div className="mx-auto my-auto flex items-center">
-          <div className="w-full overflow-hidden" ref={viewportRef}>
+          <div className="w-full overflow-hidden relative" ref={viewportRef}  style={{
+      backgroundImage: `url(${contentStyling?.bgImage})`,
+      backgroundSize: "cover",
+      backgroundPosition: "center",
+    }}>
+      
+
             <div className="flex h-fit items-start ">
               <div className="relative h-fit min-w-full  text-slate-50 dark:text-gray-400 ">
-                {contentStyling?.bgImage && (
-                  <Image
-                    width={1000}
-                    height={1000}
-                    className="pointer-events-none object-cover object-center"
-                    src={contentStyling.bgImage}
-                    alt="image"
-                  />
-                )}
-                {contentStyling?.bgColor &&
-                  !isDefultStyle("bg", contentStyling?.bgColor as string) && (
-                    <div
-                      style={{
-                        position: "absolute",
-                        top: 0,
-                        left: 0,
-                        width: "100%",
-                        height: "100%",
-                        backgroundColor: contentStyling.bgColor,
-                      }}
-                    />
-                  )}
+              <div
+       style={{
+        backgroundColor: contentStyling?.bgColor, // Use the provided RGBA value
+        opacity: isDefultStyle("bg", contentStyling?.bgColor as string) ? 0 : 0.8, // Adjust overlay opacity
+      }}
+        className={`absolute top-0 left-0 w-full h-full ${
+          isDefultStyle("bg", contentStyling?.bgColor as string) ? "" : "bg-" + contentStyling?.bgColor
+        }}`} // Adjust overlay opacity
+      ></div>
 
-                <div className="scrollbar-thumb-rounded-full scrollbar-track-rounded-full relative my-auto mt-20 flex h-screen w-full items-center justify-center overflow-y-auto py-10 text-slate-600 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-gray-200 dark:text-gray-400 dark:scrollbar-thumb-gray-800 [&>*]:rounded-xl [&>*]:text-lg ">
+              
+
+
+
+               
+
+                <div className=" relative z-20 scrollbar-thumb-rounded-full scrollbar-track-rounded-full relative my-auto mt-20 flex h-screen w-full items-center justify-center overflow-y-auto py-10 text-slate-600 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-gray-200 dark:text-gray-400 dark:scrollbar-thumb-gray-800 [&>*]:rounded-xl [&>*]:text-lg ">
                   <MDX source={data.mdxSource} />
                 </div>
               </div>
