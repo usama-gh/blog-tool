@@ -29,6 +29,7 @@ const SlideCustomizer = ({
   const [image, setImage] = useState("");
   const [showResetBtn, setShowResetBtn] = useState(false);
   const imageRef = useRef(null);
+  const componentRef = useRef(null);
   const presetColors = [
     {
       r: 0,
@@ -339,10 +340,28 @@ const SlideCustomizer = ({
     }
   }, [textColor, bgColor, image]);
 
+  useEffect(() => {
+    document.addEventListener("mousedown", handleOutsideClick);
+    return () => {
+      document.removeEventListener("mousedown", handleOutsideClick);
+    };
+  });
+
+  const handleOutsideClick = (e: any) => {
+    // @ts-ignore
+    if (componentRef.current && !componentRef.current.contains(e.target)) {
+      setShowTextColorPicker(false);
+      setShowBgColorPicker(false);
+    }
+  };
+
   return (
     <>
       {/* text color picker wrapper */}
-      <div className="absolute bottom-5 right-5 rounded-full bg-white px-3 py-2 shadow-sm">
+      <div
+        className="absolute bottom-5 right-5 rounded-full bg-white px-3 py-2 shadow-sm"
+        ref={componentRef}
+      >
         <div className="flex items-center gap-x-2">
           <div className="relative flex items-center gap-x-2">
             {showTextColorPicker && (
