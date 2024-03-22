@@ -120,7 +120,7 @@ export const TiptapExtensionsAI = [
   Markdown.configure({
     html: true,
     linkify: true,
-    transformCopiedText: true,
-    transformPastedText: true,
+    transformCopiedText: false,
+    transformPastedText: false,
   }),
 ];

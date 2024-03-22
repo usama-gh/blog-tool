@@ -176,7 +176,7 @@ const Carousel = ({ data, siteData, lead }: any) => {
 
               {/* showing adjacent posts */}
               {data.adjacentPosts.length > 0 && (
-                <div className="scrollbar-thumb-rounded-full scrollbar-track-rounded-full relative mx-auto mt-10 h-screen w-9/12 min-w-full overflow-y-auto pb-[120px] scrollbar-thin scrollbar-track-transparent scrollbar-thumb-gray-200 dark:scrollbar-thumb-gray-800">
+                <div className="pt-40 scrollbar-thumb-rounded-full scrollbar-track-rounded-full relative mx-auto  h-screen w-9/12 min-w-full overflow-y-auto pb-[120px] scrollbar-thin scrollbar-track-transparent scrollbar-thumb-gray-200 dark:scrollbar-thumb-gray-800">
                   <h4 className="pb-8 text-center text-sm font-semibold uppercase tracking-wide text-slate-400 dark:bg-gray-800 dark:text-gray-400">
                     More from {siteData?.name}
                   </h4>
@@ -230,7 +230,7 @@ const Carousel = ({ data, siteData, lead }: any) => {
                         </div>
                       </>
                     )}
-                    Subscribe
+                    
                   </div>
                 </div>
               )}

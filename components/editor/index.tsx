@@ -558,7 +558,7 @@ export default function Editor({
         defaultValue={post?.title || ""}
         autoFocus
         onChange={(e) => setData({ ...data, title: e.target.value })}
-        className="dark:placeholder-text-600 font-inter mb-2 w-full rounded-md border-none bg-slate-100 px-8 py-4 text-3xl font-bold placeholder:text-gray-400 focus:outline-none focus:ring-0 dark:bg-black dark:bg-gray-950 dark:text-white"
+        className="dark:placeholder-text-600 font-inter mb-2 w-full rounded-md border-none bg-slate-100 px-8 py-4 text-3xl font-bold placeholder:text-gray-400 focus:outline-none focus:ring-0 dark:bg-black dark:bg-gray-900/80 dark:text-white"
       />
 
       <div className="flex w-full flex-col items-center justify-center">
@@ -566,7 +566,7 @@ export default function Editor({
           <div className="carousel-item w-[90%] flex-shrink-0 md:h-full">
             <ContentCustomizer
               style={slidesStyles.find((item: SlideStyle) => item.id == 0)}
-              className="relative max-h-[500px] min-h-[500px] max-w-screen-xl overflow-y-auto rounded-lg bg-slate-100 p-8 dark:bg-gray-950 lg:mt-0"
+              className="relative max-h-[500px] min-h-[500px] max-w-screen-xl overflow-y-auto rounded-lg bg-slate-100 p-8 dark:bg-gray-900/80 lg:mt-0"
             >
               {editor && <EditorBubbleMenu editor={editor} />}
               <div onPasteCapture={() => setIsPasted(true)}>
@@ -591,7 +591,7 @@ export default function Editor({
                 style={slidesStyles.find(
                   (item: SlideStyle) => item.id == index + 1,
                 )}
-                className="relative min-h-[500px] w-full max-w-screen-xl  snap-center rounded-lg bg-slate-100  p-8  dark:border-gray-700  dark:bg-gray-950  lg:mt-0"
+                className="relative max-h-[500px] min-h-[500px] w-full max-w-screen-xl overflow-y-auto snap-center rounded-lg bg-slate-100  p-8  dark:border-gray-700  dark:bg-gray-900/80  lg:mt-0"
               >
                 <>
                   <Trash
@@ -623,7 +623,7 @@ export default function Editor({
             </div>
           ))}
 
-          <div className="carousel-item md:w-18 flex h-auto w-20 flex-shrink-0 flex-col items-center justify-center  rounded-lg bg-slate-100 text-slate-600 hover:bg-slate-200 dark:bg-gray-950 dark:text-gray-200  hover:dark:bg-gray-900">
+          <div className="carousel-item md:w-18 flex h-auto w-20 flex-shrink-0 flex-col items-center justify-center  rounded-lg bg-slate-100 text-slate-600 hover:bg-slate-200 dark:bg-gray-900/80 dark:text-gray-200  hover:dark:bg-gray-900">
             <button
               type="button"
               onClick={(e) => {
@@ -643,7 +643,7 @@ export default function Editor({
       </div>
 
       <div className="grid w-full grid-cols-1 gap-x-2 gap-y-2 lg:grid-cols-3">
-        <div className="rounded-lg bg-slate-100 dark:bg-gray-950">
+        <div className="rounded-lg bg-slate-100 dark:bg-gray-900/80">
           <div className="relative flex flex-col space-y-4 p-2 lg:p-10">
             <div className="flex justify-between">
               <h2 className="font-inter text-xl font-semibold text-slate-500 dark:text-white">

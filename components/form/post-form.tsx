@@ -142,7 +142,7 @@ export default function PostForm({
           }
         });
       }}
-      className="rounded-lg bg-slate-100 dark:bg-gray-950"
+      className="rounded-lg bg-slate-100 dark:bg-gray-900/80"
     >
       <div className="relative flex flex-col space-y-4 p-5 sm:p-10">
         <div className="flex justify-between">

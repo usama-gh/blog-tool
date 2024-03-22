@@ -17,7 +17,7 @@ export default function MDX({ source }: { source: MDXRemoteProps }) {
 
   return (
     <article
-      className={`lg:px-0 px-6 prose-md w-full prose h-fit prose-slate my-auto dark:prose-invert sm:prose-lg text-slate-600 dark:text-gray-100 pb-[120px]  ${styles.root}`}
+      className={`lg:px-0 px-6  prose-md w-full prose h-fit prose-slate my-auto dark:prose-invert sm:prose-lg text-slate-600 dark:text-gray-100 pb-[120px]  ${styles.root}`}
       suppressHydrationWarning={true}
     >
       <div className=" pb-18">

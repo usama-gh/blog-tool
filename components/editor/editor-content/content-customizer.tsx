@@ -16,7 +16,6 @@ export default function ContentCustomizer({
       backgroundSize: "cover",
       backgroundPosition: "center",
     }}>
-      {/* Overlay */}
       <div
        style={{
         backgroundColor: style?.bgColor, // Use the provided RGBA value

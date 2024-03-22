@@ -97,14 +97,14 @@ export default async function SitePostPage({
               </div>
             </Link>
             <Link href="/">
-              <p className="max-w-sm truncate  text-xs font-semibold tracking-normal text-gray-100 drop-shadow-sm hover:text-slate-600 dark:text-gray-400 dark:hover:text-gray-300 lg:text-sm">
+              <p className="max-w-sm truncate  text-xs font-semibold tracking-normal text-gray-100 drop-shadow-sm hover:text-slate-600 dark:text-gray-200 dark:hover:text-gray-300 lg:text-sm">
                 {" "}
                 {siteData?.name}
               </p>
             </Link>
           </div>
           <div className="h-7 w-[0.5px] bg-gray-400 dark:bg-gray-700 lg:w-[1px]"></div>
-          <p className="font-regular truncate text-xs text-gray-100 drop-shadow-sm dark:text-gray-400 lg:text-sm">
+          <p className="font-regular truncate text-xs text-gray-100 drop-shadow-sm dark:text-gray-200 lg:text-sm">
             {data.title}
           </p>
         </div>
