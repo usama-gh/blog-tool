@@ -106,15 +106,17 @@ const Carousel = ({ data, siteData, lead }: any) => {
           ))}
         </div>
         <div className="mx-auto my-auto flex items-center">
-          <div className="w-full overflow-hidden relative" ref={viewportRef}  style={{
-      backgroundImage: `url(${contentStyling?.bgImage})`,
-      backgroundSize: "cover",
-      backgroundPosition: "center",
-    }}>
+          <div className="w-full overflow-hidden relative" ref={viewportRef}>
       
 
             <div className="flex h-fit items-start ">
-              <div className="relative h-fit min-w-full  text-slate-50 dark:text-gray-400 ">
+              <div className="relative h-fit min-w-full  text-slate-50 dark:text-gray-400 "
+              style={{
+                backgroundImage: `url(${contentStyling?.bgImage})`,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+              }}
+              >
               <div
        style={{
         backgroundColor: contentStyling?.bgColor, // Use the provided RGBA value
