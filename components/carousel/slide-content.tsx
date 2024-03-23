@@ -15,16 +15,33 @@ const SlideContent = ({
 }) => {
   return (
     <>
-    <div className="w-full" style={{
-      backgroundImage: `url(${style?.bgImage})`,
-      backgroundSize: "cover",
-      backgroundPosition: "center",
-    }}>
+    <div className="w-full">
+
+{style?.bgImage && (
+  <Image
+    alt="Mountains"
+    src={style?.bgImage}
+   
+    quality={100}
+    fill
+    sizes="100vw"
+    style={{
+      objectFit: 'cover',
+    }}
+  />
+)}
+
+
          <div
-       style={{
-        backgroundColor: style?.bgColor, // Use the provided RGBA value
-        opacity: isDefultStyle("bg", style?.bgColor as string) ? 0 : 0.8, // Adjust overlay opacity
+      style={{
+        ...(isDefultStyle("bg", style?.bgColor as string)
+          ? {}
+          : {
+              backgroundColor: style?.bgColor, // Use the provided RGBA value
+              opacity: style?.bgImage ? 0.8 : 1, // Adjust overlay opacity
+            }),
       }}
+      
         className={`absolute top-0 left-0 w-full h-full ${
           isDefultStyle("bg", style?.bgColor as string) ? "" : "bg-" + style?.bgColor
         }}`} // Adjust overlay opacity

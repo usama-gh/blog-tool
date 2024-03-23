@@ -445,8 +445,10 @@ const SlideCustomizer = ({
                 height={25}
                 alt="background image"
               /> */}
-                <img
+                <Image
                   className="h-6 rounded-lg"
+                  width={20}
+                  height={20}
                   src={`${image}`}
                   alt="background image"
                 />

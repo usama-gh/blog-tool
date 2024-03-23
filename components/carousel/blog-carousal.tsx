@@ -111,17 +111,36 @@ const Carousel = ({ data, siteData, lead }: any) => {
 
             <div className="flex h-fit items-start ">
               <div className="relative h-fit min-w-full  text-slate-50 dark:text-gray-400 "
-              style={{
-                backgroundImage: `url(${contentStyling?.bgImage})`,
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-              }}
               >
+
+
+{contentStyling?.bgImage && (
+  <Image
+    alt="Mountains"
+    src={contentStyling?.bgImage}
+   
+    quality={100}
+    fill
+    sizes="100vw"
+    style={{
+      objectFit: 'cover',
+    }}
+  />
+)}
+
+
               <div
-       style={{
+
+style={{
+  ...(isDefultStyle("bg", contentStyling?.bgColor as string)
+    ? {}
+    : {
         backgroundColor: contentStyling?.bgColor, // Use the provided RGBA value
-        opacity: isDefultStyle("bg", contentStyling?.bgColor as string) ? 0 : 0.8, // Adjust overlay opacity
-      }}
+        opacity: contentStyling?.bgImage ? 0.8 : 1, // Adjust overlay opacity
+      }),
+}}
+
+    
         className={`absolute top-0 left-0 w-full h-full ${
           isDefultStyle("bg", contentStyling?.bgColor as string) ? "" : "bg-" + contentStyling?.bgColor
         }}`} // Adjust overlay opacity
@@ -133,7 +152,7 @@ const Carousel = ({ data, siteData, lead }: any) => {
 
                
 
-                <div className=" relative z-20 scrollbar-thumb-rounded-full scrollbar-track-rounded-full relative my-auto mt-20 flex h-screen w-full items-center justify-center overflow-y-auto py-10 text-slate-600 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-gray-200 dark:text-gray-400 dark:scrollbar-thumb-gray-800 [&>*]:rounded-xl [&>*]:text-lg ">
+                <div className=" relative z-20 scrollbar-thumb-rounded-full scrollbar-track-rounded-full relative my-auto pt-20 flex h-screen w-full items-center justify-center overflow-y-auto py-10 text-slate-600 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-gray-200 dark:text-gray-400 dark:scrollbar-thumb-gray-800 [&>*]:rounded-xl [&>*]:text-lg ">
                   <MDX source={data.mdxSource} />
                 </div>
               </div>

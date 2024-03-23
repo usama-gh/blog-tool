@@ -14,7 +14,7 @@ export const DotButton = ({ selected, onClick }: any) => (
 
 export const PrevButton = ({ enabled, onClick }: any) => (
   <button
-    className="fixed bottom-0 left-0 z-[1] h-40 rotate-180 transform cursor-pointer rounded-l-xl bg-slate-300 bg-opacity-20 hover:bg-opacity-20  disabled:cursor-default  disabled:opacity-60  dark:bg-gray-700 dark:bg-opacity-50 lg:left-0 lg:top-1/2 lg:h-[50vh] lg:-translate-y-1/2"
+    className="fixed bottom-0 left-0 z-[1] h-40 drop-shadow-lg rotate-180 transform cursor-pointer rounded-l-xl bg-slate-300 bg-opacity-20 hover:bg-opacity-20  disabled:cursor-default  disabled:opacity-60  dark:bg-gray-700 dark:bg-opacity-30 lg:left-0 lg:top-1/2 lg:h-[10vh] lg:-translate-y-1/2"
     onClick={onClick}
     disabled={!enabled}
   >
@@ -39,7 +39,7 @@ export const PrevButton = ({ enabled, onClick }: any) => (
 
 export const NextButton = ({ enabled, onClick }: any) => (
   <button
-    className="fixed bottom-0 right-0 z-[1] h-40 transform cursor-pointer rounded-l-xl bg-slate-400 bg-opacity-20 hover:bg-opacity-20 disabled:cursor-default  disabled:opacity-60  dark:bg-gray-700  dark:bg-opacity-50 lg:right-0 lg:top-1/2 lg:h-[50vh] lg:-translate-y-1/2"
+    className="fixed bottom-0 right-0 z-[1] h-40 drop-shadow-lg	 transform cursor-pointer rounded-l-xl bg-slate-400 bg-opacity-20 hover:bg-opacity-20 disabled:cursor-default  disabled:opacity-60  dark:bg-gray-700  dark:bg-opacity-30 lg:right-0 lg:top-1/2 lg:h-[10vh] lg:-translate-y-1/2"
     onClick={onClick}
     disabled={!enabled}
   >

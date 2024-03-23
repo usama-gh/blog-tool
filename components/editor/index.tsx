@@ -563,10 +563,10 @@ export default function Editor({
 
       <div className="flex w-full flex-col items-center justify-center">
         <div className="carousel-wrapper mb-2 mt-2 flex w-full flex-nowrap space-x-4 overflow-x-scroll pb-4">
-          <div className="carousel-item w-[90%] flex-shrink-0 md:h-full">
+          <div className="carousel-item w-[90%] flex-shrink-0  carousel-item overflow-y-auto">
             <ContentCustomizer
               style={slidesStyles.find((item: SlideStyle) => item.id == 0)}
-              className="relative max-h-[500px] min-h-[500px] max-w-screen-xl overflow-y-auto rounded-lg bg-slate-100 p-8 dark:bg-gray-900/80 lg:mt-0"
+              className="relative max-w-screen-xl h-full overflow-y-auto  rounded-lg bg-slate-100 p-8 dark:bg-gray-900/80 lg:mt-0"
             >
               {editor && <EditorBubbleMenu editor={editor} />}
               <div onPasteCapture={() => setIsPasted(true)}>
@@ -584,14 +584,14 @@ export default function Editor({
           {slides.map((slideData: string, index: number) => (
             <div
               key={`divslide-${index}`}
-              className="carousel-item    h-48  w-[90%]  flex-shrink-0 md:h-full"
+              className="carousel-item w-[90%] flex-shrink-0  carousel-item overflow-y-auto"
             >
               <ContentCustomizer
                 key={`slide-${index}`}
                 style={slidesStyles.find(
                   (item: SlideStyle) => item.id == index + 1,
                 )}
-                className="relative max-h-[500px] min-h-[500px] w-full max-w-screen-xl overflow-y-auto snap-center rounded-lg bg-slate-100  p-8  dark:border-gray-700  dark:bg-gray-900/80  lg:mt-0"
+                className="relative max-w-screen-xl h-full overflow-y-auto  rounded-lg bg-slate-100 p-8 dark:bg-gray-900/80 lg:mt-0"
               >
                 <>
                   <Trash
