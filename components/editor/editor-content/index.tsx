@@ -32,7 +32,6 @@ interface Props {
 }
 
 export const EditorContents = (props: Props) => {
-  const [hydrated, setHydrated] = useState(false);
   const editor = useEditor({
     extensions: props.canUseAI ? TiptapExtensionsAI : TiptapExtensions,
     editorProps: TiptapEditorProps,
@@ -142,11 +141,10 @@ export const EditorContents = (props: Props) => {
 
   // Hydrate the editor with the content
   useEffect(() => {
-    if (editor && props.slideData && !hydrated) {
+    if (editor && props.slideData) {
       editor.commands.setContent(props.slideData);
-      setHydrated(true);
     }
-  }, [editor, props.post, hydrated, props.slideData]);
+  }, [editor, props.post, props.slideData]);
 
   return (
     <>
