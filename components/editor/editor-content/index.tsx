@@ -13,6 +13,8 @@ import { toast } from "sonner";
 import { Post } from "@prisma/client";
 import { EditorBubbleMenu } from "../bubble-menu";
 import { TiptapExtensionsAI } from "../extensions/index-ai";
+import SlideCustomizer from "@/components/slide-customizer";
+import { SlideStyle } from "@/types";
 
 type PostWithSite = Post & { site: { subdomain: string | null } | null };
 
@@ -25,10 +27,11 @@ interface Props {
   slides: Array<string>;
   slideData: string;
   canUseAI: boolean;
+  slidesStyles: SlideStyle[] | [];
+  updateStyleSlides: any;
 }
 
 export const EditorContents = (props: Props) => {
-  const [hydrated, setHydrated] = useState(false);
   const editor = useEditor({
     extensions: props.canUseAI ? TiptapExtensionsAI : TiptapExtensions,
     editorProps: TiptapEditorProps,
@@ -138,16 +141,21 @@ export const EditorContents = (props: Props) => {
 
   // Hydrate the editor with the content
   useEffect(() => {
-    if (editor && props.slideData && !hydrated) {
+    if (editor && props.slideData) {
       editor.commands.setContent(props.slideData);
-      setHydrated(true);
     }
-  }, [editor, props.post, hydrated, props.slideData]);
+  }, [editor, props.post, props.slideData]);
 
   return (
     <>
       {editor && <EditorBubbleMenu editor={editor} />}
       <EditorContent editor={editor}></EditorContent>
+      <SlideCustomizer
+        slidesStyles={props.slidesStyles}
+        index={props.index + 1}
+        updateStyleSlides={props.updateStyleSlides}
+        editor={editor}
+      />
     </>
   );
 };

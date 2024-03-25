@@ -11,6 +11,7 @@ import {
 import { NodeSelector } from "./node-selector";
 import { cn } from "@/lib/utils";
 import { LinkSelector } from "./link-selector";
+import { ColorSelector } from "./color-selector";
 
 export interface BubbleMenuItem {
   name: string;
@@ -91,7 +92,7 @@ export const EditorBubbleMenu: FC<EditorBubbleMenuProps> = (props) => {
   return (
     <BubbleMenu
       {...bubbleMenuProps}
-      className="flex rounded border border-stone-200 bg-white shadow-xl"
+      className="flex rounded border border-stone-200 bg-white shadow-xl whitespace-nowrap w-max"
     >
       <NodeSelector
         // @ts-ignore
@@ -128,6 +129,17 @@ export const EditorBubbleMenu: FC<EditorBubbleMenuProps> = (props) => {
           />
         </button>
       ))}
+
+      <ColorSelector
+        // @ts-ignore
+        editor={props.editor}
+        isOpen={isColorSelectorOpen}
+        setIsOpen={() => {
+          setIsColorSelectorOpen(!isColorSelectorOpen);
+          setIsLinkSelectorOpen(false);
+          setIsNodeSelectorOpen(false);
+        }}
+      />
     </BubbleMenu>
   );
 };

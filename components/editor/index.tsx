@@ -13,9 +13,9 @@ import TextareaAutosize from "react-textarea-autosize";
 import { EditorBubbleMenu } from "./bubble-menu";
 import { Lead, Post } from "@prisma/client";
 import { updatePost, updatePostMetadata } from "@/lib/actions";
-import { cn } from "@/lib/utils";
+import { cn, convertToRgba, isDefultStyle, styledSlide } from "@/lib/utils";
 import LoadingDots from "../icons/loading-dots";
-import { ExternalLink, PlusCircleIcon, XCircle,Trash,Plus } from "lucide-react";
+import { ExternalLink } from "lucide-react";
 import { EditorContents } from "./editor-content";
 import ImportJSONButton from "../import-json-btn";
 import ImportJsonModal from "../modal/import-json";
@@ -26,6 +26,12 @@ import { triggerEvent } from "../usermaven";
 import LeadButton from "../lead-button";
 import LinkLeadModal from "../modal/link-lead";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
+import SlideCustomizer from "../slide-customizer";
+import { SlideStyle } from "@/types";
+import ContentCustomizer from "./editor-content/content-customizer";
+import ShowSlides from "./show-slides";
+import AddSlide from "./add-slide";
 
 type PostWithSite = Post & { site: { subdomain: string | null } | null };
 
@@ -58,6 +64,15 @@ export default function Editor({
   const MAX_CHUNK_LENGTH =
     Number(process.env.NEXT_PUBLIC_MAX_CHUNK_LENGTH) || 300;
 
+  const [slidesStyles, setSlidesStyles] = useState<SlideStyle[] | []>(() => {
+    try {
+      return !!data.styling ? JSON.parse(data.styling) : [];
+    } catch (error) {
+      console.error("Error parsing slides styling JSON:", error);
+      return [];
+    }
+  });
+
   useEffect(() => {
     // @ts-ignore
     if (post && post.content) {
@@ -84,15 +99,14 @@ export default function Editor({
       // @ts-ignore
       abc = abc?.replace(/!\[.*\]\(.*\)/g, "");
       // @ts-ignore
-      if(abc){
+      if (abc) {
         let plainText = markdownToTxt(abc)?.replaceAll("\n", " ");
-      const first170Characters = plainText?.substring(0, 170) || "";
-      if (textareaValue !== first170Characters) {
-        setTextareaValue(first170Characters);
-        setData({ ...data, description: first170Characters });
+        const first170Characters = plainText?.substring(0, 170) || "";
+        if (textareaValue !== first170Characters) {
+          setTextareaValue(first170Characters);
+          setData({ ...data, description: first170Characters });
+        }
       }
-      }
-      
     }
     firstRender.current = false;
   }, [post.description, textareaValue, isUserEdit, post.content]);
@@ -123,6 +137,8 @@ export default function Editor({
     ? `https://${data.site?.subdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}/${post.slug}`
     : `http://${data.site?.subdomain}.localhost:3000/${post.slug}`;
 
+  // console.log(JSON.parse(data.styling));
+
   const [debouncedData] = useDebounce(data, 1000);
 
   useEffect(() => {
@@ -131,14 +147,16 @@ export default function Editor({
       debouncedData.title === post.title &&
       debouncedData.description === post.description &&
       debouncedData.content === post.content &&
-      debouncedData.slides === post.slides
+      debouncedData.slides === post.slides &&
+      debouncedData.styling === post.styling
     ) {
       return;
     }
-    console.log("112: ", "slides changes");
+    // console.log("147: ", "slides changes");
 
     startTransitionSaving(async () => {
-      await updatePost(debouncedData);
+      const response = await updatePost(debouncedData);
+      // console.log(response);
     });
   }, [debouncedData, post]);
 
@@ -272,6 +290,8 @@ export default function Editor({
 
     switch (action) {
       case "add":
+        // const slideStyle: SlideStyle = styledSlide(index);
+        // setSlidesStyles([...slidesStyles, slideStyle]);
         setSlides([...slides, value]);
         break;
       case "update":
@@ -279,8 +299,31 @@ export default function Editor({
         setSlides(updatedSlides);
         break;
       case "delete":
+        // setSlides(slides.filter((_: string, idx: number) => idx != index));
+
+        const slideStyle: SlideStyle | undefined = slidesStyles.find(
+          (slide: SlideStyle) => slide.id == index + 1,
+        );
+        // delete image if slide style has
+        if (slideStyle?.bgImage) {
+          await fetch("/api/upload", {
+            method: "DELETE",
+            body: JSON.stringify({ image: slideStyle.bgImage }),
+          });
+        }
+
         updatedSlides.splice(index, 1);
         setSlides(updatedSlides);
+
+        const styledSlides = slidesStyles.filter(
+          (slide: SlideStyle) => slide.id != index + 1,
+        );
+        setSlidesStyles(styledSlides);
+        setData({
+          ...data,
+          slides: JSON.stringify([...updatedSlides]),
+          styling: JSON.stringify(styledSlides),
+        });
         break;
     }
   };
@@ -289,7 +332,8 @@ export default function Editor({
     setData((state) => {
       return { ...state, slides: JSON.stringify([...slides]) };
     });
-    console.log("hooked called");
+
+    // console.log("hooked called");
   }, [slides]);
 
   const escapeSpecialCharacters = (str: string) => {
@@ -323,7 +367,7 @@ export default function Editor({
 
   // Split the content into required character
   const splitTextIntoChunks = (text: string) => {
-    const MAX_CHUNK_LENGTH = 300;
+    // const MAX_CHUNK_LENGTH = 300;
     const sentences = nlp(text).sentences().out("array");
     const chunks = [];
     let currentChunk = "";
@@ -409,6 +453,43 @@ export default function Editor({
     firstRenderLead.current = false;
   }, [leadId]);
 
+  function updateStyleSlides(index: number, style: any) {
+    const updatedSlides = slidesStyles.map((slide: SlideStyle) =>
+      slide.id == index
+        ? {
+            ...slide,
+            ...style,
+          }
+        : slide,
+    );
+
+    setSlidesStyles(updatedSlides);
+    setData((prev) => ({ ...prev, styling: JSON.stringify(updatedSlides) }));
+  }
+
+  // for slides styles
+  useEffect(() => {
+    // checkecking for content slide
+    const contentSlide: SlideStyle | undefined = slidesStyles.find(
+      (item: SlideStyle) => item.id == 0,
+    );
+    if (!contentSlide) {
+      const slide: SlideStyle = styledSlide(0);
+      setSlidesStyles([...slidesStyles, slide]);
+    }
+
+    slides.map((slideData: string, index: number) => {
+      const slideStyle: SlideStyle | undefined = slidesStyles.find(
+        (item: SlideStyle) => item.id == index + 1,
+      );
+
+      if (!slideStyle) {
+        const slideStyle: SlideStyle = styledSlide(index + 1);
+        setSlidesStyles([...slidesStyles, slideStyle]);
+      }
+    });
+  }, [slides, slidesStyles]);
+
   return (
     <>
       <div className="my-5 mb-0 flex items-center justify-end space-x-3 lg:my-0 lg:mb-4">
@@ -425,7 +506,7 @@ export default function Editor({
         {/* <ImportJSONButton>
           <ImportJsonModal setSlideWithJson={setSlideWithJson} />
         </ImportJSONButton> */}
-         <div className="rounded-lg px-2 py-1 text-xs tracking-widest text-gray-400 dark:bg-gray-800 dark:text-gray-500">
+        <div className="rounded-lg px-2 py-1 text-xs tracking-widest text-gray-400 dark:bg-gray-800 dark:text-gray-500">
           {isPendingSaving ? "Saving..." : "SAVED"}
         </div>
         <LeadButton
@@ -435,7 +516,7 @@ export default function Editor({
         >
           <LinkLeadModal leads={leads} leadId={leadId} setLeadId={setLeadId} />
         </LeadButton>
-       
+
         <button
           onClick={() => {
             const formData = new FormData();
@@ -473,100 +554,58 @@ export default function Editor({
         </button>
       </div>
 
-   
-          <input
-            type="text"
-            placeholder="Title"
-            defaultValue={post?.title || ""}
-            autoFocus
-            onChange={(e) => setData({ ...data, title: e.target.value })}
-            className="bg-slate-100 dark:bg-gray-950 w-full mb-2 dark:placeholder-text-600 rounded-md font-inter border-none px-8 py-4 text-3xl font-bold placeholder:text-gray-400 focus:outline-none focus:ring-0 dark:bg-black dark:text-white"
-          />
-  
+      <input
+        type="text"
+        placeholder="Title"
+        defaultValue={post?.title || ""}
+        autoFocus
+        onChange={(e) => setData({ ...data, title: e.target.value })}
+        className="dark:placeholder-text-600 font-inter mb-2 w-full rounded-md border-none bg-slate-100 px-8 py-4 text-3xl font-bold placeholder:text-gray-400 focus:outline-none focus:ring-0 dark:bg-black dark:bg-gray-900/80 dark:text-white"
+      />
 
+      <div className="flex w-full flex-col items-center justify-center">
+        <div className="carousel-wrapper mb-2 mt-2 flex w-full flex-nowrap space-x-4 overflow-x-scroll pb-4">
+          <div className="carousel-item carousel-item w-[90%]  flex-shrink-0 overflow-y-auto">
+            <ContentCustomizer
+              style={slidesStyles.find((item: SlideStyle) => item.id == 0)}
+              className="relative h-full max-w-screen-xl overflow-y-auto  rounded-lg bg-slate-100 p-8 dark:bg-gray-900/80 lg:mt-0"
+            >
+              {editor && <EditorBubbleMenu editor={editor} />}
+              <div onPasteCapture={() => setIsPasted(true)}>
+                <EditorContent editor={editor} />
+              </div>
+              <SlideCustomizer
+                slidesStyles={slidesStyles}
+                index={0}
+                updateStyleSlides={updateStyleSlides}
+                editor={editor}
+              />
+            </ContentCustomizer>
+          </div>
 
-        <div className="flex flex-col items-center justify-center w-full">
-        <div className="carousel-wrapper overflow-x-scroll flex flex-nowrap space-x-4 pb-4 w-full mb-2 mt-2">
-         
-            <div className="carousel-item    flex-shrink-0   w-[90%] md:h-full">
-
-            <div className="relative rounded-lg  bg-slate-100  dark:bg-gray-950 min-h-[500px] max-w-screen-xl  p-8 lg:mt-0">
-       
-       {editor && <EditorBubbleMenu editor={editor} />}
-       <div onPasteCapture={() => setIsPasted(true)}>
-         <EditorContent editor={editor} />
-       </div>
-     </div>
-
-            </div>
-
-            
-      {slides.map((slideData: string, index: number) => (
-        <div
-        key={`divslide-${index}`}
-        className="carousel-item    flex-shrink-0  h-48  w-[90%] md:h-full">
-        <div
-          key={`slide-${index}`}
-          className="snap-center w-full	rounded-lg bg-slate-100  dark:bg-gray-950 relative min-h-[500px]  max-w-screen-xl  p-8  dark:border-gray-700  lg:mt-0"
-        >
-        <Trash
-  width={18}
-  className="absolute right-4 top-4 z-20 cursor-pointer text-red-300 hover:text-red-500"
-  onClick={() => {
-    const confirmation = window.confirm("Are you sure you want to delete?");
-    if (confirmation) {
-      updateSlides("delete", Number(index), "");
-    }
-  }}
-/>
-
-          <EditorContents
+          {/* showing slides data */}
+          <ShowSlides
             data={data}
-            slideData={slideData}
             post={post}
             slides={slides}
             setData={setData}
             updateSlides={updateSlides}
-            index={index}
             canUseAI={canUseAI}
+            slidesStyles={slidesStyles}
+            updateStyleSlides={updateStyleSlides}
           />
+
+          {/* add new slide */}
+          <AddSlide updateSlides={updateSlides} index={slides.length + 1} />
         </div>
-
-        </div>
-      ))}
-
-<div className="carousel-item h-auto text-slate-600 rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-gray-950 hover:dark:bg-gray-900 dark:text-gray-200  flex-shrink-0 w-20 flex flex-col items-center justify-center  md:w-18">
-<button
-          type="button"
-          onClick={(e) => {
-            updateSlides("add", 0, "");
-          }}
-         className="h-full text-xs font-semibold tracking-tight flex flex-col justify-center items-center"
-        >
-           <Plus
-           strokeWidth={'2.5px'}
-  width={18}
-  />
-          Add Slide
-        </button>
-        </div>
-
-           
-           
-        </div>
-    </div>
-
-
-      <div className="flex overflow-x-auto snap-proximity snap-x">
-     
-      
-      <div className="mb-4 flex w-full justify-end">
-       
       </div>
+
+      <div className="flex snap-x snap-proximity overflow-x-auto">
+        <div className="mb-4 flex w-full justify-end"></div>
       </div>
 
       <div className="grid w-full grid-cols-1 gap-x-2 gap-y-2 lg:grid-cols-3">
-        <div className="rounded-lg bg-slate-100 dark:bg-gray-950">
+        <div className="rounded-lg bg-slate-100 dark:bg-gray-900/80">
           <div className="relative flex flex-col space-y-4 p-2 lg:p-10">
             <div className="flex justify-between">
               <h2 className="font-inter text-xl font-semibold text-slate-500 dark:text-white">

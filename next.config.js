@@ -15,6 +15,7 @@ module.exports = {
       "avatars.githubusercontent.com",
       "www.google.com",
       "flag.vercel.app",
+      "images.unsplash.com",
       "illustrations.popsy.co",
       "lh3.googleusercontent.com",
     ],

@@ -380,6 +380,9 @@ export const updatePost = async (data: Post) => {
         description: data.description,
         content: data.content,
         slides: data.slides,
+        styling: data.styling,
+        // customizedContent: data.customizedContent,
+        // customizedSlides: data.customizedSlides,
       },
     });
 

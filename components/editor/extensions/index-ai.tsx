@@ -118,9 +118,9 @@ export const TiptapExtensionsAI = [
     nested: true,
   }),
   Markdown.configure({
-    html: false,
+    html: true,
     linkify: true,
-    transformCopiedText: true,
-    transformPastedText: true,
+    transformCopiedText: false,
+    transformPastedText: false,
   }),
 ];

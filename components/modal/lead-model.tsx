@@ -20,7 +20,7 @@ import { LeadData } from "@/types";
 const nanoid = customAlphabet(
   "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz",
   10,
-); // 7-character random string
+); // 10-character random string
 
 export default function LeadModal({
   siteId,
@@ -62,7 +62,6 @@ export default function LeadModal({
               body: JSON.stringify({ key: flileUrl }),
             });
             const { url } = await response.json();
-
             await fetch(url, {
               method: "PUT",
               body: formData,

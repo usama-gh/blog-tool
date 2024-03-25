@@ -1,4 +1,5 @@
 import { adminEmails } from "@/data";
+import { RgbaColorType } from "@/types";
 import { clsx, type ClassValue } from "clsx";
 import { useSession } from "next-auth/react";
 import { twMerge } from "tailwind-merge";
@@ -19,6 +20,37 @@ export const capitalize = (s: string) => {
   if (typeof s !== "string") return "";
   return s.charAt(0).toUpperCase() + s.slice(1);
 };
+
+export const convertToRgba = (color: RgbaColorType) => {
+  return `rgba(${color.r},${color.g},${color.b},${color.a})`;
+};
+
+export const convertRgba = (rgba: string) => {
+  return rgba.replace("rgba(", "").replace(")", "").split(",");
+};
+
+export const styledSlide = (index: number) => {
+  return {
+    id: index,
+    textColor: convertToRgba({ r: 0, g: 0, b: 0, a: 1 }),
+    bgColor: convertToRgba({ r: 241, g: 245, b: 249, a: 1 }),
+    bgImage: "",
+    // content: content,
+  };
+};
+
+export const isDefultStyle = (type: string, style: string) => {
+  if (type === "text") {
+    return style === "rgba(0,0,0,1)";
+  }
+  if (type === "bg") {
+    return style === "rgba(241,245,249,1)";
+  }
+};
+
+// export const isDefultBgStyle = (style: string) => {
+//   return style === "rgba(241,245,249,1)";
+// };
 
 export const truncate = (str: string, num: number) => {
   if (!str) return "";

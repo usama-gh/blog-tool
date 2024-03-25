@@ -4,6 +4,7 @@ import React, { useState, useEffect, useCallback, ReactNode } from "react";
 import { DotButton, NextButton, PrevButton } from "./carousel-buttons";
 import useEmblaCarousel from "embla-carousel-react";
 import BlurImage from "@/components/blur-image";
+import Image from "next/image";
 import MDX from "../mdx";
 import BlogCard from "../blog-card";
 import SocialLinks from "../social-links";
@@ -13,8 +14,19 @@ import { toast } from "sonner";
 import { MarkdownRenderer } from "markdown-react-renderer";
 import { LeadDownload } from "../lead-download";
 import { Subscribe } from "../subscribe";
+import { SlideStyle } from "@/types";
+import SlideContent from "./slide-content";
+import { isDefultStyle } from "@/lib/utils";
 
 const Carousel = ({ data, siteData, lead }: any) => {
+  const stylings: SlideStyle[] | [] = !!data.styling
+    ? JSON.parse(data.styling)
+    : [];
+
+  const contentStyling: SlideStyle | undefined = stylings.find(
+    (item: SlideStyle) => item.id == 0,
+  );
+
   const [viewportRef, embla] = useEmblaCarousel({
     skipSnaps: false,
     watchDrag: false,
@@ -83,7 +95,7 @@ const Carousel = ({ data, siteData, lead }: any) => {
   return (
     <>
       <div className="relative" {...swipeHandlers}>
-        <div className="flex list-none justify-between space-x-2">
+        <div className="flex list-none justify-between space-x-2 relative z-30">
           {scrollSnaps.map((_, index: number) => (
             <DotButton
               key={index}
@@ -94,10 +106,53 @@ const Carousel = ({ data, siteData, lead }: any) => {
           ))}
         </div>
         <div className="mx-auto my-auto flex items-center">
-          <div className="w-full overflow-hidden" ref={viewportRef}>
+          <div className="w-full overflow-hidden relative" ref={viewportRef}>
+      
+
             <div className="flex h-fit items-start ">
-              <div className="h-fit min-w-full text-slate-50  dark:text-gray-400 ">
-                <div className="scrollbar-thumb-rounded-full scrollbar-track-rounded-full my-auto flex h-screen w-full items-center justify-center overflow-y-auto py-10 text-slate-600 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-gray-200 dark:text-gray-400 dark:scrollbar-thumb-gray-800 [&>*]:rounded-xl [&>*]:text-lg ">
+              <div className="relative h-fit min-w-full  text-slate-50 dark:text-gray-400 "
+              >
+
+
+{contentStyling?.bgImage && (
+  <Image
+    alt="Mountains"
+    src={contentStyling?.bgImage}
+   
+    quality={100}
+    fill
+    sizes="100vw"
+    style={{
+      objectFit: 'cover',
+    }}
+  />
+)}
+
+
+              <div
+
+style={{
+  ...(isDefultStyle("bg", contentStyling?.bgColor as string)
+    ? {}
+    : {
+        backgroundColor: contentStyling?.bgColor, // Use the provided RGBA value
+        opacity: contentStyling?.bgImage ? 0.8 : 1, // Adjust overlay opacity
+      }),
+}}
+
+    
+        className={`absolute top-0 left-0 w-full h-full ${
+          isDefultStyle("bg", contentStyling?.bgColor as string) ? "" : "bg-" + contentStyling?.bgColor
+        }}`} // Adjust overlay opacity
+      ></div>
+
+              
+
+
+
+               
+
+                <div className=" relative z-20 scrollbar-thumb-rounded-full scrollbar-track-rounded-full relative my-auto pt-20 flex h-screen w-full items-center justify-center overflow-y-auto py-10 text-slate-600 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-gray-200 dark:text-gray-400 dark:scrollbar-thumb-gray-800 [&>*]:rounded-xl [&>*]:text-lg ">
                   <MDX source={data.mdxSource} />
                 </div>
               </div>
@@ -108,9 +163,16 @@ const Carousel = ({ data, siteData, lead }: any) => {
                     className={`relative flex h-fit min-w-full items-start justify-center`}
                     key={`slide-${index}`}
                   >
-                    <div className="scrollbar-thumb-rounded-full scrollbar-track-rounded-full my-auto flex h-screen w-full flex-1 items-center justify-center overflow-y-auto py-10 text-slate-600 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-gray-200 dark:text-gray-400 dark:scrollbar-thumb-gray-800 [&>*]:text-xl">
+                    <SlideContent
+                      key={index + 1}
+                      content={data.slidesMdxSource[index]}
+                      style={stylings.find(
+                        (item: SlideStyle) => item.id == index + 1,
+                      )}
+                    />
+                    {/* <div className="scrollbar-thumb-rounded-full scrollbar-track-rounded-full my-auto flex h-screen w-full flex-1 items-center justify-center overflow-y-auto py-10 text-slate-600 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-gray-200 dark:text-gray-400 dark:scrollbar-thumb-gray-800 [&>*]:text-xl">
                       <MDX source={data.slidesMdxSource[index]} />
-                    </div>
+                    </div> */}
                   </div>
                 ))}
 
@@ -135,7 +197,7 @@ const Carousel = ({ data, siteData, lead }: any) => {
 
               {/* showing adjacent posts */}
               {data.adjacentPosts.length > 0 && (
-                <div className="scrollbar-thumb-rounded-full scrollbar-track-rounded-full relative mx-auto mt-10 h-screen w-9/12 min-w-full overflow-y-auto pb-[120px] scrollbar-thin scrollbar-track-transparent scrollbar-thumb-gray-200 dark:scrollbar-thumb-gray-800">
+                <div className="pt-40 scrollbar-thumb-rounded-full scrollbar-track-rounded-full relative mx-auto  h-screen w-9/12 min-w-full overflow-y-auto pb-[120px] scrollbar-thin scrollbar-track-transparent scrollbar-thumb-gray-200 dark:scrollbar-thumb-gray-800">
                   <h4 className="pb-8 text-center text-sm font-semibold uppercase tracking-wide text-slate-400 dark:bg-gray-800 dark:text-gray-400">
                     More from {siteData?.name}
                   </h4>
@@ -189,7 +251,7 @@ const Carousel = ({ data, siteData, lead }: any) => {
                         </div>
                       </>
                     )}
-                    Subscribe
+                    
                   </div>
                 </div>
               )}
