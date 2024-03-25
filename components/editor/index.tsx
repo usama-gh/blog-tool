@@ -15,14 +15,7 @@ import { Lead, Post } from "@prisma/client";
 import { updatePost, updatePostMetadata } from "@/lib/actions";
 import { cn, convertToRgba, isDefultStyle, styledSlide } from "@/lib/utils";
 import LoadingDots from "../icons/loading-dots";
-import {
-  ExternalLink,
-  PlusCircleIcon,
-  XCircle,
-  Trash,
-  Image as ImageIcon,
-  Plus,
-} from "lucide-react";
+import { ExternalLink } from "lucide-react";
 import { EditorContents } from "./editor-content";
 import ImportJSONButton from "../import-json-btn";
 import ImportJsonModal from "../modal/import-json";
@@ -37,6 +30,8 @@ import Image from "next/image";
 import SlideCustomizer from "../slide-customizer";
 import { SlideStyle } from "@/types";
 import ContentCustomizer from "./editor-content/content-customizer";
+import ShowSlides from "./show-slides";
+import AddSlide from "./add-slide";
 
 type PostWithSite = Post & { site: { subdomain: string | null } | null };
 
@@ -157,7 +152,7 @@ export default function Editor({
     ) {
       return;
     }
-    console.log("147: ", "slides changes");
+    // console.log("147: ", "slides changes");
 
     startTransitionSaving(async () => {
       const response = await updatePost(debouncedData);
@@ -304,6 +299,8 @@ export default function Editor({
         setSlides(updatedSlides);
         break;
       case "delete":
+        // setSlides(slides.filter((_: string, idx: number) => idx != index));
+
         const slideStyle: SlideStyle | undefined = slidesStyles.find(
           (slide: SlideStyle) => slide.id == index + 1,
         );
@@ -322,7 +319,11 @@ export default function Editor({
           (slide: SlideStyle) => slide.id != index + 1,
         );
         setSlidesStyles(styledSlides);
-        setData({ ...data, styling: JSON.stringify(styledSlides) });
+        setData({
+          ...data,
+          slides: JSON.stringify([...updatedSlides]),
+          styling: JSON.stringify(styledSlides),
+        });
         break;
     }
   };
@@ -331,7 +332,8 @@ export default function Editor({
     setData((state) => {
       return { ...state, slides: JSON.stringify([...slides]) };
     });
-    console.log("hooked called");
+
+    // console.log("hooked called");
   }, [slides]);
 
   const escapeSpecialCharacters = (str: string) => {
@@ -563,10 +565,10 @@ export default function Editor({
 
       <div className="flex w-full flex-col items-center justify-center">
         <div className="carousel-wrapper mb-2 mt-2 flex w-full flex-nowrap space-x-4 overflow-x-scroll pb-4">
-          <div className="carousel-item w-[90%] flex-shrink-0  carousel-item overflow-y-auto">
+          <div className="carousel-item carousel-item w-[90%]  flex-shrink-0 overflow-y-auto">
             <ContentCustomizer
               style={slidesStyles.find((item: SlideStyle) => item.id == 0)}
-              className="relative max-w-screen-xl h-full overflow-y-auto  rounded-lg bg-slate-100 p-8 dark:bg-gray-900/80 lg:mt-0"
+              className="relative h-full max-w-screen-xl overflow-y-auto  rounded-lg bg-slate-100 p-8 dark:bg-gray-900/80 lg:mt-0"
             >
               {editor && <EditorBubbleMenu editor={editor} />}
               <div onPasteCapture={() => setIsPasted(true)}>
@@ -581,60 +583,20 @@ export default function Editor({
             </ContentCustomizer>
           </div>
 
-          {slides.map((slideData: string, index: number) => (
-            <div
-              key={`divslide-${index}`}
-              className="carousel-item w-[90%] flex-shrink-0  carousel-item overflow-y-auto"
-            >
-              <ContentCustomizer
-                key={`slide-${index}`}
-                style={slidesStyles.find(
-                  (item: SlideStyle) => item.id == index + 1,
-                )}
-                className="relative max-w-screen-xl h-full overflow-y-auto  rounded-lg bg-slate-100 p-8 dark:bg-gray-900/80 lg:mt-0"
-              >
-                <>
-                  <Trash
-                    width={18}
-                    className="absolute right-4 top-4 z-20 cursor-pointer text-red-300 hover:text-red-500"
-                    onClick={() => {
-                      const confirmation = window.confirm(
-                        "Are you sure you want to delete?",
-                      );
-                      if (confirmation) {
-                        updateSlides("delete", Number(index), "");
-                      }
-                    }}
-                  />
-                  <EditorContents
-                    data={data}
-                    slideData={slideData}
-                    post={post}
-                    slides={slides}
-                    setData={setData}
-                    updateSlides={updateSlides}
-                    index={index}
-                    canUseAI={canUseAI}
-                    slidesStyles={slidesStyles}
-                    updateStyleSlides={updateStyleSlides}
-                  />
-                </>
-              </ContentCustomizer>
-            </div>
-          ))}
+          {/* showing slides data */}
+          <ShowSlides
+            data={data}
+            post={post}
+            slides={slides}
+            setData={setData}
+            updateSlides={updateSlides}
+            canUseAI={canUseAI}
+            slidesStyles={slidesStyles}
+            updateStyleSlides={updateStyleSlides}
+          />
 
-          <div className="carousel-item md:w-18 flex h-auto w-20 flex-shrink-0 flex-col items-center justify-center  rounded-lg bg-slate-100 text-slate-600 hover:bg-slate-200 dark:bg-gray-900/80 dark:text-gray-200  hover:dark:bg-gray-900">
-            <button
-              type="button"
-              onClick={(e) => {
-                updateSlides("add", slides.length + 1, "");
-              }}
-              className="flex h-full flex-col items-center justify-center text-xs font-semibold tracking-tight"
-            >
-              <Plus strokeWidth={"2.5px"} width={18} />
-              Add Slide
-            </button>
-          </div>
+          {/* add new slide */}
+          <AddSlide updateSlides={updateSlides} index={slides.length + 1} />
         </div>
       </div>
 
