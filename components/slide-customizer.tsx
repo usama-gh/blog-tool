@@ -263,6 +263,7 @@ const SlideCustomizer = ({
     const color =
       type === "reset" ? "var(--novel-black)" : convertToRgba(value);
 
+    
     editor.chain().setColor(color).run();
   }
 
