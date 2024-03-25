@@ -21,7 +21,7 @@ interface Props {
 }
 export default function ShowSlide(props: Props) {
   return (
-    <div className="carousel-item carousel-item w-[90%]  flex-shrink-0 overflow-y-auto">
+    <div className="carousel-item carousel-item min-h-[500px] w-[90%]  flex-shrink-0 overflow-y-auto">
       <ContentCustomizer
         style={props.slidesStyles.find(
           (item: SlideStyle) => item.id == props.index + 1,
