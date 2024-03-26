@@ -17,6 +17,10 @@ export const TiptapEditorProps: EditorProps = {
       }
     },
   },
+  transformPastedHTML(html) {
+    return html.replace(/ style="[^"]*"/gi, ''); // Remove inline style attributes
+
+  },
   handlePaste: (view, event) => {
     if (
       event.clipboardData &&
