@@ -6,7 +6,7 @@ import Placeholder from "@tiptap/extension-placeholder";
 import TiptapUnderline from "@tiptap/extension-underline";
 import TextStyle from "@tiptap/extension-text-style";
 import { Color } from "@tiptap/extension-color";
-import HardBreak from '@tiptap/extension-hard-break'
+
 import TaskItem from "@tiptap/extension-task-item";
 import TaskList from "@tiptap/extension-task-list";
 import { Markdown } from "tiptap-markdown";
@@ -128,8 +128,6 @@ export const TiptapExtensions = [
     transformCopiedText: false,
     transformPastedText: false,
   }),
-  HardBreak.configure({
-    keepMarks: true,
-  })
+
 
 ];
