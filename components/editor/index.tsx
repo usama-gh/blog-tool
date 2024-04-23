@@ -13,7 +13,13 @@ import TextareaAutosize from "react-textarea-autosize";
 import { EditorBubbleMenu } from "./bubble-menu";
 import { Lead, Post } from "@prisma/client";
 import { updatePost, updatePostMetadata } from "@/lib/actions";
-import { cn, convertToRgba, isDefultStyle, styledSlide } from "@/lib/utils";
+import {
+  cn,
+  convertToRgba,
+  createGateSlide,
+  isDefultStyle,
+  styledSlide,
+} from "@/lib/utils";
 import LoadingDots from "../icons/loading-dots";
 import { ExternalLink } from "lucide-react";
 import { EditorContents } from "./editor-content";
@@ -28,7 +34,7 @@ import LinkLeadModal from "../modal/link-lead";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import SlideCustomizer from "../slide-customizer";
-import { SlideStyle } from "@/types";
+import { SlideStyle, gateSlide } from "@/types";
 import ContentCustomizer from "./editor-content/content-customizer";
 import ShowSlides from "./show-slides";
 import AddSlide from "./add-slide";
@@ -69,6 +75,14 @@ export default function Editor({
       return !!data.styling ? JSON.parse(data.styling) : [];
     } catch (error) {
       console.error("Error parsing slides styling JSON:", error);
+      return [];
+    }
+  });
+  const [gateSlides, setGateSlides] = useState<gateSlide[] | []>(() => {
+    try {
+      return !!data.gateSlides ? JSON.parse(data.gateSlides) : [];
+    } catch (error) {
+      console.error("Error parsing gate slides JSON:", error);
       return [];
     }
   });
@@ -142,21 +156,23 @@ export default function Editor({
   const [debouncedData] = useDebounce(data, 1000);
 
   useEffect(() => {
+    // console.log("159: ", "data changed");
     // compare the title, description and content only
     if (
       debouncedData.title === post.title &&
       debouncedData.description === post.description &&
       debouncedData.content === post.content &&
       debouncedData.slides === post.slides &&
-      debouncedData.styling === post.styling
+      debouncedData.styling === post.styling &&
+      debouncedData.gateSlides === post.gateSlides
     ) {
       return;
     }
-    // console.log("147: ", "slides changes");
+    // console.log("170: ", "slides changes");
 
     startTransitionSaving(async () => {
-      const response = await updatePost(debouncedData);
-      // console.log(response);
+      await updatePost(debouncedData);
+      console.log("174: ", "data updated");
     });
   }, [debouncedData, post]);
 
@@ -290,9 +306,12 @@ export default function Editor({
 
     switch (action) {
       case "add":
-        // const slideStyle: SlideStyle = styledSlide(index);
-        // setSlidesStyles([...slidesStyles, slideStyle]);
-        setSlides([...slides, value]);
+        if (value === "gate") {
+          const gateSlide: gateSlide = createGateSlide(index);
+          setGateSlides([gateSlide]);
+        }
+
+        setSlides([...slides, ""]);
         break;
       case "update":
         updatedSlides[index] = value;
@@ -319,10 +338,18 @@ export default function Editor({
           (slide: SlideStyle) => slide.id != index + 1,
         );
         setSlidesStyles(styledSlides);
+
+        // delete gate slide
+        const gatedSlides = gateSlides.filter(
+          (slide: gateSlide) => slide.id != index + 1,
+        );
+        setGateSlides(gatedSlides);
+
         setData({
           ...data,
           slides: JSON.stringify([...updatedSlides]),
           styling: JSON.stringify(styledSlides),
+          gateSlides: JSON.stringify([...gateSlides]),
         });
         break;
     }
@@ -330,11 +357,21 @@ export default function Editor({
 
   useEffect(() => {
     setData((state) => {
-      return { ...state, slides: JSON.stringify([...slides]) };
+      return {
+        ...state,
+        slides: JSON.stringify([...slides]),
+        gateSlides: JSON.stringify([...gateSlides]),
+      };
     });
+  }, [slides, gateSlides]);
 
-    // console.log("hooked called");
-  }, [slides]);
+  // useEffect(() => {
+  //   setData((state) => {
+  //     return { ...state, slides: JSON.stringify([...slides]) };
+  //   });
+
+  //   console.log("hooked called");
+  // }, [slides]);
 
   const escapeSpecialCharacters = (str: string) => {
     return str.replace(/[<{]/g, "\\$&");
@@ -593,6 +630,8 @@ export default function Editor({
             canUseAI={canUseAI}
             slidesStyles={slidesStyles}
             updateStyleSlides={updateStyleSlides}
+            gateSlides={gateSlides}
+            setGateSlides={setGateSlides}
           />
 
           {/* add new slide */}

@@ -6,7 +6,7 @@ import { plans } from "@/data";
 import { getSession } from "./auth";
 import { redirect } from "next/navigation";
 import rehypeRaw from "rehype-raw";
-import { SlideStyle } from "@/types";
+import { SlideStyle, gateSlide } from "@/types";
 import { styledSlide } from "./utils";
 
 export async function getSiteData(domain: string) {

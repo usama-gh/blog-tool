@@ -39,6 +39,13 @@ export const styledSlide = (index: number) => {
   };
 };
 
+export const createGateSlide = (index: number) => {
+  return {
+    id: index,
+    type: "email",
+  };
+};
+
 export const isDefultStyle = (type: string, style: string) => {
   if (type === "text") {
     return style === "rgba(0,0,0,1)";

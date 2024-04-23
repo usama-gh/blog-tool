@@ -27,6 +27,9 @@ const Carousel = ({ data, siteData, lead }: any) => {
     (item: SlideStyle) => item.id == 0,
   );
 
+  const gateSlides = data.gateSlides ? JSON.parse(data.gateSlides) : [];
+  const gateSlide = gateSlides[0];
+
   const [viewportRef, embla] = useEmblaCarousel({
     skipSnaps: false,
     watchDrag: false,
@@ -38,18 +41,38 @@ const Carousel = ({ data, siteData, lead }: any) => {
   const [nextBtnEnabled, setNextBtnEnabled] = useState<boolean>(false);
   const [selectedIndex, setSelectedIndex] = useState<number>(0);
   const [scrollSnaps, setScrollSnaps] = useState<Array<ReactNode>>([]);
+  const [gateSlideUnblock, setGateSlideUnblock] = useState<boolean>(() => {
+    const siteIdFromStorage = localStorage.getItem("siteId");
+    if (siteIdFromStorage && data.siteId === siteIdFromStorage) {
+      return true;
+    }
+    return false;
+  });
 
   const scrollPrev = useCallback(
     () => embla && embla.scrollPrev(true),
     [embla],
   );
-  const scrollNext = useCallback(
-    () => embla && embla.scrollNext(true),
-    [embla],
-  );
+  const scrollNext = useCallback(() => {
+    const currentSlide = embla ? embla.selectedScrollSnap() + 1 : 0;
+    if (!gateSlideUnblock && gateSlide && currentSlide > gateSlide.id) {
+      alert("Please subscribe to unlock slides");
+      return;
+    }
+
+    embla && embla.scrollNext(true);
+  }, [embla, gateSlide, gateSlideUnblock]);
+
   const scrollTo = useCallback(
-    (index: number) => embla && embla.scrollTo(index, true),
-    [embla],
+    (index: number) => {
+      if (!gateSlideUnblock && gateSlide && index > gateSlide.id) {
+        alert("Please subscribe to unlock slides");
+        return;
+      }
+
+      embla && embla.scrollTo(index, true);
+    },
+    [embla, gateSlide, gateSlideUnblock],
   );
 
   const onSelect = useCallback(() => {
@@ -95,7 +118,7 @@ const Carousel = ({ data, siteData, lead }: any) => {
   return (
     <>
       <div className="relative" {...swipeHandlers}>
-        <div className="flex list-none justify-between space-x-2 relative z-30">
+        <div className="relative z-30 flex list-none justify-between space-x-2">
           {scrollSnaps.map((_, index: number) => (
             <DotButton
               key={index}
@@ -106,53 +129,39 @@ const Carousel = ({ data, siteData, lead }: any) => {
           ))}
         </div>
         <div className="mx-auto my-auto flex items-center">
-          <div className="w-full overflow-hidden relative" ref={viewportRef}>
-      
-
+          <div className="relative w-full overflow-hidden" ref={viewportRef}>
             <div className="flex h-fit items-start ">
-              <div className="relative h-fit min-w-full  text-slate-50 dark:text-gray-400 "
-              >
+              <div className="relative h-fit min-w-full  text-slate-50 dark:text-gray-400 ">
+                {contentStyling?.bgImage && (
+                  <Image
+                    alt="Mountains"
+                    src={contentStyling?.bgImage}
+                    quality={100}
+                    fill
+                    sizes="100vw"
+                    style={{
+                      objectFit: "cover",
+                    }}
+                  />
+                )}
 
+                <div
+                  style={{
+                    ...(isDefultStyle("bg", contentStyling?.bgColor as string)
+                      ? {}
+                      : {
+                          backgroundColor: contentStyling?.bgColor, // Use the provided RGBA value
+                          opacity: contentStyling?.bgImage ? 0.8 : 1, // Adjust overlay opacity
+                        }),
+                  }}
+                  className={`absolute left-0 top-0 h-full w-full ${
+                    isDefultStyle("bg", contentStyling?.bgColor as string)
+                      ? ""
+                      : "bg-" + contentStyling?.bgColor
+                  }}`} // Adjust overlay opacity
+                ></div>
 
-{contentStyling?.bgImage && (
-  <Image
-    alt="Mountains"
-    src={contentStyling?.bgImage}
-   
-    quality={100}
-    fill
-    sizes="100vw"
-    style={{
-      objectFit: 'cover',
-    }}
-  />
-)}
-
-
-              <div
-
-style={{
-  ...(isDefultStyle("bg", contentStyling?.bgColor as string)
-    ? {}
-    : {
-        backgroundColor: contentStyling?.bgColor, // Use the provided RGBA value
-        opacity: contentStyling?.bgImage ? 0.8 : 1, // Adjust overlay opacity
-      }),
-}}
-
-    
-        className={`absolute top-0 left-0 w-full h-full ${
-          isDefultStyle("bg", contentStyling?.bgColor as string) ? "" : "bg-" + contentStyling?.bgColor
-        }}`} // Adjust overlay opacity
-      ></div>
-
-              
-
-
-
-               
-
-                <div className=" relative z-20 scrollbar-thumb-rounded-full scrollbar-track-rounded-full relative my-auto pt-20 flex h-screen w-full items-center justify-center overflow-y-auto py-10 text-slate-600 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-gray-200 dark:text-gray-400 dark:scrollbar-thumb-gray-800 [&>*]:rounded-xl [&>*]:text-lg ">
+                <div className=" scrollbar-thumb-rounded-full scrollbar-track-rounded-full relative z-20 my-auto flex h-screen w-full items-center justify-center overflow-y-auto py-10 pt-20 text-slate-600 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-gray-200 dark:text-gray-400 dark:scrollbar-thumb-gray-800 [&>*]:rounded-xl [&>*]:text-lg ">
                   <MDX source={data.mdxSource} />
                 </div>
               </div>
@@ -165,11 +174,19 @@ style={{
                   >
                     <SlideContent
                       key={index + 1}
+                      index={index + 1}
+                      postId={data.id}
                       content={data.slidesMdxSource[index]}
                       style={stylings.find(
                         (item: SlideStyle) => item.id == index + 1,
                       )}
+                      gateSlide={gateSlide}
+                      gateSlideUnblock={gateSlideUnblock}
+                      setGateSlideUnblock={setGateSlideUnblock}
+                      scrollNext={scrollNext}
+                      siteId={data.siteId}
                     />
+
                     {/* <div className="scrollbar-thumb-rounded-full scrollbar-track-rounded-full my-auto flex h-screen w-full flex-1 items-center justify-center overflow-y-auto py-10 text-slate-600 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-gray-200 dark:text-gray-400 dark:scrollbar-thumb-gray-800 [&>*]:text-xl">
                       <MDX source={data.slidesMdxSource[index]} />
                     </div> */}
@@ -197,7 +214,7 @@ style={{
 
               {/* showing adjacent posts */}
               {data.adjacentPosts.length > 0 && (
-                <div className="pt-40 scrollbar-thumb-rounded-full scrollbar-track-rounded-full relative mx-auto  h-screen w-9/12 min-w-full overflow-y-auto pb-[120px] scrollbar-thin scrollbar-track-transparent scrollbar-thumb-gray-200 dark:scrollbar-thumb-gray-800">
+                <div className="scrollbar-thumb-rounded-full scrollbar-track-rounded-full relative mx-auto h-screen  w-9/12 min-w-full overflow-y-auto pb-[120px] pt-40 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-gray-200 dark:scrollbar-thumb-gray-800">
                   <h4 className="pb-8 text-center text-sm font-semibold uppercase tracking-wide text-slate-400 dark:bg-gray-800 dark:text-gray-400">
                     More from {siteData?.name}
                   </h4>
@@ -251,7 +268,6 @@ style={{
                         </div>
                       </>
                     )}
-                    
                   </div>
                 </div>
               )}

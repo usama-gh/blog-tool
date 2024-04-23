@@ -71,9 +71,7 @@ export default async function SitePostPage({
         data-token={`${process.env.NEXT_PUBLIC_TINYBIRD_TRACKER_TOKEN}`}
       />
 
-
-      
-      <div className="animate-fade absolute left-0 top-0 z-30 mx-auto flex w-full w-screen items-center justify-between	bg-gradient-to-b from-[#000000a8] via-[#0000004d] to-transparent px-2 pt-2 pb-5 lg:px-2">
+      <div className="animate-fade absolute left-0 top-0 z-30 mx-auto flex w-full w-screen items-center justify-between	bg-gradient-to-b from-[#000000a8] via-[#0000004d] to-transparent px-2 pb-5 pt-2 lg:px-2">
         <div className="flex items-center gap-x-2">
           <div className="flex items-center gap-x-2">
             <Link href="/">
