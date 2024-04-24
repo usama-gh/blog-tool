@@ -151,12 +151,9 @@ export default function Editor({
     ? `https://${data.site?.subdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}/${post.slug}`
     : `http://${data.site?.subdomain}.localhost:3000/${post.slug}`;
 
-  // console.log(JSON.parse(data.styling));
-
   const [debouncedData] = useDebounce(data, 1000);
 
   useEffect(() => {
-    // console.log("159: ", "data changed");
     // compare the title, description and content only
     if (
       debouncedData.title === post.title &&
@@ -355,23 +352,23 @@ export default function Editor({
     }
   };
 
-  useEffect(() => {
-    setData((state) => {
-      return {
-        ...state,
-        slides: JSON.stringify([...slides]),
-        gateSlides: JSON.stringify([...gateSlides]),
-      };
-    });
-  }, [slides, gateSlides]);
-
   // useEffect(() => {
   //   setData((state) => {
-  //     return { ...state, slides: JSON.stringify([...slides]) };
+  //     return {
+  //       ...state,
+  //       slides: JSON.stringify([...slides]),
+  //       gateSlides: JSON.stringify([...gateSlides]),
+  //     };
   //   });
+  // }, [slides, gateSlides]);
 
-  //   console.log("hooked called");
-  // }, [slides]);
+  useEffect(() => {
+    setData((state) => {
+      return { ...state, slides: JSON.stringify([...slides]) };
+    });
+
+    console.log("hooked called");
+  }, [slides]);
 
   const escapeSpecialCharacters = (str: string) => {
     return str.replace(/[<{]/g, "\\$&");

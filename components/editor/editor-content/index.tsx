@@ -141,10 +141,8 @@ export const EditorContents = (props: Props) => {
 
   // Hydrate the editor with the content
   useEffect(() => {
-    if (editor && props.slideData) {
-      editor.commands.setContent(props.slideData);
-    }
-  }, [editor, props.post, props.slideData]);
+    if (editor?.isEmpty) editor.commands.setContent(props.slideData);
+  }, [editor, props.slideData]);
 
   return (
     <>
