@@ -2,9 +2,18 @@ import React, { Dispatch, SetStateAction, useState } from "react";
 import { Post } from "@prisma/client";
 import { SlideStyle, gateSlide } from "@/types";
 import ContentCustomizer from "./editor-content/content-customizer";
-import { Trash } from "lucide-react";
+import { Trash,Settings2 } from "lucide-react";
 import { EditorContents } from "./editor-content";
+import { Input } from "@/components/ui/input"
+
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover"
 import { cn } from "@/lib/utils";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+
 
 type PostWithSite = Post & { site: { subdomain: string | null } | null };
 
@@ -48,10 +57,34 @@ export default function ShowSlide(props: Props) {
   }
 
   return (
-    <div className="carousel-item carousel-item min-h-[500px] w-[90%]  flex-shrink-0 overflow-y-auto">
+    <div className="carousel-item carousel-item relative min-h-[500px] w-[90%]  flex-shrink-0 overflow-y-auto">
       {gateSlide && (
-        <div className="w-48 rounded bg-gray-200 p-1 text-black">
-          <h5 className="text-md text-black">Method</h5>
+
+
+<div>
+<Popover>
+  <PopoverTrigger   className="absolute  bottom-5 z-20 left-5 rounded-full bg-white p-2 w-10 h-10 flex items-center justify-center shadow-sm"> 
+  <Settings2 strokeWidth={"1.5px"} width={20} /></PopoverTrigger>
+  <PopoverContent className="mt-2 rounded-xl max-w-sm">
+
+  <div className="rounded text-center ">
+    <h3 className="text-sm text-gray-500 uppercase tracking-wide font-semibold mb-3">Choose Gated Method</h3>
+  <Tabs defaultValue="email" >
+  <TabsList>
+    <TabsTrigger value="email">Subscribe</TabsTrigger>
+    <TabsTrigger value="follow">Follow Link</TabsTrigger>
+  </TabsList>
+  <TabsContent value="email"><p className="text-xs text-gray-400">Subscribe via email to unlock the full slides</p></TabsContent>
+  <TabsContent value="follow">
+  <Input className="max-w-xs mx-auto"  defaultValue={link}
+              onChange={(e) => handleSlideChange("link", e)} type="email" placeholder="Link to follow" />
+<p className="text-xs text-gray-400 mt-1">Unlock slides via links, like social follows or site visits</p>
+
+  </TabsContent>
+</Tabs>
+
+
+          {/* <h5 className="text-md text-black">Method</h5>
           <div className="mt-2 flex items-center gap-2 bg-transparent">
             <button
               type="button"
@@ -82,8 +115,15 @@ export default function ShowSlide(props: Props) {
               placeholder="Link"
               className="dark:placeholder-text-600 font-inter text-md mb-2 w-full rounded-md border-none bg-slate-100 px-2 py-1 placeholder:text-gray-400 focus:outline-none focus:ring-0 dark:bg-black dark:bg-gray-900/80 dark:text-white"
             />
-          )}
+          )} */}
         </div>
+
+
+  </PopoverContent>
+  </Popover>
+  </div>
+
+       
       )}
 
       <ContentCustomizer

@@ -2,11 +2,16 @@
 
 import { convertRgba, convertToRgba } from "@/lib/utils";
 import { RgbaColorType, SlideStyle } from "@/types";
-import { Image as ImageIcon } from "lucide-react";
+import { Image as ImageIcon, Palette } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { RgbaColorPicker } from "react-colorful";
 import { upload } from "@vercel/blob/client";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 
 const SlideCustomizer = ({
   slidesStyles,
@@ -263,7 +268,6 @@ const SlideCustomizer = ({
     const color =
       type === "reset" ? "var(--novel-black)" : convertToRgba(value);
 
-    
     editor.chain().setColor(color).run();
   }
 
@@ -341,140 +345,144 @@ const SlideCustomizer = ({
     }
   }, [textColor, bgColor, image]);
 
-  useEffect(() => {
-    document.addEventListener("mousedown", handleOutsideClick);
-    return () => {
-      document.removeEventListener("mousedown", handleOutsideClick);
-    };
-  });
+  // useEffect(() => {
+  //   document.addEventListener("mousedown", handleOutsideClick);
+  //   return () => {
+  //     document.removeEventListener("mousedown", handleOutsideClick);
+  //   };
+  // });
 
-  const handleOutsideClick = (e: any) => {
-    // @ts-ignore
-    if (componentRef.current && !componentRef.current.contains(e.target)) {
-      setShowTextColorPicker(false);
-      setShowBgColorPicker(false);
-    }
-  };
+  // const handleOutsideClick = (e: any) => {
+  //   // @ts-ignore
+  //   if (componentRef.current && !componentRef.current.contains(e.target)) {
+  //     setShowTextColorPicker(false);
+  //     setShowBgColorPicker(false);
+  //   }
+  // };
 
   return (
     <>
       {/* text color picker wrapper */}
-      <div
-        className="absolute bottom-5 right-5 rounded-full bg-white px-3 py-2 shadow-sm"
-        ref={componentRef}
-      >
-        <div className="flex items-center gap-x-2">
-          <div className="relative flex items-center gap-x-2">
-            {showTextColorPicker && (
-              <span className="absolute -top-4 left-0 z-20  -translate-x-1/2 -translate-y-full rounded-xl	bg-white p-2 shadow-sm">
-                <div className="picker">
-                  <RgbaColorPicker
-                    color={textColor}
-                    onChange={(color) => handleValueChange("text", color)}
-                  />
-                  {presetColors.map((color, index) => (
-                    <button
-                      key={`text-${index}`}
-                      className="picker__swatch"
-                      style={{ background: convertToRgba(color) }}
-                      onClick={() => handleValueChange("text", color)}
-                    />
-                  ))}
-                </div>
-              </span>
-            )}
-            <p className="text-xs text-gray-500">TEXT</p>
-            <div
-              onClick={() => {
-                setShowBgColorPicker(false);
-                setShowTextColorPicker((state) => !state);
-              }}
-              className="shadow-base h-5 w-5 cursor-pointer rounded-full"
-              style={{ backgroundColor: convertToRgba(textColor) }}
-            ></div>
-          </div>
-          <div className="h-4 w-[2px] bg-gray-200"></div>
-          <div className="relative flex items-center gap-x-2">
-            {showBgColorPicker && (
-              <span className="absolute -top-4 left-0  z-20  -translate-x-1/2  -translate-y-full rounded-xl bg-white p-2 shadow-sm">
-                <div className="picker">
-                  <RgbaColorPicker
-                    color={bgColor}
-                    onChange={(color) => handleValueChange("bg", color)}
-                  />
 
-                  {presetColors.map((color, index) => (
-                    <button
-                      key={`bg-${index}`}
-                      className="picker__swatch"
-                      style={{ background: convertToRgba(color) }}
-                      onClick={() => handleValueChange("bg", color)}
-                    />
-                  ))}
-                </div>
-              </span>
-            )}
+      <Popover>
+        <PopoverTrigger
+          ref={componentRef}
+          className="absolute bottom-5 right-5 flex h-10 w-10 items-center justify-center rounded-full bg-white p-2 shadow-sm"
+        >
+          <Palette strokeWidth={"1.5px"} width={20} />
+        </PopoverTrigger>
+        <PopoverContent className="mt-2 w-auto rounded-full">
+          <div className="flex items-center gap-x-2">
+            <div className="relative flex items-center gap-x-2">
+              <p className="text-xs text-gray-500">TEXT</p>
 
-            <p className="text-xs text-gray-500">BG</p>
-            <div
-              onClick={() => {
-                setShowTextColorPicker(false);
-                setShowBgColorPicker((state) => !state);
-              }}
-              className="shadow-base h-5 w-5 cursor-pointer rounded-full"
-              style={{ backgroundColor: convertToRgba(bgColor) }}
-            ></div>
-            <button
-              type="button"
-              className="text-gray-500 hover:text-gray-600"
-              onClick={openImageDialog}
-            >
-              <ImageIcon strokeWidth={"1.5px"} width={20} />
-            </button>
-            <input
-              type="file"
-              ref={imageRef}
-              onChange={handleImageUpload}
-              className="hidden"
-            />
-            {image && (
-              <>
-                {/* <Image
+              <Popover>
+                <PopoverTrigger>
+                  <div
+                    className="shadow-base h-5 w-5 cursor-pointer rounded-full"
+                    style={{ backgroundColor: convertToRgba(textColor) }}
+                  ></div>
+                </PopoverTrigger>
+                <PopoverContent className="w-min">
+                  <div className="picker">
+                    <RgbaColorPicker
+                      color={textColor}
+                      onChange={(color) => handleValueChange("text", color)}
+                    />
+                    {presetColors.map((color, index) => (
+                      <button
+                        key={`text-${index}`}
+                        className="picker__swatch"
+                        style={{ background: convertToRgba(color) }}
+                        onClick={() => handleValueChange("text", color)}
+                      />
+                    ))}
+                  </div>
+                </PopoverContent>
+              </Popover>
+            </div>
+            <div className="h-4 w-[2px] bg-gray-200"></div>
+            <div className="relative flex items-center gap-x-2">
+              <p className="text-xs text-gray-500">BG</p>
+
+              <Popover>
+                <PopoverTrigger>
+                  <div
+                    className="shadow-base h-5 w-5 cursor-pointer rounded-full"
+                    style={{ backgroundColor: convertToRgba(bgColor) }}
+                  ></div>
+                </PopoverTrigger>
+                <PopoverContent className="w-min">
+                  <div className="picker">
+                    <RgbaColorPicker
+                      color={bgColor}
+                      onChange={(color) => handleValueChange("bg", color)}
+                    />
+
+                    {presetColors.map((color, index) => (
+                      <button
+                        key={`bg-${index}`}
+                        className="picker__swatch"
+                        style={{ background: convertToRgba(color) }}
+                        onClick={() => handleValueChange("bg", color)}
+                      />
+                    ))}
+                  </div>
+                </PopoverContent>
+              </Popover>
+
+              <button
+                type="button"
+                className="text-gray-500 hover:text-gray-600"
+                onClick={openImageDialog}
+              >
+                <ImageIcon strokeWidth={"1.5px"} width={20} />
+              </button>
+              <input
+                type="file"
+                ref={imageRef}
+                onChange={handleImageUpload}
+                className="hidden"
+              />
+              {image && (
+                <>
+                  {/* <Image
                 className="h-6 rounded-lg"
                 src="https://lh3.googleusercontent.com/JjewRHousCsko0Q3ZgeYV63GurlKuHv_m7eCMSjTOeQIs_M4CEINyAsc9qmh4P04Bg8gOlDRa9LjaHDT8IvjSWmoZGZ0ny8S5aAAweM=s3000"
                 width={40}
                 height={25}
                 alt="background image"
               /> */}
-                <Image
-                  className="h-6 rounded-lg"
-                  width={20}
-                  height={20}
-                  src={`${image}`}
-                  alt="background image"
-                />
+                  <Image
+                    className="h-6 rounded-lg"
+                    width={20}
+                    height={20}
+                    src={`${image}`}
+                    alt="background image"
+                  />
+                  <button
+                    type="button"
+                    className="text-xs text-red-400"
+                    onClick={deleteImage}
+                  >
+                    Remove
+                  </button>
+                </>
+              )}
+
+              {showResetBtn && (
                 <button
                   type="button"
-                  className="text-xs text-red-400"
-                  onClick={deleteImage}
+                  className="text-xs text-blue-400"
+                  onClick={resetStyle}
                 >
-                  Remove
+                  Reset
                 </button>
-              </>
-            )}
-
-            {showResetBtn && (
-              <button
-                type="button"
-                className="text-xs text-blue-400"
-                onClick={resetStyle}
-              >
-                Reset
-              </button>
-            )}
+              )}
+            </div>
           </div>
-        </div>
-      </div>
+        </PopoverContent>
+      </Popover>
     </>
   );
 };
