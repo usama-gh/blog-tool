@@ -306,9 +306,12 @@ export default function Editor({
         if (value === "gate") {
           const gateSlide: gateSlide = createGateSlide(index);
           setGateSlides([gateSlide]);
+          value = "# Subscribe to unlock";
+        } else {
+          value = "";
         }
 
-        setSlides([...slides, ""]);
+        setSlides([...slides, value]);
         break;
       case "update":
         updatedSlides[index] = value;
@@ -352,23 +355,15 @@ export default function Editor({
     }
   };
 
-  // useEffect(() => {
-  //   setData((state) => {
-  //     return {
-  //       ...state,
-  //       slides: JSON.stringify([...slides]),
-  //       gateSlides: JSON.stringify([...gateSlides]),
-  //     };
-  //   });
-  // }, [slides, gateSlides]);
-
   useEffect(() => {
     setData((state) => {
-      return { ...state, slides: JSON.stringify([...slides]) };
+      return {
+        ...state,
+        slides: JSON.stringify([...slides]),
+        gateSlides: JSON.stringify([...gateSlides]),
+      };
     });
-
-    console.log("hooked called");
-  }, [slides]);
+  }, [slides, gateSlides]);
 
   const escapeSpecialCharacters = (str: string) => {
     return str.replace(/[<{]/g, "\\$&");

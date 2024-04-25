@@ -1,4 +1,4 @@
-import { Plus,PenLine,Lock } from "lucide-react";
+import { Plus, PenLine, Lock } from "lucide-react";
 import { useState } from "react";
 import {
   DropdownMenu,
@@ -19,52 +19,29 @@ export default function AddSlide({ updateSlides, index }: Props) {
   return (
     <div className="carousel-item md:w-18 flex h-auto w-20 flex-shrink-0 flex-col items-center justify-center  rounded-lg bg-slate-100 text-slate-600 hover:bg-slate-200 dark:bg-gray-900/80 dark:text-gray-200  hover:dark:bg-gray-900">
       <DropdownMenu>
-        <DropdownMenuTrigger className="border border-gray-200 p-2 rounded-lg">
-          <button
-            type="button"
-            className="flex h-full flex-col items-center justify-center text-xs font-semibold tracking-tight"
-          >
+        <DropdownMenuTrigger className="rounded-lg border border-gray-200 p-2 focus:outline-none focus:ring-0">
+          <span className="flex h-full flex-col items-center justify-center text-xs font-semibold tracking-tight">
             <Plus strokeWidth={"2.5px"} width={18} />
             Add Slide
-          </button>
+          </span>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="rounded-2xl">
-          <DropdownMenuItem className="justify-center">
-          <PenLine strokeWidth={"2.5px"} width={18} />
-            <SlideOptionButton
-              btnText="Slide"
-              onClick={() => updateSlides("add", index, "slide")}
-            />
+          <DropdownMenuItem
+            className="cursor-pointer justify-center"
+            onClick={() => updateSlides("add", index, "slide")}
+          >
+            <PenLine strokeWidth={"2.5px"} width={18} />
+            <span className="ml-2">Slide</span>
           </DropdownMenuItem>
-          <DropdownMenuItem  className="justify-center">
-          <Lock strokeWidth={"2.5px"} width={18} />
-            <SlideOptionButton
-              btnText="Gated"
-              onClick={() => updateSlides("add", index, "gate")}
-            />
+          <DropdownMenuItem
+            className="cursor-pointer justify-center"
+            onClick={() => updateSlides("add", index, "gate")}
+          >
+            <Lock strokeWidth={"2.5px"} width={18} />
+            <span className="ml-2">Gated</span>
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     </div>
-  );
-}
-
-function SlideOptionButton({
-  btnText,
-  onClick,
-}: {
-  btnText: string;
-  onClick: any;
-}) {
-  return (
-    <>
-      <button
-        type="button"
-        onClick={onClick}
-        className="ml-2  cursor-pointer"
-      >
-        {btnText}
-      </button>
-    </>
   );
 }

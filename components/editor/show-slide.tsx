@@ -2,18 +2,17 @@ import React, { Dispatch, SetStateAction, useState } from "react";
 import { Post } from "@prisma/client";
 import { SlideStyle, gateSlide } from "@/types";
 import ContentCustomizer from "./editor-content/content-customizer";
-import { Trash,Settings2 } from "lucide-react";
+import { Trash, Settings2 } from "lucide-react";
 import { EditorContents } from "./editor-content";
-import { Input } from "@/components/ui/input"
+import { Input } from "@/components/ui/input";
 
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover"
+} from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 type PostWithSite = Post & { site: { subdomain: string | null } | null };
 
@@ -37,6 +36,8 @@ export default function ShowSlide(props: Props) {
   const [link, setLink] = useState(gateSlide ? gateSlide.link : "");
 
   function handleSlideChange(type: string, e?: any) {
+    console.log("type changed", type);
+
     if (type === "email" || type === "follow") {
       setType(type);
     } else {
@@ -59,71 +60,54 @@ export default function ShowSlide(props: Props) {
   return (
     <div className="carousel-item carousel-item relative min-h-[500px] w-[90%]  flex-shrink-0 overflow-y-auto">
       {gateSlide && (
-
-
-<div>
-<Popover>
-  <PopoverTrigger   className="absolute  bottom-5 z-20 left-5 rounded-full bg-white p-2 w-10 h-10 flex items-center justify-center shadow-sm"> 
-  <Settings2 strokeWidth={"1.5px"} width={20} /></PopoverTrigger>
-  <PopoverContent className="mt-2 rounded-xl max-w-sm">
-
-  <div className="rounded text-center ">
-    <h3 className="text-sm text-gray-500 uppercase tracking-wide font-semibold mb-3">Choose Gated Method</h3>
-  <Tabs defaultValue="email" >
-  <TabsList>
-    <TabsTrigger value="email">Subscribe</TabsTrigger>
-    <TabsTrigger value="follow">Follow Link</TabsTrigger>
-  </TabsList>
-  <TabsContent value="email"><p className="text-xs text-gray-400">Subscribe via email to unlock the full slides</p></TabsContent>
-  <TabsContent value="follow">
-  <Input className="max-w-xs mx-auto"  defaultValue={link}
-              onChange={(e) => handleSlideChange("link", e)} type="email" placeholder="Link to follow" />
-<p className="text-xs text-gray-400 mt-1">Unlock slides via links, like social follows or site visits</p>
-
-  </TabsContent>
-</Tabs>
-
-
-          {/* <h5 className="text-md text-black">Method</h5>
-          <div className="mt-2 flex items-center gap-2 bg-transparent">
-            <button
-              type="button"
-              onClick={() => handleSlideChange("email")}
-              className={cn(
-                "mb-2 me-2 rounded-lg border border-blue-700 px-2 py-1 text-center text-sm font-medium text-blue-700 hover:bg-blue-800 hover:text-white focus:outline-none focus:ring-0 focus:ring-blue-300 dark:border-blue-500 dark:text-blue-500 dark:hover:bg-blue-500 dark:hover:text-white dark:focus:ring-blue-800",
-                type === "email" && "bg-blue-800 text-white",
-              )}
-            >
-              Email
-            </button>
-            <button
-              type="button"
-              onClick={() => handleSlideChange("follow")}
-              className={cn(
-                "mb-2 me-2 rounded-lg border border-blue-700 px-2 py-1 text-center text-sm font-medium text-blue-700 hover:bg-blue-800 hover:text-white focus:outline-none focus:ring-0 focus:ring-blue-300 dark:border-blue-500 dark:text-blue-500 dark:hover:bg-blue-500 dark:hover:text-white dark:focus:ring-blue-800",
-                type === "follow" && "bg-blue-800 text-white",
-              )}
-            >
-              Follow
-            </button>
-          </div>
-          {type === "follow" && (
-            <input
-              defaultValue={link}
-              onChange={(e) => handleSlideChange("link", e)}
-              type="text"
-              placeholder="Link"
-              className="dark:placeholder-text-600 font-inter text-md mb-2 w-full rounded-md border-none bg-slate-100 px-2 py-1 placeholder:text-gray-400 focus:outline-none focus:ring-0 dark:bg-black dark:bg-gray-900/80 dark:text-white"
-            />
-          )} */}
+        <div>
+          <Popover>
+            <PopoverTrigger className="absolute  bottom-5 left-5 z-20 flex h-10 w-10 items-center justify-center rounded-full bg-white p-2 shadow-sm">
+              <Settings2 strokeWidth={"1.5px"} width={20} />
+            </PopoverTrigger>
+            <PopoverContent className="mt-2 max-w-sm rounded-xl">
+              <div className="rounded text-center ">
+                <h3 className="mb-3 text-sm font-semibold uppercase tracking-wide text-gray-500">
+                  Choose Gated Method
+                </h3>
+                <Tabs defaultValue={type}>
+                  <TabsList>
+                    <TabsTrigger
+                      value="email"
+                      onClick={() => handleSlideChange("email")}
+                    >
+                      Subscribe
+                    </TabsTrigger>
+                    <TabsTrigger
+                      value="follow"
+                      onClick={() => handleSlideChange("follow")}
+                    >
+                      Follow Link
+                    </TabsTrigger>
+                  </TabsList>
+                  <TabsContent value="email">
+                    <p className="text-xs text-gray-400">
+                      Subscribe via email to unlock the full slides
+                    </p>
+                  </TabsContent>
+                  <TabsContent value="follow">
+                    <Input
+                      className="mx-auto max-w-xs"
+                      defaultValue={link}
+                      onChange={(e) => handleSlideChange("follow", e)}
+                      type="email"
+                      placeholder="Link to follow"
+                    />
+                    <p className="mt-1 text-xs text-gray-400">
+                      Unlock slides via links, like social follows or site
+                      visits
+                    </p>
+                  </TabsContent>
+                </Tabs>
+              </div>
+            </PopoverContent>
+          </Popover>
         </div>
-
-
-  </PopoverContent>
-  </Popover>
-  </div>
-
-       
       )}
 
       <ContentCustomizer
