@@ -17,9 +17,9 @@ export default function AddSlide({ updateSlides, index }: Props) {
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="carousel-item md:w-18 flex h-auto w-20 flex-shrink-0 flex-col items-center justify-center  rounded-lg bg-slate-100 text-slate-600 hover:bg-slate-200 dark:bg-gray-900/80 dark:text-gray-200  hover:dark:bg-gray-900">
+    <div className="carousel-item md:w-18 flex h-auto w-20 flex-shrink-0 flex-col items-center justify-center  rounded-lg  text-slate-600 dark:text-gray-400  dark:text-gray-200 ">
       <DropdownMenu>
-        <DropdownMenuTrigger className="rounded-lg border border-gray-200 p-2 focus:outline-none focus:ring-0">
+        <DropdownMenuTrigger className="rounded-lg border border-gray-200 dark:border-gray-600 p-2 focus:outline-none focus:ring-0">
           <span className="flex h-full flex-col items-center justify-center text-xs font-semibold tracking-tight">
             <Plus strokeWidth={"2.5px"} width={18} />
             Add Slide

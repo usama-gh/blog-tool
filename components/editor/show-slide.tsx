@@ -4,7 +4,8 @@ import { SlideStyle, gateSlide } from "@/types";
 import ContentCustomizer from "./editor-content/content-customizer";
 import { Trash, Settings2 } from "lucide-react";
 import { EditorContents } from "./editor-content";
-import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
 
 import {
   Popover,
@@ -70,17 +71,17 @@ export default function ShowSlide(props: Props) {
                 <h3 className="mb-3 text-sm font-semibold uppercase tracking-wide text-gray-500">
                   Choose Gated Method
                 </h3>
-                <Tabs defaultValue={type}>
+                <Tabs defaultValue={type} onValueChange={(value) => handleSlideChange(value)}>
                   <TabsList>
                     <TabsTrigger
                       value="email"
-                      onClick={() => handleSlideChange("email")}
+                      
                     >
                       Subscribe
                     </TabsTrigger>
                     <TabsTrigger
                       value="follow"
-                      onClick={() => handleSlideChange("follow")}
+                      
                     >
                       Follow Link
                     </TabsTrigger>
@@ -129,6 +130,7 @@ export default function ShowSlide(props: Props) {
               }
             }}
           />
+         
           <EditorContents
             data={props.data}
             slideData={props.slideData}
@@ -141,6 +143,26 @@ export default function ShowSlide(props: Props) {
             slidesStyles={props.slidesStyles}
             updateStyleSlides={props.updateStyleSlides}
           />
+           {gateSlide && (
+         
+         <div>
+         {type === "email" ? (
+           <div className="mt-5 flex justify-center">
+           <div className="flex w-full max-w-sm items-center space-x-2">
+      <Input type="email" placeholder="Email" />
+      <Button className="bg-gradient-to-tr from-lime-600  text-black to-lime-400" type="submit">Subscribe</Button>
+    </div>
+
+           </div>
+         ) : (
+           <div className="flex justify-center mt-5">
+          <Button className="bg-gradient-to-tr from-lime-600  text-black to-lime-400">Click Here</Button>
+           </div>
+         )}
+       </div>
+   
+         )}
+          
         </>
       </ContentCustomizer>
     </div>

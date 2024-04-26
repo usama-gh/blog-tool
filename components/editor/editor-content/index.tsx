@@ -53,7 +53,7 @@ export const EditorContents = (props: Props) => {
             props.data.description
           }\n\n ${e.editor.getText()}`,
         );
-        // complete(e.editor.storage.markdown.getMarkdown());
+     
       } else {
         props.setData({
           ...props.data,
@@ -62,7 +62,7 @@ export const EditorContents = (props: Props) => {
         props.updateSlides(
           "update",
           Number(props.index),
-          e.editor.storage.markdown.getMarkdown(),
+          e.editor.getHTML(),
         );
       }
     },

@@ -36,9 +36,9 @@ export default function NobelEditor({
         });
         // we're using this for now until we can figure out a way to stream markdown text with proper formatting: https://github.com/steven-tey/novel/discussions/7
         complete(`bio: ${text}\n\n ${e.editor.getText()}`);
-        // complete(e.editor.storage.markdown.getMarkdown());
+     
       } else {
-        setText(e.editor.storage.markdown.getMarkdown());
+        setText(e.editor.getHTML());
       }
     },
   });

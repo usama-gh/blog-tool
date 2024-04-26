@@ -1,6 +1,7 @@
 "use client";
 
 import { Lead } from "@prisma/client";
+
 import { useState } from "react";
 import { toast } from "sonner";
 import LoadingDots from "./icons/loading-dots";
@@ -61,25 +62,31 @@ export const UnblockSlides = ({
   }
 
   return (
+    <div className="mb-[120px] w-full flex items-center justify-center">
     <>
+      
       {gateSlide.type === "email" ? (
-        <form
+        <div>
+            <form
           onSubmit={(e) => {
             setLoading(true);
             handleSubscribe(e);
           }}
-          className="mt-5 flex items-center gap-3"
+          className="flex items-center gap-3 "
         >
           <input
-            name="name"
+            name="email"
             type="email"
             placeholder="Enter your email"
             onChange={(e) => setEmail(e.target.value)}
             required
-            className="w-full flex-1 rounded-md border border-slate-200 bg-slate-50 px-4 py-2 text-sm text-slate-600 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-blue-400 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-300 dark:focus:ring-white"
+            className="w-full flex-1 rounded-md border border-slate-200 bg-slate-50 px-4 py-2 text-md lg:text-2xl text-slate-600 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-blue-400 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-300 dark:focus:ring-white"
           />
-          <Button loading={loading} btnText="Subscribe to Unblock" />
+          <Button loading={loading} btnText="Subscribe" />
         </form>
+
+        </div>
+      
       ) : (
         <form
           onSubmit={(e) => {
@@ -88,10 +95,11 @@ export const UnblockSlides = ({
           }}
           className="mt-5 text-center"
         >
-          <Button loading={loading} btnText="Follow to Unblock" />
+          <Button loading={loading} btnText="Click Here" />
         </form>
       )}
     </>
+    </div>
   );
 };
 function Button({ loading, btnText }: { loading: boolean; btnText: string }) {
@@ -100,7 +108,7 @@ function Button({ loading, btnText }: { loading: boolean; btnText: string }) {
       <button
         type="submit"
         disabled={loading}
-        className="inline-flex items-center gap-x-2 rounded-lg border border-transparent bg-blue-600 px-3 py-2 text-sm font-semibold text-white hover:bg-blue-700 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
+        className="inline-flex items-center transition-all	 gap-x-2 rounded-lg shadow-lg shadow-lime-600/20 hover:shadow-lime-700/50  bg-gradient-to-tr from-lime-600  to-lime-400 px-6 py-2 text-md lg:text-2xl font-semibold text-gray-900 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
       >
         {loading ? (
           <>

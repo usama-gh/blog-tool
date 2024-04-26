@@ -297,7 +297,7 @@ const CommandList = ({
         if (item.title === "Continue writing") {
           // we're using this for now until we can figure out a way to stream markdown text with proper formatting: https://github.com/steven-tey/novel/discussions/7
           complete(editor.getText());
-          // complete(editor.storage.markdown.getMarkdown());
+      
         } else {
           command(item);
         }

@@ -56,7 +56,9 @@ const Carousel = ({ data, siteData, lead }: any) => {
   const scrollNext = useCallback(() => {
     const currentSlide = embla ? embla.selectedScrollSnap() + 1 : 0;
     if (!gateSlideUnblock && gateSlide && currentSlide > gateSlide.id) {
-      alert("Please subscribe to unlock slides");
+      toast.error(
+        `Rest of slides needs to be unlocked`,
+      );
       return;
     }
 
@@ -66,7 +68,9 @@ const Carousel = ({ data, siteData, lead }: any) => {
   const scrollTo = useCallback(
     (index: number) => {
       if (!gateSlideUnblock && gateSlide && index > gateSlide.id) {
-        alert("Please subscribe to unlock slides");
+        toast.error(
+          `Rest of slides needs to be unlocked`,
+        );
         return;
       }
 

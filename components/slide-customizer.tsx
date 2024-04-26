@@ -257,7 +257,7 @@ const SlideCustomizer = ({
 
   function changeEditorTextColor(type: string, value: any) {
     // select all the text in editor and change the color
-    const textLength = editor.storage.markdown.getMarkdown().length;
+    const textLength = editor.getHTML().length;
     editor.commands.unsetColor();
     // editor.commands;
     editor.commands.setTextSelection({

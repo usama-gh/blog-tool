@@ -209,11 +209,11 @@ export default function Editor({
             data.description
           }\n\n ${e.editor.getText()}`,
         );
-        complete(e.editor.storage.markdown.getMarkdown());
+        complete(e.editor.getHTML());
       } else {
         setData((prev) => ({
           ...prev,
-          content: e.editor.storage.markdown.getMarkdown(),
+          content: e.editor.getHTML(),
         }));
       }
     },
@@ -306,12 +306,13 @@ export default function Editor({
         if (value === "gate") {
           const gateSlide: gateSlide = createGateSlide(index);
           setGateSlides([gateSlide]);
-          value = "# Subscribe to unlock";
+          value = "<h1 style='text-align: center'>Subscribe to unlock</h1><p style='text-align: center'>I hope you find my posts valuable. I would love to have you subscribed to my newsletter. By subscribing, you'll unlock exclusive content. Simply enter your email below to continue reading more</p>";
         } else {
           value = "";
         }
 
         setSlides([...slides, value]);
+        toast("Slide added")
         break;
       case "update":
         updatedSlides[index] = value;
@@ -323,6 +324,7 @@ export default function Editor({
         const slideStyle: SlideStyle | undefined = slidesStyles.find(
           (slide: SlideStyle) => slide.id == index + 1,
         );
+        toast("Slide deleted")
         // delete image if slide style has
         if (slideStyle?.bgImage) {
           await fetch("/api/upload", {

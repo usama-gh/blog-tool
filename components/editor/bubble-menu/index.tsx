@@ -6,6 +6,9 @@ import {
   UnderlineIcon,
   StrikethroughIcon,
   CodeIcon,
+  AlignCenter,
+  AlignRight,
+  AlignLeft,
 } from "lucide-react";
 
 import { NodeSelector } from "./node-selector";
@@ -64,6 +67,31 @@ export const EditorBubbleMenu: FC<EditorBubbleMenuProps> = (props) => {
       command: () => props.editor.chain().focus().toggleCode().run(),
       icon: CodeIcon,
     },
+    {
+      name: "left-align",
+      // @ts-ignore
+      isActive: () => props.editor.isActive({ textAlign: 'left' }),
+      // @ts-ignore
+      command: () => props.editor.chain().focus().setTextAlign('left').run(),
+      icon: AlignLeft,
+    },
+    {
+      name: "center-align",
+      // @ts-ignore
+      isActive: () => props.editor.isActive({ textAlign: 'center' }),
+      // @ts-ignore
+      command: () => props.editor.chain().focus().setTextAlign('center').run(),
+      icon: AlignCenter,
+    },
+    {
+      name: "right-align",
+      // @ts-ignore
+      isActive: () => props.editor.isActive({ textAlign: 'right' }),
+      // @ts-ignore
+      command: () => props.editor.chain().focus().setTextAlign('right').run(),
+      icon: AlignRight,
+    },
+    
   ];
 
   const bubbleMenuProps: EditorBubbleMenuProps = {
@@ -92,7 +120,7 @@ export const EditorBubbleMenu: FC<EditorBubbleMenuProps> = (props) => {
   return (
     <BubbleMenu
       {...bubbleMenuProps}
-      className="flex rounded border border-stone-200 bg-white shadow-xl whitespace-nowrap w-max"
+      className="flex rounded  bg-white shadow-xl whitespace-nowrap max-w-[250px] flex-wrap justify-center w-max"
     >
       <NodeSelector
         // @ts-ignore
