@@ -306,13 +306,14 @@ export default function Editor({
         if (value === "gate") {
           const gateSlide: gateSlide = createGateSlide(index);
           setGateSlides([gateSlide]);
-          value = "<h1 style='text-align: center'>Subscribe to unlock</h1><p style='text-align: center'>I hope you find my posts valuable. I would love to have you subscribed to my newsletter. By subscribing, you'll unlock exclusive content. Simply enter your email below to continue reading more</p>";
+          value =
+            "<h1 style='text-align: center'>Subscribe to unlock</h1><p style='text-align: center'>I hope you find my posts valuable. I would love to have you subscribed to my newsletter. By subscribing, you'll unlock exclusive content. Simply enter your email below to continue reading more</p>";
         } else {
           value = "";
         }
 
         setSlides([...slides, value]);
-        toast("Slide added")
+        toast("Slide added");
         break;
       case "update":
         updatedSlides[index] = value;
@@ -324,7 +325,7 @@ export default function Editor({
         const slideStyle: SlideStyle | undefined = slidesStyles.find(
           (slide: SlideStyle) => slide.id == index + 1,
         );
-        toast("Slide deleted")
+
         // delete image if slide style has
         if (slideStyle?.bgImage) {
           await fetch("/api/upload", {
@@ -349,10 +350,13 @@ export default function Editor({
 
         setData({
           ...data,
-          slides: JSON.stringify([...updatedSlides]),
           styling: JSON.stringify(styledSlides),
-          gateSlides: JSON.stringify([...gateSlides]),
         });
+
+        toast("Slide deleted");
+        break;
+      default:
+        console.log("default handle for handle slide");
         break;
     }
   };

@@ -32,6 +32,16 @@ interface Props {
 }
 
 export const EditorContents = (props: Props) => {
+  const [hydrated, setHydrated] = useState(false);
+  const [slidesLength, setSlidesLength] = useState(0);
+
+  useEffect(() => {
+    if (slidesLength != props.slides.length) {
+      setHydrated(false);
+    }
+    setSlidesLength(props.slides.length);
+  }, [props.slides]);
+
   const editor = useEditor({
     extensions: props.canUseAI ? TiptapExtensionsAI : TiptapExtensions,
     editorProps: TiptapEditorProps,
@@ -53,17 +63,12 @@ export const EditorContents = (props: Props) => {
             props.data.description
           }\n\n ${e.editor.getText()}`,
         );
-     
       } else {
         props.setData({
           ...props.data,
           slides: JSON.stringify([...props.slides]),
         });
-        props.updateSlides(
-          "update",
-          Number(props.index),
-          e.editor.getHTML(),
-        );
+        props.updateSlides("update", Number(props.index), e.editor.getHTML());
       }
     },
   });
@@ -141,8 +146,11 @@ export const EditorContents = (props: Props) => {
 
   // Hydrate the editor with the content
   useEffect(() => {
-    if (editor?.isEmpty) editor.commands.setContent(props.slideData);
-  }, [editor, props.slideData]);
+    if (editor && props.slideData && !hydrated) {
+      editor.commands.setContent(props.slideData);
+      setHydrated(true);
+    }
+  }, [editor, props.post, hydrated, props.slideData]);
 
   return (
     <>
