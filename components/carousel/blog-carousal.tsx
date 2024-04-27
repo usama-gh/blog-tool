@@ -41,13 +41,14 @@ const Carousel = ({ data, siteData, lead }: any) => {
   const [nextBtnEnabled, setNextBtnEnabled] = useState<boolean>(false);
   const [selectedIndex, setSelectedIndex] = useState<number>(0);
   const [scrollSnaps, setScrollSnaps] = useState<Array<ReactNode>>([]);
-  const [gateSlideUnblock, setGateSlideUnblock] = useState<boolean>(() => {
+  const [gateSlideUnblock, setGateSlideUnblock] = useState<boolean>(false);
+
+  useEffect(() => {
     const siteIdFromStorage = localStorage.getItem("siteId");
     if (siteIdFromStorage && data.siteId === siteIdFromStorage) {
-      return true;
+      setGateSlideUnblock(true);
     }
-    return false;
-  });
+  }, []);
 
   const scrollPrev = useCallback(
     () => embla && embla.scrollPrev(true),
@@ -56,9 +57,7 @@ const Carousel = ({ data, siteData, lead }: any) => {
   const scrollNext = useCallback(() => {
     const currentSlide = embla ? embla.selectedScrollSnap() + 1 : 0;
     if (!gateSlideUnblock && gateSlide && currentSlide > gateSlide.id) {
-      toast.error(
-        `Rest of slides needs to be unlocked`,
-      );
+      toast.error(`Rest of slides needs to be unlocked`);
       return;
     }
 
@@ -68,9 +67,7 @@ const Carousel = ({ data, siteData, lead }: any) => {
   const scrollTo = useCallback(
     (index: number) => {
       if (!gateSlideUnblock && gateSlide && index > gateSlide.id) {
-        toast.error(
-          `Rest of slides needs to be unlocked`,
-        );
+        toast.error(`Rest of slides needs to be unlocked`);
         return;
       }
 
