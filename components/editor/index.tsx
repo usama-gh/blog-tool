@@ -546,7 +546,7 @@ export default function Editor({
         </div>
         <LeadButton
           btnText={isPendingLead ? <LoadingDots /> : "Lead Magnet"}
-          style="rounded-lg  shadow-lg bg-slate-200 px-2 py-1 text-xs font-normal text-slate-800 dark:bg-black dark:text-gray-500 lg:text-lg border-gray-100 shadow-none"
+          style="rounded-lg  shadow-lg bg-slate-200 px-4 py-1 text-xs font-normal text-slate-700 dark:bg-black dark:text-gray-500 lg:text-lg border-gray-100 shadow-none"
           disable={isPendingLead ? true : false}
         >
           <LinkLeadModal leads={leads} leadId={leadId} setLeadId={setLeadId} />
@@ -599,8 +599,8 @@ export default function Editor({
       />
 
       <div className="flex w-full flex-col items-center justify-center">
-        <div className="carousel-wrapper mb-2 mt-2 flex w-full flex-nowrap space-x-4 overflow-x-scroll pb-4">
-          <div className="carousel-item carousel-item min-h-[500px] w-[90%]  flex-shrink-0 overflow-y-auto">
+        <div className="scroll-x-fade carousel-wrapper mb-2 mt-2 flex w-full flex-nowrap space-x-4 overflow-x-scroll pb-4">
+          <div className="animate-fadeLeft carousel-item carousel-item min-h-[500px] w-[90%]  flex-shrink-0 overflow-y-auto">
             <ContentCustomizer
               style={slidesStyles.find((item: SlideStyle) => item.id == 0)}
               className="relative h-full max-w-screen-xl overflow-y-auto  rounded-lg bg-slate-100 p-8 dark:bg-gray-900/80 lg:mt-0"

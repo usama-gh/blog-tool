@@ -56,11 +56,8 @@ const SlideContent = ({
                   opacity: style?.bgImage ? 0.8 : 1, // Adjust overlay opacity
                 }),
           }}
-          className={`absolute left-0 top-0 h-full w-full ${
-            isDefultStyle("bg", style?.bgColor as string)
-              ? ""
-              : "bg-" + style?.bgColor
-          }}`} // Adjust overlay opacity
+          className={`absolute left-0 top-0 h-full w-full ${style && style.bgColor && !isDefultStyle("bg", style.bgColor) ? "bg-" + style.bgColor : ""}`}
+
         ></div>
 
         <div
@@ -85,7 +82,7 @@ const SlideContent = ({
                 </>
               ) : (
               
-                <div className="mx-auto max-w-xl px-6 mb-12 text-center border border-lime-200 py-6 rounded-2xl">
+                <div className="mx-auto max-w-xl px-6 mb-12 text-center border-2 border-lime-200 py-6 rounded-2xl">
                     {/* <div className="absolute top-0 left-0 h-full w-full  bg-white">
                   
                   </div> */}
@@ -98,7 +95,7 @@ const SlideContent = ({
                   </h4>
                   <button
                     type="submit"
-                    className="inline-flex items-center gap-x-2 rounded-lg shadow-lg shadow-lime-600/20 transition-all	 hover:shadow-lime-700/50  bg-gradient-to-tr from-lime-600  to-lime-400 px-6 py-2 text-xl font-semibold text-gray-900 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
+                    className="inline-flex items-center gap-x-2 rounded-lg shadow-lg shadow-lime-600/20 transition-all	 hover:shadow-lime-500/50  bg-gradient-to-tr from-lime-600  to-lime-400 px-6 tracking-wide py-2 text-sm font-semibold uppercase text-white disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
                     onClick={scrollNext}
                   >
                   Continue

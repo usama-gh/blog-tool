@@ -59,9 +59,13 @@ export default function ShowSlide(props: Props) {
   }
 
   return (
-    <div className="carousel-item carousel-item relative min-h-[500px] w-[90%]  flex-shrink-0 overflow-y-auto">
+    <div className="animate-fadeLeft	carousel-item carousel-item relative min-h-[500px] w-[90%]  flex-shrink-0 overflow-y-auto">
       {gateSlide && (
+        
         <div>
+          <div className="absolute font-semibold rounded-full bottom-5 z-20 px-2 left-1/2 transform -translate-x-1/2 bg-orange-200 text-black text-sm">
+            Slides after this will be locked with the gated slide
+            </div>
           <Popover>
             <PopoverTrigger className="absolute  bottom-5 left-5 z-20 flex h-10 w-10 items-center justify-center rounded-full bg-white p-2 shadow-sm">
               <Settings2 strokeWidth={"1.5px"} width={20} />

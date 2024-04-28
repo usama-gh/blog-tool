@@ -194,11 +194,15 @@ const config = {
           "60%": { transform: "translateX(3px) rotate(2.4deg)" },
           "75%": { transform: "translateX(-2px) rotate(-1.2deg)" },
         },
+        fadeLeft: {
+          '0%': { transform: 'translateX(5px);',opacity:'0' },
+          '100%': { transform: 'translateX(0px);',opacity:'1' },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
-        wiggle: "wiggle 0.8s both",
+        fadeLeft: 'fadeLeft 1s',
       },
     },
     variants: {

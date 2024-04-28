@@ -18,7 +18,7 @@ export default function MDX({ source, gated }: { source: MDXRemoteProps; gated?:
   const pbClass = gated ? '' : 'pb-[120px] my-auto';
 
 
-  console.log(pbClass)
+
 
   return (
     <article

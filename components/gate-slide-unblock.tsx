@@ -108,7 +108,7 @@ function Button({ loading, btnText }: { loading: boolean; btnText: string }) {
       <button
         type="submit"
         disabled={loading}
-        className="inline-flex items-center transition-all	 gap-x-2 rounded-lg shadow-lg shadow-lime-600/20 hover:shadow-lime-700/50  bg-gradient-to-tr from-lime-600  to-lime-400 px-6 py-2 text-md lg:text-2xl font-semibold text-gray-900 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
+        className="inline-flex items-center gap-x-2 rounded-lg shadow-lg shadow-lime-600/20 transition-all	 hover:shadow-lime-500/50  bg-gradient-to-tr from-lime-600  to-lime-400 px-6 tracking-wide py-2 text-sm font-semibold uppercase text-white disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
       >
         {loading ? (
           <>
