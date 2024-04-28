@@ -15,11 +15,13 @@ export async function POST(request: Request) {
     const response = await prisma.leadCollector.create({
       data: {
         email,
-        lead: {
-          connect: {
-            id: data.leadId,
+        ...(data.leadId && {
+          lead: {
+            connect: {
+              id: data.leadId,
+            },
           },
-        },
+        }),
         post: {
           connect: {
             id: data.postId,

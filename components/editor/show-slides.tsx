@@ -1,6 +1,6 @@
 import React, { Dispatch, SetStateAction } from "react";
 import { Post } from "@prisma/client";
-import { SlideStyle } from "@/types";
+import { SlideStyle, gateSlide } from "@/types";
 import ShowSlide from "./show-slide";
 
 type PostWithSite = Post & { site: { subdomain: string | null } | null };
@@ -14,6 +14,8 @@ interface Props {
   canUseAI: boolean;
   slidesStyles: SlideStyle[] | [];
   updateStyleSlides: any;
+  gateSlides: gateSlide[] | [];
+  setGateSlides: any;
 }
 export default function ShowSlides(props: Props) {
   return (
@@ -31,6 +33,8 @@ export default function ShowSlides(props: Props) {
           canUseAI={props.canUseAI}
           slidesStyles={props.slidesStyles}
           updateStyleSlides={props.updateStyleSlides}
+          gateSlides={props.gateSlides}
+          setGateSlides={props.setGateSlides}
         />
       ))}
     </>

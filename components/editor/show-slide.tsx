@@ -1,9 +1,19 @@
-import React, { Dispatch, SetStateAction } from "react";
+import React, { Dispatch, SetStateAction, useState } from "react";
 import { Post } from "@prisma/client";
-import { SlideStyle } from "@/types";
+import { SlideStyle, gateSlide } from "@/types";
 import ContentCustomizer from "./editor-content/content-customizer";
-import { Trash } from "lucide-react";
+import { Trash, Settings2 } from "lucide-react";
 import { EditorContents } from "./editor-content";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { cn } from "@/lib/utils";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 type PostWithSite = Post & { site: { subdomain: string | null } | null };
 
@@ -18,10 +28,86 @@ interface Props {
   canUseAI: boolean;
   slidesStyles: SlideStyle[] | [];
   updateStyleSlides: any;
+  gateSlides: gateSlide[] | [];
+  setGateSlides: any;
 }
 export default function ShowSlide(props: Props) {
+  const gateSlide = props.gateSlides.find((item) => item.id == props.index + 1);
+  const [type, setType] = useState(gateSlide ? gateSlide.type : "email");
+  const [link, setLink] = useState(gateSlide ? gateSlide.link : "");
+
+  function handleSlideChange(type: string, e?: any) {
+    console.log("type changed", type);
+
+    if (type === "email" || type === "follow") {
+      setType(type);
+    } else {
+      setLink(e.target.value);
+    }
+
+    props.setGateSlides(
+      props.gateSlides.map((slide: gateSlide) => {
+        if (slide.id == props.index + 1) {
+          return {
+            ...slide,
+            type,
+            link: e ? e.target.value : link,
+          };
+        }
+      }),
+    );
+  }
+
   return (
-    <div className="carousel-item carousel-item min-h-[500px] w-[90%]  flex-shrink-0 overflow-y-auto">
+    <div className="animate-fadeLeft	carousel-item carousel-item relative min-h-[500px] w-[90%]  flex-shrink-0 overflow-y-auto">
+      {gateSlide && (
+        
+        <div>
+          <div className="absolute font-semibold rounded-full bottom-5 z-20 px-2 left-1/2 transform -translate-x-1/2 bg-orange-200 text-black text-sm">
+            Slides after this will be locked with the gated slide
+            </div>
+          <Popover>
+            <PopoverTrigger className="absolute  bottom-5 left-5 z-20 flex h-10 w-10 items-center justify-center rounded-full bg-white p-2 shadow-sm">
+              <Settings2 strokeWidth={"1.5px"} width={20} />
+            </PopoverTrigger>
+            <PopoverContent className="mt-2 max-w-sm rounded-xl">
+              <div className="rounded text-center ">
+                <h3 className="mb-3 text-sm font-semibold uppercase tracking-wide text-gray-500">
+                  Choose Gated Method
+                </h3>
+                <Tabs
+                  defaultValue={type}
+                  onValueChange={(value) => handleSlideChange(value)}
+                >
+                  <TabsList>
+                    <TabsTrigger value="email">Subscribe</TabsTrigger>
+                    <TabsTrigger value="follow">Follow Link</TabsTrigger>
+                  </TabsList>
+                  <TabsContent value="email">
+                    <p className="text-xs text-gray-400">
+                      Subscribe via email to unlock the full slides
+                    </p>
+                  </TabsContent>
+                  <TabsContent value="follow">
+                    <Input
+                      className="mx-auto max-w-xs"
+                      defaultValue={link}
+                      onChange={(e) => handleSlideChange("follow", e)}
+                      type="email"
+                      placeholder="Link to follow"
+                    />
+                    <p className="mt-1 text-xs text-gray-400">
+                      Unlock slides via links, like social follows or site
+                      visits
+                    </p>
+                  </TabsContent>
+                </Tabs>
+              </div>
+            </PopoverContent>
+          </Popover>
+        </div>
+      )}
+
       <ContentCustomizer
         style={props.slidesStyles.find(
           (item: SlideStyle) => item.id == props.index + 1,
@@ -41,6 +127,7 @@ export default function ShowSlide(props: Props) {
               }
             }}
           />
+
           <EditorContents
             data={props.data}
             slideData={props.slideData}
@@ -53,6 +140,29 @@ export default function ShowSlide(props: Props) {
             slidesStyles={props.slidesStyles}
             updateStyleSlides={props.updateStyleSlides}
           />
+          {gateSlide && (
+            <div>
+              {type === "email" ? (
+                <div className="mt-5 flex justify-center">
+                  <div className="flex w-full max-w-sm items-center space-x-2">
+                    <Input type="email" placeholder="Email" />
+                    <Button
+                      className="bg-gradient-to-tr from-lime-600  to-lime-400 text-black"
+                      type="submit"
+                    >
+                      Subscribe
+                    </Button>
+                  </div>
+                </div>
+              ) : (
+                <div className="mt-5 flex justify-center">
+                  <Button className="bg-gradient-to-tr from-lime-600  to-lime-400 text-black">
+                    Click Here
+                  </Button>
+                </div>
+              )}
+            </div>
+          )}
         </>
       </ContentCustomizer>
     </div>

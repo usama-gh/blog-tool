@@ -7,6 +7,7 @@ import TiptapUnderline from "@tiptap/extension-underline";
 import TextStyle from "@tiptap/extension-text-style";
 import { Color } from "@tiptap/extension-color";
 import TaskItem from "@tiptap/extension-task-item";
+import {TextAlign} from "@tiptap/extension-text-align";
 import TaskList from "@tiptap/extension-task-list";
 import { Markdown } from "tiptap-markdown";
 
@@ -110,6 +111,10 @@ export const TiptapExtensionsAI = [
     HTMLAttributes: {
       class: "not-prose pl-2",
     },
+  }),
+  TextAlign.configure({
+    types: ['heading', 'paragraph'],
+    alignments: ['left', 'right','center']
   }),
   TaskItem.configure({
     HTMLAttributes: {

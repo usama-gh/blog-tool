@@ -13,7 +13,13 @@ import TextareaAutosize from "react-textarea-autosize";
 import { EditorBubbleMenu } from "./bubble-menu";
 import { Lead, Post } from "@prisma/client";
 import { updatePost, updatePostMetadata } from "@/lib/actions";
-import { cn, convertToRgba, isDefultStyle, styledSlide } from "@/lib/utils";
+import {
+  cn,
+  convertToRgba,
+  createGateSlide,
+  isDefultStyle,
+  styledSlide,
+} from "@/lib/utils";
 import LoadingDots from "../icons/loading-dots";
 import { ExternalLink } from "lucide-react";
 import { EditorContents } from "./editor-content";
@@ -28,7 +34,7 @@ import LinkLeadModal from "../modal/link-lead";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import SlideCustomizer from "../slide-customizer";
-import { SlideStyle } from "@/types";
+import { SlideStyle, gateSlide } from "@/types";
 import ContentCustomizer from "./editor-content/content-customizer";
 import ShowSlides from "./show-slides";
 import AddSlide from "./add-slide";
@@ -69,6 +75,14 @@ export default function Editor({
       return !!data.styling ? JSON.parse(data.styling) : [];
     } catch (error) {
       console.error("Error parsing slides styling JSON:", error);
+      return [];
+    }
+  });
+  const [gateSlides, setGateSlides] = useState<gateSlide[] | []>(() => {
+    try {
+      return !!data.gateSlides ? JSON.parse(data.gateSlides) : [];
+    } catch (error) {
+      console.error("Error parsing gate slides JSON:", error);
       return [];
     }
   });
@@ -137,8 +151,6 @@ export default function Editor({
     ? `https://${data.site?.subdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}/${post.slug}`
     : `http://${data.site?.subdomain}.localhost:3000/${post.slug}`;
 
-  // console.log(JSON.parse(data.styling));
-
   const [debouncedData] = useDebounce(data, 1000);
 
   useEffect(() => {
@@ -148,15 +160,16 @@ export default function Editor({
       debouncedData.description === post.description &&
       debouncedData.content === post.content &&
       debouncedData.slides === post.slides &&
-      debouncedData.styling === post.styling
+      debouncedData.styling === post.styling &&
+      debouncedData.gateSlides === post.gateSlides
     ) {
       return;
     }
-    // console.log("147: ", "slides changes");
+    // console.log("170: ", "slides changes");
 
     startTransitionSaving(async () => {
-      const response = await updatePost(debouncedData);
-      // console.log(response);
+      await updatePost(debouncedData);
+      console.log("174: ", "data updated");
     });
   }, [debouncedData, post]);
 
@@ -196,11 +209,11 @@ export default function Editor({
             data.description
           }\n\n ${e.editor.getText()}`,
         );
-        complete(e.editor.storage.markdown.getMarkdown());
+        complete(e.editor.getHTML());
       } else {
         setData((prev) => ({
           ...prev,
-          content: e.editor.storage.markdown.getMarkdown(),
+          content: e.editor.getHTML(),
         }));
       }
     },
@@ -290,9 +303,17 @@ export default function Editor({
 
     switch (action) {
       case "add":
-        // const slideStyle: SlideStyle = styledSlide(index);
-        // setSlidesStyles([...slidesStyles, slideStyle]);
+        if (value === "gate") {
+          const gateSlide: gateSlide = createGateSlide(index);
+          setGateSlides([gateSlide]);
+          value =
+            "<h1 style='text-align: center'>Subscribe to unlock</h1><p style='text-align: center'>I hope you find my posts valuable. I would love to have you subscribed to my newsletter. By subscribing, you'll unlock exclusive content. Simply enter your email below to continue reading more</p>";
+        } else {
+          value = "";
+        }
+
         setSlides([...slides, value]);
+        toast("Slide added");
         break;
       case "update":
         updatedSlides[index] = value;
@@ -304,6 +325,7 @@ export default function Editor({
         const slideStyle: SlideStyle | undefined = slidesStyles.find(
           (slide: SlideStyle) => slide.id == index + 1,
         );
+
         // delete image if slide style has
         if (slideStyle?.bgImage) {
           await fetch("/api/upload", {
@@ -319,22 +341,35 @@ export default function Editor({
           (slide: SlideStyle) => slide.id != index + 1,
         );
         setSlidesStyles(styledSlides);
+
+        // delete gate slide
+        const gatedSlides = gateSlides.filter(
+          (slide: gateSlide) => slide.id != index + 1,
+        );
+        setGateSlides(gatedSlides);
+
         setData({
           ...data,
-          slides: JSON.stringify([...updatedSlides]),
           styling: JSON.stringify(styledSlides),
         });
+
+        toast("Slide deleted");
+        break;
+      default:
+        console.log("default handle for handle slide");
         break;
     }
   };
 
   useEffect(() => {
     setData((state) => {
-      return { ...state, slides: JSON.stringify([...slides]) };
+      return {
+        ...state,
+        slides: JSON.stringify([...slides]),
+        gateSlides: JSON.stringify([...gateSlides]),
+      };
     });
-
-    // console.log("hooked called");
-  }, [slides]);
+  }, [slides, gateSlides]);
 
   const escapeSpecialCharacters = (str: string) => {
     return str.replace(/[<{]/g, "\\$&");
@@ -511,7 +546,7 @@ export default function Editor({
         </div>
         <LeadButton
           btnText={isPendingLead ? <LoadingDots /> : "Lead Magnet"}
-          style="rounded-lg  shadow-lg bg-slate-200 px-2 py-1 text-xs font-normal text-slate-800 dark:bg-black dark:text-gray-500 lg:text-lg border-gray-100 shadow-none"
+          style="rounded-lg  shadow-lg bg-slate-200 px-4 py-1 text-xs font-normal text-slate-700 dark:bg-black dark:text-gray-500 lg:text-lg border-gray-100 shadow-none"
           disable={isPendingLead ? true : false}
         >
           <LinkLeadModal leads={leads} leadId={leadId} setLeadId={setLeadId} />
@@ -564,8 +599,8 @@ export default function Editor({
       />
 
       <div className="flex w-full flex-col items-center justify-center">
-        <div className="carousel-wrapper mb-2 mt-2 flex w-full flex-nowrap space-x-4 overflow-x-scroll pb-4">
-          <div className="carousel-item carousel-item min-h-[500px] w-[90%]  flex-shrink-0 overflow-y-auto">
+        <div className="scroll-x-fade carousel-wrapper mb-2 mt-2 flex w-full flex-nowrap space-x-4 overflow-x-scroll pb-4">
+          <div className="animate-fadeLeft carousel-item carousel-item min-h-[500px] w-[90%]  flex-shrink-0 overflow-y-auto">
             <ContentCustomizer
               style={slidesStyles.find((item: SlideStyle) => item.id == 0)}
               className="relative h-full max-w-screen-xl overflow-y-auto  rounded-lg bg-slate-100 p-8 dark:bg-gray-900/80 lg:mt-0"
@@ -593,6 +628,8 @@ export default function Editor({
             canUseAI={canUseAI}
             slidesStyles={slidesStyles}
             updateStyleSlides={updateStyleSlides}
+            gateSlides={gateSlides}
+            setGateSlides={setGateSlides}
           />
 
           {/* add new slide */}

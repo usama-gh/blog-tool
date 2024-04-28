@@ -381,8 +381,7 @@ export const updatePost = async (data: Post) => {
         content: data.content,
         slides: data.slides,
         styling: data.styling,
-        // customizedContent: data.customizedContent,
-        // customizedSlides: data.customizedSlides,
+        gateSlides: data.gateSlides,
       },
     });
 

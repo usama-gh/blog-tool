@@ -48,3 +48,9 @@ interface SlideStyle {
   bgImage: string;
   content?: string;
 }
+
+interface gateSlide {
+  id: number;
+  type: string;
+  link?: string;
+}

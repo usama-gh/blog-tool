@@ -7,7 +7,7 @@ import { Tweet } from "react-tweet";
 import BlurImage from "@/components/blur-image";
 import styles from './mdx.module.css'
 
-export default function MDX({ source }: { source: MDXRemoteProps }) {
+export default function MDX({ source, gated }: { source: MDXRemoteProps; gated?: boolean }) {
   const components = {
     a: replaceLinks,
     BlurImage,
@@ -15,18 +15,45 @@ export default function MDX({ source }: { source: MDXRemoteProps }) {
     Tweet,
   };
 
+  const pbClass = gated ? '' : 'pb-[120px] my-auto';
+
+
+
+
   return (
     <article
-      className={`lg:px-0 px-6  prose-md w-full prose h-fit prose-slate my-auto dark:prose-invert sm:prose-lg text-slate-600 dark:text-gray-100 pb-[120px]  ${styles.root}`}
+      className={`lg:px-0 px-6 prose-md w-full prose h-fit prose-slate dark:prose-invert sm:prose-lg text-slate-600 dark:text-gray-100 ${pbClass} ${styles.root}`}
       suppressHydrationWarning={true}
     >
-      <div className=" pb-18">
-      {/* @ts-ignore */}
-      <MDXRemote {...source} components={components}/>
+      <div className="pb-18 [&>h1]:mb-2 [&>h1]:tracking-tight [&>h2]:tracking-tight">
+        {/* @ts-ignore */}
+        <MDXRemote {...source} components={components}/>
       </div>
     </article>
   );
 }
+// export default function MDX({ source }: { source: MDXRemoteProps }) {
+//   const components = {
+//     a: replaceLinks,
+//     BlurImage,
+//     Examples,
+//     Tweet,
+//   };
+
+//   return (
+//     <article
+//       className={`lg:px-0 px-6  prose-md w-full prose h-fit prose-slate my-auto dark:prose-invert sm:prose-lg text-slate-600 dark:text-gray-100 pb-[120px]  ${styles.root}`}
+//       suppressHydrationWarning={true}
+//     >
+//       <div className=" pb-18">
+//       {/* @ts-ignore */}
+//       <MDXRemote {...source} components={components}/>
+
+      
+//       </div>
+//     </article>
+//   );
+// }
 
 interface ExampleCardProps
   extends Pick<Post, "description" | "image" | "imageBlurhash"> {
