@@ -109,12 +109,12 @@ export default function Editor({
     // Update textareaValue whenever post.content changes, but only if the user hasn't manually edited it
     if (!firstRender.current && !isUserEdit) {
       // @ts-ignore
-      let abc = post?.content;
+      let abc = editor.getText()
+    
       // @ts-ignore
-      abc = abc?.replace(/!\[.*\]\(.*\)/g, "");
-      // @ts-ignore
+      console.log(abc)
       if (abc) {
-        let plainText = markdownToTxt(abc)?.replaceAll("\n", " ");
+        let plainText = abc;
         const first170Characters = plainText?.substring(0, 170) || "";
         if (textareaValue !== first170Characters) {
           setTextareaValue(first170Characters);
@@ -546,7 +546,7 @@ export default function Editor({
         </div>
         <LeadButton
           btnText={isPendingLead ? <LoadingDots /> : "Lead Magnet"}
-          style="rounded-lg  shadow-lg bg-slate-200 px-4 py-1 text-xs font-normal text-slate-700 dark:bg-black dark:text-gray-500 lg:text-lg border-gray-100 shadow-none"
+          style="rounded-lg  shadow-lg bg-slate-200 px-4 py-1 text-xs font-normal text-slate-700 dark:bg-black dark:text-gray-500 lg:text-lg shadow-none"
           disable={isPendingLead ? true : false}
         >
           <LinkLeadModal leads={leads} leadId={leadId} setLeadId={setLeadId} />
@@ -574,10 +574,10 @@ export default function Editor({
             });
           }}
           className={cn(
-            "flex items-center justify-center space-x-2 rounded-lg border px-5 py-1  text-xs transition-all focus:outline-none lg:text-lg",
+            "flex items-center shadow-xl  hover:shadow-blue-800/60 justify-center space-x-2 rounded-lg  text-white font-semibold px-5 py-2  text-xs transition-all focus:outline-none lg:text-lg",
             isPendingPublishing || debouncedData.content === ""
-              ? "cursor-not-allowed border-gray-200 bg-gray-100 text-gray-400 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300"
-              : "border border-slate-700 bg-slate-700 text-white hover:bg-white hover:text-black active:bg-gray-100 dark:border-gray-700 dark:hover:border-gray-200 dark:hover:bg-black dark:hover:text-white dark:active:bg-gray-800",
+              ? "cursor-not-allowed bg-gradient-to-br from-blue-600  to-blue-400 "
+              : " bg-gradient-to-br from-blue-600  to-blue-400",
           )}
           disabled={isPendingPublishing || debouncedData.content === ""}
         >
