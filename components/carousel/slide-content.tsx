@@ -82,20 +82,20 @@ const SlideContent = ({
                 </>
               ) : (
               
-                <div className="mx-auto max-w-xl px-6 mb-12 text-center border-2 border-lime-200 py-6 rounded-2xl">
+                <div className="mx-auto max-w-xl px-6 mb-12 text-center shadow-md shadow-blue-200/40 border-2 border-blue-400 py-6 rounded-2xl">
                     {/* <div className="absolute top-0 left-0 h-full w-full  bg-white">
                   
                   </div> */}
                   <div className="relative z-20">
-                  <Sparkles strokeWidth={"1.2px"} size={80} className="text-lime-400 mx-auto" />
-                  <h4 className="pb-4 text-center text-5xl font-bold tracking-tight bg-gradient-to-r from-lime-500 to-lime-500 inline-block text-transparent bg-clip-text">
+                  <Sparkles strokeWidth={"1.2px"} size={80} className="text-blue-400 mx-auto" />
+                  <h4 className="pb-4 text-center text-5xl font-bold tracking-tight bg-gradient-to-r from-blue-400 to-blue-600 inline-block text-transparent bg-clip-text">
                   
                     You've unlocked your exclusive content
         
                   </h4>
                   <button
                     type="submit"
-                    className="inline-flex items-center gap-x-2 rounded-lg shadow-lg shadow-lime-600/20 transition-all	 hover:shadow-lime-500/50  bg-gradient-to-tr from-lime-600  to-lime-400 px-6 tracking-wide py-2 text-sm font-semibold uppercase text-white disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
+                    className="inline-flex items-center gap-x-2 rounded-lg shadow-lg shadow-blue-600/20 transition-all	 hover:shadow-blue-500/50  bg-gradient-to-tr from-blue-400  to-blue-600 px-6 tracking-wide py-2 text-sm font-semibold uppercase text-white disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
                     onClick={scrollNext}
                   >
                   Continue

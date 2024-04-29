@@ -141,13 +141,13 @@ export default function ShowSlide(props: Props) {
             updateStyleSlides={props.updateStyleSlides}
           />
           {gateSlide && (
-            <div>
+            <div className="relative z-80">
               {type === "email" ? (
                 <div className="mt-5 flex justify-center">
                   <div className="flex w-full max-w-sm items-center space-x-2">
                     <Input type="email" placeholder="Email" />
                     <Button
-                      className="bg-gradient-to-tr from-lime-600  to-lime-400 text-black"
+                      className="bg-gradient-to-tr from-blue-600  to-blue-400 text-white"
                       type="submit"
                     >
                       Subscribe
@@ -156,7 +156,7 @@ export default function ShowSlide(props: Props) {
                 </div>
               ) : (
                 <div className="mt-5 flex justify-center">
-                  <Button className="bg-gradient-to-tr from-lime-600  to-lime-400 text-black">
+                  <Button className="bg-gradient-to-tr from-blue-600  to-blue-400 text-white">
                     Click Here
                   </Button>
                 </div>
