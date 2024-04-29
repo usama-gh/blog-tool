@@ -77,7 +77,7 @@ export const UnblockSlides = ({
           <input
             name="email"
             type="email"
-            placeholder="Enter your email"
+            placeholder="Your email"
             onChange={(e) => setEmail(e.target.value)}
             required
             className="w-full flex-1 rounded-md border border-slate-200 bg-slate-50 px-4 py-2 text-md lg:text-2xl text-slate-600 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-blue-400 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-300 dark:focus:ring-white"
@@ -108,7 +108,7 @@ function Button({ loading, btnText }: { loading: boolean; btnText: string }) {
       <button
         type="submit"
         disabled={loading}
-        className="inline-flex items-center gap-x-2 rounded-lg shadow-lg shadow-lime-600/20 transition-all	 hover:shadow-lime-500/50  bg-gradient-to-tr from-lime-600  to-lime-400 px-6 tracking-wide py-2 text-sm font-semibold uppercase text-white disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
+        className="inline-flex items-center gap-x-2 rounded-lg  transition-all	 shadow-xl hover:shadow-blue-800/60 bg-gradient-to-br from-blue-600 to-blue-400 px-6 tracking-wide py-4 text-sm font-semibold uppercase text-white disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
       >
         {loading ? (
           <>
