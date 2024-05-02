@@ -109,10 +109,10 @@ export default function Editor({
     // Update textareaValue whenever post.content changes, but only if the user hasn't manually edited it
     if (!firstRender.current && !isUserEdit) {
       // @ts-ignore
-      let abc = editor.getText()
-    
+      let abc = editor.getText();
+
       // @ts-ignore
-      console.log(abc)
+      console.log(abc);
       if (abc) {
         let plainText = abc;
         const first170Characters = plainText?.substring(0, 170) || "";
@@ -574,7 +574,7 @@ export default function Editor({
             });
           }}
           className={cn(
-            "flex items-center shadow-xl  hover:shadow-blue-800/60 justify-center space-x-2 rounded-lg  text-white font-semibold px-5 py-2  text-xs transition-all focus:outline-none lg:text-lg",
+            "flex items-center justify-center  space-x-2 rounded-lg px-5 py-2  text-xs font-semibold text-white shadow-xl  transition-all hover:shadow-blue-800/60 focus:outline-none lg:text-lg",
             isPendingPublishing || debouncedData.content === ""
               ? "cursor-not-allowed bg-gradient-to-br from-blue-600  to-blue-400 "
               : " bg-gradient-to-br from-blue-600  to-blue-400",
@@ -600,7 +600,7 @@ export default function Editor({
 
       <div className="flex w-full flex-col items-center justify-center">
         <div className="scroll-x-fade carousel-wrapper mb-2 mt-2 flex w-full flex-nowrap space-x-4 overflow-x-scroll pb-4">
-          <div className="animate-fadeLeft carousel-item carousel-item min-h-[500px] w-[90%]  flex-shrink-0 overflow-y-auto">
+          <div className="carousel-item carousel-item min-h-[500px] w-[90%] flex-shrink-0  animate-fadeLeft overflow-y-auto">
             <ContentCustomizer
               style={slidesStyles.find((item: SlideStyle) => item.id == 0)}
               className="relative h-full max-w-screen-xl overflow-y-auto  rounded-lg bg-slate-100 p-8 dark:bg-gray-900/80 lg:mt-0"
@@ -633,7 +633,11 @@ export default function Editor({
           />
 
           {/* add new slide */}
-          <AddSlide updateSlides={updateSlides} index={slides.length + 1} canCreateGateSlide={gateSlides.length <1} />
+          <AddSlide
+            updateSlides={updateSlides}
+            index={slides.length + 1}
+            canCreateGateSlide={gateSlides.length == 0}
+          />
         </div>
       </div>
 

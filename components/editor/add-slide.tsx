@@ -1,11 +1,8 @@
 import { Plus, PenLine, Lock } from "lucide-react";
-import { useState } from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
@@ -19,8 +16,6 @@ export default function AddSlide({
   index,
   canCreateGateSlide,
 }: Props) {
-  const [open, setOpen] = useState(false);
-
   return (
     <div className="carousel-item md:w-18 flex h-auto w-20 flex-shrink-0 flex-col items-center justify-center  rounded-lg  text-slate-600 dark:text-gray-400 ">
       <DropdownMenu>
