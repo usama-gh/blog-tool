@@ -38,6 +38,7 @@ import { SlideStyle, gateSlide } from "@/types";
 import ContentCustomizer from "./editor-content/content-customizer";
 import ShowSlides from "./show-slides";
 import AddSlide from "./add-slide";
+import { Item } from "@radix-ui/react-dropdown-menu";
 
 type PostWithSite = Post & { site: { subdomain: string | null } | null };
 
@@ -322,6 +323,12 @@ export default function Editor({
       case "delete":
         // setSlides(slides.filter((_: string, idx: number) => idx != index));
 
+        const isSlideIsBeforeGated = gateSlides.find(
+          (slide: gateSlide) => slide.id > index + 1,
+        )
+          ? true
+          : false;
+
         const slideStyle: SlideStyle | undefined = slidesStyles.find(
           (slide: SlideStyle) => slide.id == index + 1,
         );
@@ -346,7 +353,16 @@ export default function Editor({
         const gatedSlides = gateSlides.filter(
           (slide: gateSlide) => slide.id != index + 1,
         );
-        setGateSlides(gatedSlides);
+        setGateSlides(
+          isSlideIsBeforeGated
+            ? gatedSlides.map((item: gateSlide) => {
+                return {
+                  ...item,
+                  id: item.id - 1,
+                };
+              })
+            : gatedSlides,
+        );
 
         setData({
           ...data,
