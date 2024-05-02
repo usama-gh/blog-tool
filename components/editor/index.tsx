@@ -633,7 +633,7 @@ export default function Editor({
           />
 
           {/* add new slide */}
-          <AddSlide updateSlides={updateSlides} index={slides.length + 1} />
+          <AddSlide updateSlides={updateSlides} index={slides.length + 1} canCreateGateSlide={gateSlides.length <1} />
         </div>
       </div>
 
