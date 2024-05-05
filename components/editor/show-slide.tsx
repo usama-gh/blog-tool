@@ -2,7 +2,7 @@ import React, { Dispatch, SetStateAction, useState } from "react";
 import { Post } from "@prisma/client";
 import { SlideStyle, gateSlide } from "@/types";
 import ContentCustomizer from "./editor-content/content-customizer";
-import { Trash, Settings2 } from "lucide-react";
+import { Trash, Settings2, ChevronRight, ChevronLeft } from "lucide-react";
 import { EditorContents } from "./editor-content";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -24,9 +24,11 @@ interface Props {
   setData: Dispatch<SetStateAction<PostWithSite>>;
   updateSlides: any;
   slides: Array<string>;
+  setSlides: any;
   slideData: string;
   canUseAI: boolean;
   slidesStyles: SlideStyle[] | [];
+  setSlidesStyles: any;
   updateStyleSlides: any;
   gateSlides: gateSlide[] | [];
   setGateSlides: any;
@@ -37,8 +39,6 @@ export default function ShowSlide(props: Props) {
   const [link, setLink] = useState(gateSlide ? gateSlide.link : "");
 
   function handleSlideChange(type: string, e?: any) {
-    console.log("type changed", type);
-
     if (type === "email" || type === "follow") {
       setType(type);
     } else {
@@ -58,14 +58,160 @@ export default function ShowSlide(props: Props) {
     );
   }
 
+  function handleSwipping(type: "left" | "right", position: number) {
+    const currentSlideIndexForStyle = props.index + 1;
+    const newSlidePositionForStyle = position + 1;
+
+    const currentSlideContent = props.slides.find(
+      (_: string, idx: number) => idx == props.index,
+    );
+
+    const isNextSlideIsGated = props.gateSlides.find(
+      (slide: gateSlide) => slide.id == newSlidePositionForStyle,
+    )
+      ? true
+      : false;
+
+    if (type === "right") {
+      const nextSlideContent = props.slides.find(
+        (_: string, idx: number) => idx == position,
+      )!;
+
+      // update position for content of slides
+      const updatedSlides = props.slides.map(
+        (content: string, index: number) => {
+          if (index == props.index) {
+            return nextSlideContent;
+          }
+          if (index == position) {
+            return currentSlideContent;
+          }
+          return content;
+        },
+      );
+
+      props.setSlides(updatedSlides);
+
+      // update position of slides styles
+      const updatedStyleSlides = props.slidesStyles.map(
+        (slide: SlideStyle, index: number) => {
+          if (slide.id == currentSlideIndexForStyle) {
+            return {
+              ...slide,
+              id: newSlidePositionForStyle,
+            };
+          }
+          if (slide.id == newSlidePositionForStyle) {
+            return {
+              ...slide,
+              id: currentSlideIndexForStyle,
+            };
+          }
+          return slide;
+        },
+      );
+
+      props.setSlidesStyles(updatedStyleSlides);
+
+      // update position of gate slides if side is gated
+      if (gateSlide) {
+        props.setGateSlides(
+          props.gateSlides.map((slide: gateSlide, index: number) => {
+            return {
+              ...slide,
+              id: slide.id + 1,
+            };
+          }),
+        );
+      }
+
+      // update next slide is gated
+      if (isNextSlideIsGated) {
+        props.setGateSlides(
+          props.gateSlides.map((slide: gateSlide, index: number) => {
+            return {
+              ...slide,
+              id: position,
+            };
+          }),
+        );
+      }
+    }
+
+    if (type === "left") {
+      const prevSlideContent = props.slides.find(
+        (_: string, idx: number) => idx == position,
+      )!;
+
+      // update position for content of slides
+      const updatedSlides = props.slides.map(
+        (content: string, index: number) => {
+          if (index == position) {
+            return currentSlideContent;
+          }
+          if (index == props.index) {
+            return prevSlideContent;
+          }
+          return content;
+        },
+      );
+
+      props.setSlides(updatedSlides);
+
+      // update position of slides styles
+      const updatedStyleSlides = props.slidesStyles.map(
+        (slide: SlideStyle, index: number) => {
+          if (slide.id == currentSlideIndexForStyle) {
+            return {
+              ...slide,
+              id: newSlidePositionForStyle,
+            };
+          }
+          if (slide.id == newSlidePositionForStyle) {
+            return {
+              ...slide,
+              id: currentSlideIndexForStyle,
+            };
+          }
+          return slide;
+        },
+      );
+
+      props.setSlidesStyles(updatedStyleSlides);
+
+      // update position of gate slides if side is gated
+      if (gateSlide) {
+        props.setGateSlides(
+          props.gateSlides.map((slide: gateSlide, index: number) => {
+            return {
+              ...slide,
+              id: slide.id - 1,
+            };
+          }),
+        );
+      }
+
+      // update previus slide is gated
+      if (isNextSlideIsGated) {
+        props.setGateSlides(
+          props.gateSlides.map((slide: gateSlide, index: number) => {
+            return {
+              ...slide,
+              id: props.index + 1,
+            };
+          }),
+        );
+      }
+    }
+  }
+
   return (
-    <div className="animate-fadeLeft	carousel-item carousel-item relative min-h-[500px] w-[90%]  flex-shrink-0 overflow-y-auto">
+    <div className="carousel-item	carousel-item relative min-h-[500px] w-[90%] flex-shrink-0  animate-fadeLeft overflow-y-auto">
       {gateSlide && (
-        
         <div>
-          <div className="absolute font-semibold rounded-full bottom-5 z-20 px-2 left-1/2 transform -translate-x-1/2 bg-orange-200 text-black text-sm">
+          <div className="absolute bottom-5 left-1/2 z-20 -translate-x-1/2 transform rounded-full bg-orange-200 px-2 text-sm font-semibold text-black">
             Slides after this will be locked with the gated slide
-            </div>
+          </div>
           <Popover>
             <PopoverTrigger className="absolute  bottom-5 left-5 z-20 flex h-10 w-10 items-center justify-center rounded-full bg-white p-2 shadow-sm">
               <Settings2 strokeWidth={"1.5px"} width={20} />
@@ -115,18 +261,42 @@ export default function ShowSlide(props: Props) {
         className="relative h-full max-w-screen-xl overflow-y-auto  rounded-lg bg-slate-100 p-8 dark:bg-gray-900/80 lg:mt-0"
       >
         <>
-          <Trash
-            width={18}
-            className="absolute right-4 top-4 z-20 cursor-pointer text-red-300 hover:text-red-500"
-            onClick={() => {
-              const confirmation = window.confirm(
-                "Are you sure you want to delete?",
-              );
-              if (confirmation) {
-                props.updateSlides("delete", Number(props.index), "");
-              }
-            }}
-          />
+          <div className="absolute right-4 top-4 z-20">
+            <div className="flex items-center gap-4">
+              <div className="flex items-center gap-2">
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className="h-8 w-8 rounded-full"
+                  onClick={() => handleSwipping("left", props.index - 1)}
+                  disabled={props.index == 0}
+                >
+                  <ChevronLeft className="h-5 w-5" />
+                </Button>
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className="h-8 w-8 rounded-full"
+                  onClick={() => handleSwipping("right", props.index + 1)}
+                  disabled={props.index + 1 == props.slides.length}
+                >
+                  <ChevronRight className="h-5 w-5" />
+                </Button>
+              </div>
+              <Trash
+                width={18}
+                className="cursor-pointer text-red-300 hover:text-red-500"
+                onClick={() => {
+                  const confirmation = window.confirm(
+                    "Are you sure you want to delete?",
+                  );
+                  if (confirmation) {
+                    props.updateSlides("delete", Number(props.index), "");
+                  }
+                }}
+              />
+            </div>
+          </div>
 
           <EditorContents
             data={props.data}
@@ -141,7 +311,7 @@ export default function ShowSlide(props: Props) {
             updateStyleSlides={props.updateStyleSlides}
           />
           {gateSlide && (
-            <div className="relative z-80">
+            <div className="z-80 relative">
               {type === "email" ? (
                 <div className="mt-5 flex justify-center">
                   <div className="flex w-full max-w-sm items-center space-x-2">
