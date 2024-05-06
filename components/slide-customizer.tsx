@@ -7,6 +7,13 @@ import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { RgbaColorPicker } from "react-colorful";
 import { upload } from "@vercel/blob/client";
+
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
 import {
   Popover,
   PopoverContent,
@@ -365,12 +372,25 @@ const SlideCustomizer = ({
       {/* text color picker wrapper */}
 
       <Popover>
+
+      <TooltipProvider delayDuration={100}>
+      <Tooltip>
+        <TooltipTrigger asChild>
         <PopoverTrigger
           ref={componentRef}
-          className="absolute bottom-5 right-5 flex h-10 w-10 items-center justify-center rounded-full bg-white p-2 shadow-sm"
+          className="opacity-0 group-hover:opacity-100 transition ease-in-out absolute bottom-5 right-5 flex h-10 w-10 items-center justify-center rounded-full bg-white p-2 shadow-sm"
         >
           <Palette strokeWidth={"1.5px"} width={20} />
         </PopoverTrigger>
+        </TooltipTrigger>
+        <TooltipContent side="bottom">
+          <p>Customize design</p>
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
+
+
+       
         <PopoverContent className="mt-2 w-auto rounded-full">
           <div className="flex items-center gap-x-2">
             <div className="relative flex items-center gap-x-2">

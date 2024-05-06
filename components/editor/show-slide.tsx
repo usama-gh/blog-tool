@@ -8,6 +8,12 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
 import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
+import {
   Popover,
   PopoverContent,
   PopoverTrigger,
@@ -206,14 +212,14 @@ export default function ShowSlide(props: Props) {
   }
 
   return (
-    <div className="carousel-item	carousel-item relative min-h-[500px] w-[90%] flex-shrink-0  animate-fadeLeft overflow-y-auto">
+    <div className="group carousel-item	carousel-item relative min-h-[500px] w-[90%] flex-shrink-0  animate-fadeLeft overflow-y-auto">
       {gateSlide && (
         <div>
           <div className="absolute bottom-5 left-1/2 z-20 -translate-x-1/2 transform rounded-full bg-orange-200 px-2 text-sm font-semibold text-black">
             Slides after this will be locked with the gated slide
           </div>
           <Popover>
-            <PopoverTrigger className="absolute  bottom-5 left-5 z-20 flex h-10 w-10 items-center justify-center rounded-full bg-white p-2 shadow-sm">
+            <PopoverTrigger className="absolute  bottom-5 left-5 opacity-0 group-hover:opacity-100 z-20 flex h-10 w-10 items-center justify-center rounded-full bg-white p-2 shadow-sm">
               <Settings2 strokeWidth={"1.5px"} width={20} />
             </PopoverTrigger>
             <PopoverContent className="mt-2 max-w-sm rounded-xl">
@@ -258,33 +264,63 @@ export default function ShowSlide(props: Props) {
         style={props.slidesStyles.find(
           (item: SlideStyle) => item.id == props.index + 1,
         )}
-        className="relative h-full max-w-screen-xl overflow-y-auto  rounded-lg bg-slate-100 p-8 dark:bg-gray-900/80 lg:mt-0"
+        className="group relative h-full max-w-screen-xl overflow-y-auto  rounded-lg bg-slate-100 p-8 dark:bg-gray-900/80 lg:mt-0"
       >
         <>
-          <div className="absolute right-4 top-4 z-20">
-            <div className="flex items-center gap-4">
-              <div className="flex items-center gap-2">
-                <Button
+
+        
+          <div className="opacity-0 group-hover:opacity-100  absolute right-2 top-1 z-20">
+        
+
+            <div className="flex items-center gap-2">
+              <div className="flex items-center gap-1">
+
+              <TooltipProvider delayDuration={100}>
+      <Tooltip>
+        <TooltipTrigger asChild>
+        <Button
                   variant="outline"
                   size="icon"
-                  className="h-8 w-8 rounded-full"
+                  className="h-7 w-7 rounded-full"
                   onClick={() => handleSwipping("left", props.index - 1)}
                   disabled={props.index == 0}
                 >
                   <ChevronLeft className="h-5 w-5" />
                 </Button>
-                <Button
+        </TooltipTrigger>
+        <TooltipContent side="bottom">
+          <p>Move to left</p>
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
+
+
+    <TooltipProvider delayDuration={100}>
+      <Tooltip>
+        <TooltipTrigger asChild>
+        <Button
                   variant="outline"
                   size="icon"
-                  className="h-8 w-8 rounded-full"
+                
+                  className="h-7 w-7 rounded-full"
                   onClick={() => handleSwipping("right", props.index + 1)}
                   disabled={props.index + 1 == props.slides.length}
                 >
                   <ChevronRight className="h-5 w-5" />
                 </Button>
+        </TooltipTrigger>
+        <TooltipContent side="bottom">
+        <p>Move to right</p>
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
+
+
+            
+                
               </div>
               <Trash
-                width={18}
+                width={14}
                 className="cursor-pointer text-red-300 hover:text-red-500"
                 onClick={() => {
                   const confirmation = window.confirm(

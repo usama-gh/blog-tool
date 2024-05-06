@@ -341,9 +341,7 @@ export default function LeadModal({
                   <h2 className="text-sm font-bold text-gray-800 dark:text-white">
                     {data.title}
                   </h2>
-                  <p className="mx-auto w-[230px] text-[9px] text-gray-800 dark:text-white">
-                    {description}
-                  </p>
+                  <div className="mx-auto w-[230px] text-[9px] text-gray-800 dark:text-white" dangerouslySetInnerHTML={{ __html: description }} />
                   <div className="mt-2 flex  justify-center rounded-full">
                     {data.download === "email" && (
                       <div className="flex h-3 w-16 items-center bg-gray-100 px-2 text-[5px] text-gray-400 dark:bg-gray-400 dark:text-white">

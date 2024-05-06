@@ -204,6 +204,7 @@ const Carousel = ({ data, siteData, lead }: any) => {
                     </h4>
                     <div className="font-regular overflow-hidden  text-center text-lg text-slate-800 dark:text-gray-50">
                       {/* @ts-ignore*/}
+                      {/* <MDX source={lead.description} /> */}
                       <MarkdownRenderer markdown={lead.description} />
                     </div>
                     {/* <p className="pb-8 text-center text-lg font-normal tracking-wide text-gray-600  dark:text-gray-300">
