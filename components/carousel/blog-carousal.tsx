@@ -199,13 +199,14 @@ const Carousel = ({ data, siteData, lead }: any) => {
               {lead && (
                 <div className="scrollbar-thumb-rounded-full scrollbar-track-rounded-full relative mx-auto my-auto mt-0 flex h-screen w-9/12  min-w-full items-center  justify-center overflow-y-auto pb-[120px] scrollbar-thin scrollbar-track-transparent scrollbar-thumb-gray-200 dark:scrollbar-thumb-gray-800">
                   <div className="mx-auto max-w-xl px-6">
-                    <h4 className="pb-4 text-center text-3xl font-bold tracking-tight text-gray-800 dark:bg-gray-800 dark:text-gray-100">
+                    <h4 className="pb-4 text-center text-5xl font-bold tracking-tight text-gray-800 dark:bg-gray-800 dark:text-gray-100">
                       {lead.title}
                     </h4>
                     <div className="font-regular overflow-hidden  text-center text-lg text-slate-800 dark:text-gray-50">
-                      {/* @ts-ignore*/}
-                      {/* <MDX source={lead.description} /> */}
-                      <MarkdownRenderer markdown={lead.description} />
+                    {/* <MDX source= {lead.description} /> */}
+                    <div dangerouslySetInnerHTML={{ __html: lead.description }} />
+
+                   
                     </div>
                     {/* <p className="pb-8 text-center text-lg font-normal tracking-wide text-gray-600  dark:text-gray-300">
                       {lead.description}
