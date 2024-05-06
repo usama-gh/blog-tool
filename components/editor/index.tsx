@@ -71,14 +71,16 @@ export default function Editor({
   const MAX_CHUNK_LENGTH =
     Number(process.env.NEXT_PUBLIC_MAX_CHUNK_LENGTH) || 300;
 
-  const [slidesStyles, setSlidesStyles] = useState<SlideStyle[] | []>(() => {
-    try {
-      return !!data.styling ? JSON.parse(data.styling) : [];
-    } catch (error) {
-      console.error("Error parsing slides styling JSON:", error);
-      return [];
-    }
-  });
+  const [slidesStyles, setSlidesStyles] = useState<SlideStyle[] | [] | any>(
+    () => {
+      try {
+        return !!data.styling ? JSON.parse(data.styling) : [];
+      } catch (error) {
+        console.error("Error parsing slides styling JSON:", error);
+        return [];
+      }
+    },
+  );
   const [gateSlides, setGateSlides] = useState<gateSlide[] | []>(() => {
     try {
       return !!data.gateSlides ? JSON.parse(data.gateSlides) : [];
@@ -383,9 +385,10 @@ export default function Editor({
         ...state,
         slides: JSON.stringify([...slides]),
         gateSlides: JSON.stringify([...gateSlides]),
+        styling: JSON.stringify([...slidesStyles]),
       };
     });
-  }, [slides, gateSlides]);
+  }, [slides, gateSlides, slidesStyles]);
 
   const escapeSpecialCharacters = (str: string) => {
     return str.replace(/[<{]/g, "\\$&");
@@ -639,10 +642,12 @@ export default function Editor({
             data={data}
             post={post}
             slides={slides}
+            setSlides={setSlides}
             setData={setData}
             updateSlides={updateSlides}
             canUseAI={canUseAI}
             slidesStyles={slidesStyles}
+            setSlidesStyles={setSlidesStyles}
             updateStyleSlides={updateStyleSlides}
             gateSlides={gateSlides}
             setGateSlides={setGateSlides}

@@ -11,8 +11,10 @@ interface Props {
   setData: Dispatch<SetStateAction<PostWithSite>>;
   updateSlides: any;
   slides: Array<string>;
+  setSlides: any;
   canUseAI: boolean;
   slidesStyles: SlideStyle[] | [];
+  setSlidesStyles: any;
   updateStyleSlides: any;
   gateSlides: gateSlide[] | [];
   setGateSlides: any;
@@ -27,11 +29,13 @@ export default function ShowSlides(props: Props) {
           slideData={slideData}
           post={props.post}
           slides={props.slides}
+          setSlides={props.setSlides}
           setData={props.setData}
           updateSlides={props.updateSlides}
           index={index}
           canUseAI={props.canUseAI}
           slidesStyles={props.slidesStyles}
+          setSlidesStyles={props.setSlidesStyles}
           updateStyleSlides={props.updateStyleSlides}
           gateSlides={props.gateSlides}
           setGateSlides={props.setGateSlides}
