@@ -2,6 +2,12 @@ import React, { Dispatch, SetStateAction } from "react";
 import { Post } from "@prisma/client";
 import { SlideStyle, gateSlide } from "@/types";
 import ShowSlide from "./show-slide";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
 
 type PostWithSite = Post & { site: { subdomain: string | null } | null };
 
