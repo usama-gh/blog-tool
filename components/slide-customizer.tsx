@@ -7,8 +7,6 @@ import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { RgbaColorPicker } from "react-colorful";
 import { upload } from "@vercel/blob/client";
-
-
 import {
   Tooltip,
   TooltipContent,
