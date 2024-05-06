@@ -6,7 +6,6 @@ import { Trash, Settings2, ChevronRight, ChevronLeft } from "lucide-react";
 import { EditorContents } from "./editor-content";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-
 import {
   Tooltip,
   TooltipContent,
