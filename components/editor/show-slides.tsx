@@ -3,7 +3,6 @@ import { Post } from "@prisma/client";
 import { SlideStyle, gateSlide } from "@/types";
 import ShowSlide from "./show-slide";
 
-
 type PostWithSite = Post & { site: { subdomain: string | null } | null };
 
 interface Props {

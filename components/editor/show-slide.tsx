@@ -6,12 +6,12 @@ import { Trash, Settings2, ChevronRight, ChevronLeft } from "lucide-react";
 import { EditorContents } from "./editor-content";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-// import {
-//   Tooltip,
-//   TooltipContent,
-//   TooltipProvider,
-//   TooltipTrigger,
-// } from "@/components/ui/tooltip"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
 import {
   Popover,
   PopoverContent,
@@ -274,7 +274,7 @@ export default function ShowSlide(props: Props) {
             <div className="flex items-center gap-2">
               <div className="flex items-center gap-1">
 
-              {/* <TooltipProvider delayDuration={100}>
+              <TooltipProvider delayDuration={100}>
       <Tooltip>
         <TooltipTrigger asChild>
         <Button
@@ -312,7 +312,7 @@ export default function ShowSlide(props: Props) {
         <p>Move to right</p>
         </TooltipContent>
       </Tooltip>
-    </TooltipProvider> */}
+    </TooltipProvider>
 
 
             
