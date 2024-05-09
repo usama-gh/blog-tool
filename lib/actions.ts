@@ -16,7 +16,7 @@ import { del, put } from "@vercel/blob";
 import { customAlphabet } from "nanoid";
 import { getBlurDataURL } from "@/lib/utils";
 import { createId as cuid } from "@paralleldrive/cuid2";
-import { LeadData, SubscribeData } from "@/types";
+import { LeadData, SubscribeData, leadSlide } from "@/types";
 
 const nanoid = customAlphabet(
   "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz",
@@ -382,6 +382,8 @@ export const updatePost = async (data: Post) => {
         slides: data.slides,
         styling: data.styling,
         gateSlides: data.gateSlides,
+        leadId: data.leadId,
+        leadSlides: data.leadSlides,
       },
     });
 
@@ -714,6 +716,10 @@ export const createSiteLead = async (data: LeadData) => {
         fileName: data.fileName,
         download: data.download,
         delivery: data.delivery,
+        heroDescription: data.heroDescription,
+        thumbnail: data.thumbnail,
+        thumbnailFile: data.thumbnailFile,
+        featured: data.featured,
         user: {
           connect: {
             id: session.user.id,
@@ -779,8 +785,45 @@ export const updateSiteLead = withLeadAuth(
           fileName: data.fileName,
           download: data.download,
           delivery: data.delivery,
+          heroDescription: data.heroDescription,
+          thumbnail: data.thumbnail,
+          thumbnailFile: data.thumbnailFile,
+          featured: data.featured,
         },
       });
+
+      // update lead download type in  lead mangnet connected to post
+      const posts = await prisma.post.findMany({
+        where: {
+          leadId: lead.id,
+        },
+      });
+
+      if (posts.length > 0) {
+        for (const post of posts) {
+          const slides = post.leadSlides ? JSON.parse(post.leadSlides) : [];
+          let leadSlides = [];
+          if (slides.length > 0) {
+            leadSlides = slides.map((slide: leadSlide) => {
+              return slide.leadId == lead.id
+                ? {
+                    ...slide,
+                    type: data.download,
+                  }
+                : slide;
+            });
+            console.log(leadSlides);
+            await prisma.post.update({
+              where: {
+                id: post.id,
+              },
+              data: {
+                leadSlides: JSON.stringify(leadSlides),
+              },
+            });
+          }
+        }
+      }
 
       await revalidateTag(`${lead.siteId}-leads`);
       return response;

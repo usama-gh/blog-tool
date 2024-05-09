@@ -46,6 +46,22 @@ export const createGateSlide = (index: number) => {
   };
 };
 
+export const createLeadSlide = (
+  id: number,
+  leadId: string,
+  name: string,
+  type: string,
+  link?: string,
+) => {
+  return {
+    id,
+    name,
+    leadId,
+    type,
+    link: link ?? "",
+  };
+};
+
 export const isDefultStyle = (type: string, style: string) => {
   if (type === "text") {
     return style === "rgba(0,0,0,1)";

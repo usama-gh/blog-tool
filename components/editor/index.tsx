@@ -17,6 +17,7 @@ import {
   cn,
   convertToRgba,
   createGateSlide,
+  createLeadSlide,
   isDefultStyle,
   styledSlide,
 } from "@/lib/utils";
@@ -34,7 +35,7 @@ import LinkLeadModal from "../modal/link-lead";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import SlideCustomizer from "../slide-customizer";
-import { SlideStyle, gateSlide } from "@/types";
+import { SlideStyle, gateSlide, leadSlide } from "@/types";
 import ContentCustomizer from "./editor-content/content-customizer";
 import ShowSlides from "./show-slides";
 import AddSlide from "./add-slide";
@@ -64,7 +65,7 @@ export default function Editor({
   );
   const [isUserEdit, setIsUserEdit] = useState<boolean>(false);
   const [isPasted, setIsPasted] = useState<boolean>(false);
-  const [leadId, setLeadId] = useState(data.leadId);
+  const [leadId, setLeadId] = useState<string | null>(data.leadId);
 
   const firstRender = useRef<boolean>(true);
   const firstRenderLead = useRef<boolean>(true);
@@ -86,6 +87,14 @@ export default function Editor({
       return !!data.gateSlides ? JSON.parse(data.gateSlides) : [];
     } catch (error) {
       console.error("Error parsing gate slides JSON:", error);
+      return [];
+    }
+  });
+  const [leadSlides, setLeadSlides] = useState<leadSlide[] | []>(() => {
+    try {
+      return !!data.leadSlides ? JSON.parse(data.leadSlides) : [];
+    } catch (error) {
+      console.error("Error parsing lead slides JSON:", error);
       return [];
     }
   });
@@ -164,15 +173,15 @@ export default function Editor({
       debouncedData.content === post.content &&
       debouncedData.slides === post.slides &&
       debouncedData.styling === post.styling &&
-      debouncedData.gateSlides === post.gateSlides
+      debouncedData.gateSlides === post.gateSlides &&
+      debouncedData.leadSlides === post.leadSlides &&
+      debouncedData.leadId === post.leadId
     ) {
       return;
     }
-    // console.log("170: ", "slides changes");
-
     startTransitionSaving(async () => {
       await updatePost(debouncedData);
-      console.log("174: ", "data updated");
+      console.log("184: ", "data updated");
     });
   }, [debouncedData, post]);
 
@@ -301,7 +310,12 @@ export default function Editor({
     }
   }, [editor, post, hydrated]);
 
-  const updateSlides = async (action: string, index: number, value: string) => {
+  const updateSlides = async (
+    action: string,
+    index: number,
+    value: string,
+    lead?: Lead,
+  ) => {
     const updatedSlides = slides.slice();
 
     switch (action) {
@@ -311,6 +325,16 @@ export default function Editor({
           setGateSlides([gateSlide]);
           value =
             "<h1 style='text-align: center'>Subscribe to unlock</h1><p style='text-align: center'>I hope you find my posts valuable. I would love to have you subscribed to my newsletter. By subscribing, you'll unlock exclusive content. Simply enter your email below to continue reading more</p>";
+        } else if (value === "lead") {
+          value = `<h1 style='text-align: center'>${lead?.title}</h1><p style='text-align: center'>${lead?.description}</p>`;
+          const leadSlide: leadSlide = createLeadSlide(
+            index,
+            lead?.id!,
+            lead?.name!,
+            lead?.download!,
+          );
+          setLeadSlides([leadSlide]);
+          setLeadId(lead?.id!);
         } else {
           value = "";
         }
@@ -327,6 +351,12 @@ export default function Editor({
 
         const isSlideIsBeforeGated = gateSlides.find(
           (slide: gateSlide) => slide.id > index + 1,
+        )
+          ? true
+          : false;
+
+        const isSlideIsBeforeLeadMagnet = leadSlides.find(
+          (slide: leadSlide) => slide.id > index + 1,
         )
           ? true
           : false;
@@ -355,6 +385,7 @@ export default function Editor({
         const gatedSlides = gateSlides.filter(
           (slide: gateSlide) => slide.id != index + 1,
         );
+        // update gate slide position if slide before gate slide is delete
         setGateSlides(
           isSlideIsBeforeGated
             ? gatedSlides.map((item: gateSlide) => {
@@ -364,6 +395,28 @@ export default function Editor({
                 };
               })
             : gatedSlides,
+        );
+
+        // delete lead slide
+        const leadedSlides = leadSlides.filter(
+          (slide: leadSlide) => slide.id != index + 1,
+        );
+
+        // if lead slide is deleted then null the leadId
+        if (leadedSlides.length < 1) {
+          setLeadId(null);
+        }
+
+        // update lead slide position if slide before lead slide is delete
+        setLeadSlides(
+          isSlideIsBeforeLeadMagnet
+            ? leadSlides.map((item: leadSlide) => {
+                return {
+                  ...item,
+                  id: item.id - 1,
+                };
+              })
+            : leadedSlides,
         );
 
         setData({
@@ -383,12 +436,14 @@ export default function Editor({
     setData((state) => {
       return {
         ...state,
+        leadId,
         slides: JSON.stringify([...slides]),
         gateSlides: JSON.stringify([...gateSlides]),
+        leadSlides: JSON.stringify([...leadSlides]),
         styling: JSON.stringify([...slidesStyles]),
       };
     });
-  }, [slides, gateSlides, slidesStyles]);
+  }, [slides, leadId, gateSlides, leadSlides, slidesStyles]);
 
   const escapeSpecialCharacters = (str: string) => {
     return str.replace(/[<{]/g, "\\$&");
@@ -484,28 +539,28 @@ export default function Editor({
     }
   }, [debouncedData.content]);
 
-  useEffect(() => {
-    if (!firstRenderLead.current) {
-      const formData = new FormData();
-      // @ts-ignore
-      formData.append("leadId", leadId);
-      startTransitionLead(async () => {
-        await updatePostMetadata(formData, post.id, "leadId").then(() => {
-          router.refresh();
-          toast.success(
-            `Successfully ${leadId ? " created " : "removed"} lead magnet ${
-              leadId ? "to" : "from"
-            } post`,
-          );
-          setData((prev) => ({
-            ...prev,
-            leadId: leadId,
-          }));
-        });
-      });
-    }
-    firstRenderLead.current = false;
-  }, [leadId]);
+  // useEffect(() => {
+  //   if (!firstRenderLead.current) {
+  //     const formData = new FormData();
+  //     // @ts-ignore
+  //     formData.append("leadId", leadId);
+  //     startTransitionLead(async () => {
+  //       await updatePostMetadata(formData, post.id, "leadId").then(() => {
+  //         router.refresh();
+  //         toast.success(
+  //           `Successfully ${leadId ? " created " : "removed"} lead magnet ${
+  //             leadId ? "to" : "from"
+  //           } post`,
+  //         );
+  //         setData((prev) => ({
+  //           ...prev,
+  //           leadId: leadId,
+  //         }));
+  //       });
+  //     });
+  //   }
+  //   firstRenderLead.current = false;
+  // }, [leadId]);
 
   function updateStyleSlides(index: number, style: any) {
     const updatedSlides = slidesStyles.map((slide: SlideStyle) =>
@@ -563,13 +618,18 @@ export default function Editor({
         <div className="rounded-lg px-2 py-1 text-xs tracking-widest text-gray-400 dark:bg-gray-800 dark:text-gray-500">
           {isPendingSaving ? "Saving..." : "SAVED"}
         </div>
-        <LeadButton
+        {/* <LeadButton
           btnText={isPendingLead ? <LoadingDots /> : "Lead Magnet"}
           style="rounded-lg  shadow-lg bg-slate-200 px-4 py-1 text-xs font-normal text-slate-700 dark:bg-black dark:text-gray-500 lg:text-lg shadow-none"
           disable={isPendingLead ? true : false}
         >
-          <LinkLeadModal leads={leads} leadId={leadId} setLeadId={setLeadId} />
-        </LeadButton>
+          <LinkLeadModal
+            leads={leads}
+            leadId={leadId}
+            setLeadId={setLeadId}
+            type="leadId"
+          />
+        </LeadButton> */}
 
         <button
           onClick={() => {
@@ -651,6 +711,8 @@ export default function Editor({
             updateStyleSlides={updateStyleSlides}
             gateSlides={gateSlides}
             setGateSlides={setGateSlides}
+            leadSlides={leadSlides}
+            setLeadSlides={setLeadSlides}
           />
 
           {/* add new slide */}
@@ -658,6 +720,8 @@ export default function Editor({
             updateSlides={updateSlides}
             index={slides.length + 1}
             canCreateGateSlide={gateSlides.length == 0}
+            canCreateLeadSlide={leadSlides.length == 0}
+            leads={leads}
           />
         </div>
       </div>

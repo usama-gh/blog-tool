@@ -12,12 +12,10 @@ import { useState } from "react";
 import FileUploader from "../form/file-uploader";
 import { Lead } from "@prisma/client";
 import NovelEditor from "../editor/novel-editor";
-// @ts-ignore
-import { upload } from "@vercel/blob/client";
 import { customAlphabet } from "nanoid";
 import { LeadData } from "@/types";
-import Markdown from 'react-markdown'
-
+import Markdown from "react-markdown";
+import { Switch } from "@/components/ui/switch";
 
 const nanoid = customAlphabet(
   "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz",
@@ -38,6 +36,10 @@ export default function LeadModal({
     name: (lead ? lead.name : "") as string,
     title: (lead ? lead.title : "") as string,
     description: (lead ? lead.description : "") as string,
+    heroDescription: (lead ? lead.heroDescription : "") as string,
+    thumbnail: (lead ? lead.thumbnail : "") as string,
+    thumbnailFile: (lead ? lead.thumbnailFile : "") as string,
+    featured: (lead ? lead.featured : false) as boolean,
     buttonCta: (lead ? lead.buttonCta : "") as string,
     download: (lead ? lead.download : "email") as string,
     delivery: (lead ? lead.delivery : "file") as string,
@@ -45,6 +47,8 @@ export default function LeadModal({
   });
   const [fileName, setFileName] = useState(lead ? lead.fileName : "");
   const [originalFile, setOriginalFile] = useState<File>();
+  const [thumbnail, setThumbnail] = useState(lead ? lead.thumbnail : "");
+  const [originalThumbnail, setOriginalThumbnail] = useState<File>();
   const [description, setDescription] = useState(data.description);
   const type = lead ? "Update" : "Create";
 
@@ -69,6 +73,25 @@ export default function LeadModal({
               body: formData,
             });
           }
+
+          let thumbnailFileUrl = lead ? lead.thumbnailFile : "";
+          if (originalThumbnail) {
+            thumbnailFileUrl = `${nanoid()}.${
+              originalThumbnail?.type.split("/")[1]
+            }`;
+            let formData = new FormData();
+            originalFile && formData.append("file", originalThumbnail);
+            const response = await fetch("/api/r2", {
+              method: "POST",
+              body: JSON.stringify({ key: thumbnailFileUrl }),
+            });
+            const { url } = await response.json();
+            await fetch(url, {
+              method: "PUT",
+              body: formData,
+            });
+          }
+
           const body: LeadData = {
             siteId: (lead ? lead.siteId : siteId) as string,
             name: data.name,
@@ -79,6 +102,10 @@ export default function LeadModal({
             delivery: data.delivery,
             url: (data.delivery === "file" ? flileUrl : data.link) as string,
             fileName: fileName as string,
+            thumbnailFile: thumbnailFileUrl ?? ("" as string),
+            thumbnail: thumbnail as string,
+            heroDescription: data.heroDescription,
+            featured: data.featured,
           };
 
           (lead
@@ -141,6 +168,27 @@ export default function LeadModal({
             required
             className="w-full rounded-md border border-slate-200 bg-slate-50 px-4 py-2 text-sm text-slate-600 placeholder:text-slate-400 focus:border-black focus:outline-none focus:ring-black dark:border-gray-600 dark:bg-black dark:text-white dark:placeholder-gray-700 dark:focus:ring-white"
           />
+        </div>
+
+        <div className="flex flex-col space-y-2">
+          <label
+            htmlFor="heroDescription"
+            className="text-xs font-medium text-slate-500 dark:text-gray-400"
+          >
+            Description (Max. 67 chars limit)
+          </label>
+
+          <textarea
+            name="heroDescription"
+            placeholder="Build your SaaS in just two weeks! Free Guide"
+            value={data.heroDescription}
+            onChange={(e) =>
+              setData({ ...data, heroDescription: e.target.value })
+            }
+            maxLength={67}
+            required
+            className="w-full rounded-md border border-slate-200 bg-slate-50 px-4 py-2 text-sm text-slate-600 placeholder:text-slate-400 focus:border-black focus:outline-none focus:ring-black dark:border-gray-600 dark:bg-black dark:text-white dark:placeholder-gray-700 dark:focus:ring-white"
+          ></textarea>
         </div>
 
         <div className="flex flex-col space-y-2">
@@ -217,6 +265,8 @@ export default function LeadModal({
               fileName={fileName}
               setFileName={setFileName}
               setOriginalFile={setOriginalFile}
+              inputId="leadFile"
+              labelText="Upload your file"
             />
           </div>
         ) : (
@@ -238,6 +288,22 @@ export default function LeadModal({
             />
           </div>
         )}
+
+        <div className="flex flex-col space-y-2">
+          <label
+            htmlFor="description"
+            className="text-xs font-medium text-slate-500  dark:text-gray-400"
+          >
+            Upload Thumbnail
+          </label>
+          <FileUploader
+            fileName={thumbnail}
+            setFileName={setThumbnail}
+            setOriginalFile={setOriginalThumbnail}
+            inputId="thumbnailFile"
+            labelText="Upload your thumbnail"
+          />
+        </div>
 
         <div className="flex flex-col space-y-2">
           <label
@@ -303,6 +369,23 @@ export default function LeadModal({
           </div>
         </div>
 
+        <div className="flex flex-col space-y-2">
+          <div className="flex items-center gap-3">
+            <label
+              htmlFor="btnCta"
+              className="block text-xs font-medium text-slate-500 dark:text-gray-400"
+            >
+              Featured
+            </label>
+            <Switch
+              defaultChecked={data.featured}
+              onCheckedChange={() =>
+                setData({ ...data, featured: !data.featured })
+              }
+            />
+          </div>
+        </div>
+
         <div className="flex items-center justify-end rounded-b-lg border-t border-slate-200 bg-slate-50 p-3 dark:border-gray-700 dark:bg-gray-800 md:px-10">
           <CreateSiteFormButton type={type} />
         </div>
@@ -343,7 +426,7 @@ export default function LeadModal({
                   <h2 className="text-sm font-bold text-gray-800 dark:text-white">
                     {data.title}
                   </h2>
-              
+
                   <Markdown>{description}</Markdown>
 
                   <div className="mt-2 flex  justify-center rounded-full">

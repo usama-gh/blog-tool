@@ -1,6 +1,6 @@
 import React, { Dispatch, SetStateAction, useState } from "react";
 import { Post } from "@prisma/client";
-import { SlideStyle, gateSlide } from "@/types";
+import { SlideStyle, gateSlide, leadSlide } from "@/types";
 import ContentCustomizer from "./editor-content/content-customizer";
 import { Trash, Settings2, ChevronRight, ChevronLeft } from "lucide-react";
 import { EditorContents } from "./editor-content";
@@ -11,7 +11,7 @@ import {
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "@/components/ui/tooltip"
+} from "@/components/ui/tooltip";
 import {
   Popover,
   PopoverContent,
@@ -37,9 +37,12 @@ interface Props {
   updateStyleSlides: any;
   gateSlides: gateSlide[] | [];
   setGateSlides: any;
+  leadSlides: leadSlide[] | [];
+  setLeadSlides: any;
 }
 export default function ShowSlide(props: Props) {
   const gateSlide = props.gateSlides.find((item) => item.id == props.index + 1);
+  const leadSlide = props.leadSlides.find((item) => item.id == props.index + 1);
   const [type, setType] = useState(gateSlide ? gateSlide.type : "email");
   const [link, setLink] = useState(gateSlide ? gateSlide.link : "");
 
@@ -63,7 +66,7 @@ export default function ShowSlide(props: Props) {
     );
   }
 
-  function handleSwipping(type: "left" | "right", position: number) {
+  function handleSlideSwipping(type: "left" | "right", position: number) {
     const currentSlideIndexForStyle = props.index + 1;
     const newSlidePositionForStyle = position + 1;
 
@@ -77,6 +80,13 @@ export default function ShowSlide(props: Props) {
       ? true
       : false;
 
+    const isNextSlideIsLead = props.leadSlides.find(
+      (slide: leadSlide) => slide.id == newSlidePositionForStyle,
+    )
+      ? true
+      : false;
+
+    // user press right arrow
     if (type === "right") {
       const nextSlideContent = props.slides.find(
         (_: string, idx: number) => idx == position,
@@ -130,6 +140,18 @@ export default function ShowSlide(props: Props) {
         );
       }
 
+      // update position of lead slides if side is lead
+      if (leadSlide) {
+        props.setLeadSlides(
+          props.leadSlides.map((slide: leadSlide, index: number) => {
+            return {
+              ...slide,
+              id: slide.id + 1,
+            };
+          }),
+        );
+      }
+
       // update next slide is gated
       if (isNextSlideIsGated) {
         props.setGateSlides(
@@ -141,8 +163,21 @@ export default function ShowSlide(props: Props) {
           }),
         );
       }
+
+      // update next slide is lead
+      if (isNextSlideIsLead) {
+        props.setLeadSlides(
+          props.leadSlides.map((slide: leadSlide, index: number) => {
+            return {
+              ...slide,
+              id: position,
+            };
+          }),
+        );
+      }
     }
 
+    // user press left arrow
     if (type === "left") {
       const prevSlideContent = props.slides.find(
         (_: string, idx: number) => idx == position,
@@ -196,6 +231,18 @@ export default function ShowSlide(props: Props) {
         );
       }
 
+      // update position of lead slides if side is lead
+      if (leadSlide) {
+        props.setLeadSlides(
+          props.leadSlides.map((slide: leadSlide, index: number) => {
+            return {
+              ...slide,
+              id: slide.id - 1,
+            };
+          }),
+        );
+      }
+
       // update previus slide is gated
       if (isNextSlideIsGated) {
         props.setGateSlides(
@@ -207,18 +254,30 @@ export default function ShowSlide(props: Props) {
           }),
         );
       }
+
+      // update previus slide is lead
+      if (isNextSlideIsLead) {
+        props.setLeadSlides(
+          props.leadSlides.map((slide: leadSlide, index: number) => {
+            return {
+              ...slide,
+              id: props.index + 1,
+            };
+          }),
+        );
+      }
     }
   }
 
   return (
-    <div className="group carousel-item	carousel-item relative min-h-[500px] w-[90%] flex-shrink-0  animate-fadeLeft overflow-y-auto">
+    <div className="carousel-item carousel-item	group relative min-h-[500px] w-[90%] flex-shrink-0  animate-fadeLeft overflow-y-auto">
       {gateSlide && (
         <div>
           <div className="absolute bottom-5 left-1/2 z-20 -translate-x-1/2 transform rounded-full bg-orange-200 px-2 text-sm font-semibold text-black">
             Slides after this will be locked with the gated slide
           </div>
           <Popover>
-            <PopoverTrigger className="absolute  bottom-5 left-5 opacity-0 group-hover:opacity-100 z-20 flex h-10 w-10 items-center justify-center rounded-full bg-white p-2 shadow-sm">
+            <PopoverTrigger className="absolute  bottom-5 left-5 z-20 flex h-10 w-10 items-center justify-center rounded-full bg-white p-2 opacity-0 shadow-sm group-hover:opacity-100">
               <Settings2 strokeWidth={"1.5px"} width={20} />
             </PopoverTrigger>
             <PopoverContent className="mt-2 max-w-sm rounded-xl">
@@ -259,6 +318,12 @@ export default function ShowSlide(props: Props) {
         </div>
       )}
 
+      {leadSlide && (
+        <div className="absolute bottom-5 left-1/2 z-20 -translate-x-1/2 transform rounded-full bg-orange-200 px-2 text-sm font-semibold text-black">
+          {leadSlide.name}
+        </div>
+      )}
+
       <ContentCustomizer
         style={props.slidesStyles.find(
           (item: SlideStyle) => item.id == props.index + 1,
@@ -266,57 +331,50 @@ export default function ShowSlide(props: Props) {
         className="group relative h-full max-w-screen-xl overflow-y-auto  rounded-lg bg-slate-100 p-8 dark:bg-gray-900/80 lg:mt-0"
       >
         <>
-
-        
-          <div className="opacity-0 group-hover:opacity-100  absolute right-2 top-1 z-20">
-        
-
+          <div className="absolute right-2  top-1 z-20 opacity-0 group-hover:opacity-100">
             <div className="flex items-center gap-2">
               <div className="flex items-center gap-1">
+                <TooltipProvider delayDuration={100}>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button
+                        variant="outline"
+                        size="icon"
+                        className="h-7 w-7 rounded-full"
+                        onClick={() =>
+                          handleSlideSwipping("left", props.index - 1)
+                        }
+                        disabled={props.index == 0}
+                      >
+                        <ChevronLeft className="h-5 w-5" />
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent side="bottom">
+                      <p>Move to left</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
 
-              <TooltipProvider delayDuration={100}>
-      <Tooltip>
-        <TooltipTrigger asChild>
-        <Button
-                  variant="outline"
-                  size="icon"
-                  className="h-7 w-7 rounded-full"
-                  onClick={() => handleSwipping("left", props.index - 1)}
-                  disabled={props.index == 0}
-                >
-                  <ChevronLeft className="h-5 w-5" />
-                </Button>
-        </TooltipTrigger>
-        <TooltipContent side="bottom">
-          <p>Move to left</p>
-        </TooltipContent>
-      </Tooltip>
-    </TooltipProvider>
-
-
-    <TooltipProvider delayDuration={100}>
-      <Tooltip>
-        <TooltipTrigger asChild>
-        <Button
-                  variant="outline"
-                  size="icon"
-                
-                  className="h-7 w-7 rounded-full"
-                  onClick={() => handleSwipping("right", props.index + 1)}
-                  disabled={props.index + 1 == props.slides.length}
-                >
-                  <ChevronRight className="h-5 w-5" />
-                </Button>
-        </TooltipTrigger>
-        <TooltipContent side="bottom">
-        <p>Move to right</p>
-        </TooltipContent>
-      </Tooltip>
-    </TooltipProvider>
-
-
-            
-                
+                <TooltipProvider delayDuration={100}>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button
+                        variant="outline"
+                        size="icon"
+                        className="h-7 w-7 rounded-full"
+                        onClick={() =>
+                          handleSlideSwipping("right", props.index + 1)
+                        }
+                        disabled={props.index + 1 == props.slides.length}
+                      >
+                        <ChevronRight className="h-5 w-5" />
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent side="bottom">
+                      <p>Move to right</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
               </div>
               <Trash
                 width={14}
@@ -348,28 +406,50 @@ export default function ShowSlide(props: Props) {
           {gateSlide && (
             <div className="z-80 relative">
               {type === "email" ? (
-                <div className="mt-5 flex justify-center">
-                  <div className="flex w-full max-w-sm items-center space-x-2">
-                    <Input type="email" placeholder="Email" />
-                    <Button
-                      className="bg-gradient-to-tr from-blue-600  to-blue-400 text-white"
-                      type="submit"
-                    >
-                      Subscribe
-                    </Button>
-                  </div>
-                </div>
+                <ShowSubscribeForm />
               ) : (
-                <div className="mt-5 flex justify-center">
-                  <Button className="bg-gradient-to-tr from-blue-600  to-blue-400 text-white">
-                    Click Here
-                  </Button>
-                </div>
+                <ShowClickButton btnText="Click Here" />
+              )}
+            </div>
+          )}
+
+          {leadSlide && (
+            <div className="z-80 relative">
+              {leadSlide.type === "email" ? (
+                <ShowSubscribeForm />
+              ) : (
+                <ShowClickButton btnText="Free Download" />
               )}
             </div>
           )}
         </>
       </ContentCustomizer>
+    </div>
+  );
+}
+
+function ShowSubscribeForm() {
+  return (
+    <div className="mt-5 flex justify-center">
+      <div className="flex w-full max-w-sm items-center space-x-2">
+        <Input type="email" placeholder="Email" />
+        <Button
+          className="bg-gradient-to-tr from-blue-600  to-blue-400 text-white"
+          type="submit"
+        >
+          Subscribe
+        </Button>
+      </div>
+    </div>
+  );
+}
+
+function ShowClickButton({ btnText }: { btnText: string }) {
+  return (
+    <div className="mt-5 flex justify-center">
+      <Button className="bg-gradient-to-tr from-blue-600  to-blue-400 text-white">
+        {btnText}
+      </Button>
     </div>
   );
 }

@@ -22,6 +22,10 @@ interface LeadData {
   delivery: string;
   url: string;
   fileName: string;
+  thumbnail: string;
+  thumbnailFile: string;
+  heroDescription: string;
+  featured: boolean;
 }
 
 interface SubscribeData {
@@ -53,4 +57,9 @@ interface gateSlide {
   id: number;
   type: string;
   link?: string;
+}
+
+interface leadSlide extends gateSlide {
+  name: string;
+  leadId: string;
 }
