@@ -45,6 +45,7 @@ export default function ShowSlide(props: Props) {
   const leadSlide = props.leadSlides.find((item) => item.id == props.index + 1);
   const [type, setType] = useState(gateSlide ? gateSlide.type : "email");
   const [link, setLink] = useState(gateSlide ? gateSlide.link : "");
+  const [slidesChanged, setSlidesChanged] = useState(false);
 
   function handleSlideChange(type: string, e?: any) {
     if (type === "email" || type === "follow") {
@@ -267,6 +268,8 @@ export default function ShowSlide(props: Props) {
         );
       }
     }
+
+    setSlidesChanged((state: boolean) => !state);
   }
 
   return (

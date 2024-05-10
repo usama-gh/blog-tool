@@ -36,9 +36,11 @@ export const EditorContents = (props: Props) => {
   const [slidesLength, setSlidesLength] = useState(0);
 
   useEffect(() => {
+    // props.data.slides !== JSON.stringify(props.slides)
+
     if (
       slidesLength != props.slides.length ||
-      props.data.slides !== JSON.stringify(props.slides)
+      JSON.stringify(props.slidesStyles) !== props.data.styling
     ) {
       setHydrated(false);
     }
