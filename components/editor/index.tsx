@@ -332,6 +332,7 @@ export default function Editor({
             lead?.id!,
             lead?.name!,
             lead?.download!,
+            lead?.buttonCta ?? "Download",
           );
           setLeadSlides([leadSlide]);
           setLeadId(lead?.id!);

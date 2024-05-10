@@ -393,7 +393,8 @@ export const updatePost = async (data: Post) => {
     await revalidateTag(
       `${post.site?.subdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}-${post.slug}`,
     );
-    await revalidateTag(`${post.id}-lead`);
+    await revalidateTag(`${post.slug}-lead`);
+    await revalidateTag(`${post.slug}-styles`);
 
     // await revalidateTag(`${data.id}-post`);
     // if the site has a custom domain, we need to revalidate those tags too
@@ -809,10 +810,10 @@ export const updateSiteLead = withLeadAuth(
                 ? {
                     ...slide,
                     type: data.download,
+                    ctaBtnText: data.buttonCta ?? "Download",
                   }
                 : slide;
             });
-            console.log(leadSlides);
             await prisma.post.update({
               where: {
                 id: post.id,
@@ -821,6 +822,7 @@ export const updateSiteLead = withLeadAuth(
                 leadSlides: JSON.stringify(leadSlides),
               },
             });
+            revalidateTag(`${post.slug}-lead`);
           }
         }
       }

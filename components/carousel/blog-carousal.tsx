@@ -160,7 +160,6 @@ const Carousel = ({ data, siteData, lead }: any) => {
                       ? ""
                       : "bg-" + contentStyling?.bgColor
                   }`}
-                  
                 ></div>
 
                 <div className=" scrollbar-thumb-rounded-full scrollbar-track-rounded-full relative z-20 my-auto flex h-screen w-full items-center justify-center overflow-y-auto py-10 pt-20 text-slate-600 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-gray-200 dark:text-gray-400 dark:scrollbar-thumb-gray-800 [&>*]:rounded-xl [&>*]:text-lg ">
@@ -187,6 +186,8 @@ const Carousel = ({ data, siteData, lead }: any) => {
                       setGateSlideUnblock={setGateSlideUnblock}
                       scrollNext={scrollNext}
                       siteId={data.siteId}
+                      leadSlide={data.leadSlide}
+                      lead={lead}
                     />
 
                     {/* <div className="scrollbar-thumb-rounded-full scrollbar-track-rounded-full my-auto flex h-screen w-full flex-1 items-center justify-center overflow-y-auto py-10 text-slate-600 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-gray-200 dark:text-gray-400 dark:scrollbar-thumb-gray-800 [&>*]:text-xl">
@@ -196,25 +197,21 @@ const Carousel = ({ data, siteData, lead }: any) => {
                 ))}
 
               {/* showing lead */}
-              {lead && (
+              {/* {lead && (
                 <div className="scrollbar-thumb-rounded-full scrollbar-track-rounded-full relative mx-auto my-auto mt-0 flex h-screen w-9/12  min-w-full items-center  justify-center overflow-y-auto pb-[120px] scrollbar-thin scrollbar-track-transparent scrollbar-thumb-gray-200 dark:scrollbar-thumb-gray-800">
                   <div className="mx-auto max-w-xl px-6">
                     <h4 className="pb-4 text-center text-5xl font-bold tracking-tight text-gray-800 dark:bg-gray-800 dark:text-gray-100">
                       {lead.title}
                     </h4>
                     <div className="font-regular overflow-hidden  text-center text-lg text-slate-800 dark:text-gray-50">
-                    {/* <MDX source= {lead.description} /> */}
-                    <div dangerouslySetInnerHTML={{ __html: lead.description }} />
-
-                   
+                      <div
+                        dangerouslySetInnerHTML={{ __html: lead.description }}
+                      />
                     </div>
-                    {/* <p className="pb-8 text-center text-lg font-normal tracking-wide text-gray-600  dark:text-gray-300">
-                      {lead.description}
-                    </p> */}
                     <LeadDownload postId={data.id} lead={lead} />
                   </div>
                 </div>
-              )}
+              )} */}
 
               {/* showing adjacent posts */}
               {data.adjacentPosts.length > 0 && (
@@ -277,7 +274,7 @@ const Carousel = ({ data, siteData, lead }: any) => {
               )}
             </div>
           </div>
-          {lead && (
+          {lead && data.leadSlide && (
             <div className="z-90 fixed bottom-12 left-1/2  -translate-x-1/2 transform lg:bottom-4">
               <div className="flex w-fit items-center justify-between gap-3 rounded-full bg-slate-200 p-1 dark:bg-gray-200">
                 <p className="text-dark whitespace-nowrap	 pl-4 text-sm font-semibold">
@@ -287,9 +284,10 @@ const Carousel = ({ data, siteData, lead }: any) => {
                   type="button"
                   className="inline-flex	items-center gap-x-2 whitespace-nowrap rounded-full border border-transparent bg-blue-600 px-4 py-1 text-sm font-semibold text-white hover:bg-blue-700 disabled:pointer-events-none disabled:opacity-50 dark:bg-blue-600 dark:text-white dark:hover:bg-blue-700 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
                   onClick={() =>
-                    scrollTo(
-                      data.slides ? JSON.parse(data.slides).length + 1 : 1,
-                    )
+                    // scrollTo(
+                    //   data.slides ? JSON.parse(data.slides).length + 1 : 1,
+                    // )
+                    scrollTo(data.leadSlide.id ?? 1)
                   }
                 >
                   {lead.buttonCta}

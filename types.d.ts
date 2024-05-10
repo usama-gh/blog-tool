@@ -62,4 +62,5 @@ interface gateSlide {
 interface leadSlide extends gateSlide {
   name: string;
   leadId: string;
+  ctaBtnText: string | null | undefined;
 }

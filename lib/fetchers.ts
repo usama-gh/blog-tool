@@ -6,7 +6,7 @@ import { plans } from "@/data";
 import { getSession } from "./auth";
 import { redirect } from "next/navigation";
 import rehypeRaw from "rehype-raw";
-import { SlideStyle, gateSlide } from "@/types";
+import { SlideStyle, gateSlide, leadSlide } from "@/types";
 import { styledSlide } from "./utils";
 
 export async function getSiteData(domain: string) {
@@ -197,17 +197,22 @@ export async function getPostData(domain: string, slug: string) {
         }),
       ]);
 
+      const leadSlides: leadSlide[] | [] = data.leadSlides
+        ? JSON.parse(data.leadSlides)
+        : [];
+
       return {
         ...data,
         mdxSource,
         slidesMdxSource,
         adjacentPosts,
+        leadSlide: leadSlides.length > 0 ? leadSlides[0] : null,
       };
     },
-    [`${domain}-${slug}`],
+    [`${domain}-${slug}`, `${slug}-styles`, `${slug}-lead`],
     {
       revalidate: 900, // 15 minutes
-      tags: [`${domain}-${slug}`],
+      tags: [`${domain}-${slug}`, `${slug}-styles`, `${slug}-lead`],
     },
   )();
 }

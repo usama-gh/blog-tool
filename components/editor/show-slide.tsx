@@ -406,7 +406,7 @@ export default function ShowSlide(props: Props) {
           {gateSlide && (
             <div className="z-80 relative">
               {type === "email" ? (
-                <ShowSubscribeForm />
+                <ShowSubscribeForm btnText="Subscribe" />
               ) : (
                 <ShowClickButton btnText="Click Here" />
               )}
@@ -416,9 +416,9 @@ export default function ShowSlide(props: Props) {
           {leadSlide && (
             <div className="z-80 relative">
               {leadSlide.type === "email" ? (
-                <ShowSubscribeForm />
+                <ShowSubscribeForm btnText={leadSlide.ctaBtnText!} />
               ) : (
-                <ShowClickButton btnText="Free Download" />
+                <ShowClickButton btnText={leadSlide.ctaBtnText!} />
               )}
             </div>
           )}
@@ -428,7 +428,7 @@ export default function ShowSlide(props: Props) {
   );
 }
 
-function ShowSubscribeForm() {
+function ShowSubscribeForm({ btnText }: { btnText: string }) {
   return (
     <div className="mt-5 flex justify-center">
       <div className="flex w-full max-w-sm items-center space-x-2">
@@ -437,7 +437,7 @@ function ShowSubscribeForm() {
           className="bg-gradient-to-tr from-blue-600  to-blue-400 text-white"
           type="submit"
         >
-          Subscribe
+          {btnText}
         </Button>
       </div>
     </div>

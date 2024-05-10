@@ -51,6 +51,7 @@ export const createLeadSlide = (
   leadId: string,
   name: string,
   type: string,
+  ctaBtnText: string,
   link?: string,
 ) => {
   return {
@@ -58,6 +59,7 @@ export const createLeadSlide = (
     name,
     leadId,
     type,
+    ctaBtnText,
     link: link ?? "",
   };
 };

@@ -61,6 +61,8 @@ export default async function SitePostPage({
     lead = await getPostLead(data.leadId, data.id, data.siteId as string);
   }
 
+  // const leadSlide = data.leadSlide ? JSON.parse(data.leadSlide) : null;
+
   return (
     <>
       <Script
