@@ -131,7 +131,7 @@ export const Subscribe = ({ siteId,view }: { siteId: string; view: string }) => 
   );
 };
 
-function SubscribeButton({view}) {
+function SubscribeButton({ view }: { view: string }) {
   const { pending } = useFormStatus();
   return (
     
