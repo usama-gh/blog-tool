@@ -332,7 +332,7 @@ export default async function SiteHomePage({
 
         {/* susbcribe to blog */}
         <div className="mb-10">
-          <Subscribe siteId={data.id} />
+          <Subscribe siteId={data.id} view="homepage" />
         </div>
       </div>
     </>
