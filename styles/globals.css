@@ -7,8 +7,14 @@
     background-color: #000000;
   }
 }
-.scroll-x-fade{
-  mask-image: linear-gradient(to right, transparent 0%, black 1px, black calc(100% - 48px), transparent 100%);
+.scroll-x-fade {
+  mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 1px,
+    black calc(100% - 48px),
+    transparent 100%
+  );
 }
 
 .picker__swatches {
@@ -48,7 +54,7 @@
   }
 
   .site-bio p {
-    @apply my-1 bg-gradient-to-br from-slate-500 to-slate-500 bg-clip-text text-center text-transparent dark:from-gray-100 dark:to-gray-500;
+    @apply my-1 bg-gradient-to-br from-slate-500 to-slate-500 bg-clip-text text-start text-transparent dark:from-gray-100 dark:to-gray-500;
   }
 
   .site-bio ul {

@@ -14,8 +14,8 @@ import { Lead } from "@prisma/client";
 import NovelEditor from "../editor/novel-editor";
 import { customAlphabet } from "nanoid";
 import { LeadData } from "@/types";
-import Markdown from "react-markdown";
 import { Switch } from "@/components/ui/switch";
+import parse from "html-react-parser";
 
 const nanoid = customAlphabet(
   "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz",
@@ -52,26 +52,36 @@ export default function LeadModal({
   const [description, setDescription] = useState(data.description);
   const type = lead ? "Update" : "Create";
 
+  async function uploadToR2(fileUrl: string, file: File) {
+    try {
+      const response = await fetch("/api/r2", {
+        method: "POST",
+        body: JSON.stringify({ key: fileUrl }),
+      });
+      const { url } = await response.json();
+      await fetch(url, {
+        method: "PUT",
+        body: file,
+      });
+      return true;
+    } catch (error: any) {
+      toast.error(error.message);
+      return false;
+    }
+  }
+
   return (
     <form
       action={async () => {
         if (data.delivery === "file" && !fileName) {
           toast.error("Please select a file");
         } else {
-          let flileUrl = lead ? lead.file : "";
+          let fileUrl = lead ? lead.file : "";
           if (originalFile) {
-            flileUrl = `${nanoid()}.${originalFile?.type.split("/")[1]}`;
-            let formData = new FormData();
-            originalFile && formData.append("file", originalFile);
-            const response = await fetch("/api/r2", {
-              method: "POST",
-              body: JSON.stringify({ key: flileUrl }),
-            });
-            const { url } = await response.json();
-            await fetch(url, {
-              method: "PUT",
-              body: formData,
-            });
+            fileUrl = `${nanoid()}.${originalFile?.type.split("/")[1]}`;
+
+            // uploading file to r2 server
+            await uploadToR2(fileUrl, originalFile);
           }
 
           let thumbnailFileUrl = lead ? lead.thumbnailFile : "";
@@ -79,17 +89,9 @@ export default function LeadModal({
             thumbnailFileUrl = `${nanoid()}.${
               originalThumbnail?.type.split("/")[1]
             }`;
-            let formData = new FormData();
-            originalFile && formData.append("file", originalThumbnail);
-            const response = await fetch("/api/r2", {
-              method: "POST",
-              body: JSON.stringify({ key: thumbnailFileUrl }),
-            });
-            const { url } = await response.json();
-            await fetch(url, {
-              method: "PUT",
-              body: formData,
-            });
+
+            // uploading file to r2 server
+            await uploadToR2(thumbnailFileUrl, originalThumbnail);
           }
 
           const body: LeadData = {
@@ -100,7 +102,7 @@ export default function LeadModal({
             buttonCta: data.buttonCta,
             download: data.download,
             delivery: data.delivery,
-            url: (data.delivery === "file" ? flileUrl : data.link) as string,
+            url: (data.delivery === "file" ? fileUrl : data.link) as string,
             fileName: fileName as string,
             thumbnailFile: thumbnailFileUrl ?? ("" as string),
             thumbnail: thumbnail as string,
@@ -427,8 +429,8 @@ export default function LeadModal({
                     {data.title}
                   </h2>
 
-                  <Markdown>{description}</Markdown>
-
+                  {/* <Markdown>{description}</Markdown> */}
+                  {parse(description)}
                   <div className="mt-2 flex  justify-center rounded-full">
                     {data.download === "email" && (
                       <div className="flex h-3 w-16 items-center bg-gray-100 px-2 text-[5px] text-gray-400 dark:bg-gray-400 dark:text-white">

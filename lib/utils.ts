@@ -140,3 +140,14 @@ export function getUrlFromString(str: string) {
 export function isUserAdmin(email: string) {
   return adminEmails.includes(email);
 }
+
+export function r2Asset(fileName: string) {
+  return process.env.NEXT_PUBLIC_STORAGE_URL + "/" + fileName;
+}
+
+export function isDefaultImage(image: string | null) {
+  return (
+    image ===
+    "https://ige9ec25vizexnyy.public.blob.vercel-storage.com/tQidqrn-Z2Nd3W4IJXq3XBZZMOllnA06WIkhlq.jpeg"
+  );
+}

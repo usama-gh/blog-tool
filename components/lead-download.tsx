@@ -4,6 +4,7 @@ import { Lead } from "@prisma/client";
 import { useState } from "react";
 import { toast } from "sonner";
 import LoadingDots from "./icons/loading-dots";
+import { r2Asset } from "@/lib/utils";
 
 export const LeadDownload = ({
   postId,
@@ -33,7 +34,7 @@ export const LeadDownload = ({
       const resData = await res.json();
       if (resData.success && lead.delivery === "file") {
         const link = document.createElement("a");
-        link.href = `${process.env.NEXT_PUBLIC_STORAGE_URL}/${lead.file}`;
+        link.href = r2Asset(lead.file!);
         link.setAttribute("download", `${lead.fileName}`);
         document.body.appendChild(link);
         link.click();
@@ -56,11 +57,23 @@ export const LeadDownload = ({
           </p>
         ) : (
           <div className="mt-5 text-center">
-            <p className="text-sm text-slate-700 dark:text-gray-200 text-center flex justify-center"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-6 h-6">
-  <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 13.5L12 21m0 0l-7.5-7.5M12 21V3" />
-</svg>
-</p>
-            <div className="mt-4 rounded-md bg-slate-100 text-slate-800 dark:bg-gray-600 dark:text-gray-100 p-2">
+            <p className="flex justify-center text-center text-sm text-slate-700 dark:text-gray-200">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                className="h-6 w-6"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M19.5 13.5L12 21m0 0l-7.5-7.5M12 21V3"
+                />
+              </svg>
+            </p>
+            <div className="mt-4 rounded-md bg-slate-100 p-2 text-slate-800 dark:bg-gray-600 dark:text-gray-100">
               {lead.file}
             </div>
           </div>

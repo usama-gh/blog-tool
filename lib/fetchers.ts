@@ -64,6 +64,31 @@ export async function getPostsForSite(domain: string) {
   )();
 }
 
+export async function getLeadsForSite(domain: string) {
+  const subdomain = domain.endsWith(`.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`)
+    ? domain.replace(`.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`, "")
+    : null;
+  const site = await prisma.site.findUnique({
+    where: subdomain ? { subdomain } : { customDomain: domain },
+  });
+
+  return await unstable_cache(
+    async () => {
+      return prisma.lead.findMany({
+        where: {
+          site: subdomain ? { subdomain } : { customDomain: domain },
+          featured: true,
+        },
+      });
+    },
+    [`${site?.id}-leads`],
+    {
+      revalidate: 900,
+      tags: [`${site?.id}-leads`],
+    },
+  )();
+}
+
 export async function getUserPlanAnalytics(userId?: string) {
   if (!userId) {
     const session = await getSession();
@@ -213,6 +238,27 @@ export async function getPostData(domain: string, slug: string) {
     {
       revalidate: 900, // 15 minutes
       tags: [`${domain}-${slug}`, `${slug}-styles`, `${slug}-lead`],
+    },
+  )();
+}
+
+export async function getLead(leadId: string) {
+  return await unstable_cache(
+    async () => {
+      const lead = await prisma.lead.findFirst({
+        where: {
+          id: leadId,
+        },
+      });
+
+      if (!lead) return null;
+
+      return lead;
+    },
+    [`${leadId}-lead`],
+    {
+      revalidate: 900, // 15 minutes
+      tags: [`${leadId}-lead`],
     },
   )();
 }

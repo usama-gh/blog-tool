@@ -735,6 +735,7 @@ export const createSiteLead = async (data: LeadData) => {
     });
 
     revalidateTag(`${data.siteId}-leads`);
+    revalidateTag(`${response.id}-lead`);
 
     return response;
   } catch (error: any) {
@@ -828,6 +829,7 @@ export const updateSiteLead = withLeadAuth(
       }
 
       await revalidateTag(`${lead.siteId}-leads`);
+      revalidateTag(`${lead.id}-lead`);
       return response;
     } catch (error: any) {
       return {
@@ -851,6 +853,7 @@ export const updateLeadImage = withLeadAuth(
         },
       });
       await revalidateTag(`${lead.siteId}-leads`);
+      await revalidateTag(`${lead.id}-lead`);
       return response;
     } catch (error: any) {
       return {
@@ -861,12 +864,28 @@ export const updateLeadImage = withLeadAuth(
 );
 
 export const deleteSiteLead = withLeadAuth(async (_: FormData, lead: Lead) => {
+  const leadId = lead.id;
   try {
+    const leadPosts = await prisma.post.findMany({
+      where: {
+        leadId: {
+          contains: leadId,
+        },
+      },
+    });
+
+    if (leadPosts.length > 0) {
+      return {
+        error:
+          "Lead is connected with one or multiple posts. Please disconnect lead from posts and try again.",
+      };
+    }
+
     // deleting all collectors of lead
     await prisma.leadCollector.deleteMany({
       where: {
         leadId: {
-          contains: lead.id,
+          contains: leadId,
         },
       },
     });
@@ -875,7 +894,7 @@ export const deleteSiteLead = withLeadAuth(async (_: FormData, lead: Lead) => {
     await prisma.post.updateMany({
       where: {
         leadId: {
-          contains: lead.id,
+          contains: leadId,
         },
       },
       data: {
@@ -888,13 +907,14 @@ export const deleteSiteLead = withLeadAuth(async (_: FormData, lead: Lead) => {
     const file = lead.file;
     const response = await prisma.lead.delete({
       where: {
-        id: lead.id,
+        id: leadId,
       },
     });
     // deleting file from blob
     // file && (await del(file));
 
     await revalidateTag(`${siteId}-leads`);
+    revalidateTag(`${leadId}-lead`);
     return response;
   } catch (error: any) {
     return {

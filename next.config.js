@@ -18,6 +18,7 @@ module.exports = {
       "images.unsplash.com",
       "illustrations.popsy.co",
       "lh3.googleusercontent.com",
+      "pub-dbc0ea453a75414bb37379de04191eb2.r2.dev"
     ],
   },
   reactStrictMode: false,
