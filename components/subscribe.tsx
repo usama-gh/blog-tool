@@ -3,7 +3,7 @@
 import { SubscribeReponse } from "@/types";
 import LoadingDots from "./icons/loading-dots";
 import { cn } from "@/lib/utils";
-import {Mail} from "lucide-react"
+
 import { useState } from "react";
 import { experimental_useFormStatus as useFormStatus } from "react-dom";
 import { toast } from "sonner";
@@ -41,7 +41,7 @@ export const Subscribe = ({ siteId,view }: { siteId: string; view: string }) => 
 {view==="homepage" ? (
 
 
-<div className="relative mx-auto text-left  bg-teal-100 rounded-2xl p-6 w-full">
+<div className="relative mx-auto  bg-teal-100 rounded-3xl px-6 w-full">
 {isSubscribed ? (
   // Display both success messages
   <>
@@ -57,7 +57,6 @@ export const Subscribe = ({ siteId,view }: { siteId: string; view: string }) => 
   <>
 
 
-<Mail size={'2.5rem'} strokeWidth={0.9} className="mb-2 text-teal-700"/>
 
     <p className="text-base text-teal-700 ">
       Subscribe to get future posts, exclusive content & much more.
@@ -74,7 +73,7 @@ export const Subscribe = ({ siteId,view }: { siteId: string; view: string }) => 
         value={email}
         onChange={(e) => setEmail(e.target.value)}
         required
-        className="w-full flex-1 shadow-md rounded-l-md bg-white border-0 text-xs"
+        className="w-full flex-1 rounded-l-md bg-white border-0 text-xs"
       />
       <SubscribeButton view={view}/>
     </form>
@@ -143,7 +142,7 @@ function SubscribeButton({ view }: { view: string }) {
     <button
     type="submit"
     className={cn(
-      "flex h-8 w-auto items-center shadow-md justify-center space-x-2 rounded-r-md  text-white px-4 py-1 text-xs transition-all focus:outline-none",
+      "flex h-8 w-auto items-center justify-center space-x-2 rounded-r-md  text-white px-4 py-1 text-xs transition-all focus:outline-none",
       pending
         ? "cursor-not-allowed "
         : "border-0 bg-teal-600",
