@@ -17,6 +17,7 @@ import { Subscribe } from "../subscribe";
 import { SlideStyle } from "@/types";
 import SlideContent from "./slide-content";
 import { isDefultStyle } from "@/lib/utils";
+import parse from "html-react-parser";
 
 const Carousel = ({ data, siteData, lead }: any) => {
   const stylings: SlideStyle[] | [] = !!data.styling
@@ -220,7 +221,9 @@ const Carousel = ({ data, siteData, lead }: any) => {
                     More from {siteData?.name}
                   </h4>
                   {/* susbcribe to blog */}
+                  <div className="text-slate-800 dark:text-gray-100">
                   <Subscribe siteId={data.siteId} view="blog" />
+                  </div>
 
                   <div className="relative mx-auto w-9/12 rounded-2xl border border-slate-200 px-8 py-8 text-slate-400 dark:border-gray-600 dark:text-gray-400">
                     {data.adjacentPosts && (
@@ -262,7 +265,7 @@ const Carousel = ({ data, siteData, lead }: any) => {
                             {siteData?.name}
                           </div>
                           <div className="bg-gradient-to-br from-slate-600 to-slate-300	 bg-clip-text text-center text-sm text-transparent drop-shadow-md dark:from-gray-200 dark:to-gray-500 ">
-                            {siteData?.bio}
+                            {parse(siteData?.bio)}
                           </div>
 
                           <SocialLinks linksData={siteData.links} />

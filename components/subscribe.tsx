@@ -41,7 +41,7 @@ export const Subscribe = ({ siteId,view }: { siteId: string; view: string }) => 
 {view==="homepage" ? (
 
 
-<div className="relative mx-auto  bg-teal-100 rounded-3xl px-6 w-full">
+<div className="relative mx-auto  bg-teal-100 dark:bg-teal-700 rounded-3xl px-6 w-full">
 {isSubscribed ? (
   // Display both success messages
   <>
@@ -58,7 +58,7 @@ export const Subscribe = ({ siteId,view }: { siteId: string; view: string }) => 
 
 
 
-    <p className="text-base text-teal-700 ">
+    <p className="text-base text-teal-700 dark:text-teal-100 ">
       Subscribe to get future posts, exclusive content & much more.
     </p>
 

@@ -27,6 +27,8 @@ export default async function SiteHomePage({
     getPostsForSite(params.domain),
     getLeadsForSite(params.domain),
   ]);
+  const imageSrc = isDefaultImage(posts[0].image) ? '' : posts[0].image || '';
+
 
   if (!data) {
     notFound();
@@ -76,12 +78,12 @@ export default async function SiteHomePage({
 
         <div className="flex items-start gap-5 flex-wrap sm:flex-nowrap px-4	">
           <div className="flex w-full sm:w-1/4 flex-col gap-y-5">
-            <div className="rounded-3xl bg-teal-100 py-6 text-left">
+            <div className="rounded-3xl bg-teal-100 dark:bg-teal-700 py-6 text-left">
               <div className="px-6">
                 <Mail
                   size={"2.5rem"}
                   strokeWidth={0.9}
-                  className="mb-2 text-teal-700"
+                  className="mb-2 text-teal-700 dark:text-teal-100"
                 />
               </div>
 
@@ -91,7 +93,7 @@ export default async function SiteHomePage({
             <div>
               {leads.length > 0 && (
                 <>
-                  <h3 className="mb-5 text-xs font-semibold uppercase tracking-widest  text-slate-600 dark:text-white">
+                  <h3 className="mb-5 text-xs font-semibold uppercase tracking-widest  text-slate-600 dark:text-gray-500">
                     Latest Resources
                   </h3>
 
@@ -99,7 +101,7 @@ export default async function SiteHomePage({
                     {leads.map((lead, index) => (
                       <div key={`lead-${index}`}>
                         <Link href={`/resources/${lead.id}`}>
-                          <div className="ease mb-5 rounded-3xl bg-slate-100 p-6  transition-all hover:bg-slate-200  md:w-full">
+                          <div className="ease mb-5 rounded-3xl bg-slate-100 hover:bg-slate-200 dark:bg-gray-700 hover:dark:bg-gray-600  p-6  transition-all  md:w-full">
                             {lead.thumbnailFile && (
                               <Image
                                 width={80}
@@ -111,7 +113,7 @@ export default async function SiteHomePage({
                             )}
 
                             <div className="flex w-full flex-col items-start justify-center gap-y-2  text-left">
-                              <h2 className="text-xl font-semibold tracking-tight text-slate-600  dark:text-white ">
+                              <h2 className="text-xl font-semibold tracking-wide text-slate-600  dark:text-white ">
                                 {lead.title}
                               </h2>
 
@@ -122,7 +124,7 @@ export default async function SiteHomePage({
                               )}
 
                               <button
-                               className="mt-2 w-auto rounded-full border border-slate-500 px-4 py-1 text-center text-sm text-slate-500 hover:border-slate-700 hover:text-slate-600 dark:border-gray-600 dark:bg-transparent dark:text-gray-300 dark:hover:border-gray-300 dark:hover:text-gray-300"
+                               className="mt-2 w-auto rounded-full border border-slate-500 px-4 py-1 text-center text-sm text-slate-500 hover:border-slate-700 hover:text-slate-600 dark:border-gray-400 dark:bg-transparent dark:text-gray-400 dark:hover:border-gray-300 dark:hover:text-gray-300"
                               >
                                 View
                               </button>
@@ -142,23 +144,26 @@ export default async function SiteHomePage({
                 <div>
                   <Link href={`/${posts[0].slug}`}>
                     <div
-                      className="ease relative mb-5  h-[30rem]  overflow-hidden rounded-3xl px-4 py-12	 transition-all  dark:bg-gray-800 dark:shadow-none md:w-full"
-                      style={{
-                        ...(isDefaultImage(posts[0].image)
-                          ? {}
-                          : {
-                              backgroundImage: `url(${posts[0].image})`,
-                              backgroundPosition: "center",
-                              backgroundSize: "cover",
-                              backgroundRepeat: "no-repeat",
-                            }),
-                      }}
+                      className="ease relative mb-5  h-[30rem]  overflow-hidden rounded-3xl p-6	 transition-all  dark:bg-gray-700 hover:dark:bg-gray-600 dark:shadow-none md:w-full"
+        
                     >
+                       {!isDefaultImage(posts[0].image) && (
+    <Image
+      src={imageSrc}
+      alt="Post Image"
+      layout="fill"
+      objectFit="cover"
+      objectPosition="center"
+      quality={100}
+      className="absolute top-0 left-0 z-0"
+    />
+  )}
+
                       {!isDefaultImage(posts[0].image) && (
                         <div className="absolute left-0 top-0 z-20 h-full w-full bg-gradient-to-t from-black  via-[#000000d1] to-transparent"></div>
                       )}
 
-                      <div className="flex h-full items-end justify-start  px-6">
+                      <div className="flex h-full items-end justify-start">
                         <div className="relative z-30 flex w-full flex-col items-start justify-start gap-y-2 text-left">
                           <p
                             className={cn(
@@ -186,10 +191,12 @@ export default async function SiteHomePage({
                           </p>
                           <button
                             className={cn(
-                              "mt-2 w-auto rounded-full border border-slate-500 px-4 py-2 text-center text-sm text-slate-500 hover:border-slate-700 hover:text-slate-600 dark:border-gray-600 dark:bg-transparent dark:text-gray-300 dark:hover:border-gray-300 dark:hover:text-gray-300",
-                              !isDefaultImage(posts[0].image) &&
-                                "border-white bg-white text-black",
+                              "rounded-full border px-4 py-1 text-center text-sm",
+                              isDefaultImage(posts[0].image) 
+                                ? "border-slate-500 text-slate-500 hover:border-slate-700 hover:text-slate-600 dark:border-gray-400 dark:bg-transparent dark:text-gray-400 dark:hover:border-gray-300 dark:hover:text-gray-300"
+                                : "border-white bg-white text-black"
                             )}
+                            
                           >
                             Read More
                           </button>
@@ -224,33 +231,38 @@ export default async function SiteHomePage({
             <div className="grid grid-cols-1 gap-5 pb-16 md:grid-cols-2">
               {posts.length > 0 ? (
                 posts.slice(1).map((post, index) => (
+                  
                   <div key={`post-${index}`}>
                     <Link href={`/${post.slug}`}>
                       <div
-                        className="ease relative h-[19.5rem] overflow-hidden rounded-3xl bg-slate-100 p-6 transition-all hover:bg-slate-200 dark:bg-gray-800 dark:shadow-none md:w-full"
-                        style={{
-                          ...(isDefaultImage(post.image)
-                            ? {}
-                            : {
-                                backgroundImage: `url(${post.image})`,
-                                backgroundPosition: "center",
-                                backgroundSize: "cover",
-                                backgroundRepeat: "no-repeat",
-                              }),
-                        }}
+                        className="ease relative h-[19.5rem] overflow-hidden rounded-3xl bg-slate-100 p-6 transition-all hover:bg-slate-200 dark:bg-gray-700 hover:dark:bg-gray-600 md:w-full"
+                        
                       >
-                        {!isDefaultImage(post.image) && (
+                                    
+                        {!isDefaultImage(post.image) && (post.image) && (
+                          <div>
+                               <Image
+                src={post.image}
+                alt="Post Image"
+                layout="fill"
+                objectFit="cover"
+                objectPosition="center"
+                quality={100}
+                className="absolute top-0 left-0 z-0"
+              />
                           <div className="absolute left-0 top-0 z-20 h-full w-full bg-gradient-to-t from-black  via-[#000000d1] to-transparent"></div>
+                          </div>
                         )}
 
                         <div className="flex h-full flex-col justify-between">
                           <div className="relative z-20 flex justify-end">
                             <button
                               className={cn(
-                                "w-auto rounded-full border border-slate-500 px-4 py-2 text-center text-sm text-slate-500 hover:border-slate-700 hover:text-slate-600 dark:border-gray-600 dark:bg-transparent dark:text-gray-300 dark:hover:border-gray-300 dark:hover:text-gray-300",
-                                !isDefaultImage(post.image) &&
-                                  "border-white bg-white text-black",
-                              )}
+                                "rounded-full border px-4 py-1 text-center text-sm",
+                                isDefaultImage(post.image) 
+                                  ? "border-slate-500 text-slate-500 hover:border-slate-700 hover:text-slate-600 dark:border-gray-400 dark:bg-transparent dark:text-gray-400 dark:hover:border-gray-300 dark:hover:text-gray-300"
+                                  : "border-white bg-white text-black"
+                              )}                              
                             >
                               Read More
                             </button>
@@ -319,7 +331,7 @@ export default async function SiteHomePage({
 
           
         </div>
-        <div className="mb-10 rounded-3xl bg-teal-100 py-16 text-center">
+        <div className="mb-10 rounded-3xl bg-teal-100 dark:bg-teal-700 py-16 text-center">
         <div className=" text-center mx-auto mb-4">
                   {data.logo ? (
                     <Image
@@ -336,7 +348,7 @@ export default async function SiteHomePage({
                   )}
                 </div>
 
-          <h2 className="text-3xl font-bold text-teal-700 mb-2">Subscribe to my newsletter</h2>
+          <h2 className="text-3xl font-bold text-teal-700 dark:text-teal-50 mb-2">Subscribe to my newsletter</h2>
           <Subscribe siteId={data.id} view="homepage" />
         </div>
       </div>
