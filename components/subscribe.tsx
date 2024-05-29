@@ -45,11 +45,11 @@ export const Subscribe = ({ siteId,view }: { siteId: string; view: string }) => 
 {isSubscribed ? (
   // Display both success messages
   <>
-    <p className="mb-1 font-semibold  dark:text-gray-300">
+    <p className="mb-1 text-teal-700 tracking-wide font-semibold  dark:text-gray-300">
       Thank you for subscribing!
     </p>
-    <p className="text-sm dark:text-gray-300">
-      You are now subscribed to the newsletter.
+    <p className="text-sm text-teal-700 tracking-tight  dark:text-gray-300">
+      You are now subscribed to my newsletter.
     </p>
   </>
 ) : (

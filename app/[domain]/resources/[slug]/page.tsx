@@ -79,7 +79,7 @@ export default async function SiteLeadPage({
               </div>
             </Link>
             <Link href="/">
-              <p className="max-w-sm truncate  text-xs font-semibold tracking-normal text-gray-100 drop-shadow-sm hover:text-slate-600 dark:text-white dark:hover:text-gray-300 lg:text-sm">
+              <p className="max-w-sm truncate  text-xs font-semibold tracking-normal text-gray-100 drop-shadow-sm dark:text-white dark:hover:text-gray-300 lg:text-sm">
                 {" "}
                 {siteData?.name}
               </p>
@@ -120,14 +120,15 @@ export default async function SiteLeadPage({
                   <div className="flex flex-col items-center justify-center gap-4">
                     {lead.thumbnailFile && (
                       <Image
+                      className="rounded-lg"
                         alt={lead.title}
                         src={r2Asset(lead.thumbnailFile)}
-                        width={100}
-                        height={100}
+                        width={150}
+                        height={150}
                       />
                     )}
 
-                    <h2 className="text-2xl font-semibold">{lead.title}</h2>
+                    <h2 className="text-4xl font-bold">{lead.title}</h2>
                     {lead.heroDescription && (
                       <p className="text-lg text-slate-700 dark:text-white">
                         {lead.heroDescription}

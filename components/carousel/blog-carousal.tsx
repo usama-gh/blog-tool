@@ -216,34 +216,27 @@ const Carousel = ({ data, siteData, lead }: any) => {
 
               {/* showing adjacent posts */}
               {data.adjacentPosts.length > 0 && (
-                <div className="scrollbar-thumb-rounded-full scrollbar-track-rounded-full relative mx-auto h-screen  w-9/12 min-w-full overflow-y-auto pb-[120px] pt-40 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-gray-200 dark:scrollbar-thumb-gray-800">
-                  <h4 className="pb-8 text-center text-sm font-semibold uppercase tracking-wide text-slate-400 dark:bg-gray-800 dark:text-gray-400">
-                    More from {siteData?.name}
-                  </h4>
-                  {/* susbcribe to blog */}
-                  <div className="text-slate-800 dark:text-gray-100">
-                  <Subscribe siteId={data.siteId} view="blog" />
-                  </div>
+                <div className="bg-white scrollbar-thumb-rounded-full scrollbar-track-rounded-full relative mx-auto h-screen  w-9/12 min-w-full overflow-y-auto pb-[120px] pt-40 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-gray-200 dark:scrollbar-thumb-gray-800">
 
-                  <div className="relative mx-auto w-9/12 rounded-2xl border border-slate-200 px-8 py-8 text-slate-400 dark:border-gray-600 dark:text-gray-400">
-                    {data.adjacentPosts && (
-                      <>
-                        <div className="relative grid gap-2 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2">
-                          {data.adjacentPosts
-                            .slice(0, 4)
-                            .map((value: any, index: number) => (
-                              <div key={index}>
-                                <BlogCard key={index} data={value} />
-                              </div>
-                            ))}
-                        </div>
-                        <div className="mt-8 flex flex-col items-center justify-center">
-                          <div className="mb-5 h-[1px] w-full bg-slate-200 dark:bg-gray-600"></div>
-                          <p className="flex items-center space-x-2 pb-4 text-center text-sm font-semibold uppercase tracking-wide text-slate-400 dark:bg-gray-800 dark:text-gray-400">
-                            Follow me
-                          </p>
+<p className="text-center text-4xl font-bold mb-4 tracking-tight  text-slate-800 dark:bg-gray-900 dark:text-gray-400">
+                          Read more of my content
+                          </p> 
 
-                          <div className="h-[70px] w-[70px] overflow-hidden rounded-full border-4 border-slate-300 dark:border-gray-700">
+<section className="text-gray-600 body-font">
+
+
+  <div className="container max-w-6xl flex gap-x-4 flex-wrap lg:flex-nowrap  mx-auto items-start">
+    <div className="md:w-4/12  mb-10 md:mb-0 pb-10">
+      
+        
+                          
+                <div className=" flex flex-col gap-y-4">
+
+                <div className="p-5 bg-yellow-50 rounded-3xl flex flex-col items-start justify-start">
+                          
+                        
+
+                          <div className="h-[70px] w-[70px] overflow-hidden rounded-full">
                             {siteData?.logo ? (
                               <BlurImage
                                 alt={siteData?.logo ?? "User Avatar"}
@@ -261,18 +254,64 @@ const Carousel = ({ data, siteData, lead }: any) => {
                               </div>
                             )}
                           </div>
-                          <div className="mt-2 bg-gradient-to-br	 from-slate-600 to-slate-300 bg-clip-text text-lg font-bold text-slate-500 text-transparent  drop-shadow-md dark:from-gray-200 dark:to-gray-500">
+                          <div className="mt-2 text-slate-700 font-semibold tracking-wide">
                             {siteData?.name}
                           </div>
-                          <div className="bg-gradient-to-br from-slate-600 to-slate-300	 bg-clip-text text-center text-sm text-transparent drop-shadow-md dark:from-gray-200 dark:to-gray-500 ">
+                          <div className="bg-gradient-to-br from-slate-600 to-slate-300	 bg-clip-text text-left text-sm text-transparent  dark:from-gray-200 dark:to-gray-500 ">
                             {parse(siteData?.bio)}
                           </div>
-
+                          
+                          <div className="flex justify-start w-full my-2">
                           <SocialLinks linksData={siteData.links} />
+                          </div>
+                         
                         </div>
+
+
+
+                  <div className="rounded-3xl bg-teal-100 dark:bg-teal-700 py-6 text-left">
+                  <Subscribe siteId={data.siteId} view="homepage" />
+                  </div>
+
+
+                </div>
+   
+
+
+    </div>
+    <div className="flex flex-col md:w-8/12 ">
+
+
+      <div className="relative rounded-2xl  text-slate-400  dark:text-gray-400">
+                    {data.adjacentPosts && (
+                      <>
+                        <div className="relative grid gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2">
+                          {data.adjacentPosts
+                            .slice(0, 4)
+                            .map((value: any, index: number) => (
+                              <div key={index}>
+                                <BlogCard key={index} data={value} />
+                              </div>
+                            ))}
+                        </div>
+                       
                       </>
                     )}
                   </div>
+
+    
+    </div>
+  </div>
+</section>
+
+
+
+
+                 
+               
+                
+
+              
                 </div>
               )}
             </div>
