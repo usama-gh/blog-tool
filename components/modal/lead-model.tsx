@@ -16,6 +16,7 @@ import { customAlphabet } from "nanoid";
 import { LeadData } from "@/types";
 import { Switch } from "@/components/ui/switch";
 import parse from "html-react-parser";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 const nanoid = customAlphabet(
   "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz",
@@ -128,15 +129,22 @@ export default function LeadModal({
       }}
       className="flex w-full flex-col justify-start rounded-md bg-white dark:bg-black md:max-w-4xl md:border md:border-gray-200 md:shadow dark:md:border-gray-700 lg:flex-row"
     >
+
       <div className="relative flex flex-col space-y-4 p-5 md:p-10 lg:min-w-[500px]">
         <h2 className="font-inter mb-5 text-2xl font-bold dark:text-white">
           {type} your lead magnet
         </h2>
 
+        <Tabs defaultValue="basic info" className="w-[400px]">
+        <TabsList>
+          <TabsTrigger value="basic info">Basic Info</TabsTrigger>
+          <TabsTrigger value="more details">More Details</TabsTrigger>
+        </TabsList>
+        <TabsContent value="basic info">
         <div className="flex flex-col space-y-2">
           <label
             htmlFor="name"
-            className="text-xs font-medium text-slate-500 dark:text-gray-400"
+            className="text-xs font-medium text-slate-500 dark:text-gray-400 pt-1"
           >
             Campaign Name
           </label>
@@ -155,7 +163,7 @@ export default function LeadModal({
         <div className="flex flex-col space-y-2">
           <label
             htmlFor="title"
-            className="text-xs font-medium text-slate-500 dark:text-gray-400"
+            className="text-xs font-medium text-slate-500 dark:text-gray-400 pt-3"
           >
             Title CTA (Max. 50 chars limit)
           </label>
@@ -175,7 +183,7 @@ export default function LeadModal({
         <div className="flex flex-col space-y-2">
           <label
             htmlFor="heroDescription"
-            className="text-xs font-medium text-slate-500 dark:text-gray-400"
+            className="text-xs font-medium text-slate-500 dark:text-gray-400 pt-3"
           >
             Description (Max. 67 chars limit)
           </label>
@@ -196,7 +204,7 @@ export default function LeadModal({
         <div className="flex flex-col space-y-2">
           <label
             htmlFor="description"
-            className="text-xs font-medium text-slate-500  dark:text-gray-400"
+            className="text-xs font-medium text-slate-500  dark:text-gray-400 pt-3"
           >
             Body
           </label>
@@ -209,10 +217,12 @@ export default function LeadModal({
           </span>
         </div>
 
+        </TabsContent>
+        <TabsContent value="more details">
         <div className="flex flex-col space-y-2">
           <label
             htmlFor="delivery"
-            className="text-xs font-medium text-slate-500 dark:text-gray-400"
+            className="text-xs font-medium text-slate-500 dark:text-gray-400 pt-1"
           >
             Delivery Method
           </label>
@@ -259,7 +269,7 @@ export default function LeadModal({
           <div className="flex flex-col space-y-2">
             <label
               htmlFor="description"
-              className="text-xs font-medium text-slate-500  dark:text-gray-400"
+              className="text-xs font-medium text-slate-500  dark:text-gray-400 pt-3"
             >
               Upload file
             </label>
@@ -294,7 +304,7 @@ export default function LeadModal({
         <div className="flex flex-col space-y-2">
           <label
             htmlFor="description"
-            className="text-xs font-medium text-slate-500  dark:text-gray-400"
+            className="text-xs font-medium text-slate-500  dark:text-gray-400 pt-3"
           >
             Upload Thumbnail
           </label>
@@ -310,7 +320,7 @@ export default function LeadModal({
         <div className="flex flex-col space-y-2">
           <label
             htmlFor="btnCta"
-            className="text-xs font-medium text-slate-500 dark:text-gray-400"
+            className="text-xs font-medium text-slate-500 dark:text-gray-400 pt-3"
           >
             Button CTA
           </label>
@@ -328,7 +338,7 @@ export default function LeadModal({
         <div className="flex flex-col space-y-2">
           <label
             htmlFor="download"
-            className="text-xs font-medium text-slate-500 dark:text-gray-400"
+            className="text-xs font-medium text-slate-500 dark:text-gray-400 pt-3"
           >
             Download settings
           </label>
@@ -372,7 +382,7 @@ export default function LeadModal({
         </div>
 
         <div className="flex flex-col space-y-2">
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 pt-3">
             <label
               htmlFor="btnCta"
               className="block text-xs font-medium text-slate-500 dark:text-gray-400"
@@ -388,10 +398,15 @@ export default function LeadModal({
           </div>
         </div>
 
-        <div className="flex items-center justify-end rounded-b-lg border-t border-slate-200 bg-slate-50 p-3 dark:border-gray-700 dark:bg-gray-800 md:px-10">
+        {/* <div className="flex items-center justify-end rounded-b-lg border-t border-slate-200 bg-slate-50 p-3 dark:border-gray-700 dark:bg-gray-800 md:px-10"> */}
+          <div className="pt-4">
           <CreateSiteFormButton type={type} />
-        </div>
+          </div>
+        {/* </div> */}
+        </TabsContent>
+        </Tabs>
       </div>
+
       <div className="hidden w-[400px] bg-slate-100 px-4 text-center dark:bg-gray-800 lg:block">
         <h3 className="my-5 text-sm text-slate-800">Preview</h3>
         <div className="flex flex-col gap-y-2">
@@ -452,6 +467,7 @@ export default function LeadModal({
         </div>
       </div>
     </form>
+  
   );
 }
 function CreateSiteFormButton({ type }: { type: string }) {
