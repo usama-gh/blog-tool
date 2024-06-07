@@ -21,8 +21,8 @@ export default function BlogCard({ data }: BlogCardProps) {
 
   
 <div
-  className={`w-full ease flex flex-col items-start justify-left overflow-hidden h-[300px] rounded-2xl transition-all duration-200 hover:-translate-y-1 ${
-    isImageBackground ? 'bg-cover bg-center relative ' : 'bg-slate-50 dark:bg-gray-800 hover:bg-slate-100'
+  className={`w-full ease flex flex-col items-start justify-left overflow-hidden h-[300px] rounded-3xl transition-all duration-200 hover:-translate-y-1 ${
+    isImageBackground ? 'bg-cover bg-center relative ' : 'bg-slate-50 dark:bg-gray-800 hover:bg-slate-100 dark:hover:bg-gray-700'
   }`}
   style={isImageBackground ? { backgroundImage: `url(${data.image ?? "/placeholder.png"})` } : {}}
 >

@@ -113,7 +113,7 @@ export default async function SiteHomePage({
                             )}
 
                             <div className="flex w-full flex-col items-start justify-center gap-y-2  text-left">
-                              <h2 className="text-xl font-semibold tracking-wide text-slate-600  dark:text-white ">
+                              <h2 className="text-xl font-bold tracking-tight text-slate-600  dark:text-white ">
                                 {lead.title}
                               </h2>
 
@@ -191,7 +191,7 @@ export default async function SiteHomePage({
                           </p>
                           <button
                             className={cn(
-                              "rounded-full border px-4 py-1 text-center text-sm",
+                              "rounded-full border mt-2 px-4 py-1 text-center text-sm",
                               isDefaultImage(posts[0].image) 
                                 ? "border-slate-500 text-slate-500 hover:border-slate-700 hover:text-slate-600 dark:border-gray-400 dark:bg-transparent dark:text-gray-400 dark:hover:border-gray-300 dark:hover:text-gray-300"
                                 : "border-white bg-white text-black"

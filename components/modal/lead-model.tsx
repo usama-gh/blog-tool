@@ -131,16 +131,18 @@ export default function LeadModal({
     >
 
       <div className="relative flex flex-col space-y-4 p-5 md:p-10 lg:min-w-[500px]">
-        <h2 className="font-inter mb-5 text-2xl font-bold dark:text-white">
+        <h2 className="font-inter mb-2 text-2xl font-bold dark:text-white">
           {type} your lead magnet
         </h2>
 
         <Tabs defaultValue="basic info" className="w-[400px]">
         <TabsList>
           <TabsTrigger value="basic info">Basic Info</TabsTrigger>
-          <TabsTrigger value="more details">More Details</TabsTrigger>
+          <TabsTrigger value="more details">Delivery</TabsTrigger>
         </TabsList>
-        <TabsContent value="basic info">
+
+       
+        <TabsContent value="basic info" className="flex flex-col space-y-2">
         <div className="flex flex-col space-y-2">
           <label
             htmlFor="name"
@@ -208,8 +210,9 @@ export default function LeadModal({
           >
             Body
           </label>
-          <span className="lead-body max-h-[100px] overflow-y-auto">
+          <span className="lead-body h-full max-h-[150px] overflow-y-auto">
             <NovelEditor
+            
               text={description}
               setText={setDescription}
               canUseAI={false}
@@ -218,11 +221,11 @@ export default function LeadModal({
         </div>
 
         </TabsContent>
-        <TabsContent value="more details">
-        <div className="flex flex-col space-y-2">
+        <TabsContent value="more details" className="flex flex-col space-y-4">
+        <div className="flex flex-col">
           <label
             htmlFor="delivery"
-            className="text-xs font-medium text-slate-500 dark:text-gray-400 pt-1"
+            className="text-xs font-medium text-slate-500 dark:text-gray-400 mb-2"
           >
             Delivery Method
           </label>

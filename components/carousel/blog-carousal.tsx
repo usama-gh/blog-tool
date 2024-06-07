@@ -216,10 +216,10 @@ const Carousel = ({ data, siteData, lead }: any) => {
 
               {/* showing adjacent posts */}
               {data.adjacentPosts.length > 0 && (
-                <div className="bg-white scrollbar-thumb-rounded-full scrollbar-track-rounded-full relative mx-auto h-screen  w-9/12 min-w-full overflow-y-auto pb-[120px] pt-40 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-gray-200 dark:scrollbar-thumb-gray-800">
+                <div className="bg-slate-200 dark:bg-gray-900 scrollbar-thumb-rounded-full scrollbar-track-rounded-full relative mx-auto h-screen  w-9/12 min-w-full overflow-y-auto pb-[120px] pt-40 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-gray-200 dark:scrollbar-thumb-gray-800">
 
-<p className="text-center text-4xl font-bold mb-4 tracking-tight  text-slate-800 dark:bg-gray-900 dark:text-gray-400">
-                          Read more of my content
+<p className="text-center text-4xl max-w-2xl mb-10 pb-8 mx-auto font-bold mb-8 tracking-tight  text-slate-800 dark:bg-gray-900 dark:text-gray-400">
+Thank you for reading! For more insights & stories, check out my other posts.
                           </p> 
 
 <section className="text-gray-600 body-font">
@@ -232,7 +232,7 @@ const Carousel = ({ data, siteData, lead }: any) => {
                           
                 <div className=" flex flex-col gap-y-4">
 
-                <div className="p-5 bg-yellow-50 rounded-3xl flex flex-col items-start justify-start">
+                <div className="p-5 bg-white rounded-3xl flex flex-col items-start justify-start">
                           
                         
 
@@ -257,7 +257,7 @@ const Carousel = ({ data, siteData, lead }: any) => {
                           <div className="mt-2 text-slate-700 font-semibold tracking-wide">
                             {siteData?.name}
                           </div>
-                          <div className="bg-gradient-to-br from-slate-600 to-slate-300	 bg-clip-text text-left text-sm text-transparent  dark:from-gray-200 dark:to-gray-500 ">
+                          <div className="text-left text-sm text-gray-800 ">
                             {parse(siteData?.bio)}
                           </div>
                           
