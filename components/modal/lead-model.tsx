@@ -16,7 +16,9 @@ import { customAlphabet } from "nanoid";
 import { LeadData } from "@/types";
 import { Switch } from "@/components/ui/switch";
 import parse from "html-react-parser";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious} from "@/components/ui/carousel";
+
 
 const nanoid = customAlphabet(
   "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz",
@@ -127,7 +129,7 @@ export default function LeadModal({
           });
         }
       }}
-      className="flex w-full flex-col justify-start rounded-md bg-white dark:bg-black md:max-w-4xl md:border md:border-gray-200 md:shadow dark:md:border-gray-700 lg:flex-row"
+      className="flex w-full flex-col justify-start rounded-md bg-white dark:bg-black md:max-w-5xl md:border md:border-gray-200 md:shadow dark:md:border-gray-700 lg:flex-row"
     >
 
       <div className="relative flex flex-col space-y-4 p-5 md:p-10 lg:min-w-[500px]">
@@ -409,10 +411,18 @@ export default function LeadModal({
         </TabsContent>
         </Tabs>
       </div>
+      
 
-      <div className="hidden w-[400px] bg-slate-100 px-4 text-center dark:bg-gray-800 lg:block">
-        <h3 className="my-5 text-sm text-slate-800">Preview</h3>
+      
+
+
+
+      <div className="hidden w-[600px] bg-slate-100 px-4 text-center dark:bg-gray-800 lg:block">
+        <h3 className="my-5 text-sm text-slate-100">Preview</h3>
         <div className="flex flex-col gap-y-2">
+        <Carousel>
+        <CarouselContent>
+        <CarouselItem className="basis-9/10">
           <div>
             <div className="mx-auto mt-10 max-w-2xl rounded-b-xl shadow-lg">
               <div className="flex h-8 w-full items-center justify-start space-x-1.5 rounded-t-lg border-b border-slate-200 bg-white  px-3 dark:border-gray-500 dark:bg-gray-600">
@@ -433,7 +443,8 @@ export default function LeadModal({
               Overlay popup on blog post
             </p>
           </div>
-
+        </CarouselItem>
+        <CarouselItem>
           <div>
             <div className="mx-auto mt-10 max-w-2xl rounded-b-xl shadow-lg">
               <div className="flex h-8 w-full items-center justify-start space-x-1.5 rounded-t-lg border-b border-slate-200  bg-white  px-3 dark:border-gray-500 dark:bg-gray-600">
@@ -467,6 +478,11 @@ export default function LeadModal({
               Lead magnet slide
             </p>
           </div>
+          </CarouselItem>
+          </CarouselContent>
+          <CarouselPrevious className="ml-9" />
+          <CarouselNext className="mr-6"/>
+          </Carousel>
         </div>
       </div>
     </form>
