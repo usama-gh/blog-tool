@@ -447,7 +447,12 @@ export default function Editor({
   }, [slides, leadId, gateSlides, leadSlides, slidesStyles]);
 
   const escapeSpecialCharacters = (str: string) => {
-    return str.replace(/[<{]/g, "\\$&");
+    return str
+      .replace(/[<{]/g, "\\$&")
+      .replaceAll("\\", "")
+      .replaceAll("\\", "")
+      .replaceAll("</p>", "")
+      .replaceAll("//", "");
   };
 
   const escapeSpecialCharactersInArray = (array: Array<string>) => {
@@ -461,7 +466,7 @@ export default function Editor({
     // Escape < characters in the newSlides array
     const escapedSlides = escapeSpecialCharactersInArray(newSlides);
 
-    // Set the slides in JSON format with escaped content
+    // // Set the slides in JSON format with escaped content
     setData({
       ...data,
       slides: JSON.stringify(escapedSlides),
@@ -523,20 +528,23 @@ export default function Editor({
 
   // Showing split toast to user
   useEffect(() => {
-    if (debouncedData.content && isPasted) {
-      // showSplitToast();
-      let splitContent = splitTextIntoChunks(debouncedData.content as string);
+    // only show split option if no gate slide or lead slide exists
+    if (leadSlides.length == 0 && gateSlides.length == 0) {
+      if (debouncedData.content && isPasted) {
+        // showSplitToast();
+        let splitContent = splitTextIntoChunks(debouncedData.content as string);
 
-      if (splitContent.length > 1) {
-        toast("Want to split your post?", {
-          action: {
-            label: "Yes",
-            onClick: () => splitContentIntoSlides(splitContent),
-          },
-          duration: 6000,
-        });
+        if (splitContent.length > 1) {
+          toast("Want to split your post?", {
+            action: {
+              label: "Yes",
+              onClick: () => splitContentIntoSlides(splitContent),
+            },
+            duration: 6000,
+          });
+        }
+        setIsPasted(false);
       }
-      setIsPasted(false);
     }
   }, [debouncedData.content]);
 
@@ -634,6 +642,10 @@ export default function Editor({
 
         <button
           onClick={() => {
+            if (!data.title) {
+              toast.error("Please enter title to publish.");
+              return;
+            }
             const formData = new FormData();
             formData.append("published", String(!data.published));
             startTransitionPublishing(async () => {

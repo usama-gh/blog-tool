@@ -27,8 +27,7 @@ export default async function SiteHomePage({
     getPostsForSite(params.domain),
     getLeadsForSite(params.domain),
   ]);
-  const imageSrc = isDefaultImage(posts[0].image) ? '' : posts[0].image || '';
-
+  const imageSrc = isDefaultImage(posts[0].image) ? "" : posts[0].image || "";
 
   if (!data) {
     notFound();
@@ -40,7 +39,7 @@ export default async function SiteHomePage({
         <div className="ease left-0 right-0 top-0 z-30 flex w-full transition-all duration-150 dark:bg-gray-800 dark:text-white">
           <div className="mx-auto w-full max-w-3xl py-12 text-center">
             <div>
-              <div className="flex w-full flex-col items-center justify-center gap-3 text-center px-4">
+              <div className="flex w-full flex-col items-center justify-center gap-3 px-4 text-center">
                 <div className=" text-center">
                   {data.logo ? (
                     <Image
@@ -76,9 +75,9 @@ export default async function SiteHomePage({
           </div>
         </div>
 
-        <div className="flex items-start gap-5 flex-wrap sm:flex-nowrap px-4	">
-          <div className="flex w-full sm:w-1/4 flex-col gap-y-5">
-            <div className="rounded-3xl bg-teal-100 dark:bg-teal-700 py-6 text-left">
+        <div className="flex flex-wrap items-start gap-5 px-4 sm:flex-nowrap	">
+          <div className="flex w-full flex-col gap-y-5 sm:w-1/4">
+            <div className="rounded-3xl bg-teal-100 py-6 text-left dark:bg-teal-700">
               <div className="px-6">
                 <Mail
                   size={"2.5rem"}
@@ -101,7 +100,7 @@ export default async function SiteHomePage({
                     {leads.map((lead, index) => (
                       <div key={`lead-${index}`}>
                         <Link href={`/resources/${lead.id}`}>
-                          <div className="ease mb-5 rounded-3xl bg-slate-100 hover:bg-slate-200 dark:bg-gray-700 hover:dark:bg-gray-600  p-6  transition-all  md:w-full">
+                          <div className="ease mb-5 rounded-3xl bg-slate-100 p-6 transition-all hover:bg-slate-200  dark:bg-gray-700  hover:dark:bg-gray-600  md:w-full">
                             {lead.thumbnailFile && (
                               <Image
                                 width={80}
@@ -123,9 +122,7 @@ export default async function SiteHomePage({
                                 </span>
                               )}
 
-                              <button
-                               className="mt-2 w-auto rounded-full border border-slate-500 px-4 py-1 text-center text-sm text-slate-500 hover:border-slate-700 hover:text-slate-600 dark:border-gray-400 dark:bg-transparent dark:text-gray-400 dark:hover:border-gray-300 dark:hover:text-gray-300"
-                              >
+                              <button className="mt-2 w-auto rounded-full border border-slate-500 px-4 py-1 text-center text-sm text-slate-500 hover:border-slate-700 hover:text-slate-600 dark:border-gray-400 dark:bg-transparent dark:text-gray-400 dark:hover:border-gray-300 dark:hover:text-gray-300">
                                 View
                               </button>
                             </div>
@@ -143,21 +140,18 @@ export default async function SiteHomePage({
               <div className="">
                 <div>
                   <Link href={`/${posts[0].slug}`}>
-                    <div
-                      className="ease relative mb-5  h-[30rem]  overflow-hidden rounded-3xl p-6	 transition-all  dark:bg-gray-700 hover:dark:bg-gray-600 dark:shadow-none md:w-full"
-        
-                    >
-                       {!isDefaultImage(posts[0].image) && (
-    <Image
-      src={imageSrc}
-      alt="Post Image"
-      layout="fill"
-      objectFit="cover"
-      objectPosition="center"
-      quality={100}
-      className="absolute top-0 left-0 z-0"
-    />
-  )}
+                    <div className="ease relative mb-5  h-[30rem]  overflow-hidden rounded-3xl p-6	 transition-all  dark:bg-gray-700 dark:shadow-none hover:dark:bg-gray-600 md:w-full">
+                      {!isDefaultImage(posts[0].image) && (
+                        <Image
+                          src={imageSrc}
+                          alt="Post Image"
+                          layout="fill"
+                          objectFit="cover"
+                          objectPosition="center"
+                          quality={100}
+                          className="absolute left-0 top-0 z-0"
+                        />
+                      )}
 
                       {!isDefaultImage(posts[0].image) && (
                         <div className="absolute left-0 top-0 z-20 h-full w-full bg-gradient-to-t from-black  via-[#000000d1] to-transparent"></div>
@@ -191,12 +185,11 @@ export default async function SiteHomePage({
                           </p>
                           <button
                             className={cn(
-                              "rounded-full border mt-2 px-4 py-1 text-center text-sm",
-                              isDefaultImage(posts[0].image) 
+                              "mt-2 rounded-full border px-4 py-1 text-center text-sm",
+                              isDefaultImage(posts[0].image)
                                 ? "border-slate-500 text-slate-500 hover:border-slate-700 hover:text-slate-600 dark:border-gray-400 dark:bg-transparent dark:text-gray-400 dark:hover:border-gray-300 dark:hover:text-gray-300"
-                                : "border-white bg-white text-black"
+                                : "border-white bg-white text-black",
                             )}
-                            
                           >
                             Read More
                           </button>
@@ -231,26 +224,21 @@ export default async function SiteHomePage({
             <div className="grid grid-cols-1 gap-5 pb-16 md:grid-cols-2">
               {posts.length > 0 ? (
                 posts.slice(1).map((post, index) => (
-                  
                   <div key={`post-${index}`}>
                     <Link href={`/${post.slug}`}>
-                      <div
-                        className="ease relative h-[19.5rem] overflow-hidden rounded-3xl bg-slate-100 p-6 transition-all hover:bg-slate-200 dark:bg-gray-700 hover:dark:bg-gray-600 md:w-full"
-                        
-                      >
-                                    
-                        {!isDefaultImage(post.image) && (post.image) && (
+                      <div className="ease relative h-[19.5rem] overflow-hidden rounded-3xl bg-slate-100 p-6 transition-all hover:bg-slate-200 dark:bg-gray-700 hover:dark:bg-gray-600 md:w-full">
+                        {!isDefaultImage(post.image) && post.image && (
                           <div>
-                               <Image
-                src={post.image}
-                alt="Post Image"
-                layout="fill"
-                objectFit="cover"
-                objectPosition="center"
-                quality={100}
-                className="absolute top-0 left-0 z-0"
-              />
-                          <div className="absolute left-0 top-0 z-20 h-full w-full bg-gradient-to-t from-black  via-[#000000d1] to-transparent"></div>
+                            <Image
+                              src={post.image}
+                              alt="Post Image"
+                              layout="fill"
+                              objectFit="cover"
+                              objectPosition="center"
+                              quality={100}
+                              className="absolute left-0 top-0 z-0"
+                            />
+                            <div className="absolute left-0 top-0 z-20 h-full w-full bg-gradient-to-t from-black  via-[#000000d1] to-transparent"></div>
                           </div>
                         )}
 
@@ -259,10 +247,10 @@ export default async function SiteHomePage({
                             <button
                               className={cn(
                                 "rounded-full border px-4 py-1 text-center text-sm",
-                                isDefaultImage(post.image) 
+                                isDefaultImage(post.image)
                                   ? "border-slate-500 text-slate-500 hover:border-slate-700 hover:text-slate-600 dark:border-gray-400 dark:bg-transparent dark:text-gray-400 dark:hover:border-gray-300 dark:hover:text-gray-300"
-                                  : "border-white bg-white text-black"
-                              )}                              
+                                  : "border-white bg-white text-black",
+                              )}
                             >
                               Read More
                             </button>
@@ -327,28 +315,27 @@ export default async function SiteHomePage({
 
         {/* susbcribe to blog */}
 
-        <div>
+        <div></div>
+        <div className="mb-10 rounded-3xl bg-teal-100 py-16 text-center dark:bg-teal-700">
+          <div className=" mx-auto mb-4 text-center">
+            {data.logo ? (
+              <Image
+                alt={data.user?.name ?? "User Avatar"}
+                width={80}
+                height={80}
+                className="mx-auto rounded-full object-cover shadow-xl"
+                src={data.logo}
+              />
+            ) : (
+              <div className="absolute flex h-full w-full select-none items-center justify-center bg-slate-100 text-4xl text-stone-500">
+                ?
+              </div>
+            )}
+          </div>
 
-          
-        </div>
-        <div className="mb-10 rounded-3xl bg-teal-100 dark:bg-teal-700 py-16 text-center">
-        <div className=" text-center mx-auto mb-4">
-                  {data.logo ? (
-                    <Image
-                      alt={data.user?.name ?? "User Avatar"}
-                      width={80}
-                      height={80}
-                      className="mx-auto rounded-full shadow-xl object-cover"
-                      src={data.logo}
-                    />
-                  ) : (
-                    <div className="absolute flex h-full w-full select-none items-center justify-center bg-slate-100 text-4xl text-stone-500">
-                      ?
-                    </div>
-                  )}
-                </div>
-
-          <h2 className="text-3xl font-bold text-teal-700 dark:text-teal-50 mb-2">Subscribe to my newsletter</h2>
+          <h2 className="mb-2 text-3xl font-bold text-teal-700 dark:text-teal-50">
+            Subscribe to my newsletter
+          </h2>
           <Subscribe siteId={data.id} view="homepage" />
         </div>
       </div>

@@ -828,7 +828,7 @@ export const updateSiteLead = withLeadAuth(
         }
       }
 
-      await revalidateTag(`${lead.siteId}-leads`);
+      revalidateTag(`${lead.siteId}-leads`);
       revalidateTag(`${lead.id}-lead`);
       return response;
     } catch (error: any) {
