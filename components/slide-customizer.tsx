@@ -13,12 +13,17 @@ import {
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "@/components/ui/tooltip"
+} from "@/components/ui/tooltip";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { categories, categoriesImages } from "@/data";
+import { useDebounce } from "use-debounce";
 
 const SlideCustomizer = ({
   slidesStyles,
@@ -31,6 +36,7 @@ const SlideCustomizer = ({
   updateStyleSlides: any;
   editor: any;
 }) => {
+  const perPageImages = 3;
   const defaultTextColor = { r: 0, g: 0, b: 0, a: 1 };
   const defaultBgColor = { r: 241, g: 245, b: 249, a: 1 };
   const [slideStyle, setSlideStyle] = useState<SlideStyle | undefined>();
@@ -40,6 +46,9 @@ const SlideCustomizer = ({
   const [showBgColorPicker, setShowBgColorPicker] = useState(false);
   const [image, setImage] = useState("");
   const [showResetBtn, setShowResetBtn] = useState(false);
+  const [search, setSearch] = useState("");
+  const [category, setCategory] = useState(categories[0]);
+  const [images, setImages] = useState([]);
   const imageRef = useRef(null);
   const componentRef = useRef(null);
   const presetColors = [
@@ -189,6 +198,9 @@ const SlideCustomizer = ({
     },
   ];
 
+  // debaounce search after 3 seconds
+  const [debouncedSearch] = useDebounce(search, 2000);
+
   // arrange original data from databse
   useEffect(() => {
     // @ts-ignore
@@ -225,7 +237,7 @@ const SlideCustomizer = ({
   }
 
   async function handleImageUpload(e: any) {
-    // delete image from vercel blob if exists
+    // delete image from vercel blob if exists and image is uploaded to vercel blob
     if (image) {
       await deleteImage();
     }
@@ -251,15 +263,16 @@ const SlideCustomizer = ({
   }
 
   async function deleteImage() {
-    const response = await fetch("/api/upload", {
-      method: "DELETE",
-      body: JSON.stringify({ image }),
-    });
-    const { success } = await response.json();
-    if (success) {
-      setImage("");
-      handleValueChange("image", "");
+    if (image.includes("blob.vercel-storage.com")) {
+      const response = await fetch("/api/upload", {
+        method: "DELETE",
+        body: JSON.stringify({ image }),
+      });
+      const { success } = await response.json();
     }
+
+    setImage("");
+    handleValueChange("image", "");
   }
 
   function changeEditorTextColor(type: string, value: any) {
@@ -366,31 +379,61 @@ const SlideCustomizer = ({
   //     setShowBgColorPicker(false);
   //   }
   // };
+  async function fetchImageFromUnsplash() {
+    const request = await fetch(
+      `https://api.unsplash.com/search/photos?query=${debouncedSearch}&per_page=${perPageImages}`,
+      {
+        headers: {
+          Authorization: `Client-ID ${process.env.NEXT_PUBLIC_UNSPLASH_ACCESS_KEY}`,
+        },
+      },
+    );
+    const images = await request.json();
+    setImages(images.results);
+  }
+  // search images from unsplash when user search
+  useEffect(() => {
+    if (debouncedSearch) {
+      fetchImageFromUnsplash();
+    } else {
+      setCategory("gradients");
+    }
+  }, [debouncedSearch]);
+
+  // show image when category change
+  useEffect(() => {
+    console.log(category);
+    if (category) {
+      const data = categoriesImages.find((item) => item.category === category);
+
+      // @ts-ignore
+      setImages(data.images ?? []);
+    } else {
+      setImages([]);
+    }
+  }, [category]);
 
   return (
     <>
       {/* text color picker wrapper */}
 
       <Popover>
+        <TooltipProvider delayDuration={100}>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <PopoverTrigger
+                ref={componentRef}
+                className="absolute bottom-5 right-5 flex h-10 w-10 items-center justify-center rounded-full bg-white p-2 opacity-0 shadow-sm transition ease-in-out group-hover:opacity-100"
+              >
+                <Palette strokeWidth={"1.5px"} width={20} />
+              </PopoverTrigger>
+            </TooltipTrigger>
+            <TooltipContent side="bottom">
+              <p>Customize design</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
 
-      <TooltipProvider delayDuration={100}>
-      <Tooltip>
-        <TooltipTrigger asChild>
-        <PopoverTrigger
-          ref={componentRef}
-          className="opacity-0 group-hover:opacity-100 transition ease-in-out absolute bottom-5 right-5 flex h-10 w-10 items-center justify-center rounded-full bg-white p-2 shadow-sm"
-        >
-          <Palette strokeWidth={"1.5px"} width={20} />
-        </PopoverTrigger>
-        </TooltipTrigger>
-        <TooltipContent side="bottom">
-          <p>Customize design</p>
-        </TooltipContent>
-      </Tooltip>
-    </TooltipProvider>
-
-
-       
         <PopoverContent className="mt-2 w-auto rounded-full">
           <div className="flex items-center gap-x-2">
             <div className="relative flex items-center gap-x-2">
@@ -451,19 +494,102 @@ const SlideCustomizer = ({
                 </PopoverContent>
               </Popover>
 
-              <button
-                type="button"
-                className="text-gray-500 hover:text-gray-600"
-                onClick={openImageDialog}
-              >
-                <ImageIcon strokeWidth={"1.5px"} width={20} />
-              </button>
-              <input
-                type="file"
-                ref={imageRef}
-                onChange={handleImageUpload}
-                className="hidden"
-              />
+              <Popover open={true}>
+                <PopoverTrigger>
+                  <button
+                    type="button"
+                    className="text-gray-500 hover:text-gray-600"
+                  >
+                    <ImageIcon strokeWidth={"1.5px"} width={20} />
+                  </button>
+                </PopoverTrigger>
+                <PopoverContent className="w-min">
+                  <div className="w-[200px]">
+                    <Input
+                      type="text"
+                      placeholder="Search"
+                      value={search}
+                      onChange={(e: any) => setSearch(e.target.value as string)}
+                    />
+                    {/* showing categories */}
+                    <div className="mt-1 flex items-center gap-2">
+                      {categories.map((item: string) => (
+                        <Button
+                          variant={category === item ? "default" : "outline"}
+                          size="xs"
+                          className="capitalize"
+                          key={item}
+                          onClick={() =>
+                            category === item
+                              ? setCategory("")
+                              : setCategory(item)
+                          }
+                        >
+                          {item}
+                        </Button>
+                      ))}
+                    </div>
+
+                    {/* showing images */}
+                    <div className="mt-2">
+                      <div className="">
+                        {images.map((item: any, idx: number) => (
+                          <div className="mb-3" key={idx}>
+                            <Image
+                              className="cursor-pointer object-contain"
+                              width={40}
+                              height={10}
+                              src={item.urls.regular}
+                              alt="background image"
+                              onClick={() =>
+                                handleValueChange(
+                                  "image",
+                                  item.urls.regular as string,
+                                )
+                              }
+                            />
+                            {item.user && (
+                              <small className="text-xs">
+                                Photo by{" "}
+                                <a
+                                  href={item.user?.links?.self}
+                                  className="text-blue-400"
+                                >
+                                  {item.user?.name}
+                                </a>{" "}
+                                on{" "}
+                                <a
+                                  href="https://unsplash.com"
+                                  className="text-blue-400"
+                                >
+                                  Unsplash
+                                </a>
+                              </small>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                    <div className="mt-3 p-3">
+                      <Button
+                        type="button"
+                        variant="secondary"
+                        className="w-full"
+                        onClick={openImageDialog}
+                      >
+                        Upload Image
+                      </Button>
+                      <input
+                        type="file"
+                        ref={imageRef}
+                        onChange={handleImageUpload}
+                        className="hidden"
+                      />
+                    </div>
+                  </div>
+                </PopoverContent>
+              </Popover>
+
               {image && (
                 <>
                   {/* <Image
