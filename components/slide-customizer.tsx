@@ -494,7 +494,7 @@ const SlideCustomizer = ({
                 </PopoverContent>
               </Popover>
 
-              <Popover open={true}>
+              <Popover>
                 <PopoverTrigger>
                   <button
                     type="button"
