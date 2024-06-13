@@ -24,6 +24,8 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { categories, categoriesImages } from "@/data";
 import { useDebounce } from "use-debounce";
+import { Skeleton } from "@/components/ui/skeleton";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
 
 const SlideCustomizer = ({
   slidesStyles,
@@ -36,7 +38,7 @@ const SlideCustomizer = ({
   updateStyleSlides: any;
   editor: any;
 }) => {
-  const perPageImages = 3;
+  const perPageImages = 10;
   const defaultTextColor = { r: 0, g: 0, b: 0, a: 1 };
   const defaultBgColor = { r: 241, g: 245, b: 249, a: 1 };
   const [slideStyle, setSlideStyle] = useState<SlideStyle | undefined>();
@@ -394,8 +396,15 @@ const SlideCustomizer = ({
   // search images from unsplash when user search
   useEffect(() => {
     if (debouncedSearch) {
+      setLoading(true);
       fetchImageFromUnsplash();
+      setTimeout(() => {
+            setLoading(false); 
+          }, 500); 
     } else {
+      setTimeout(() => {
+        setLoading(false); 
+      }, 500); 
       setCategory("gradients");
     }
   }, [debouncedSearch]);
@@ -412,6 +421,9 @@ const SlideCustomizer = ({
       setImages([]);
     }
   }, [category]);
+
+  const [loading, setLoading] = useState(true);
+
 
   return (
     <>
@@ -504,7 +516,7 @@ const SlideCustomizer = ({
                   </button>
                 </PopoverTrigger>
                 <PopoverContent className="w-min">
-                  <div className="w-[200px]">
+                  <div className="w-[350px]">
                     <Input
                       type="text"
                       placeholder="Search"
@@ -512,7 +524,7 @@ const SlideCustomizer = ({
                       onChange={(e: any) => setSearch(e.target.value as string)}
                     />
                     {/* showing categories */}
-                    <div className="mt-1 flex items-center gap-2">
+                    <div className="mt-3 flex items-center gap-2">
                       {categories.map((item: string) => (
                         <Button
                           variant={category === item ? "default" : "outline"}
@@ -531,45 +543,53 @@ const SlideCustomizer = ({
                     </div>
 
                     {/* showing images */}
-                    <div className="mt-2">
-                      <div className="">
-                        {images.map((item: any, idx: number) => (
-                          <div className="mb-3" key={idx}>
-                            <Image
-                              className="cursor-pointer object-contain"
-                              width={40}
-                              height={10}
-                              src={item.urls.regular}
-                              alt="background image"
-                              onClick={() =>
-                                handleValueChange(
-                                  "image",
-                                  item.urls.regular as string,
-                                )
-                              }
-                            />
-                            {item.user && (
-                              <small className="text-xs">
-                                Photo by{" "}
-                                <a
-                                  href={item.user?.links?.self}
-                                  className="text-blue-400"
-                                >
-                                  {item.user?.name}
-                                </a>{" "}
-                                on{" "}
-                                <a
-                                  href="https://unsplash.com"
-                                  className="text-blue-400"
-                                >
-                                  Unsplash
-                                </a>
-                              </small>
-                            )}
-                          </div>
-                        ))}
+                    <ScrollArea className="h-[200px] w-[350px] p-2">
+                      <div className="mt-2">
+                        <div className="grid grid-cols-2 gap-4">
+                          {images.map((item: any, idx: number) => (
+                            <div className="relative group mb-3" key={idx}>
+                              {loading? (
+                              <Skeleton className="w-[100px] h-[30px] rounded-full" /> 
+                              ):( 
+                              <Image
+                                className="cursor-pointer object-contain w-full h-auto"
+                                width={300}
+                                height={60}
+                                src={item.urls.regular}
+                                alt="background image"
+                                onClick={() =>
+                                  handleValueChange(
+                                    "image",
+                                    item.urls.regular as string,
+                                  )
+                                }
+                              />
+                              )}
+                              {item.user && (
+                                <div className="absolute inset-0 flex items-end justify-center p-1 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity">
+                                  <small className="text-xs text-white">
+                                    Photo by{" "}
+                                    <a
+                                      href={item.user?.links?.self}
+                                      className="text-blue-400 hover:text-blue-300"
+                                    >
+                                      {item.user?.name}
+                                    </a>{" "}
+                                    on{" "}
+                                    <a
+                                      href="https://unsplash.com"
+                                      className="text-blue-400 hover:text-blue-300"
+                                    >
+                                      Unsplash
+                                    </a>
+                                  </small>
+                                </div>
+                              )}
+                            </div>
+                          ))}
+                        </div>
                       </div>
-                    </div>
+                    </ScrollArea>
                     <div className="mt-3 p-3">
                       <Button
                         type="button"
