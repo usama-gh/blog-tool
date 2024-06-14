@@ -25,7 +25,7 @@ import { Button } from "@/components/ui/button";
 import { categories, categoriesImages } from "@/data";
 import { useDebounce } from "use-debounce";
 import { Skeleton } from "@/components/ui/skeleton";
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 
 const SlideCustomizer = ({
   slidesStyles,
@@ -44,8 +44,6 @@ const SlideCustomizer = ({
   const [slideStyle, setSlideStyle] = useState<SlideStyle | undefined>();
   const [textColor, setTextColor] = useState(defaultTextColor);
   const [bgColor, setBgColor] = useState(defaultBgColor);
-  const [showTextColorPicker, setShowTextColorPicker] = useState(false);
-  const [showBgColorPicker, setShowBgColorPicker] = useState(false);
   const [image, setImage] = useState("");
   const [showResetBtn, setShowResetBtn] = useState(false);
   const [search, setSearch] = useState("");
@@ -367,20 +365,7 @@ const SlideCustomizer = ({
     }
   }, [textColor, bgColor, image]);
 
-  // useEffect(() => {
-  //   document.addEventListener("mousedown", handleOutsideClick);
-  //   return () => {
-  //     document.removeEventListener("mousedown", handleOutsideClick);
-  //   };
-  // });
-
-  // const handleOutsideClick = (e: any) => {
-  //   // @ts-ignore
-  //   if (componentRef.current && !componentRef.current.contains(e.target)) {
-  //     setShowTextColorPicker(false);
-  //     setShowBgColorPicker(false);
-  //   }
-  // };
+  // fetching images from unsplash api
   async function fetchImageFromUnsplash() {
     const request = await fetch(
       `https://api.unsplash.com/search/photos?query=${debouncedSearch}&per_page=${perPageImages}`,
@@ -393,25 +378,30 @@ const SlideCustomizer = ({
     const images = await request.json();
     setImages(images.results);
   }
+
   // search images from unsplash when user search
   useEffect(() => {
+    let timeout: any = null;
     if (debouncedSearch) {
       setLoading(true);
       fetchImageFromUnsplash();
-      setTimeout(() => {
-            setLoading(false); 
-          }, 500); 
+      timeout = setTimeout(() => {
+        setLoading(false);
+      }, 500);
     } else {
-      setTimeout(() => {
-        setLoading(false); 
-      }, 500); 
+      timeout = setTimeout(() => {
+        setLoading(false);
+      }, 500);
       setCategory("gradients");
     }
+
+    return () => {
+      clearTimeout(timeout);
+    };
   }, [debouncedSearch]);
 
   // show image when category change
   useEffect(() => {
-    console.log(category);
     if (category) {
       const data = categoriesImages.find((item) => item.category === category);
 
@@ -423,7 +413,6 @@ const SlideCustomizer = ({
   }, [category]);
 
   const [loading, setLoading] = useState(true);
-
 
   return (
     <>
@@ -547,26 +536,26 @@ const SlideCustomizer = ({
                       <div className="mt-2">
                         <div className="grid grid-cols-2 gap-4">
                           {images.map((item: any, idx: number) => (
-                            <div className="relative group mb-3" key={idx}>
-                              {loading? (
-                              <Skeleton className="w-[100px] h-[30px] rounded-full" /> 
-                              ):( 
-                              <Image
-                                className="cursor-pointer object-contain w-full h-auto"
-                                width={300}
-                                height={60}
-                                src={item.urls.regular}
-                                alt="background image"
-                                onClick={() =>
-                                  handleValueChange(
-                                    "image",
-                                    item.urls.regular as string,
-                                  )
-                                }
-                              />
+                            <div className="group relative mb-3" key={idx}>
+                              {loading ? (
+                                <Skeleton className="h-[30px] w-[100px] rounded-full" />
+                              ) : (
+                                <Image
+                                  className="h-auto w-full cursor-pointer object-contain"
+                                  width={300}
+                                  height={60}
+                                  src={item.urls.regular}
+                                  alt="background image"
+                                  onClick={() =>
+                                    handleValueChange(
+                                      "image",
+                                      item.urls.regular as string,
+                                    )
+                                  }
+                                />
                               )}
                               {item.user && (
-                                <div className="absolute inset-0 flex items-end justify-center p-1 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity">
+                                <div className="absolute inset-0 flex items-end justify-center bg-black bg-opacity-50 p-1 opacity-0 transition-opacity group-hover:opacity-100">
                                   <small className="text-xs text-white">
                                     Photo by{" "}
                                     <a
