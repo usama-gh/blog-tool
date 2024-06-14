@@ -280,7 +280,7 @@ export default function ShowSlide(props: Props) {
             Slides after this will be locked with the gated slide
           </div>
           <Popover>
-            <PopoverTrigger className="absolute  bottom-5 left-5 z-20 flex h-10 w-10 items-center justify-center rounded-full bg-white p-2 opacity-0 shadow-sm group-hover:opacity-100">
+            <PopoverTrigger className="absolute  bottom-2 left-2 z-20 flex h-8 w-8 items-center justify-center rounded-md bg-white p-2 opacity-0 shadow-sm group-hover:opacity-100">
               <Settings2 strokeWidth={"1.5px"} width={20} />
             </PopoverTrigger>
             <PopoverContent className="mt-2 max-w-sm rounded-xl">
@@ -334,7 +334,7 @@ export default function ShowSlide(props: Props) {
         className="group relative h-full max-w-screen-xl overflow-y-auto  rounded-lg bg-slate-100 p-8 dark:bg-gray-900/80 lg:mt-0"
       >
         <>
-          <div className="absolute right-2  top-1 z-20 opacity-0 group-hover:opacity-100">
+          <div className="absolute right-2  top-2 z-20 opacity-0 group-hover:opacity-100">
             <div className="flex items-center gap-2">
               <div className="flex items-center gap-1">
                 <TooltipProvider delayDuration={100}>
@@ -343,7 +343,7 @@ export default function ShowSlide(props: Props) {
                       <Button
                         variant="outline"
                         size="icon"
-                        className="h-7 w-7 rounded-full"
+                        className="h-7 w-7 rounded-md"
                         onClick={() =>
                           handleSlideSwipping("left", props.index - 1)
                         }
@@ -364,7 +364,7 @@ export default function ShowSlide(props: Props) {
                       <Button
                         variant="outline"
                         size="icon"
-                        className="h-7 w-7 rounded-full"
+                        className="h-7 w-7 rounded-md"
                         onClick={() =>
                           handleSlideSwipping("right", props.index + 1)
                         }
@@ -378,19 +378,35 @@ export default function ShowSlide(props: Props) {
                     </TooltipContent>
                   </Tooltip>
                 </TooltipProvider>
+
+                <TooltipProvider delayDuration={100}>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button
+                        variant="outline"
+                        size="icon"
+                        className="h-7 w-7 rounded-md text-red-600"
+                        onClick={() => {
+                          const confirmation = window.confirm(
+                            "Are you sure you want to delete?",
+                          );
+                          if (confirmation) {
+                            props.updateSlides("delete", Number(props.index), "");
+                          }
+                        }}
+                      >
+                        <Trash className="h-4 w-4" />
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent side="bottom">
+                      <p>Delete</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+
+
               </div>
-              <Trash
-                width={14}
-                className="cursor-pointer text-red-300 hover:text-red-500"
-                onClick={() => {
-                  const confirmation = window.confirm(
-                    "Are you sure you want to delete?",
-                  );
-                  if (confirmation) {
-                    props.updateSlides("delete", Number(props.index), "");
-                  }
-                }}
-              />
+            
             </div>
           </div>
 

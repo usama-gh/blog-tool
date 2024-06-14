@@ -424,7 +424,7 @@ const SlideCustomizer = ({
             <TooltipTrigger asChild>
               <PopoverTrigger
                 ref={componentRef}
-                className="absolute bottom-5 right-5 flex h-10 w-10 items-center justify-center rounded-full bg-white p-2 opacity-0 shadow-sm transition ease-in-out group-hover:opacity-100"
+                className="absolute bottom-2 right-2 flex h-8 w-8 items-center justify-center rounded-md bg-white p-1 opacity-0 shadow-sm transition ease-in-out group-hover:opacity-100"
               >
                 <Palette strokeWidth={"1.5px"} width={20} />
               </PopoverTrigger>
