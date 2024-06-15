@@ -435,7 +435,7 @@ const SlideCustomizer = ({
           </Tooltip>
         </TooltipProvider>
 
-        <PopoverContent className="mt-2 w-auto rounded-full">
+        <PopoverContent className="mt-2 w-auto rounded-lg shadow-lg border-0 py-2">
           <div className="flex items-center gap-x-2">
             <div className="relative flex items-center gap-x-2">
               <p className="text-xs text-gray-500">TEXT</p>
@@ -497,15 +497,12 @@ const SlideCustomizer = ({
 
               <Popover>
                 <PopoverTrigger>
-                  <button
-                    type="button"
-                    className="text-gray-500 hover:text-gray-600"
-                  >
-                    <ImageIcon strokeWidth={"1.5px"} width={20} />
-                  </button>
+                
+                    <ImageIcon className="text-gray-500" strokeWidth={"1.5px"} width={20} />
+                
                 </PopoverTrigger>
-                <PopoverContent className="w-min">
-                  <div className="w-[350px]">
+                <PopoverContent className="w-min rounded-xl shadow-2xl border-0 my-4">
+                  <div className="w-[250px]">
                     <Input
                       type="text"
                       placeholder="Search"
@@ -513,7 +510,7 @@ const SlideCustomizer = ({
                       onChange={(e: any) => setSearch(e.target.value as string)}
                     />
                     {/* showing categories */}
-                    <div className="mt-3 flex items-center gap-2">
+                    <div className="my-3 flex items-center gap-2">
                       {categories.map((item: string) => (
                         <Button
                           variant={category === item ? "default" : "outline"}
@@ -532,17 +529,21 @@ const SlideCustomizer = ({
                     </div>
 
                     {/* showing images */}
-                    <ScrollArea className="h-[200px] w-[350px] p-2">
-                      <div className="mt-2">
+                    <ScrollArea className="h-[200px] w-[250px]">
+                      <div>
                         <div className="grid grid-cols-2 gap-4">
                           {images.map((item: any, idx: number) => (
                             <div className="group relative mb-3" key={idx}>
                               {loading ? (
-                                <Skeleton className="h-[30px] w-[100px] rounded-full" />
+                               
+                                    <Skeleton className="h-[30px] w-full rounded-full" />
+                                    
+                               
+                              
                               ) : (
                                 <Image
-                                  className="h-auto w-full cursor-pointer object-contain"
-                                  width={300}
+                                  className="h-auto rounded-xl w-full cursor-pointer object-contain"
+                                  width={120}
                                   height={60}
                                   src={item.urls.regular}
                                   alt="background image"
@@ -555,8 +556,8 @@ const SlideCustomizer = ({
                                 />
                               )}
                               {item.user && (
-                                <div className="absolute inset-0 flex items-end justify-center bg-black bg-opacity-50 p-1 opacity-0 transition-opacity group-hover:opacity-100">
-                                  <small className="text-xs text-white">
+                                <div className="absolute left-0 bottom-0 inset-0 flex items-end justify-center p-1 opacity-0 transition-opacity group-hover:opacity-100">
+                                  <small className="text-[8px] text-white">
                                     Photo by{" "}
                                     <a
                                       href={item.user?.links?.self}
@@ -579,7 +580,7 @@ const SlideCustomizer = ({
                         </div>
                       </div>
                     </ScrollArea>
-                    <div className="mt-3 p-3">
+                    <div className="mt-3">
                       <Button
                         type="button"
                         variant="secondary"
