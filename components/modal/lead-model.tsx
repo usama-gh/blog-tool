@@ -134,7 +134,7 @@ export default function LeadModal({
           });
         }
       }}
-      className="flex w-full flex-col justify-start rounded-md bg-white dark:bg-black md:max-w-5xl md:border md:border-gray-200 md:shadow dark:md:border-gray-700 lg:flex-row"
+      className="flex w-full flex-col justify-start rounded-md bg-white dark:bg-black md:max-w-6xl md:border md:border-gray-200 md:shadow dark:md:border-gray-700 lg:flex-row"
     >
       <div className="relative flex flex-col space-y-4 p-5 md:p-10 lg:min-w-[500px]">
         <h2 className="font-inter mb-2 text-2xl font-bold dark:text-white">
@@ -423,73 +423,94 @@ export default function LeadModal({
         </Tabs>
       </div>
 
-      <div className="hidden w-[600px] bg-slate-100 px-4 text-center dark:bg-gray-800 lg:block">
+      <div className="hidden w-[700px] bg-slate-100 px-4 text-center dark:bg-gray-800 lg:block">
         <h3 className="my-5 text-sm text-slate-100">Preview</h3>
-        <div className="flex flex-col gap-y-2">
-          <Carousel>
-            <CarouselContent>
-              <CarouselItem className="basis-9/10">
-                <div>
-                  <div className="mx-auto mt-10 max-w-2xl rounded-b-xl shadow-lg">
-                    <div className="flex h-8 w-full items-center justify-start space-x-1.5 rounded-t-lg border-b border-slate-200 bg-white  px-3 dark:border-gray-500 dark:bg-gray-600">
-                      <span className="h-2 w-2 rounded-full bg-[#ff5f57]"></span>
-                      <span className="h-2 w-2 rounded-full bg-[#ffbe2f]"></span>
-                      <span className="h-2 w-2 rounded-full bg-[#28ca42]"></span>
-                    </div>
-                    <div className="flex h-52 w-full items-end justify-center rounded-b-xl border-t-0 bg-white dark:bg-gray-600">
-                      <div className="mb-2  flex rounded-full bg-slate-200 shadow-sm">
-                        <span className="px-3 py-1 text-[9px]">
-                          {data.title}
-                        </span>
-                        <button className="rounded-full bg-blue-600 px-2 text-[9px] text-white">
-                          {data.buttonCta}
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                  <p className="mt-2 py-1 text-[9px] tracking-wide text-slate-500 dark:text-gray-400">
-                    Overlay popup on blog post
-                  </p>
+        <div className="flex flex-col gap-y-2 py-16">
+        <Carousel>
+        <CarouselContent>
+          <CarouselItem className="pl-12 pr-8">
+            <div>
+              <div className="mx-auto mt-10 max-w-2xl rounded-b-xl shadow-lg">
+                <div className="flex h-8 w-full items-center justify-start space-x-1.5 rounded-t-lg border-b border-slate-200 bg-white px-3 dark:border-gray-500 dark:bg-gray-600">
+                  <span className="h-2 w-2 rounded-full bg-red-500"></span>
+                  <span className="h-2 w-2 rounded-full bg-yellow-400"></span>
+                  <span className="h-2 w-2 rounded-full bg-green-500"></span>
                 </div>
-              </CarouselItem>
-              <CarouselItem>
-                <div>
-                  <div className="mx-auto mt-10 max-w-2xl rounded-b-xl shadow-lg">
-                    <div className="flex h-8 w-full items-center justify-start space-x-1.5 rounded-t-lg border-b border-slate-200  bg-white  px-3 dark:border-gray-500 dark:bg-gray-600">
-                      <span className="h-2 w-2 rounded-full bg-[#ff5f57]"></span>
-                      <span className="h-2 w-2 rounded-full bg-[#ffbe2f]"></span>
-                      <span className="h-2 w-2 rounded-full bg-[#28ca42]"></span>
-                    </div>
-                    <div className="flex h-52 w-full items-center justify-center rounded-b-xl border-t-0 bg-white  dark:bg-gray-600">
-                      <div>
-                        <h2 className="text-sm font-bold text-gray-800 dark:text-white">
-                          {data.title}
-                        </h2>
-
-                        {/* <Markdown>{description}</Markdown> */}
-                        {parse(description)}
-                        <div className="mt-2 flex  justify-center rounded-full">
-                          {data.download === "email" && (
-                            <div className="flex h-3 w-16 items-center bg-gray-100 px-2 text-[5px] text-gray-400 dark:bg-gray-400 dark:text-white">
-                              Enter email
-                            </div>
-                          )}
-
-                          <div className="flex h-3 items-center  rounded-sm bg-blue-600 px-1 text-[5px] text-white">
-                            {data.buttonCta}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+                <div className="flex h-72 w-full items-center justify-center rounded-b-xl border-t-0 bg-white dark:bg-gray-600">
+                  <div className="flex items-center space-x-2 bg-gray-200 rounded-full p-2 shadow w-full max-w-md">
+                    <span className="flex-grow bg-transparent text-gray-800 placeholder-gray-500 rounded-full py-2 px-4">
+                    {data.name || "Text"}
+                    </span>
+                    <button className="bg-gray-400 hover:bg-gray-500 text-white rounded-full px-4 py-2">
+                      Button
+                    </button>
                   </div>
-                  <p className="mt-2 py-1 text-[9px] tracking-wide text-slate-500 dark:text-gray-400">
-                    Lead magnet slide
-                  </p>
                 </div>
-              </CarouselItem>
-            </CarouselContent>
-            <CarouselPrevious className="ml-9" />
-            <CarouselNext className="mr-6" />
+              </div>
+              <p className="mt-2 py-1 text-xs tracking-wide text-gray-500 dark:text-gray-400">
+                Overlay popup on posts
+              </p>
+            </div>
+          </CarouselItem>
+          <CarouselItem className="pl-12 pr-8">
+            <div className="mx-auto mt-10 max-w-2xl">
+              <div className="flex h-8 w-full items-center justify-start space-x-1.5 rounded-t-xl bg-white px-3 dark:bg-gray-600">
+                <span className="h-2 w-2 rounded-full bg-red-500"></span>
+                <span className="h-2 w-2 rounded-full bg-yellow-400"></span>
+                <span className="h-2 w-2 rounded-full bg-green-500"></span>
+              </div>
+              <div className="bg-white dark:bg-gray-600 rounded-b-xl shadow-lg p-4 flex flex-col items-center">
+                <div className="flex flex-col items-start w-1/2 shadow-lg p-6">
+                  {data.thumbnail ? (
+                    <img src={data.thumbnail} alt="Thumbnail" className="mb-4 w-32 h-32 object-cover rounded-full shadow-sm" />
+                  ) : (
+                    <div className="bg-gray-200 rounded-full h-16 w-16 flex items-center justify-center mb-4">
+                      <span className="text-xl font-medium text-gray-500 dark:text-gray-300">S</span>
+                    </div>
+                  )}
+                  <h3 className="text-lg font-semibold text-gray-800 dark:text-white mb-3">{data.title || "Title of lead magnet"}</h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-400 items-start mb-6">{data.heroDescription || "Description"}</p>
+                  <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
+                    View
+                  </button>
+                </div>
+              </div>
+            </div>
+            <p className="mt-4 py-1 text-xs tracking-wide text-center text-gray-500 dark:text-gray-400">
+              Card that appears on homepage
+            </p>
+          </CarouselItem>
+          <CarouselItem className="pl-12 pr-8">
+            <div className="mx-auto mt-10 max-w-2xl">
+              <div className="flex h-8 w-full items-center justify-start space-x-1.5 rounded-t-xl bg-white px-3 dark:bg-gray-600">
+                <span className="h-2 w-2 rounded-full bg-red-500"></span>
+                <span className="h-2 w-2 rounded-full bg-yellow-400"></span>
+                <span className="h-2 w-2 rounded-full bg-green-500"></span>
+              </div>
+              <div className="bg-white dark:bg-gray-600 rounded-b-xl shadow-lg p-3 flex flex-col items-center">
+              <div className="flex flex-col items-center p-8">
+                {data.thumbnail ? (
+                    <img src={data.thumbnail} alt="Thumbnail" className="mb-4 w-32 h-32 object-cover rounded-full shadow-sm" />
+                  ) : (
+                    <div className="bg-gray-200 rounded-full h-16 w-16 flex items-center justify-center mb-4">
+                      <span className="text-xl font-medium text-gray-500 dark:text-gray-300">S</span>
+                    </div>
+                  )}
+                <h2 className="text-xl font-bold text-gray-800 mb-2">{data.title || "Title of lead magnet"}</h2>
+                <p className="text-gray-300 text-center mb-4">{parse(description || "Description")}</p>
+                <button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full transition-colors">
+                  Download
+                </button>
+              </div>
+              </div>
+            </div>
+            <p className="mt-4 py-1 text-xs tracking-wide text-center text-gray-500 dark:text-gray-400">
+              Lead magnet page/slide
+            </p>
+          </CarouselItem>
+          </CarouselContent>
+          <CarouselPrevious className="ml-10" />
+          <CarouselNext className="mr-10"/>
           </Carousel>
         </div>
       </div>
