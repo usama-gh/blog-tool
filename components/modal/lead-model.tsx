@@ -509,8 +509,8 @@ export default function LeadModal({
             </p>
           </CarouselItem>
           </CarouselContent>
-          <CarouselPrevious className="ml-10" />
-          <CarouselNext className="mr-10"/>
+          <CarouselPrevious className="ml-10" type="button"/>
+          <CarouselNext className="mr-10" type="button"/>
           </Carousel>
         </div>
       </div>
