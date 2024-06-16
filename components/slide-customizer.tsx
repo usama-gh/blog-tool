@@ -510,12 +510,16 @@ const SlideCustomizer = ({
                       onChange={(e: any) => setSearch(e.target.value as string)}
                     />
                     {/* showing categories */}
+<<<<<<< HEAD
                     <div className="my-3 flex items-center gap-2">
+=======
+                    <div className="mt-3 flex flex-wrap items-center gap-2">
+>>>>>>> refs/remotes/origin/feature-leadmagnet-update
                       {categories.map((item: string) => (
                         <Button
                           variant={category === item ? "default" : "outline"}
                           size="xs"
-                          className="capitalize"
+                          className="capitalize basis-1/4 max-w-[22%]"
                           key={item}
                           onClick={() =>
                             category === item
