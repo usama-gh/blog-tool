@@ -5,7 +5,7 @@ import LoadingDots from "./icons/loading-dots";
 import { cn } from "@/lib/utils";
 
 import { useState } from "react";
-import { experimental_useFormStatus as useFormStatus } from "react-dom";
+import { useFormStatus } from 'react-dom'
 import { toast } from "sonner";
 
 export const Subscribe = ({ siteId,view }: { siteId: string; view: string }) => {
