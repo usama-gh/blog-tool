@@ -17,6 +17,7 @@ import { Subscribe } from "../subscribe";
 import { SlideStyle } from "@/types";
 import SlideContent from "./slide-content";
 import { isDefultStyle } from "@/lib/utils";
+import parse from "html-react-parser";
 
 const Carousel = ({ data, siteData, lead }: any) => {
   const stylings: SlideStyle[] | [] = !!data.styling
@@ -160,7 +161,6 @@ const Carousel = ({ data, siteData, lead }: any) => {
                       ? ""
                       : "bg-" + contentStyling?.bgColor
                   }`}
-                  
                 ></div>
 
                 <div className=" scrollbar-thumb-rounded-full scrollbar-track-rounded-full relative z-20 my-auto flex h-screen w-full items-center justify-center overflow-y-auto py-10 pt-20 text-slate-600 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-gray-200 dark:text-gray-400 dark:scrollbar-thumb-gray-800 [&>*]:rounded-xl [&>*]:text-lg ">
@@ -187,6 +187,8 @@ const Carousel = ({ data, siteData, lead }: any) => {
                       setGateSlideUnblock={setGateSlideUnblock}
                       scrollNext={scrollNext}
                       siteId={data.siteId}
+                      leadSlide={data.leadSlide}
+                      lead={lead}
                     />
 
                     {/* <div className="scrollbar-thumb-rounded-full scrollbar-track-rounded-full my-auto flex h-screen w-full flex-1 items-center justify-center overflow-y-auto py-10 text-slate-600 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-gray-200 dark:text-gray-400 dark:scrollbar-thumb-gray-800 [&>*]:text-xl">
@@ -196,54 +198,45 @@ const Carousel = ({ data, siteData, lead }: any) => {
                 ))}
 
               {/* showing lead */}
-              {lead && (
+              {/* {lead && (
                 <div className="scrollbar-thumb-rounded-full scrollbar-track-rounded-full relative mx-auto my-auto mt-0 flex h-screen w-9/12  min-w-full items-center  justify-center overflow-y-auto pb-[120px] scrollbar-thin scrollbar-track-transparent scrollbar-thumb-gray-200 dark:scrollbar-thumb-gray-800">
                   <div className="mx-auto max-w-xl px-6">
                     <h4 className="pb-4 text-center text-5xl font-bold tracking-tight text-gray-800 dark:bg-gray-800 dark:text-gray-100">
                       {lead.title}
                     </h4>
                     <div className="font-regular overflow-hidden  text-center text-lg text-slate-800 dark:text-gray-50">
-                    {/* <MDX source= {lead.description} /> */}
-                    <div dangerouslySetInnerHTML={{ __html: lead.description }} />
-
-                   
+                      <div
+                        dangerouslySetInnerHTML={{ __html: lead.description }}
+                      />
                     </div>
-                    {/* <p className="pb-8 text-center text-lg font-normal tracking-wide text-gray-600  dark:text-gray-300">
-                      {lead.description}
-                    </p> */}
                     <LeadDownload postId={data.id} lead={lead} />
                   </div>
                 </div>
-              )}
+              )} */}
 
               {/* showing adjacent posts */}
               {data.adjacentPosts.length > 0 && (
-                <div className="scrollbar-thumb-rounded-full scrollbar-track-rounded-full relative mx-auto h-screen  w-9/12 min-w-full overflow-y-auto pb-[120px] pt-40 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-gray-200 dark:scrollbar-thumb-gray-800">
-                  <h4 className="pb-8 text-center text-sm font-semibold uppercase tracking-wide text-slate-400 dark:bg-gray-800 dark:text-gray-400">
-                    More from {siteData?.name}
-                  </h4>
-                  {/* susbcribe to blog */}
-                  <Subscribe siteId={data.siteId} />
+                <div className="bg-slate-200 dark:bg-gray-900 scrollbar-thumb-rounded-full scrollbar-track-rounded-full relative mx-auto h-screen  w-9/12 min-w-full overflow-y-auto pb-[120px] pt-40 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-gray-200 dark:scrollbar-thumb-gray-800">
 
-                  <div className="relative mx-auto w-9/12 rounded-2xl border border-slate-200 px-8 py-8 text-slate-400 dark:border-gray-600 dark:text-gray-400">
-                    {data.adjacentPosts && (
-                      <>
-                        <div className="relative grid gap-2 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2">
-                          {data.adjacentPosts
-                            .slice(0, 4)
-                            .map((value: any, index: number) => (
-                              <div key={index}>
-                                <BlogCard key={index} data={value} />
-                              </div>
-                            ))}
-                        </div>
-                        <div className="mt-8 flex flex-col items-center justify-center">
-                          <div className="mb-5 h-[1px] w-full bg-slate-200 dark:bg-gray-600"></div>
-                          <p className="flex items-center space-x-2 pb-4 text-center text-sm font-semibold uppercase tracking-wide text-slate-400 dark:bg-gray-800 dark:text-gray-400">
-                            Follow me
-                          </p>
+<p className="text-center text-4xl max-w-2xl mb-10 pb-8 mx-auto font-bold mb-8 tracking-tight  text-slate-800 dark:bg-gray-900 dark:text-gray-400">
+Thank you for reading! For more insights & stories, check out my other posts.
+                          </p> 
 
-                          <div className="h-[70px] w-[70px] overflow-hidden rounded-full border-4 border-slate-300 dark:border-gray-700">
+<section className="text-gray-600 body-font">
+
+
+  <div className="container max-w-6xl flex gap-x-4 flex-wrap lg:flex-nowrap  mx-auto items-start">
+    <div className="md:w-4/12  mb-10 md:mb-0 pb-10">
+      
+        
+                          
+                <div className=" flex flex-col gap-y-4">
+
+                <div className="p-5 bg-white rounded-3xl flex flex-col items-start justify-start">
+                          
+                        
+
+                          <div className="h-[70px] w-[70px] overflow-hidden rounded-full">
                             {siteData?.logo ? (
                               <BlurImage
                                 alt={siteData?.logo ?? "User Avatar"}
@@ -261,23 +254,69 @@ const Carousel = ({ data, siteData, lead }: any) => {
                               </div>
                             )}
                           </div>
-                          <div className="mt-2 bg-gradient-to-br	 from-slate-600 to-slate-300 bg-clip-text text-lg font-bold text-slate-500 text-transparent  drop-shadow-md dark:from-gray-200 dark:to-gray-500">
+                          <div className="mt-2 text-slate-700 font-semibold tracking-wide">
                             {siteData?.name}
                           </div>
-                          <div className="bg-gradient-to-br from-slate-600 to-slate-300	 bg-clip-text text-center text-sm text-transparent drop-shadow-md dark:from-gray-200 dark:to-gray-500 ">
-                            {siteData?.bio}
+                          <div className="text-left text-sm text-gray-800 ">
+                            {parse(siteData?.bio)}
                           </div>
-
+                          
+                          <div className="flex justify-start w-full my-2">
                           <SocialLinks linksData={siteData.links} />
+                          </div>
+                         
                         </div>
+
+
+
+                  <div className="rounded-3xl bg-teal-100 dark:bg-teal-700 py-6 text-left">
+                  <Subscribe siteId={data.siteId} view="homepage" />
+                  </div>
+
+
+                </div>
+   
+
+
+    </div>
+    <div className="flex flex-col md:w-8/12 ">
+
+
+      <div className="relative rounded-2xl  text-slate-400  dark:text-gray-400">
+                    {data.adjacentPosts && (
+                      <>
+                        <div className="relative grid gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2">
+                          {data.adjacentPosts
+                            .slice(0, 4)
+                            .map((value: any, index: number) => (
+                              <div key={index}>
+                                <BlogCard key={index} data={value} />
+                              </div>
+                            ))}
+                        </div>
+                       
                       </>
                     )}
                   </div>
+
+    
+    </div>
+  </div>
+</section>
+
+
+
+
+                 
+               
+                
+
+              
                 </div>
               )}
             </div>
           </div>
-          {lead && (
+          {lead && data.leadSlide && (
             <div className="z-90 fixed bottom-12 left-1/2  -translate-x-1/2 transform lg:bottom-4">
               <div className="flex w-fit items-center justify-between gap-3 rounded-full bg-slate-200 p-1 dark:bg-gray-200">
                 <p className="text-dark whitespace-nowrap	 pl-4 text-sm font-semibold">
@@ -287,9 +326,10 @@ const Carousel = ({ data, siteData, lead }: any) => {
                   type="button"
                   className="inline-flex	items-center gap-x-2 whitespace-nowrap rounded-full border border-transparent bg-blue-600 px-4 py-1 text-sm font-semibold text-white hover:bg-blue-700 disabled:pointer-events-none disabled:opacity-50 dark:bg-blue-600 dark:text-white dark:hover:bg-blue-700 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
                   onClick={() =>
-                    scrollTo(
-                      data.slides ? JSON.parse(data.slides).length + 1 : 1,
-                    )
+                    // scrollTo(
+                    //   data.slides ? JSON.parse(data.slides).length + 1 : 1,
+                    // )
+                    scrollTo(data.leadSlide.id ?? 1)
                   }
                 >
                   {lead.buttonCta}

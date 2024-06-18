@@ -6,7 +6,7 @@ import { plans } from "@/data";
 import { getSession } from "./auth";
 import { redirect } from "next/navigation";
 import rehypeRaw from "rehype-raw";
-import { SlideStyle, gateSlide } from "@/types";
+import { SlideStyle, gateSlide, leadSlide } from "@/types";
 import { styledSlide } from "./utils";
 
 export async function getSiteData(domain: string) {
@@ -60,6 +60,31 @@ export async function getPostsForSite(domain: string) {
     {
       revalidate: 900,
       tags: [`${domain}-posts`, "site-info"],
+    },
+  )();
+}
+
+export async function getLeadsForSite(domain: string) {
+  const subdomain = domain.endsWith(`.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`)
+    ? domain.replace(`.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`, "")
+    : null;
+  const site = await prisma.site.findUnique({
+    where: subdomain ? { subdomain } : { customDomain: domain },
+  });
+
+  return await unstable_cache(
+    async () => {
+      return prisma.lead.findMany({
+        where: {
+          site: subdomain ? { subdomain } : { customDomain: domain },
+          featured: true,
+        },
+      });
+    },
+    [`${site?.id}-leads`],
+    {
+      revalidate: 900,
+      tags: [`${site?.id}-leads`],
     },
   )();
 }
@@ -197,17 +222,43 @@ export async function getPostData(domain: string, slug: string) {
         }),
       ]);
 
+      const leadSlides: leadSlide[] | [] = data.leadSlides
+        ? JSON.parse(data.leadSlides)
+        : [];
+
       return {
         ...data,
         mdxSource,
         slidesMdxSource,
         adjacentPosts,
+        leadSlide: leadSlides.length > 0 ? leadSlides[0] : null,
       };
     },
-    [`${domain}-${slug}`],
+    [`${domain}-${slug}`, `${slug}-styles`, `${slug}-lead`],
     {
       revalidate: 900, // 15 minutes
-      tags: [`${domain}-${slug}`],
+      tags: [`${domain}-${slug}`, `${slug}-styles`, `${slug}-lead`],
+    },
+  )();
+}
+
+export async function getLead(leadId: string) {
+  return await unstable_cache(
+    async () => {
+      const lead = await prisma.lead.findFirst({
+        where: {
+          id: leadId,
+        },
+      });
+
+      if (!lead) return null;
+
+      return lead;
+    },
+    [`${leadId}-lead`],
+    {
+      revalidate: 900, // 15 minutes
+      tags: [`${leadId}-lead`],
     },
   )();
 }

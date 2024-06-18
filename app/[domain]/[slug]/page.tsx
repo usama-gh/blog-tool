@@ -61,6 +61,8 @@ export default async function SitePostPage({
     lead = await getPostLead(data.leadId, data.id, data.siteId as string);
   }
 
+  // const leadSlide = data.leadSlide ? JSON.parse(data.leadSlide) : null;
+
   return (
     <>
       <Script
@@ -95,7 +97,7 @@ export default async function SitePostPage({
               </div>
             </Link>
             <Link href="/">
-              <p className="max-w-sm truncate  text-xs font-semibold tracking-normal text-gray-100 drop-shadow-sm hover:text-slate-600 dark:text-white dark:hover:text-gray-300 lg:text-sm">
+              <p className="max-w-sm truncate  text-xs font-semibold tracking-normal text-gray-100 drop-shadow-sm  dark:text-white dark:hover:text-gray-300 lg:text-sm">
                 {" "}
                 {siteData?.name}
               </p>

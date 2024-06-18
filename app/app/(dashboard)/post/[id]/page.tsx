@@ -40,6 +40,7 @@ export default async function PostPage({ params }: { params: { id: string } }) {
       siteId: data.siteId as string,
     },
   });
+  
 
   return (
     <>

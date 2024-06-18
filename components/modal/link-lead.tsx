@@ -1,5 +1,5 @@
 "use client";
-import { experimental_useFormStatus as useFormStatus } from "react-dom";
+import { useFormStatus } from 'react-dom'
 import { cn } from "@/lib/utils";
 import LoadingDots from "@/components/icons/loading-dots";
 import { Lead } from "@prisma/client";
@@ -9,18 +9,27 @@ export default function LinkLeadModal({
   leads,
   leadId,
   setLeadId,
+  type,
+  createLeadSlide,
 }: {
   leads: Lead[];
-  leadId: string | null | undefined;
-  setLeadId: any;
+  leadId?: string | null | undefined;
+  setLeadId?: any;
+  type: "lead" | "leadId";
+  createLeadSlide?: any;
 }) {
   const modal = useModal();
 
   return (
     <form
       action={async (data: FormData) => {
-        const value = data.get("lead") !== "" ? data.get("lead") : null;
-        setLeadId(value);
+        const leadId = data.get("lead") !== "" ? data.get("lead") : null;
+        if (type === "leadId") {
+          setLeadId(leadId);
+        } else {
+          createLeadSlide(leads.find((lead: Lead) => lead.id === leadId));
+        }
+
         modal?.hide();
       }}
       className="w-full rounded-md bg-white pt-0 dark:bg-black md:max-w-md md:border md:border-gray-200 md:shadow dark:md:border-gray-700"
@@ -53,12 +62,12 @@ export default function LinkLeadModal({
         </div>
       </div>
       <div className="flex items-center justify-end rounded-b-lg border-t border-slate-200 bg-slate-50 p-3 dark:border-gray-700 dark:bg-gray-800 md:px-10">
-        <CreateSiteFormButton />
+        <AttachLeadButton />
       </div>
     </form>
   );
 }
-function CreateSiteFormButton() {
+function AttachLeadButton() {
   const { pending } = useFormStatus();
   return (
     <button

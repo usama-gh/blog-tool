@@ -46,6 +46,24 @@ export const createGateSlide = (index: number) => {
   };
 };
 
+export const createLeadSlide = (
+  id: number,
+  leadId: string,
+  name: string,
+  type: string,
+  ctaBtnText: string,
+  link?: string,
+) => {
+  return {
+    id,
+    name,
+    leadId,
+    type,
+    ctaBtnText,
+    link: link ?? "",
+  };
+};
+
 export const isDefultStyle = (type: string, style: string) => {
   if (type === "text") {
     return style === "rgba(0,0,0,1)";
@@ -121,4 +139,15 @@ export function getUrlFromString(str: string) {
 
 export function isUserAdmin(email: string) {
   return adminEmails.includes(email);
+}
+
+export function r2Asset(fileName: string) {
+  return process.env.NEXT_PUBLIC_STORAGE_URL + "/" + fileName;
+}
+
+export function isDefaultImage(image: string | null) {
+  return (
+    image ===
+    "https://ige9ec25vizexnyy.public.blob.vercel-storage.com/tQidqrn-Z2Nd3W4IJXq3XBZZMOllnA06WIkhlq.jpeg"
+  );
 }

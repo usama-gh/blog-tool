@@ -9,7 +9,7 @@ import Uploader from "./uploader";
 import LoadingCircle from "../icons/loading-circle";
 import { useEffect, useRef, useState } from "react";
 import { useDebounce } from "use-debounce";
-import { experimental_useFormStatus as useFormStatus } from "react-dom";
+import { useFormStatus } from 'react-dom'
 
 export default function PostForm({
   title,

@@ -22,11 +22,13 @@ export async function POST(request: Request) {
             },
           },
         }),
-        post: {
-          connect: {
-            id: data.postId,
+        ...(data.postId && {
+          post: {
+            connect: {
+              id: data.postId,
+            },
           },
-        },
+        }),
       },
     });
     return Response.json(

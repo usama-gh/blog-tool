@@ -7,8 +7,14 @@
     background-color: #000000;
   }
 }
-.scroll-x-fade{
-  mask-image: linear-gradient(to right, transparent 0%, black 1px, black calc(100% - 48px), transparent 100%);
+.scroll-x-fade {
+  mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 1px,
+    black calc(100% - 48px),
+    transparent 100%
+  );
 }
 
 .picker__swatches {

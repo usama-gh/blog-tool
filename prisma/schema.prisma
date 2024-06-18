@@ -5,7 +5,7 @@ datasource db {
   provider          = "postgresql"
   url               = env("POSTGRES_PRISMA_URL") // uses connection pooling
   directUrl         = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
-  shadowDatabaseUrl = env("POSTGRES_URL_NON_POOLING") // used for migrations
+  shadowDatabaseUrl = env("POSTGRES_URL_NON_POOLINGS") // used for migrations
 }
 
 generator client {
@@ -75,23 +75,27 @@ model VerificationToken {
 }
 
 model Lead {
-  id            String          @id @default(cuid())
-  name          String          @db.Text
-  title         String          @db.Text
-  description   String?         @db.Text
-  buttonCta     String?         @db.Text
-  file          String?         @db.Text
-  fileName      String?         @db.Text
-  download      String          @db.Text
-  delivery      String          @db.Text
-  createdAt     DateTime        @default(now())
-  updatedAt     DateTime        @updatedAt
-  user          User            @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  userId        String
-  site          Site            @relation(fields: [siteId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  siteId        String
-  posts         Post[]
-  LeadCollector LeadCollector[]
+  id              String          @id @default(cuid())
+  name            String          @db.Text
+  title           String          @db.Text
+  description     String?         @db.Text
+  heroDescription String?         @db.Text
+  thumbnail       String?         @db.Text // original filename of the thumbnail
+  thumbnailFile   String?         @db.Text // the name of the thumbnail saved on server
+  buttonCta       String?         @db.Text
+  file            String?         @db.Text
+  fileName        String?         @db.Text
+  download        String          @db.Text
+  delivery        String          @db.Text
+  featured        Boolean         @default(false)
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+  user            User            @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId          String
+  site            Site            @relation(fields: [siteId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  siteId          String
+  posts           Post[]
+  LeadCollector   LeadCollector[]
 
   @@index([userId, siteId])
 }
@@ -103,8 +107,8 @@ model LeadCollector {
   updatedAt DateTime @updatedAt
   lead      Lead?    @relation(fields: [leadId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   leadId    String?
-  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  postId    String
+  post      Post?    @relation(fields: [postId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  postId    String?
 
   @@index([leadId, postId])
 }
@@ -117,6 +121,7 @@ model Post {
   content       String?         @db.Text
   styling       String?         @db.Text
   gateSlides    String?         @db.Text
+  leadSlides    String?         @db.Text
   slug          String          @default(cuid())
   image         String?         @default("https://ige9ec25vizexnyy.public.blob.vercel-storage.com/tQidqrn-Z2Nd3W4IJXq3XBZZMOllnA06WIkhlq.jpeg") @db.Text
   imageBlurhash String?         @default("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAhCAYAAACbffiEAAAACXBIWXMAABYlAAAWJQFJUiTwAAABfUlEQVR4nN3XyZLDIAwE0Pz/v3q3r55JDlSBplsIEI49h76k4opexCK/juP4eXjOT149f2Tf9ySPgcjCc7kdpBTgDPKByKK2bTPFEdMO0RDrusJ0wLRBGCIuelmWJAjkgPGDSIQEMBDCfA2CEPM80+Qwl0JkNxBimiaYGOTUlXYI60YoehzHJDEm7kxjV3whOQTD3AaCuhGKHoYhyb+CBMwjIAFz647kTqyapdV4enGINuDJMSScPmijSwjCaHeLcT77C7EC0C1ugaCTi2HYfAZANgj6Z9A8xY5eiYghDMNQBJNCWhASot0jGsSCUiHWZcSGQjaWWCDaGMOWnsCcn2QhVkRuxqqNxMSdUSElCDbp1hbNOsa6Ugxh7xXauF4DyM1m5BLtCylBXgaxvPXVwEoOBjeIFVODtW74oj1yBQah3E8tyz3SkpolKS9Geo9YMD1QJR1Go4oJkgO1pgbNZq0AOUPChyjvh7vlXaQa+X1UXwKxgHokB2XPxbX+AnijwIU4ahazAAAAAElFTkSuQmCC") @db.Text
@@ -129,8 +134,6 @@ model Post {
   userId        String?
   lead          Lead?           @relation(fields: [leadId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   leadId        String?
-  // @@index([userId])
-  // @@index([leadId])
   LeadCollector LeadCollector[]
 
   @@unique([slug, siteId])

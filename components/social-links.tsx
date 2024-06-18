@@ -22,7 +22,7 @@ export default function SocialLinks({ linksData }: { linksData: any }) {
   }, [linksData]);
 
   return (
-    <div className="mt-5 flex items-center justify-center text-slate-500  dark:text-gray-400">
+    <div className="mt-3 flex items-center text-slate-500  dark:text-gray-400">
       {links.facebookLink && (
         <a
           href={links.facebookLink}
@@ -50,7 +50,7 @@ export default function SocialLinks({ linksData }: { linksData: any }) {
           target="_blank"
           rel="noopener noreferrer"
         >
-          <TwitterIcon strokeWidth="1.5" color="currentColor"/>
+          <TwitterIcon strokeWidth="1.5" color="currentColor" />
         </a>
       )}
       {links.githubLink && (
@@ -60,7 +60,7 @@ export default function SocialLinks({ linksData }: { linksData: any }) {
           target="_blank"
           rel="noopener noreferrer"
         >
-          <GithubIcon strokeWidth="1.5" color="currentColor"/>
+          <GithubIcon strokeWidth="1.5" color="currentColor" />
         </a>
       )}
       {links.telegramLink && (
@@ -70,7 +70,7 @@ export default function SocialLinks({ linksData }: { linksData: any }) {
           target="_blank"
           rel="noopener noreferrer"
         >
-          <SendIcon strokeWidth="1.5" color="currentColor"/>
+          <SendIcon strokeWidth="1.5" color="currentColor" />
         </a>
       )}
       {links.email && (
@@ -80,7 +80,7 @@ export default function SocialLinks({ linksData }: { linksData: any }) {
           target="_blank"
           rel="noopener noreferrer"
         >
-          <MailIcon strokeWidth="1.5" color="currentColor"/>
+          <MailIcon strokeWidth="1.5" color="currentColor" />
         </a>
       )}
       {links.linkedInLink && (
@@ -90,7 +90,7 @@ export default function SocialLinks({ linksData }: { linksData: any }) {
           target="_blank"
           rel="noopener noreferrer"
         >
-          <LinkedinIcon  strokeWidth="1.5" color="currentColor"/>
+          <LinkedinIcon strokeWidth="1.5" color="currentColor" />
         </a>
       )}
       {links.youtubeLink && (
@@ -100,7 +100,7 @@ export default function SocialLinks({ linksData }: { linksData: any }) {
           target="_blank"
           rel="noopener noreferrer"
         >
-          <YoutubeIcon strokeWidth="1.5" color="currentColor"/>
+          <YoutubeIcon strokeWidth="1.5" color="currentColor" />
         </a>
       )}
       {links.whatsappLink && (
@@ -110,7 +110,7 @@ export default function SocialLinks({ linksData }: { linksData: any }) {
           target="_blank"
           rel="noopener noreferrer"
         >
-          <MessageCircleIcon strokeWidth="1.5" color="currentColor"/>
+          <MessageCircleIcon strokeWidth="1.5" color="currentColor" />
         </a>
       )}
       {links.websiteLink && (
@@ -120,7 +120,7 @@ export default function SocialLinks({ linksData }: { linksData: any }) {
           target="_blank"
           rel="noopener noreferrer"
         >
-          <LinkIcon strokeWidth="1.5" color="currentColor"/>
+          <LinkIcon strokeWidth="1.5" color="currentColor" />
         </a>
       )}
     </div>

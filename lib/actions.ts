@@ -16,7 +16,7 @@ import { del, put } from "@vercel/blob";
 import { customAlphabet } from "nanoid";
 import { getBlurDataURL } from "@/lib/utils";
 import { createId as cuid } from "@paralleldrive/cuid2";
-import { LeadData, SubscribeData } from "@/types";
+import { LeadData, SubscribeData, leadSlide } from "@/types";
 
 const nanoid = customAlphabet(
   "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz",
@@ -382,6 +382,8 @@ export const updatePost = async (data: Post) => {
         slides: data.slides,
         styling: data.styling,
         gateSlides: data.gateSlides,
+        leadId: data.leadId,
+        leadSlides: data.leadSlides,
       },
     });
 
@@ -391,7 +393,8 @@ export const updatePost = async (data: Post) => {
     await revalidateTag(
       `${post.site?.subdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}-${post.slug}`,
     );
-    await revalidateTag(`${post.id}-lead`);
+    await revalidateTag(`${post.slug}-lead`);
+    await revalidateTag(`${post.slug}-styles`);
 
     // await revalidateTag(`${data.id}-post`);
     // if the site has a custom domain, we need to revalidate those tags too
@@ -714,6 +717,10 @@ export const createSiteLead = async (data: LeadData) => {
         fileName: data.fileName,
         download: data.download,
         delivery: data.delivery,
+        heroDescription: data.heroDescription,
+        thumbnail: data.thumbnail,
+        thumbnailFile: data.thumbnailFile,
+        featured: data.featured,
         user: {
           connect: {
             id: session.user.id,
@@ -728,6 +735,7 @@ export const createSiteLead = async (data: LeadData) => {
     });
 
     revalidateTag(`${data.siteId}-leads`);
+    revalidateTag(`${response.id}-lead`);
 
     return response;
   } catch (error: any) {
@@ -779,10 +787,49 @@ export const updateSiteLead = withLeadAuth(
           fileName: data.fileName,
           download: data.download,
           delivery: data.delivery,
+          heroDescription: data.heroDescription,
+          thumbnail: data.thumbnail,
+          thumbnailFile: data.thumbnailFile,
+          featured: data.featured,
         },
       });
 
-      await revalidateTag(`${lead.siteId}-leads`);
+      // update lead download type in  lead mangnet connected to post
+      const posts = await prisma.post.findMany({
+        where: {
+          leadId: lead.id,
+        },
+      });
+
+      if (posts.length > 0) {
+        for (const post of posts) {
+          const slides = post.leadSlides ? JSON.parse(post.leadSlides) : [];
+          let leadSlides = [];
+          if (slides.length > 0) {
+            leadSlides = slides.map((slide: leadSlide) => {
+              return slide.leadId == lead.id
+                ? {
+                    ...slide,
+                    type: data.download,
+                    ctaBtnText: data.buttonCta ?? "Download",
+                  }
+                : slide;
+            });
+            await prisma.post.update({
+              where: {
+                id: post.id,
+              },
+              data: {
+                leadSlides: JSON.stringify(leadSlides),
+              },
+            });
+            revalidateTag(`${post.slug}-lead`);
+          }
+        }
+      }
+
+      revalidateTag(`${lead.siteId}-leads`);
+      revalidateTag(`${lead.id}-lead`);
       return response;
     } catch (error: any) {
       return {
@@ -806,6 +853,7 @@ export const updateLeadImage = withLeadAuth(
         },
       });
       await revalidateTag(`${lead.siteId}-leads`);
+      await revalidateTag(`${lead.id}-lead`);
       return response;
     } catch (error: any) {
       return {
@@ -816,12 +864,28 @@ export const updateLeadImage = withLeadAuth(
 );
 
 export const deleteSiteLead = withLeadAuth(async (_: FormData, lead: Lead) => {
+  const leadId = lead.id;
   try {
+    const leadPosts = await prisma.post.findMany({
+      where: {
+        leadId: {
+          contains: leadId,
+        },
+      },
+    });
+
+    if (leadPosts.length > 0) {
+      return {
+        error:
+          "Lead is connected with one or multiple posts. Please disconnect lead from posts and try again.",
+      };
+    }
+
     // deleting all collectors of lead
     await prisma.leadCollector.deleteMany({
       where: {
         leadId: {
-          contains: lead.id,
+          contains: leadId,
         },
       },
     });
@@ -830,7 +894,7 @@ export const deleteSiteLead = withLeadAuth(async (_: FormData, lead: Lead) => {
     await prisma.post.updateMany({
       where: {
         leadId: {
-          contains: lead.id,
+          contains: leadId,
         },
       },
       data: {
@@ -843,13 +907,14 @@ export const deleteSiteLead = withLeadAuth(async (_: FormData, lead: Lead) => {
     const file = lead.file;
     const response = await prisma.lead.delete({
       where: {
-        id: lead.id,
+        id: leadId,
       },
     });
     // deleting file from blob
     // file && (await del(file));
 
     await revalidateTag(`${siteId}-leads`);
+    revalidateTag(`${leadId}-lead`);
     return response;
   } catch (error: any) {
     return {
