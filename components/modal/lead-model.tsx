@@ -5,7 +5,8 @@ import { Info } from "lucide-react";
 import { createSiteLead, updateLeadImage, updateSiteLead } from "@/lib/actions";
 import { useRouter } from "next/navigation";
 import { experimental_useFormStatus as useFormStatus } from "react-dom";
-import { cn } from "@/lib/utils";
+import { cn,r2Asset } from "@/lib/utils";
+import Image from "next/image";
 import LoadingDots from "@/components/icons/loading-dots";
 import { useModal } from "./provider";
 import { useState } from "react";
@@ -60,6 +61,54 @@ export default function LeadModal({
   const [description, setDescription] = useState(data.description);
   const type = lead ? "Update" : "Create";
 
+  const handleAction = async () => {
+    if (data.delivery === "file" && !fileName) {
+      toast.error("Please select a file");
+      return;
+    }
+
+    let fileUrl = lead?.file ?? "";
+    if (originalFile) {
+      fileUrl = `${nanoid()}.${originalFile.type.split("/")[1]}`;
+      await uploadToR2(fileUrl, originalFile);
+    }
+
+    let thumbnailFileUrl = lead?.thumbnailFile ?? "";
+    if (originalThumbnail) {
+      thumbnailFileUrl = `${nanoid()}.${originalThumbnail.type.split("/")[1]}`;
+      await uploadToR2(thumbnailFileUrl, originalThumbnail);
+    }
+
+    const body: LeadData = {
+      siteId: lead?.siteId ?? siteId as string,
+      name: data.name,
+      title: data.title,
+      description: description as string,
+      buttonCta: data.buttonCta,
+      download: data.download,
+      delivery: data.delivery,
+      url: data.delivery === "file" ? fileUrl : data.link as string,
+      fileName: fileName as string,
+      thumbnailFile: thumbnail ? thumbnailFileUrl : "",
+      thumbnail: thumbnail as string,
+      heroDescription: data.heroDescription,
+      featured: data.featured,
+    };
+
+    const response = lead
+      ? await updateSiteLead(body, lead.id, "update")
+      : await createSiteLead(body);
+
+    if (response.error) {
+      toast.error(response.error);
+    } else {
+      modal?.hide();
+      router.refresh();
+      toast.success(`Successfully ${lead ? "updated" : "created"} lead magnet`);
+    }
+  };
+
+
   async function uploadToR2(fileUrl: string, file: File) {
     try {
       const response = await fetch("/api/r2", {
@@ -80,60 +129,10 @@ export default function LeadModal({
 
   return (
     <form
-      action={async () => {
-        if (data.delivery === "file" && !fileName) {
-          toast.error("Please select a file");
-        } else {
-          let fileUrl = lead ? lead.file : "";
-          if (originalFile) {
-            fileUrl = `${nanoid()}.${originalFile?.type.split("/")[1]}`;
-
-            // uploading file to r2 server
-            await uploadToR2(fileUrl, originalFile);
-          }
-
-          let thumbnailFileUrl = lead ? lead.thumbnailFile : "";
-          if (originalThumbnail) {
-            thumbnailFileUrl = `${nanoid()}.${
-              originalThumbnail?.type.split("/")[1]
-            }`;
-
-            // uploading file to r2 server
-            await uploadToR2(thumbnailFileUrl, originalThumbnail);
-          }
-
-          const body: LeadData = {
-            siteId: (lead ? lead.siteId : siteId) as string,
-            name: data.name,
-            title: data.title,
-            description: description as string,
-            buttonCta: data.buttonCta,
-            download: data.download,
-            delivery: data.delivery,
-            url: (data.delivery === "file" ? fileUrl : data.link) as string,
-            fileName: fileName as string,
-            thumbnailFile: (thumbnail ? thumbnailFileUrl ?? "" : "") as string,
-            thumbnail: thumbnail as string,
-            heroDescription: data.heroDescription,
-            featured: data.featured,
-          };
-
-          (lead
-            ? updateSiteLead(body, lead.id, "update")
-            : createSiteLead(body)
-          ).then(async (res: any) => {
-            if (res.error) {
-              toast.error(res.error);
-            } else {
-              modal?.hide();
-              router.refresh();
-              toast.success(
-                `Successfully ${lead ? "updated" : "created"} lead magnet`,
-              );
-            }
-          });
-        }
-      }}
+    onSubmit={async (e) => {
+      e.preventDefault();
+      await handleAction();
+    }}
       className="flex w-full flex-col justify-start rounded-md bg-white dark:bg-black md:max-w-6xl md:border md:border-gray-200 md:shadow dark:md:border-gray-700 lg:flex-row"
     >
       <div className="relative flex flex-col space-y-4 p-5 md:p-10 lg:min-w-[500px]">
@@ -325,6 +324,7 @@ export default function LeadModal({
                 inputId="thumbnailFile"
                 labelText="Upload your thumbnail"
               />
+              <div id="preview"></div>
             </div>
 
             <div className="flex flex-col space-y-2">
@@ -424,14 +424,20 @@ export default function LeadModal({
       </div>
 
       <div className="hidden w-[700px] bg-slate-100 px-4 text-center dark:bg-gray-800 lg:block">
-       <div className="flex items-center justify-center h-full">
+       <div className="flex items-start justify-center h-full">
         <div>
         <h3 className="my-5 text-sm text-slate-100">Preview</h3>
         <div className="">
-        <Carousel>
-        <CarouselContent>
-          <CarouselItem className="flex items-center justify-center">
-            <div>
+
+        <Tabs defaultValue="preview_1" className="w-[400px]">
+  <TabsList>
+    <TabsTrigger value="preview_1">1</TabsTrigger>
+    <TabsTrigger value="preview_2">2</TabsTrigger>
+    <TabsTrigger value="preview_3">3</TabsTrigger>
+  </TabsList>
+  <TabsContent value="preview_1" className="flex items-center justify-center">
+    
+  <div>
             <div className="flex items-center space-x-2 bg-white rounded-full p-2 shadow w-full max-w-md">
                     <span className="flex-grow bg-transparent text-gray-800 placeholder-gray-500 rounded-full py-2 px-4 max-w-xl overflow-x-auto">
                     {data.name || "Text"}
@@ -445,64 +451,71 @@ export default function LeadModal({
                 Overlay popup on posts
               </p>
             </div>
-          </CarouselItem>
-          <CarouselItem className="flex items-center justify-center">
-            
-            <div>
 
-            <div className="max-w-xs bg-white dark:bg-gray-600 text-left rounded-3xl p-5  flex flex-col items-center">
-                <div className="flex flex-col gap-y-2  items-start justify-left">
-                  {data.thumbnail ? (
-                    <img src={data.thumbnail} alt="Thumbnail" className="mb-4 w-32 h-32 object-cover rounded-full shadow-sm" />
-                  ) : (
-                    <div></div>
-                  )}
-                  <h3 className="text-xl font-bold tracking-normal text-gray-800 dark:text-white">{data.title || "Title of lead magnet"}</h3>
-                  <p className="text-sm text-gray-600 dark:text-gray-400 items-start">{data.heroDescription || "Description"}</p>
-                  <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 mt-2 px-4 rounded-full">
-                    View
-                  </button>
-                </div>
-              </div>
-              <p className="mt-4 py-1 text-xs tracking-wide text-center text-gray-500 dark:text-gray-400">
-              Card that appears on homepage
-            </p>
-            </div>
-            
-          </CarouselItem>
-          <CarouselItem className="flex items-center justify-center">
-                  
-                  
+    
+    </TabsContent>
+  <TabsContent value="preview_2" className="flex items-center justify-center">
 
-                 
-          <div className="w-full">
+  <div>
+
+<div className="max-w-xs bg-white dark:bg-gray-600 text-left rounded-3xl p-5  flex flex-col items-center">
+    <div className="flex flex-col gap-y-2  items-start justify-left">
+      {data.thumbnail ? (
+        <Image     src={r2Asset(data.thumbnailFile)} width={150} height={200} alt="Thumbnail" className="mb-4 w-32 h-32 object-cover rounded-full shadow-sm" />
+      ) : (
+        <div></div>
+      )}
+      <h3 className="text-xl font-bold tracking-normal text-gray-800 dark:text-white">{data.title || "Title of lead magnet"}</h3>
+      <p className="text-sm text-gray-600 dark:text-gray-200 items-start">{data.heroDescription || "Description"}</p>
+      <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 mt-2 px-4 rounded-full">
+        View
+      </button>
+    </div>
+  </div>
+  <p className="mt-4 py-1 text-xs tracking-wide text-center text-gray-500 dark:text-gray-400">
+  Card that appears on homepage
+</p>
+</div>
+
+  
+  </TabsContent>
+  <TabsContent value="preview_3" className="flex items-center justify-center">
+
+
+<div>
+
+<div className="flex items-center flex-col space-x-2 bg-white dark:bg-gray-700 rounded-sm p-4    shadow w-full max-w-md">
               <div className="flex flex-col items-center mx-auto">
                 {data.thumbnail ? (
-                    <img src={data.thumbnail} alt="Thumbnail" className="mb-4 w-32 h-32 object-cover rounded-full shadow-sm" />
+                       <Image     src={r2Asset(data.thumbnailFile)} width={150} height={200} alt="Thumbnail" className="mb-4 w-32 h-32 object-cover rounded-full shadow-sm" />
                   ) : (
                     <div className="bg-gray-200 rounded-full h-16 w-16 flex items-center justify-center mb-4">
                       <span className="text-xl font-medium text-gray-500 dark:text-gray-300">S</span>
                     </div>
                   )}
-                <h2 className="text-xl font-bold text-gray-800 mb-2">{data.title || "Title of lead magnet"}</h2>
-                <p className="text-gray-900 text-center mb-4">{parse(description || "Description")}</p>
+                <h2 className="text-xl font-bold text-gray-800 dark:text-white mb-2">{data.title || "Title of lead magnet"}</h2>
+                <p className="text-gray-900 text-center mb-4  dark:text-white">{parse(description || "Description")}</p>
                 <button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full transition-colors">
                  {data.buttonCta}
                 </button>
               </div>
+           
+              </div>
               <p className="mt-4 py-1 text-xs tracking-wide text-center text-gray-500 dark:text-gray-400">
               Lead magnet page/slide
             </p>
-              </div>
+
+</div>
 
 
-           
-            
-          </CarouselItem>
-          </CarouselContent>
-          <CarouselPrevious className="ml-20" type="button"/>
-          <CarouselNext className="mr-20"  type="button"/>
-          </Carousel>
+
+
+  </TabsContent>
+  
+</Tabs>
+
+
+        
         </div>
         </div>
       </div>
@@ -516,6 +529,7 @@ function CreateSiteFormButton({ type }: { type: string }) {
     <>
       <button
         type="submit"
+     
         className={cn(
           "flex h-10 w-full items-center justify-center space-x-2 rounded-md border text-sm transition-all focus:outline-none",
           pending

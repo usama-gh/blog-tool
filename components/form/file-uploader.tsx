@@ -18,7 +18,7 @@ export default function FileUploader({
   labelText: string;
 }) {
   const inputRef = useRef<HTMLInputElement>(null);
-  const [data, setData] = useState();
+  const [data, setData] = useState<string | null>(null);
   const [dragActive, setDragActive] = useState(false);
 
   const handleUpload = (file: File | null) => {
@@ -30,6 +30,7 @@ export default function FileUploader({
         const reader = new FileReader();
         reader.onload = (e) => {
           setFileName(file.name);
+          setData(e.target?.result as string); // Set image data URL
         };
         reader.readAsDataURL(file);
       }
@@ -40,9 +41,15 @@ export default function FileUploader({
     <div>
       <label
         htmlFor={inputId}
-        className="w-100 group relative flex h-12 cursor-pointer flex-col items-center justify-center rounded-md border border-dashed border-gray-300 bg-white text-xs uppercase tracking-wide shadow-sm transition-all dark:border-gray-600 dark:bg-transparent dark:text-gray-600 hover:dark:border-gray-500"
+        className="w-100 group relative flex py-2 cursor-pointer flex-col items-center justify-center rounded-md border border-dashed border-gray-300 bg-white text-xs uppercase tracking-wide shadow-sm transition-all dark:border-gray-600 dark:bg-transparent dark:text-gray-600 hover:dark:border-gray-500"
       >
         {labelText}
+        {data && (
+        <div className="mt-2">
+          <img src={data} alt="Preview" className="max-h-8 rounded-md" />
+        </div>
+      )}
+
       </label>
       {fileName && (
         <span className="flex items-center justify-between text-center">
@@ -53,7 +60,8 @@ export default function FileUploader({
             width={18}
             className="cursor-pointer text-red-400"
             onClick={() => {
-              setFileName("");
+              setFileName(null);
+              setData(null); // Clear image data URL
             }}
           />
         </span>
@@ -70,6 +78,8 @@ export default function FileUploader({
           }
         />
       </div>
+
+    
     </div>
   );
 }

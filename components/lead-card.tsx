@@ -8,6 +8,7 @@ import { useParams, useRouter } from "next/navigation";
 import LeadButton from "./lead-button";
 import LeadModal from "./modal/lead-model";
 import { Lead } from "@prisma/client";
+import { Button } from "@/components/ui/button";
 
 interface Post {
   id: string;
@@ -60,23 +61,25 @@ export default function LeadCard({
       </td>
       <td className="whitespace-nowrap px-6 py-4 text-sm font-medium">
         <div className="flex gap-2">
-          <button
-            type="button"
-            className="rounded-lg border border-slate-600 bg-slate-600 px-2 py-0.5 text-xs font-medium text-white shadow-md transition-all hover:bg-white hover:text-black active:bg-stone-100 disabled:cursor-not-allowed disabled:opacity-70 dark:border-gray-700  dark:hover:border-gray-200 dark:hover:bg-black dark:hover:text-white dark:active:bg-gray-800 lg:text-sm"
+          <Button
+                  variant="secondary"
+            
           >
             <Link href={`leads/${lead.id}`}><span className="flex items-center gap-x-2"><Eye width={18} />View Leads</span></Link>
-          </button>
+          </Button>
 
           <LeadButton btnText="Manage">
             <LeadModal lead={lead} />
           </LeadButton>
-          <button
+          <Button
+          variant="destructive"
+           size="icon"
             onClick={handleLeadDelete}
             type="button"
-            className="rounded-lg border border-slate-600 bg-slate-600 px-2 py-0.5 text-xs font-medium text-white shadow-md transition-all hover:bg-white hover:text-black active:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-70 dark:border-gray-700  dark:hover:border-gray-200 dark:hover:bg-black dark:hover:text-white dark:active:bg-gray-800 lg:text-sm"
+          
           >
             <Trash width={18} />
-          </button>
+          </Button>
         </div>
       </td>
     </tr>

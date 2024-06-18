@@ -424,9 +424,13 @@ const SlideCustomizer = ({
             <TooltipTrigger asChild>
               <PopoverTrigger
                 ref={componentRef}
-                className="absolute bottom-2 right-2 flex h-8 w-8 items-center justify-center rounded-md bg-white p-1 opacity-0 shadow-sm transition ease-in-out group-hover:opacity-100"
+              
+                className="shadow-sm absolute bottom-2 right-2 flex  items-center justify-center  opacity-0  transition ease-in-out group-hover:opacity-100"
               >
+                <Button size="icon" variant="secondary">
                 <Palette strokeWidth={"1.5px"} width={20} />
+                </Button>
+               
               </PopoverTrigger>
             </TooltipTrigger>
             <TooltipContent side="bottom">

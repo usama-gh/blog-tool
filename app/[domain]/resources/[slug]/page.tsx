@@ -112,7 +112,7 @@ export default async function SiteLeadPage({
                 /> */}
                 {/* bg overrelay */}
                 <div
-                  className={`absolute left-0 top-0 h-full w-full bg-white dark:bg-[#052124]`}
+                  className={`absolute left-0 top-0 h-full w-full bg-white dark:bg-gray-800`}
                 ></div>
 
                 {/* lead description */}
