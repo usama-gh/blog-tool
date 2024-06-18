@@ -1,6 +1,6 @@
 "use client";
 
-import { useFormStatus } from 'react-dom'
+import { experimental_useFormStatus as useFormStatus } from "react-dom";
 import { cn } from "@/lib/utils";
 import { useModal } from "./provider";
 import { useState } from "react";

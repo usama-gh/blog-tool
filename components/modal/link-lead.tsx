@@ -1,5 +1,5 @@
 "use client";
-import { useFormStatus } from 'react-dom'
+import { experimental_useFormStatus as useFormStatus } from "react-dom";
 import { cn } from "@/lib/utils";
 import LoadingDots from "@/components/icons/loading-dots";
 import { Lead } from "@prisma/client";

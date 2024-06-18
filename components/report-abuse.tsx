@@ -5,7 +5,7 @@ import { AlertTriangle } from "lucide-react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useState } from "react";
-import { useFormStatus } from 'react-dom'
+import { experimental_useFormStatus as useFormStatus } from "react-dom";
 import LoadingDots from "./icons/loading-dots";
 import { toast } from "sonner";
 
