@@ -3,6 +3,8 @@
 import LoadingDots from "@/components/icons/loading-dots";
 import { cn } from "@/lib/utils";
 import { useParams, useRouter } from "next/navigation";
+// ts-ignore because experimental_useFormStatus is not in the types
+// @ts-ignore
 import { experimental_useFormStatus as useFormStatus } from "react-dom";
 import { toast } from "sonner";
 import { deletePost } from "@/lib/actions";
@@ -52,6 +54,7 @@ export default function DeletePostForm({ postName }: { postName: string }) {
 }
 
 function FormButton() {
+  'use client'
   const { pending } = useFormStatus();
   return (
     <button

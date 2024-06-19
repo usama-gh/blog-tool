@@ -4,6 +4,8 @@ import { toast } from "sonner";
 import { Info } from "lucide-react";
 import { createSiteLead, updateLeadImage, updateSiteLead } from "@/lib/actions";
 import { useRouter } from "next/navigation";
+// ts-ignore because experimental_useFormStatus is not in the types
+// @ts-ignore
 import { experimental_useFormStatus as useFormStatus } from "react-dom";
 import { cn,r2Asset } from "@/lib/utils";
 import Image from "next/image";

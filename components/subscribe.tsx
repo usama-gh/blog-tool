@@ -5,6 +5,8 @@ import LoadingDots from "./icons/loading-dots";
 import { cn } from "@/lib/utils";
 
 import { useState } from "react";
+// ts-ignore because experimental_useFormStatus is not in the types
+// @ts-ignore
 import { experimental_useFormStatus as useFormStatus } from "react-dom";
 import { toast } from "sonner";
 

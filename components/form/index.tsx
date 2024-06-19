@@ -4,6 +4,8 @@ import LoadingDots from "@/components/icons/loading-dots";
 import { cn } from "@/lib/utils";
 import { useSession } from "next-auth/react";
 import { useParams, useRouter } from "next/navigation";
+// ts-ignore because experimental_useFormStatus is not in the types
+// @ts-ignore
 import { experimental_useFormStatus as useFormStatus } from "react-dom";
 import { toast } from "sonner";
 import DomainStatus from "./domain-status";
