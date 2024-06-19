@@ -140,7 +140,7 @@ export default async function SiteHomePage({
               <div className="">
                 <div>
                   <Link href={`/${posts[0].slug}`}>
-                    <div className="ease relative mb-5  h-[30rem]  overflow-hidden rounded-3xl p-6	 transition-all  dark:bg-gray-700 dark:shadow-none hover:dark:bg-gray-600 md:w-full">
+                    <div className="ease relative mb-5  h-[30rem]   overflow-hidden rounded-3xl p-6	 transition-all  bg-slate-100 hover:bg-slate-200 dark:bg-gray-700 hover:dark:bg-gray-600  md:w-full">
                       {!isDefaultImage(posts[0].image) && (
                         <Image
                           src={imageSrc}
