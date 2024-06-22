@@ -317,7 +317,7 @@ const SlideCustomizer = ({
   }
 
   async function handleValueChange(type: string, value: any, source: string | null = null, id: string | null = null) {
-    alert('ran')
+    
     if (type === "text") {
       setTextColor(value);
       changeEditorTextColor("change", value);
@@ -465,7 +465,7 @@ const SlideCustomizer = ({
           </Tooltip>
         </TooltipProvider>
 
-        <PopoverContent className="mt-2 w-auto rounded-lg shadow-lg border-0 py-2">
+        <PopoverContent className="mt-2 w-auto rounded-lg shadow-lg border-0 py-2 dark:bg-gray-800">
           <div className="flex items-center gap-x-2">
             <div className="relative flex items-center gap-x-2">
               <p className="text-xs text-gray-500">TEXT</p>
@@ -495,7 +495,7 @@ const SlideCustomizer = ({
                 </PopoverContent>
               </Popover>
             </div>
-            <div className="h-4 w-[2px] bg-gray-200"></div>
+            <div className="h-4 w-[2px] bg-gray-200 dark:bg-gray-600"></div>
             <div className="relative flex items-center gap-x-2">
               <p className="text-xs text-gray-500">BG</p>
 
@@ -531,7 +531,7 @@ const SlideCustomizer = ({
                     <ImageIcon className="text-gray-500" strokeWidth={"1.5px"} width={20} />
                 
                 </PopoverTrigger>
-                <PopoverContent className="w-min rounded-xl shadow-2xl border-0 my-4">
+                <PopoverContent className="w-min rounded-xl shadow-2xl border-0 my-4 dark:bg-gray-900">
                   <div className="w-[250px]">
                     <Input
                       type="text"
@@ -540,12 +540,12 @@ const SlideCustomizer = ({
                       onChange={(e: any) => setSearch(e.target.value as string)}
                     />
                     {/* showing categories */}
-                    <div className="mt-3 flex flex-wrap items-center gap-2">
+                    <div className="mt-3 mb-1 flex flex-wrap items-center gap-2">
                       {categories.map((item: string) => (
                         <Button
                           variant={category === item ? "default" : "outline"}
                           size="xs"
-                          className="capitalize basis-1/4 max-w-[22%]"
+                          className="capitalize"
                           key={item}
                           onClick={() =>
                             category === item
@@ -571,6 +571,8 @@ const SlideCustomizer = ({
                                
                               
                               ) : (
+
+                              
                                 <Image
                                   className="h-auto rounded-xl w-full cursor-pointer object-contain"
                                   width={120}
