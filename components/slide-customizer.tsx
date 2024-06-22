@@ -316,26 +316,52 @@ const SlideCustomizer = ({
     }
   }
 
-  function handleValueChange(type: string, value: any) {
+  async function handleValueChange(type: string, value: any, source: string | null = null, id: string | null = null) {
+    alert('ran')
     if (type === "text") {
       setTextColor(value);
       changeEditorTextColor("change", value);
     }
-
+   
+  
     if (type === "bg") {
       setBgColor(value);
     }
     if (type === "image") {
       setImage(value);
     }
-
+  
+   
+  
     const slide = {
       textColor: convertToRgba(type === "text" ? value : textColor),
       bgColor: convertToRgba(type === "bg" ? value : bgColor),
       bgImage: type === "image" ? value : image,
     };
-
+  
     updateStyleSlides(index, slide);
+
+    if (source === 'unsplash_image' && id) {
+      // Make an API call to Unsplash to register the download
+      const unsplashDownloadUrl = `https://api.unsplash.com/photos/${id}/download`;
+      try {
+        const response = await fetch(unsplashDownloadUrl, {
+          headers: {
+            Authorization: `Client-ID ${process.env.NEXT_PUBLIC_UNSPLASH_ACCESS_KEY}`,
+          },
+        });
+  
+        if (!response.ok) {
+          throw new Error(`Error downloading image: ${response.statusText}`);
+        }
+  
+        const data = await response.json();
+        console.log(`Unsplash download triggered: ${data.url}`);
+      } catch (error) {
+        console.error('Failed to trigger Unsplash download', error);
+      }
+    }
+
   }
 
   useEffect(() => {
@@ -550,17 +576,19 @@ const SlideCustomizer = ({
                                   width={120}
                                   height={60}
                                   src={item.urls.regular}
-                                  alt="background image"
+                                  alt={item.id}
                                   onClick={() =>
                                     handleValueChange(
                                       "image",
                                       item.urls.regular as string,
+                                      'unsplash_image',
+                                      item.id
                                     )
                                   }
                                 />
                               )}
                               {item.user && (
-                                <div className="absolute left-0 bottom-0 inset-0 flex items-end justify-center p-1 opacity-0 transition-opacity group-hover:opacity-100">
+                                <span className="absolute left-0 bottom-0 flex items-end justify-center p-1 opacity-0 transition-opacity group-hover:opacity-100">
                                   <small className="text-[8px] text-white">
                                     Photo by{" "}
                                     <a
@@ -577,7 +605,7 @@ const SlideCustomizer = ({
                                       Unsplash
                                     </a>
                                   </small>
-                                </div>
+                                </span>
                               )}
                             </div>
                           ))}
