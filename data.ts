@@ -89,59 +89,52 @@ export const categoriesImages = [
     "category": "gradients",
     "images": [
       {
-        "id": "https://images.unsplash.com/photo-1579546928937-641f7ac9bced",
+        "id": 'https://images.pexels.com/photos/281260/pexels-photo-281260.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
         "urls": {
-          "regular": "https://images.unsplash.com/photo-1579546928937-641f7ac9bced?auto=format&fit=crop&w=800&q=60",
-          "thumb": "https://images.unsplash.com/photo-1579546928937-641f7ac9bced?auto=format&fit=crop&w=200&q=60"
+          "regular": 'https://images.pexels.com/photos/281260/pexels-photo-281260.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+          "thumb": 'https://images.pexels.com/photos/281260/pexels-photo-281260.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'
         }
       },
       {
-        "id": "https://images.unsplash.com/photo-1604076913837-52ab5629fba9",
+        "id": 'https://images.pexels.com/photos/281260/pexels-photo-281260.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
         "urls": {
-          "regular": "https://images.unsplash.com/photo-1604076913837-52ab5629fba9?auto=format&fit=crop&w=800&q=60",
-          "thumb": "https://images.unsplash.com/photo-1604076913837-52ab5629fba9?auto=format&fit=crop&w=200&q=60"
+          "regular": 'https://images.pexels.com/photos/281260/pexels-photo-281260.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+          "thumb": 'https://images.pexels.com/photos/281260/pexels-photo-281260.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'
         }
       },
       {
-        "id": "https://images.unsplash.com/photo-1620641788421-7a1c342ea42e",
+        "id": 'https://images.pexels.com/photos/7135121/pexels-photo-7135121.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
         "urls": {
-          "regular": "https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?auto=format&fit=crop&w=800&q=60",
-          "thumb": "https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?auto=format&fit=crop&w=200&q=60"
+          "regular": 'https://images.pexels.com/photos/7135121/pexels-photo-7135121.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+          "thumb": 'https://images.pexels.com/photos/7135121/pexels-photo-7135121.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'
         }
       },
       {
-        "id": "https://images.unsplash.com/photo-1550859492-d5da9d8e45f3",
+        "id": 'https://images.pexels.com/photos/7130475/pexels-photo-7130475.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
         "urls": {
-          "regular": "https://images.unsplash.com/photo-1550859492-d5da9d8e45f3?auto=format&fit=crop&w=800&q=60",
-          "thumb": "https://images.unsplash.com/photo-1550859492-d5da9d8e45f3?auto=format&fit=crop&w=200&q=60"
+          "regular": 'https://images.pexels.com/photos/7130475/pexels-photo-7130475.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+          "thumb": 'https://images.pexels.com/photos/7130475/pexels-photo-7130475.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'
         }
       },
       {
-        "id": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe",
+        "id": 'https://images.pexels.com/photos/7135073/pexels-photo-7135073.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
         "urls": {
-          "regular": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=60",
-          "thumb": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=200&q=60"
+          "regular": 'https://images.pexels.com/photos/7135073/pexels-photo-7135073.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+          "thumb": 'https://images.pexels.com/photos/7135073/pexels-photo-7135073.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'
         }
       },
       {
-        "id": "https://images.unsplash.com/photo-1614850523459-c2f4c699c52e",
+        "id": 'https://images.pexels.com/photos/6985265/pexels-photo-6985265.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
         "urls": {
-          "regular": "https://images.unsplash.com/photo-1614850523459-c2f4c699c52e?auto=format&fit=crop&w=800&q=60",
-          "thumb": "https://images.unsplash.com/photo-1614850523459-c2f4c699c52e?auto=format&fit=crop&w=200&q=60"
+          "regular": 'https://images.pexels.com/photos/6985265/pexels-photo-6985265.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+          "thumb": 'https://images.pexels.com/photos/6985265/pexels-photo-6985265.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'
         }
       },
       {
-        "id": "https://images.unsplash.com/photo-1646038572816-04ab3ff22b1f",
+        "id": 'https://images.pexels.com/photos/6984984/pexels-photo-6984984.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
         "urls": {
-          "regular": "https://images.unsplash.com/photo-1646038572816-04ab3ff22b1f?auto=format&fit=crop&w=1000&q=80",
-          "thumb": "https://images.unsplash.com/photo-1646038572816-04ab3ff22b1f?auto=format&fit=crop&w=250&q=80"
-        }
-      },
-      {
-        "id": "https://images.unsplash.com/photo-1646038572829-c724d3bad7b7",
-        "urls": {
-          "regular": "https://images.unsplash.com/photo-1646038572829-c724d3bad7b7?auto=format&fit=crop&w=1000&q=80",
-          "thumb": "https://images.unsplash.com/photo-1646038572829-c724d3bad7b7?auto=format&fit=crop&w=250&q=80"
+          "regular": 'https://images.pexels.com/photos/6984984/pexels-photo-6984984.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+          "thumb": 'https://images.pexels.com/photos/6984984/pexels-photo-6984984.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'
         }
       }
     ]
@@ -208,63 +201,51 @@ export const categoriesImages = [
     ]
   },
   {
-    category: "macOS",
-    images: [
+    "category": "macOS",
+    "images": [
       {
-        id: "https://images.unsplash.com/photo-1508739773434-c26b3d09e071",
-        urls: {
-          regular:
-            "https://images.unsplash.com/photo-1508739773434-c26b3d09e071?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8bWFjb3N8ZW58MHwwfDB8fHww",
-          thumb:
-            "https://images.unsplash.com/photo-1508739773434-c26b3d09e071?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8bWFjb3N8ZW58MHwwfDB8fHww",
-        },
+        "id": "https://images.pexels.com/photos/417173/pexels-photo-417173.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+        "urls": {
+          "regular": "https://images.pexels.com/photos/417173/pexels-photo-417173.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+          "thumb": "https://images.pexels.com/photos/417173/pexels-photo-417173.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+        }
       },
       {
-        id: "https://images.unsplash.com/photo-1461696114087-397271a7aedc",
-        urls: {
-          regular:
-            "https://images.unsplash.com/photo-1461696114087-397271a7aedc?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTl8fG1hY29zfGVufDB8MHwwfHx8MA%3D%3D",
-          thumb:
-            "https://images.unsplash.com/photo-1461696114087-397271a7aedc?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTl8fG1hY29zfGVufDB8MHwwfHx8MA%3D%3D",
-        },
+        "id": "https://images.pexels.com/photos/691668/pexels-photo-691668.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+        "urls": {
+          "regular": "https://images.pexels.com/photos/691668/pexels-photo-691668.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+          "thumb": "https://images.pexels.com/photos/691668/pexels-photo-691668.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+        }
       },
       {
-        id: "https://images.unsplash.com/photo-1494500764479-0c8f2919a3d8",
-        urls: {
-          regular:
-            "https://images.unsplash.com/photo-1494500764479-0c8f2919a3d8?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjJ8fG1hY29zfGVufDB8MHwwfHx8MA%3D%3D",
-          thumb:
-            "https://images.unsplash.com/photo-1494500764479-0c8f2919a3d8?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjJ8fG1hY29zfGVufDB8MHwwfHx8MA%3D%3D",
-        },
+        "id": "https://images.pexels.com/photos/1054218/pexels-photo-1054218.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+        "urls": {
+          "regular": "https://images.pexels.com/photos/1054218/pexels-photo-1054218.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+          "thumb": "https://images.pexels.com/photos/1054218/pexels-photo-1054218.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+        }
       },
       {
-        id: "https://images.unsplash.com/photo-1558942077-32bb54aac140",
-        urls: {
-          regular:
-            "https://images.unsplash.com/photo-1558942077-32bb54aac140?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MzF8fG1hY29zfGVufDB8MHwwfHx8MA%3D%3D",
-          thumb:
-            "https://images.unsplash.com/photo-1558942077-32bb54aac140?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MzF8fG1hY29zfGVufDB8MHwwfHx8MA%3D%3D",
-        },
+        "id": "https://images.pexels.com/photos/673020/pexels-photo-673020.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+        "urls": {
+          "regular": "https://images.pexels.com/photos/673020/pexels-photo-673020.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+          "thumb": "https://images.pexels.com/photos/673020/pexels-photo-673020.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+        }
       },
       {
-        id: "https://images.pexels.com/photos/982263/pexels-photo-982263.jpeg",
-        urls: {
-          regular:
-            "https://images.pexels.com/photos/982263/pexels-photo-982263.jpeg?auto=compress&cs=tinysrgb&w=600",
-          thumb:
-            "https://images.pexels.com/photos/982263/pexels-photo-982263.jpeg?auto=compress&cs=tinysrgb&w=600",
-        },
+        "id": "https://images.pexels.com/photos/147411/italy-mountains-dawn-daybreak-147411.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+        "urls": {
+          "regular": "https://images.pexels.com/photos/147411/italy-mountains-dawn-daybreak-147411.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+          "thumb": "https://images.pexels.com/photos/147411/italy-mountains-dawn-daybreak-147411.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+        }
       },
       {
-        id: "https://images.pexels.com/photos/1428277/pexels-photo-1428277.jpeg",
-        urls: {
-          regular:
-            "https://images.pexels.com/photos/1428277/pexels-photo-1428277.jpeg?auto=compress&cs=tinysrgb&w=600",
-          thumb:
-            "https://images.pexels.com/photos/1428277/pexels-photo-1428277.jpeg?auto=compress&cs=tinysrgb&w=600",
-        },
-      },
-    ],
+        "id": "https://images.pexels.com/photos/672451/pexels-photo-672451.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+        "urls": {
+          "regular": "https://images.pexels.com/photos/672451/pexels-photo-672451.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+          "thumb": "https://images.pexels.com/photos/672451/pexels-photo-672451.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+        }
+      }
+    ]
   },
   {
     "category": "apple",
