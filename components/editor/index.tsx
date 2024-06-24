@@ -666,7 +666,7 @@ export default function Editor({
             });
           }}
           className={cn(
-            "flex items-center justify-center  space-x-2 rounded-lg px-5 py-2  text-xs font-semibold text-white shadow-xl  transition-all hover:shadow-blue-800/60 focus:outline-none lg:text-lg",
+            "flex items-center justify-center  space-x-2 rounded-lg px-5 py-2  text-xs font-semibold text-white shadow-lg shadow-blue-800/10  transition-all hover:shadow-blue-800/20 focus:outline-none lg:text-lg",
             isPendingPublishing || debouncedData.content === ""
               ? "cursor-not-allowed bg-gradient-to-br from-blue-600  to-blue-400 "
               : " bg-gradient-to-br from-blue-600  to-blue-400",

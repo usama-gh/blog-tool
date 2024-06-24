@@ -341,7 +341,9 @@ const SlideCustomizer = ({
   
     updateStyleSlides(index, slide);
 
-    if (source === 'unsplash_image' && id) {
+    console.log(id)
+
+    if (source === 'unsplash_image' && id!=='default') {
       // Make an API call to Unsplash to register the download
       const unsplashDownloadUrl = `https://api.unsplash.com/photos/${id}/download`;
       try {
@@ -351,14 +353,12 @@ const SlideCustomizer = ({
           },
         });
   
-        if (!response.ok) {
-          throw new Error(`Error downloading image: ${response.statusText}`);
-        }
+      
   
         const data = await response.json();
         console.log(`Unsplash download triggered: ${data.url}`);
       } catch (error) {
-        console.error('Failed to trigger Unsplash download', error);
+       
       }
     }
 
@@ -450,7 +450,7 @@ const SlideCustomizer = ({
             <TooltipTrigger asChild>
               <PopoverTrigger
                 ref={componentRef}
-              
+              asChild
                 className="shadow-sm absolute bottom-2 right-2 flex  items-center justify-center  opacity-0  transition ease-in-out group-hover:opacity-100"
               >
                 <Button size="icon" variant="secondary">
@@ -531,7 +531,7 @@ const SlideCustomizer = ({
                     <ImageIcon className="text-gray-500" strokeWidth={"1.5px"} width={20} />
                 
                 </PopoverTrigger>
-                <PopoverContent className="w-min rounded-xl shadow-2xl border-0 my-4 dark:bg-gray-900">
+                <PopoverContent className="w-min rounded-xl shadow-2xl border-0 my-4 dark:bg-gray-800">
                   <div className="w-[250px]">
                     <Input
                       type="text"
@@ -540,12 +540,12 @@ const SlideCustomizer = ({
                       onChange={(e: any) => setSearch(e.target.value as string)}
                     />
                     {/* showing categories */}
-                    <div className="mt-3 mb-1 flex flex-wrap items-center gap-2">
+                    <div className="mt-1 mb-1 flex flex-wrap items-center gap-1">
                       {categories.map((item: string) => (
                         <Button
-                          variant={category === item ? "default" : "outline"}
+                          variant={category === item ? "secondary" : "outline"}
                           size="xs"
-                          className="capitalize"
+                          className="capitalize font-regular text-xs"
                           key={item}
                           onClick={() =>
                             category === item
@@ -561,9 +561,9 @@ const SlideCustomizer = ({
                     {/* showing images */}
                     <ScrollArea className="h-[200px] w-[250px]">
                       <div>
-                        <div className="grid grid-cols-2 gap-4">
+                        <div className="grid grid-cols-2 gap-2">
                           {images.map((item: any, idx: number) => (
-                            <div className="group relative mb-3" key={idx}>
+                            <div className="group relative" key={idx}>
                               {loading ? (
                                
                                     <Skeleton className="h-[30px] w-full rounded-full" />
@@ -572,22 +572,24 @@ const SlideCustomizer = ({
                               
                               ) : (
 
-                              
+                                <div>
+                                  {item.id}
                                 <Image
                                   className="h-auto rounded-xl w-full cursor-pointer object-contain"
                                   width={120}
                                   height={60}
                                   src={item.urls.regular}
-                                  alt={item.id}
+                                  alt={item.id || 'default'}
                                   onClick={() =>
                                     handleValueChange(
                                       "image",
                                       item.urls.regular as string,
                                       'unsplash_image',
-                                      item.id
+                                      item.id || 'default'
                                     )
                                   }
                                 />
+                                </div>
                               )}
                               {item.user && (
                                 <span className="absolute left-0 bottom-0 flex items-end justify-center p-1 opacity-0 transition-opacity group-hover:opacity-100">
@@ -617,7 +619,7 @@ const SlideCustomizer = ({
                     <div className="mt-3">
                       <Button
                         type="button"
-                        variant="secondary"
+                        variant="outline"
                         className="w-full"
                         onClick={openImageDialog}
                       >
