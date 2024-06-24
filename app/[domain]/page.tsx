@@ -157,7 +157,20 @@ export default async function SiteHomePage({
                         <div className="absolute left-0 top-0 z-20 h-full w-full bg-gradient-to-t from-black  via-[#000000d1] to-transparent"></div>
                       )}
 
-                      <div className="flex h-full items-end justify-start">
+                      <div className="flex h-full items-end justify-between flex-col">
+
+                        <div>
+                        <button
+                            className={cn(
+                              "mt-2 rounded-full border px-4 py-1 text-center text-md",
+                              isDefaultImage(posts[0].image)
+                                ? "border-slate-500 text-slate-500 hover:border-slate-700 hover:text-slate-600 dark:border-gray-400 dark:bg-transparent dark:text-gray-400 dark:hover:border-gray-300 dark:hover:text-gray-300"
+                                : "border-white bg-white text-black",
+                            )}
+                          >
+                            Read More
+                          </button>
+                        </div>
                         <div className="relative z-30 flex w-full flex-col items-start justify-start gap-y-2 text-left">
                           <p
                             className={cn(
@@ -183,16 +196,7 @@ export default async function SiteHomePage({
                           >
                             {posts[0].description}
                           </p>
-                          <button
-                            className={cn(
-                              "mt-2 rounded-full border px-4 py-1 text-center text-sm",
-                              isDefaultImage(posts[0].image)
-                                ? "border-slate-500 text-slate-500 hover:border-slate-700 hover:text-slate-600 dark:border-gray-400 dark:bg-transparent dark:text-gray-400 dark:hover:border-gray-300 dark:hover:text-gray-300"
-                                : "border-white bg-white text-black",
-                            )}
-                          >
-                            Read More
-                          </button>
+                         
                         </div>
                       </div>
                     </div>
