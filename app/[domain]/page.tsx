@@ -162,7 +162,7 @@ export default async function SiteHomePage({
                         <div>
                         <button
                             className={cn(
-                              "mt-2 rounded-full border px-4 py-1 text-center text-md",
+                              "rounded-full border px-4 py-1 text-center text-md",
                               isDefaultImage(posts[0].image)
                                 ? "border-slate-500 text-slate-500 hover:border-slate-700 hover:text-slate-600 dark:border-gray-400 dark:bg-transparent dark:text-gray-400 dark:hover:border-gray-300 dark:hover:text-gray-300"
                                 : "border-white bg-white text-black",
@@ -174,7 +174,7 @@ export default async function SiteHomePage({
                         <div className="relative z-30 flex w-full flex-col items-start justify-start gap-y-2 text-left">
                           <p
                             className={cn(
-                              "text-sm tracking-normal text-slate-500 dark:text-gray-400",
+                              "text-base tracking-normal text-slate-500 dark:text-gray-400",
                               !isDefaultImage(posts[0].image) && "text-white",
                             )}
                           >
@@ -182,7 +182,7 @@ export default async function SiteHomePage({
                           </p>
                           <h2
                             className={cn(
-                              "text-2xl font-semibold tracking-tight text-slate-600  dark:text-white md:text-3xl",
+                              "text-2xl font-semibold tracking-tight max-w-4xl text-slate-600  dark:text-white md:text-3xl",
                               !isDefaultImage(posts[0].image) && "text-white",
                             )}
                           >
@@ -190,7 +190,7 @@ export default async function SiteHomePage({
                           </h2>
                           <p
                             className={cn(
-                              "line-clamp-3 w-full text-base leading-6 text-slate-500 dark:text-gray-300",
+                              "line-clamp-3 w-full text-lg max-w-2xl leading-6 text-slate-500 dark:text-gray-300",
                               !isDefaultImage(posts[0].image) && "text-white",
                             )}
                           >
