@@ -14,6 +14,7 @@ import Uploader from "./uploader";
 import { useState } from "react";
 import NobelEditor from "../editor/novel-editor";
 import { triggerEvent } from "../usermaven";
+import { deleteFileFromBlob } from "@/lib/actions";
 
 export default function Form({
   title,
@@ -21,6 +22,7 @@ export default function Form({
   helpText,
   inputAttrs,
   handleSubmit,
+  unsplash,
   canUseAI,
 }: {
   title: string;
@@ -35,15 +37,15 @@ export default function Form({
     pattern?: string;
   };
   handleSubmit: any;
+  unsplash?: boolean;
   canUseAI?: boolean;
 }) {
   const { id } = useParams() as { id?: string };
   const router = useRouter();
   const { update } = useSession();
 
-  // eidtor setup
-  // const [bio, setBio] = useState({ bio: inputAttrs.defaultValue });
   const [bio, setBio] = useState(inputAttrs.defaultValue);
+  const [unsplashImage, setUnsplashImage] = useState();
 
   return (
     <form
@@ -64,11 +66,25 @@ export default function Form({
         ) {
           return;
         }
+
+        // delete image from vercel blob if exists
+        if (
+          (inputAttrs.name === "image" || inputAttrs.name === "logo") &&
+          !inputAttrs.defaultValue.includes("unsplash.com")
+        ) {
+          await deleteFileFromBlob(inputAttrs.defaultValue);
+        }
+
+        // if image is set from unsplash then set its value to formData
+        if (unsplashImage) {
+          data.append("unsplashImage", unsplashImage);
+        }
+
         handleSubmit(
           // inputAttrs.name !== "bio" ? data : bio.bio,
-          inputAttrs.name !== "bio" ? data : bio,
+          inputAttrs.name === "bio" ? bio : data,
           id,
-          inputAttrs.name,
+          unsplashImage ? "unsplashImage" : inputAttrs.name,
         ).then(async (res: any) => {
           if (res.error) {
             toast.error(res.error);
@@ -99,6 +115,8 @@ export default function Form({
           <Uploader
             defaultValue={inputAttrs.defaultValue}
             name={inputAttrs.name}
+            unsplash={unsplash}
+            setUnsplashImage={setUnsplashImage}
           />
         ) : inputAttrs.name === "font" ? (
           <div className="flex max-w-sm items-center overflow-hidden rounded-lg border border-gray-600">

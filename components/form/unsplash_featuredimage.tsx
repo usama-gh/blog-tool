@@ -10,9 +10,6 @@ type UnsplashImageSearchProps = {
   onSelect: (url: string, id: string) => void;
 };
 
-
-
-
 const UnsplashImageSearch = ({ onSelect }: UnsplashImageSearchProps) => {
   const perPageImages = 10;
   const [search, setSearch] = useState("");
@@ -20,7 +17,6 @@ const UnsplashImageSearch = ({ onSelect }: UnsplashImageSearchProps) => {
 
   // debaounce search after 3 seconds
   const [debouncedSearch] = useDebounce(search, 2000);
-
 
   // fetching images from unsplash api
   async function fetchImageFromUnsplash() {
@@ -44,7 +40,6 @@ const UnsplashImageSearch = ({ onSelect }: UnsplashImageSearchProps) => {
       setTimeout(() => {
         setLoading(false);
       }, 500);
-      
     }
   }, [debouncedSearch]);
 
@@ -52,67 +47,67 @@ const UnsplashImageSearch = ({ onSelect }: UnsplashImageSearchProps) => {
 
   return (
     <div className="w-[250px]">
-                    <Input
-                      type="text"
-                      placeholder="Search"
-                      value={search}
-                      onChange={(e: any) => setSearch(e.target.value as string)}
-                    />
+      <Input
+        type="text"
+        placeholder="Search"
+        value={search}
+        onChange={(e: any) => setSearch(e.target.value as string)}
+      />
 
-                    {/* showing images */}
-                    <ScrollArea className="h-[200px] w-[250px]">
-                      <div>
-                        <div className="grid grid-cols-2 gap-2 pt-4">
-                          {images.map((item: any, idx: number) => (
-                            <div className="group relative" key={idx}>
-                              {loading ? (
-                                    <Skeleton className="h-[100px] w-full rounded-xl" />
-                              ) : (
-                                <div>
-                                <Image
-                                  className="h-auto rounded-xl w-full cursor-pointer object-contain"
-                                  width={120}
-                                  height={60}
-                                  src={item.urls.regular}
-                                  alt={""}
-                                  onClick={() => onSelect(item.urls.regular, item.id)}
-                                //   onClick={() =>
-                                //     handleValueChange(
-                                //       "image",
-                                //       item.urls.regular as string,
-                                //       'unsplash_image',
-                                //       item.id || 'default'
-                                //     )
-                                //   }
-                                />
-                                </div>
-                              )}
-                              {item.user && (
-                                <span className="absolute left-0 bottom-0 flex items-end justify-center p-1 opacity-0 transition-opacity group-hover:opacity-100">
-                                  <small className="text-[8px] text-white">
-                                    Photo by{" "}
-                                    <a
-                                      href={item.user?.links?.self}
-                                      className="text-blue-400 hover:text-blue-300"
-                                    >
-                                      {item.user?.name}
-                                    </a>{" "}
-                                    on{" "}
-                                    <a
-                                      href="https://unsplash.com"
-                                      className="text-blue-400 hover:text-blue-300"
-                                    >
-                                      Unsplash
-                                    </a>
-                                  </small>
-                                </span>
-                              )}
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    </ScrollArea>
+      {/* showing images */}
+      <ScrollArea className="h-[200px] w-[250px]">
+        <div>
+          <div className="grid grid-cols-2 gap-2 pt-4">
+            {images.map((item: any, idx: number) => (
+              <div className="group relative" key={idx}>
+                {loading ? (
+                  <Skeleton className="h-[100px] w-full rounded-xl" />
+                ) : (
+                  <div>
+                    <Image
+                      className="h-auto w-full cursor-pointer rounded-xl object-contain"
+                      width={120}
+                      height={60}
+                      src={item.urls.regular}
+                      alt={""}
+                      onClick={() => onSelect(item.urls.regular, item.id)}
+                      //   onClick={() =>
+                      //     handleValueChange(
+                      //       "image",
+                      //       item.urls.regular as string,
+                      //       'unsplash_image',
+                      //       item.id || 'default'
+                      //     )
+                      //   }
+                    />
                   </div>
+                )}
+                {item.user && (
+                  <span className="absolute bottom-0 left-0 flex items-end justify-center p-1 opacity-0 transition-opacity group-hover:opacity-100">
+                    <small className="text-[8px] text-white">
+                      Photo by{" "}
+                      <a
+                        href={item.user?.links?.self}
+                        className="text-blue-400 hover:text-blue-300"
+                      >
+                        {item.user?.name}
+                      </a>{" "}
+                      on{" "}
+                      <a
+                        href="https://unsplash.com"
+                        className="text-blue-400 hover:text-blue-300"
+                      >
+                        Unsplash
+                      </a>
+                    </small>
+                  </span>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      </ScrollArea>
+    </div>
   );
 };
 

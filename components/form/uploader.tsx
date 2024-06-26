@@ -13,9 +13,13 @@ import UnsplashImageSearch from "../form/unsplash_featuredimage";
 export default function Uploader({
   defaultValue,
   name,
+  unsplash,
+  setUnsplashImage,
 }: {
   defaultValue: string | null;
   name: "image" | "logo";
+  unsplash?: boolean;
+  setUnsplashImage?: any;
 }) {
   const aspectRatio = name === "image" ? "aspect-video" : "aspect-square";
 
@@ -26,51 +30,10 @@ export default function Uploader({
 
   const [dragActive, setDragActive] = useState(false);
 
-
-  const handleImageSelect = async(url: string, id: string) => {
-
-    const unsplashDownloadUrl = `https://api.unsplash.com/photos/${id}/download`;
-    try {
-      const response = await fetch(unsplashDownloadUrl, {
-        headers: {
-          Authorization: `Client-ID ${process.env.NEXT_PUBLIC_UNSPLASH_ACCESS_KEY}`,
-        },
-      });
-      const data = await response.json();
-      console.log(`Unsplash download triggered: ${data.url}`);
-    } catch (error) {
-      console.error('Failed to register download with Unsplash:', error);
-    }
-
-    const reader = new FileReader();
-  
-    reader.onload = (e) => {
-      console.log('featured_image_unsplash', e.target?.result as string);
-      setData((prev) => ({ ...prev, [name]: e.target?.result as string }));
-    };
-  
-    fetch(url)
-      .then((res) => res.blob())
-      .then((blob) => {
-        // Create a new File object from the blob
-        const file = new File([blob], "unsplash_image.jpg", { type: blob.type });
-  
-        // Set the file in the input field
-        if (inputRef.current) {
-          const dataTransfer = new DataTransfer();
-          dataTransfer.items.add(file);
-          inputRef.current.files = dataTransfer.files;
-        }
-  
-        // Read the blob as a data URL
-        reader.readAsDataURL(blob);
-      })
-      .catch((error) => {
-        console.error("Error fetching image from Unsplash:", error);
-      });
+  const handleImageSelect = async (url: string, id: string) => {
+    setUnsplashImage(url);
+    setData((prev) => ({ ...prev, [name]: url as string }));
   };
-  
-
 
   const handleUpload = (file: File | null) => {
     if (file) {
@@ -85,7 +48,6 @@ export default function Uploader({
       } else {
         const reader = new FileReader();
         reader.onload = (e) => {
-         
           setData((prev) => ({ ...prev, [name]: e.target?.result as string }));
         };
         reader.readAsDataURL(file);
@@ -192,31 +154,32 @@ export default function Uploader({
         />
       </div>
       <div className="flex flex-row justify-evenly pt-4">
+        {unsplash && (
+          <Popover>
+            <PopoverTrigger>
+              <button
+                type="button"
+                className={
+                  "flex items-center justify-center space-x-2 rounded-md border border-black bg-black px-3 py-1 text-sm text-white transition-all hover:bg-white hover:text-black focus:outline-none dark:border-gray-700 dark:hover:border-gray-200 dark:hover:bg-black dark:hover:text-white dark:active:bg-gray-800"
+                }
+              >
+                <p>Upload from Unsplash</p>
+              </button>
+            </PopoverTrigger>
+            <PopoverContent className="my-4 w-min rounded-xl border-0 shadow-2xl dark:bg-gray-800">
+              <UnsplashImageSearch onSelect={handleImageSelect} />
+            </PopoverContent>
+          </Popover>
+        )}
+
         <div>
-        <Popover>
-          <PopoverTrigger>
-            <button
-              type="button"
-              className={
-                "flex items-center justify-center space-x-2 rounded-md border px-3 py-1 text-sm transition-all focus:outline-none border-black bg-black text-white hover:bg-white hover:text-black dark:border-gray-700 dark:hover:border-gray-200 dark:hover:bg-black dark:hover:text-white dark:active:bg-gray-800"
-              }
-            >
-              <p>Upload from Unsplash</p>
-            </button>
-          </PopoverTrigger>
-          <PopoverContent className="w-min rounded-xl shadow-2xl border-0 my-4 dark:bg-gray-800">
-            <UnsplashImageSearch onSelect={handleImageSelect} />
-          </PopoverContent>
-        </Popover>
-        </div>
-        <div>
-        <button
-          type="button"
-          className="flex items-center justify-center space-x-2 rounded-md border px-3 py-1 text-sm transition-all focus:outline-none border-black bg-black text-white hover:bg-white hover:text-black dark:border-gray-700 dark:hover:border-gray-200 dark:hover:bg-black dark:hover:text-white dark:active:bg-gray-800"
-          onClick={() => inputRef.current?.click()}
-        >
-          <p>Upload</p>
-        </button>
+          <button
+            type="button"
+            className="flex items-center justify-center space-x-2 rounded-md border border-black bg-black px-3 py-1 text-sm text-white transition-all hover:bg-white hover:text-black focus:outline-none dark:border-gray-700 dark:hover:border-gray-200 dark:hover:bg-black dark:hover:text-white dark:active:bg-gray-800"
+            onClick={() => inputRef.current?.click()}
+          >
+            <p>Upload</p>
+          </button>
         </div>
       </div>
     </div>
