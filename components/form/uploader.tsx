@@ -26,6 +26,38 @@ export default function Uploader({
 
   const [dragActive, setDragActive] = useState(false);
 
+
+  const handleImageSelect = (url: string) => {
+    const reader = new FileReader();
+  
+    reader.onload = (e) => {
+      console.log('featured_image_unsplash', e.target?.result as string);
+      setData((prev) => ({ ...prev, [name]: e.target?.result as string }));
+    };
+  
+    fetch(url)
+      .then((res) => res.blob())
+      .then((blob) => {
+        // Create a new File object from the blob
+        const file = new File([blob], "unsplash_image.jpg", { type: blob.type });
+  
+        // Set the file in the input field
+        if (inputRef.current) {
+          const dataTransfer = new DataTransfer();
+          dataTransfer.items.add(file);
+          inputRef.current.files = dataTransfer.files;
+        }
+  
+        // Read the blob as a data URL
+        reader.readAsDataURL(blob);
+      })
+      .catch((error) => {
+        console.error("Error fetching image from Unsplash:", error);
+      });
+  };
+  
+
+
   const handleUpload = (file: File | null) => {
     if (file) {
       if (file.size / 1024 / 1024 > 50) {
@@ -39,6 +71,7 @@ export default function Uploader({
       } else {
         const reader = new FileReader();
         reader.onload = (e) => {
+         
           setData((prev) => ({ ...prev, [name]: e.target?.result as string }));
         };
         reader.readAsDataURL(file);
@@ -158,7 +191,7 @@ export default function Uploader({
             </button>
           </PopoverTrigger>
           <PopoverContent className="w-min rounded-xl shadow-2xl border-0 my-4 dark:bg-gray-800">
-            <UnsplashImageSearch onSelect={(url) => console.log(url)} />
+            <UnsplashImageSearch onSelect={handleImageSelect} />
           </PopoverContent>
         </Popover>
         </div>

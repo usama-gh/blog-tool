@@ -65,7 +65,7 @@ const UnsplashImageSearch = ({ onSelect }: UnsplashImageSearchProps) => {
                           {images.map((item: any, idx: number) => (
                             <div className="group relative" key={idx}>
                               {loading ? (
-                                    <Skeleton className="h-[30px] w-full rounded-full" />
+                                    <Skeleton className="h-[100px] w-full rounded-xl" />
                               ) : (
                                 <div>
                                 <Image
@@ -74,6 +74,7 @@ const UnsplashImageSearch = ({ onSelect }: UnsplashImageSearchProps) => {
                                   height={60}
                                   src={item.urls.regular}
                                   alt={""}
+                                  onClick={() => onSelect(item.urls.regular)}
                                 //   onClick={() =>
                                 //     handleValueChange(
                                 //       "image",
