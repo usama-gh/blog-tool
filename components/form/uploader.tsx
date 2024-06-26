@@ -3,6 +3,12 @@
 import { cn } from "@/lib/utils";
 import { useRef, useState } from "react";
 import { toast } from "sonner";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import UnsplashImageSearch from "../form/unsplash_featuredimage";
 
 export default function Uploader({
   defaultValue,
@@ -137,6 +143,34 @@ export default function Uploader({
             handleUpload(file);
           }}
         />
+      </div>
+      <div className="flex flex-row justify-evenly pt-4">
+        <div>
+        <Popover>
+          <PopoverTrigger>
+            <button
+              type="button"
+              className={
+                "flex items-center justify-center space-x-2 rounded-md border px-3 py-1 text-sm transition-all focus:outline-none border-black bg-black text-white hover:bg-white hover:text-black dark:border-gray-700 dark:hover:border-gray-200 dark:hover:bg-black dark:hover:text-white dark:active:bg-gray-800"
+              }
+            >
+              <p>Upload from Unsplash</p>
+            </button>
+          </PopoverTrigger>
+          <PopoverContent className="w-min rounded-xl shadow-2xl border-0 my-4 dark:bg-gray-800">
+            <UnsplashImageSearch onSelect={(url) => console.log(url)} />
+          </PopoverContent>
+        </Popover>
+        </div>
+        <div>
+        <button
+          type="button"
+          className="flex items-center justify-center space-x-2 rounded-md border px-3 py-1 text-sm transition-all focus:outline-none border-black bg-black text-white hover:bg-white hover:text-black dark:border-gray-700 dark:hover:border-gray-200 dark:hover:bg-black dark:hover:text-white dark:active:bg-gray-800"
+          onClick={() => inputRef.current?.click()}
+        >
+          <p>Upload</p>
+        </button>
+        </div>
       </div>
     </div>
   );
