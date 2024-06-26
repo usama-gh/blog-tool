@@ -7,8 +7,9 @@ import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { Skeleton } from "@/components/ui/skeleton";
 
 type UnsplashImageSearchProps = {
-  onSelect: (url: string) => void;
+  onSelect: (url: string, id: string) => void;
 };
+
 
 
 
@@ -74,7 +75,7 @@ const UnsplashImageSearch = ({ onSelect }: UnsplashImageSearchProps) => {
                                   height={60}
                                   src={item.urls.regular}
                                   alt={""}
-                                  onClick={() => onSelect(item.urls.regular)}
+                                  onClick={() => onSelect(item.urls.regular, item.id)}
                                 //   onClick={() =>
                                 //     handleValueChange(
                                 //       "image",

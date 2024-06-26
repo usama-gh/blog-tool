@@ -27,7 +27,21 @@ export default function Uploader({
   const [dragActive, setDragActive] = useState(false);
 
 
-  const handleImageSelect = (url: string) => {
+  const handleImageSelect = async(url: string, id: string) => {
+
+    const unsplashDownloadUrl = `https://api.unsplash.com/photos/${id}/download`;
+    try {
+      const response = await fetch(unsplashDownloadUrl, {
+        headers: {
+          Authorization: `Client-ID ${process.env.NEXT_PUBLIC_UNSPLASH_ACCESS_KEY}`,
+        },
+      });
+      const data = await response.json();
+      console.log(`Unsplash download triggered: ${data.url}`);
+    } catch (error) {
+      console.error('Failed to register download with Unsplash:', error);
+    }
+
     const reader = new FileReader();
   
     reader.onload = (e) => {
