@@ -154,7 +154,7 @@ export default async function SiteHomePage({
                       )}
 
                       {!isDefaultImage(posts[0].image) && (
-                        <div className="absolute left-0 top-0 z-20 h-full w-full bg-gradient-to-t from-black  via-[#000000d1] to-transparent"></div>
+                        <div className="absolute left-0 top-0 z-20 h-full w-full bg-gradient-to-t from-black  via-[#0000008c] to-transparent"></div>
                       )}
 
                       <div className="flex h-full items-end justify-between flex-col">
@@ -242,7 +242,7 @@ export default async function SiteHomePage({
                               quality={100}
                               className="absolute left-0 top-0 z-0"
                             />
-                            <div className="absolute left-0 top-0 z-20 h-full w-full bg-gradient-to-t from-black  via-[#000000d1] to-transparent"></div>
+                            <div className="absolute left-0 top-0 z-20 h-full w-full bg-gradient-to-t from-black  via-[#0000008c] to-transparent"></div>
                           </div>
                         )}
 

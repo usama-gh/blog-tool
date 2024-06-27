@@ -28,7 +28,7 @@ export default function BlogCard({ data }: BlogCardProps) {
 >
   
   {isImageBackground && (
-    <div className="absolute inset-0 bg-gradient-to-t from-black  via-[#000000d1] to-transparent"></div>
+    <div className="absolute inset-0 bg-gradient-to-t from-black  via-[#0000008c] to-transparent"></div>
   )}
   
   <div className="flex h-full flex-col items-start p-5 w-full justify-between">
