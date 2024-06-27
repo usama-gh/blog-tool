@@ -429,12 +429,7 @@ export default function Editor({
             });
           }
         }catch(e){
-          if (slideStyle?.bgImage) {
-            await fetch("/api/upload", {
-              method: "DELETE",
-              body: JSON.stringify({ image: slideStyle.bgImage }),
-            });
-          }
+          console.log(e)
         }
        
 
