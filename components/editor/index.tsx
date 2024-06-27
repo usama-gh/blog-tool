@@ -367,15 +367,11 @@ export default function Editor({
         );
 
         // delete image if slide style has
-        if (slideStyle?.bgImage) {
-          await fetch("/api/upload", {
-            method: "DELETE",
-            body: JSON.stringify({ image: slideStyle.bgImage }),
-          });
-        }
-
+      
         updatedSlides.splice(index, 1);
         setSlides(updatedSlides);
+
+
 
         const styledSlides = slidesStyles.filter(
           (slide: SlideStyle) => slide.id != index + 1,
@@ -424,6 +420,24 @@ export default function Editor({
           ...data,
           styling: JSON.stringify(styledSlides),
         });
+
+        try {
+          if (slideStyle?.bgImage) {
+            await fetch("/api/upload", {
+              method: "DELETE",
+              body: JSON.stringify({ image: slideStyle.bgImage }),
+            });
+          }
+        }catch(e){
+          if (slideStyle?.bgImage) {
+            await fetch("/api/upload", {
+              method: "DELETE",
+              body: JSON.stringify({ image: slideStyle.bgImage }),
+            });
+          }
+        }
+       
+
 
         toast("Slide deleted");
         break;
