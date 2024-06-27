@@ -367,15 +367,11 @@ export default function Editor({
         );
 
         // delete image if slide style has
-        if (slideStyle?.bgImage) {
-          await fetch("/api/upload", {
-            method: "DELETE",
-            body: JSON.stringify({ image: slideStyle.bgImage }),
-          });
-        }
-
+      
         updatedSlides.splice(index, 1);
         setSlides(updatedSlides);
+
+
 
         const styledSlides = slidesStyles.filter(
           (slide: SlideStyle) => slide.id != index + 1,
@@ -424,6 +420,19 @@ export default function Editor({
           ...data,
           styling: JSON.stringify(styledSlides),
         });
+
+        try {
+          if (slideStyle?.bgImage) {
+            await fetch("/api/upload", {
+              method: "DELETE",
+              body: JSON.stringify({ image: slideStyle.bgImage }),
+            });
+          }
+        }catch(e){
+          console.log(e)
+        }
+       
+
 
         toast("Slide deleted");
         break;
@@ -692,7 +701,7 @@ export default function Editor({
 
       <div className="flex w-full flex-col items-center justify-center">
         <div className="scroll-x-fade carousel-wrapper mb-2 mt-2 flex w-full flex-nowrap space-x-4 overflow-x-scroll pb-4">
-          <div className="carousel-item carousel-item min-h-[500px] w-[90%] flex-shrink-0  animate-fadeLeft overflow-y-auto group">
+          <div className="carousel-item carousel-item group min-h-[500px] w-[90%]  flex-shrink-0 animate-fadeLeft overflow-y-auto">
             <ContentCustomizer
               style={slidesStyles.find((item: SlideStyle) => item.id == 0)}
               className="relative h-full max-w-screen-xl overflow-y-auto  rounded-lg bg-slate-100 p-8 dark:bg-gray-900/80 lg:mt-0"
@@ -791,6 +800,7 @@ export default function Editor({
               defaultValue: data?.image!,
             }}
             handleSubmit={updatePostMetadata}
+            unsplash={true}
           />
         </div>
       </div>

@@ -318,17 +318,40 @@ const SlideCustomizer = ({
 
   async function handleValueChange(type: string, value: any, source: string | null = null, id: string | null = null) {
     
+    
     if (type === "text") {
       setTextColor(value);
       changeEditorTextColor("change", value);
     }
    
-  
+    console.log(value)
     if (type === "bg") {
       setBgColor(value);
     }
     if (type === "image") {
       setImage(value);
+
+
+      if (
+        (textColor.r === 0 && textColor.g === 0 && textColor.b === 0 && textColor.a === 1) ||
+        (defaultTextColor.r === 0 && defaultTextColor.g === 0 && defaultTextColor.b === 0 && defaultTextColor.a === 1)
+    ) {
+        // Both textColor and defaultTextColor are black
+        console.log("Both textColor and defaultTextColor are black");
+        setBgColor({r: 255, g: 255, b: 255, a: 0.8});
+    } else {
+        // One or both colors are not black
+        setBgColor({r: 0, g: 0, b: 0, a: 0.4});
+        console.log("One or both colors are not black");
+    }
+
+    
+
+
+    
+
+  
+      
     }
   
    
@@ -535,7 +558,7 @@ const SlideCustomizer = ({
                   <div className="w-[250px]">
                     <Input
                       type="text"
-                      placeholder="Search"
+                      placeholder="Search any image"
                       value={search}
                       onChange={(e: any) => setSearch(e.target.value as string)}
                     />
@@ -573,7 +596,7 @@ const SlideCustomizer = ({
                               ) : (
 
                                 <div>
-                                  {item.id}
+                                
                                 <Image
                                   className="h-auto rounded-xl w-full cursor-pointer object-contain"
                                   width={120}
@@ -596,7 +619,8 @@ const SlideCustomizer = ({
                                   <small className="text-[8px] text-white">
                                     Photo by{" "}
                                     <a
-                                      href={item.user?.links?.self}
+                                    target="_blank"
+                                      href={item.user?.links?.self+'?utm_source=typedd&utm_medium=referral'}
                                       className="text-blue-400 hover:text-blue-300"
                                     >
                                       {item.user?.name}

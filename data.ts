@@ -82,7 +82,7 @@ export const plans = [
   },
 ];
 
-export const categories = ["gradients", "rayCast", "macOS", "apple", "patterns"];
+export const categories = ["gradients", "Mountains", "macOS", "apple", "patterns"];
 
 export const categoriesImages = [
   {
@@ -96,8 +96,8 @@ export const categoriesImages = [
       },
       {
         "urls": {
-          "regular": 'https://images.pexels.com/photos/281260/pexels-photo-281260.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-          "thumb": 'https://images.pexels.com/photos/281260/pexels-photo-281260.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'
+          "regular": 'https://images.unsplash.com/photo-1638742385167-96fc60e12f59?q=80&w=2832&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+          "thumb": 'https://images.unsplash.com/photo-1638742385167-96fc60e12f59?q=40&w=300&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
         }
       },
       {
@@ -133,58 +133,58 @@ export const categoriesImages = [
     ]
   },  
   {
-    "category": "rayCast",
+    "category": "Mountains",
     "images": [
       {
         "urls": {
-          "regular": "https://storage.googleapis.com/brandbird/wallpapers/raycast/loupe.webp",
-          "thumb": "https://storage.googleapis.com/brandbird/wallpapers/raycast/loupe.webp"
+          "regular": "https://images.unsplash.com/photo-1486870591958-9b9d0d1dda99?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+          "thumb": "https://images.unsplash.com/photo-1486870591958-9b9d0d1dda99?q=80&w=400&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
         }
       },
       {
         "urls": {
-          "regular": "https://storage.googleapis.com/brandbird/wallpapers/raycast/loupe-mono-dark.webp",
-          "thumb": "https://storage.googleapis.com/brandbird/wallpapers/raycast/loupe-mono-dark.webp"
+          "regular": "https://images.unsplash.com/photo-1464278533981-50106e6176b1?q=80&w=2874&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+          "thumb": "https://images.unsplash.com/photo-1464278533981-50106e6176b1?q=80&w=400&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
         }
       },
       {
         "urls": {
-          "regular": "https://storage.googleapis.com/brandbird/wallpapers/raycast/loupe-mono-light.webp",
-          "thumb": "https://storage.googleapis.com/brandbird/wallpapers/raycast/loupe-mono-light.webp"
+          "regular": "https://images.unsplash.com/photo-1477346611705-65d1883cee1e?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+          "thumb": "https://images.unsplash.com/photo-1477346611705-65d1883cee1e?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
         }
       },
       {
         "urls": {
-          "regular": "https://storage.googleapis.com/brandbird/wallpapers/raycast/blob-red.webp",
-          "thumb": "https://storage.googleapis.com/brandbird/wallpapers/raycast/blob-red.webp"
+          "regular": "https://images.unsplash.com/photo-1618859437366-03b96f6558c6?q=80&w=3028&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+          "thumb": "https://images.unsplash.com/photo-1618859437366-03b96f6558c6?q=80&w=400&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
         }
       },
       {
   
         "urls": {
-          "regular": "https://storage.googleapis.com/brandbird/wallpapers/raycast/blob.webp",
-          "thumb": "https://storage.googleapis.com/brandbird/wallpapers/raycast/blob.webp"
+          "regular": "https://images.unsplash.com/photo-1516825994218-b2d93290b0fd?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+          "thumb": "https://images.unsplash.com/photo-1516825994218-b2d93290b0fd?q=80&w=400&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
         }
       },
       {
      
         "urls": {
-          "regular": "https://storage.googleapis.com/brandbird/wallpapers/raycast/autumnal-peach.webp",
-          "thumb": "https://storage.googleapis.com/brandbird/wallpapers/raycast/autumnal-peach.webp"
+          "regular": "https://images.unsplash.com/photo-1477948879622-5f16e220fa42?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+          "thumb": "https://images.unsplash.com/photo-1477948879622-5f16e220fa42?q=80&w=400&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
         }
       },
       {
         
         "urls": {
-          "regular": "https://storage.googleapis.com/brandbird/wallpapers/raycast/blossom-2.webp",
-          "thumb": "https://storage.googleapis.com/brandbird/wallpapers/raycast/blossom-2.webp"
+          "regular": "https://images.unsplash.com/photo-1483631224226-a219224bb76e?q=80&w=2904&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+          "thumb": "https://images.unsplash.com/photo-1483631224226-a219224bb76e?q=80&w=300&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
         }
       },
       {
        
         "urls": {
-          "regular": "https://storage.googleapis.com/brandbird/wallpapers/raycast/blushing-fire.webp",
-          "thumb": "https://storage.googleapis.com/brandbird/wallpapers/raycast/blushing-fire.webp"
+          "regular": "https://images.unsplash.com/photo-1439396874305-9a6ba25de6c6?q=80&w=2833&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+          "thumb": "https://images.unsplash.com/photo-1439396874305-9a6ba25de6c6?q=80&w=2833&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
         }
       }
     ]
@@ -303,36 +303,36 @@ export const categoriesImages = [
       {
         
         "urls": {
-          "regular": "https://storage.googleapis.com/brandbird/magicpattern/wallpapers/magic-pattern-geometric-1636044782020.png",
-          "thumb": "https://storage.googleapis.com/brandbird/magicpattern/wallpapers/magic-pattern-geometric-1636044782020.png"
+          "regular": "https://images.unsplash.com/photo-1550537687-c91072c4792d?q=80&w=2787&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+          "thumb": "https://images.unsplash.com/photo-1550537687-c91072c4792d?q=80&w=400&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
         }
       },
       {
        
         "urls": {
-          "regular": "https://storage.googleapis.com/brandbird/magicpattern/wallpapers/magic-pattern-geometric-1636044797673.png",
-          "thumb": "https://storage.googleapis.com/brandbird/magicpattern/wallpapers/magic-pattern-geometric-1636044797673.png"
+          "regular": "https://images.unsplash.com/photo-1636024523500-b1b7ab411ccb?q=80&w=2874&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+          "thumb": "https://images.unsplash.com/photo-1636024523500-b1b7ab411ccb?q=80&w=2874&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D "
         }
       },
       {
        
         "urls": {
-          "regular": "https://storage.googleapis.com/brandbird/magicpattern/wallpapers/magic-pattern-geometric-1636044768859.png",
-          "thumb": "https://storage.googleapis.com/brandbird/magicpattern/wallpapers/magic-pattern-geometric-1636044768859.png"
+          "regular": "https://images.unsplash.com/photo-1632494425431-e8b9bc198390?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+          "thumb": "https://images.unsplash.com/photo-1632494425431-e8b9bc198390?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
         }
       },
       {
         
         "urls": {
-          "regular": "https://storage.googleapis.com/brandbird/magicpattern/wallpapers/magic-pattern-geometric-1636044786321.png",
-          "thumb": "https://storage.googleapis.com/brandbird/magicpattern/wallpapers/magic-pattern-geometric-1636044786321.png"
+          "regular": "https://images.unsplash.com/photo-1517196084897-498e0abd7c2d?q=80&w=2787&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+          "thumb": "https://images.unsplash.com/photo-1517196084897-498e0abd7c2d?q=80&w=600&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
         }
       },
       {
         
         "urls": {
-          "regular": "https://storage.googleapis.com/brandbird/magicpattern/wallpapers/magic-pattern-geometric-1636044812786.png",
-          "thumb": "https://storage.googleapis.com/brandbird/magicpattern/wallpapers/magic-pattern-geometric-1636044812786.png"
+          "regular": "https://images.unsplash.com/photo-1635434225286-8208e890e784?q=80&w=2304&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+          "thumb": "https://images.unsplash.com/photo-1635434225286-8208e890e784?q=80&w=2304&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
         }
       }
     ]

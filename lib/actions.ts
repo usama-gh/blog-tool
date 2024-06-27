@@ -18,6 +18,10 @@ import { getBlurDataURL } from "@/lib/utils";
 import { createId as cuid } from "@paralleldrive/cuid2";
 import { LeadData, SubscribeData, leadSlide } from "@/types";
 
+export const deleteFileFromBlob = async (urlToDelete: string) => {
+  await del(urlToDelete);
+  return true;
+};
 const nanoid = customAlphabet(
   "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz",
   7,
@@ -438,6 +442,17 @@ export const updatePostMetadata = withPostAuth(
           },
           data: {
             image: url,
+            imageBlurhash: blurhash,
+          },
+        });
+      } else if (key === "unsplashImage") {
+        const blurhash = await getBlurDataURL(value);
+        response = await prisma.post.update({
+          where: {
+            id: post.id,
+          },
+          data: {
+            image: value,
             imageBlurhash: blurhash,
           },
         });

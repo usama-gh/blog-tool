@@ -3,13 +3,23 @@
 import { cn } from "@/lib/utils";
 import { useRef, useState } from "react";
 import { toast } from "sonner";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import UnsplashImageSearch from "../form/unsplash_featuredimage";
 
 export default function Uploader({
   defaultValue,
   name,
+  unsplash,
+  setUnsplashImage,
 }: {
   defaultValue: string | null;
   name: "image" | "logo";
+  unsplash?: boolean;
+  setUnsplashImage?: any;
 }) {
   const aspectRatio = name === "image" ? "aspect-video" : "aspect-square";
 
@@ -19,6 +29,11 @@ export default function Uploader({
   });
 
   const [dragActive, setDragActive] = useState(false);
+
+  const handleImageSelect = async (url: string, id: string) => {
+    setUnsplashImage(url);
+    setData((prev) => ({ ...prev, [name]: url as string }));
+  };
 
   const handleUpload = (file: File | null) => {
     if (file) {
@@ -137,6 +152,35 @@ export default function Uploader({
             handleUpload(file);
           }}
         />
+      </div>
+      <div className="flex flex-row justify-evenly pt-4">
+        {unsplash && (
+          <Popover>
+            <PopoverTrigger>
+              <button
+                type="button"
+                className={
+                  "flex items-center justify-center space-x-2 rounded-md border border-black bg-black px-3 py-1 text-sm text-white transition-all hover:bg-white hover:text-black focus:outline-none dark:border-gray-700 dark:hover:border-gray-200 dark:hover:bg-black dark:hover:text-white dark:active:bg-gray-800"
+                }
+              >
+                <p>Upload from Unsplash</p>
+              </button>
+            </PopoverTrigger>
+            <PopoverContent className="my-4 w-min rounded-xl border-0 shadow-2xl dark:bg-gray-800">
+              <UnsplashImageSearch onSelect={handleImageSelect} />
+            </PopoverContent>
+          </Popover>
+        )}
+
+        <div>
+          <button
+            type="button"
+            className="flex items-center justify-center space-x-2 rounded-md border border-black bg-black px-3 py-1 text-sm text-white transition-all hover:bg-white hover:text-black focus:outline-none dark:border-gray-700 dark:hover:border-gray-200 dark:hover:bg-black dark:hover:text-white dark:active:bg-gray-800"
+            onClick={() => inputRef.current?.click()}
+          >
+            <p>Upload</p>
+          </button>
+        </div>
       </div>
     </div>
   );
