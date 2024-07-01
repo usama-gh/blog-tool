@@ -1,6 +1,8 @@
+// Subscibers.jsx
 import { getSession } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import Subscribers from "@/components/subscribers";
+import SettingsModal from "./modal"; 
 
 async function Subscibers({ params }: { params: { id: string } }) {
   const session = await getSession();
@@ -19,6 +21,7 @@ async function Subscibers({ params }: { params: { id: string } }) {
             List of people who are subscribed to your posts
           </p>
         </div>
+        <SettingsModal /> 
       </div>
 
       <Subscribers siteId={params.id} />

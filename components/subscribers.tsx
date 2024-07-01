@@ -4,6 +4,7 @@ import prisma from "@/lib/prisma";
 import Image from "next/image";
 import LeadCard from "./lead-card";
 import DownloadSubscibers from "./download-subscribers";
+import { Resend } from 'resend';
 
 async function Subscribers({
   siteId,
@@ -74,7 +75,7 @@ async function Subscribers({
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
-                  {subscribers.map((subscriber, index) => (
+                  {subscribers.map((subscriber: any, index: any) => (
                     // @ts-ignore
                     <tr key={subscriber.id}>
                       <td className="whitespace-nowrap px-6 py-4 text-sm font-medium text-gray-800 dark:text-gray-300">
