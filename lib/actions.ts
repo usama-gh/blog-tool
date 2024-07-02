@@ -1,9 +1,14 @@
 "use server";
 
 import prisma from "@/lib/prisma";
-import { Lead, Post, Site } from "@prisma/client";
+import { Integration, Lead, Post, Site } from "@prisma/client";
 import { revalidateTag } from "next/cache";
-import { withLeadAuth, withPostAuth, withSiteAuth } from "./auth";
+import {
+  withIntegrationAuth,
+  withLeadAuth,
+  withPostAuth,
+  withSiteAuth,
+} from "./auth";
 import { getSession } from "@/lib/auth";
 import {
   addDomainToVercel,
@@ -16,7 +21,7 @@ import { del, put } from "@vercel/blob";
 import { customAlphabet } from "nanoid";
 import { getBlurDataURL } from "@/lib/utils";
 import { createId as cuid } from "@paralleldrive/cuid2";
-import { LeadData, SubscribeData, leadSlide } from "@/types";
+import { IntegrationData, LeadData, SubscribeData, leadSlide } from "@/types";
 
 export const deleteFileFromBlob = async (urlToDelete: string) => {
   await del(urlToDelete);
@@ -937,3 +942,123 @@ export const deleteSiteLead = withLeadAuth(async (_: FormData, lead: Lead) => {
     };
   }
 });
+
+export const createSiteIntegeration = async (data: IntegrationData) => {
+  const session = await getSession();
+  if (!session?.user.id) {
+    return {
+      error: "Not authenticated",
+    };
+  }
+
+  try {
+    // creating site integeration
+    const response = await prisma.integration.create({
+      data: {
+        type: data.type,
+        apiKey: data.apiKey,
+        audienceId: data.audienceId,
+        active: data.active,
+        user: {
+          connect: {
+            id: session.user.id,
+          },
+        },
+        site: {
+          connect: {
+            id: data.siteId,
+          },
+        },
+      },
+    });
+
+    revalidateTag(`${data.siteId}-integrations`);
+
+    return response;
+  } catch (error: any) {
+    if (error.code === "P2002") {
+      return {
+        error: `Error`,
+      };
+    } else {
+      return {
+        error: error.message,
+      };
+    }
+  }
+};
+
+export const updateSiteIntegeration = withIntegrationAuth(
+  async (integration: Integration, data: IntegrationData, key?: string) => {
+    const session = await getSession();
+    if (!session?.user.id) {
+      return {
+        error: "Not authenticated",
+      };
+    }
+
+    try {
+      // updating site integeration
+      const response = await prisma.integration.update({
+        where: {
+          id: integration.id,
+        },
+        data: {
+          type: data.type,
+          apiKey: data.apiKey,
+          audienceId: data.audienceId,
+          active: data.active,
+          user: {
+            connect: {
+              id: session.user.id,
+            },
+          },
+          site: {
+            connect: {
+              id: data.siteId,
+            },
+          },
+        },
+      });
+
+      revalidateTag(`${data.siteId}-integrations`);
+      return response;
+    } catch (error: any) {
+      return {
+        error: error.message,
+      };
+    }
+  },
+);
+
+export const deleteSiteIntegeration = withIntegrationAuth(
+  async (
+    integration: Integration,
+    data: IntegrationData | null,
+    key?: string,
+  ) => {
+    const session = await getSession();
+    if (!session?.user.id) {
+      return {
+        error: "Not authenticated",
+      };
+    }
+    const siteId = integration.siteId;
+
+    try {
+      // updating site integeration
+      const response = await prisma.integration.delete({
+        where: {
+          id: integration.id,
+        },
+      });
+
+      revalidateTag(`${siteId}-integrations`);
+      return response;
+    } catch (error: any) {
+      return {
+        error: error.message,
+      };
+    }
+  },
+);

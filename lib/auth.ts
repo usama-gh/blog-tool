@@ -3,7 +3,7 @@ import GitHubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import prisma from "@/lib/prisma";
-import { LeadData } from "@/types";
+import { IntegrationData, LeadData } from "@/types";
 
 const VERCEL_DEPLOYMENT = !!process.env.VERCEL_URL;
 
@@ -163,5 +163,32 @@ export function withLeadAuth(action: any) {
     }
 
     return action(data, lead, key);
+  };
+}
+
+export function withIntegrationAuth(action: any) {
+  return async (
+    id: string,
+    data: IntegrationData | null,
+    key?: string | null,
+  ) => {
+    const session = await getSession();
+    if (!session?.user.id) {
+      return {
+        error: "Not authenticated",
+      };
+    }
+    const integration = await prisma.integration.findUnique({
+      where: {
+        id,
+      },
+    });
+    if (!integration || integration.userId !== session.user.id) {
+      return {
+        error: "Integration not found",
+      };
+    }
+
+    return action(integration, data, key);
   };
 }
