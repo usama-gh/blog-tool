@@ -28,6 +28,8 @@ import {
   SubscribeData,
   leadSlide,
 } from "@/types";
+import { getIntegrationsForSite } from "./fetchers";
+import { Resend } from "resend";
 
 export const deleteFileFromBlob = async (urlToDelete: string) => {
   await del(urlToDelete);
@@ -1068,3 +1070,54 @@ export const deleteSiteIntegeration = withIntegrationAuth(
     }
   },
 );
+
+export const addSubscriberToIntegrations = async (
+  searchKey: string,
+  key: string,
+  data: AddIntegrationData,
+) => {
+  try {
+    let integrations: Integration[] | [] = [];
+
+    if (key === "domain") {
+      const subdomain = searchKey.endsWith(
+        `.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`,
+      )
+        ? searchKey.replace(`.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`, "")
+        : null;
+
+      integrations = await prisma.integration.findMany({
+        where: {
+          site: subdomain ? { subdomain } : { customDomain: searchKey },
+          active: true,
+        },
+      });
+    } else if (key === "siteId") {
+      integrations = await prisma.integration.findMany({
+        where: {
+          site: { id: searchKey },
+          active: true,
+        },
+      });
+    }
+
+    const resendIntegration = integrations.find(
+      (integration) => integration.type === "resend" && integration.active,
+    );
+
+    if (resendIntegration) {
+      const resend = new Resend(resendIntegration.apiKey as string);
+      await resend.contacts.create({
+        ...data,
+        unsubscribed: false,
+        audienceId: resendIntegration.audienceId as string,
+      });
+    }
+
+    return true;
+  } catch (error: any) {
+    return {
+      error: error.message,
+    };
+  }
+};

@@ -27,11 +27,10 @@ export default async function SiteHomePage({
 }: {
   params: { domain: string };
 }) {
-  const [data, posts, leads, integrations] = await Promise.all([
+  const [data, posts, leads] = await Promise.all([
     getSiteData(params.domain),
     getPostsForSite(params.domain),
     getLeadsForSite(params.domain),
-    getIntegrationsForSite(params.domain),
   ]);
   const imageSrc = isDefaultImage(posts[0].image) ? "" : posts[0].image || "";
 
@@ -95,7 +94,8 @@ export default async function SiteHomePage({
               <Subscribe
                 siteId={data.id}
                 view="homepage"
-                integrations={integrations}
+                searchKey={params.domain}
+                type="domain"
               />
             </div>
 
@@ -351,7 +351,8 @@ export default async function SiteHomePage({
           <Subscribe
             siteId={data.id}
             view="homepage"
-            integrations={integrations}
+            searchKey={params.domain}
+            type="domain"
           />
         </div>
       </div>

@@ -216,102 +216,76 @@ const Carousel = ({ data, siteData, lead }: any) => {
 
               {/* showing adjacent posts */}
               {data.adjacentPosts.length > 0 && (
-                <div className="bg-slate-200 dark:bg-gray-900 scrollbar-thumb-rounded-full scrollbar-track-rounded-full relative mx-auto h-screen  w-9/12 min-w-full overflow-y-auto pb-[120px] pt-40 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-gray-200 dark:scrollbar-thumb-gray-800">
+                <div className="scrollbar-thumb-rounded-full scrollbar-track-rounded-full relative mx-auto h-screen w-9/12 min-w-full  overflow-y-auto bg-slate-200 pb-[120px] pt-40 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-gray-200 dark:bg-gray-900 dark:scrollbar-thumb-gray-800">
+                  <p className="mx-auto mb-10 mb-8 max-w-2xl pb-8 text-center text-4xl font-bold tracking-tight  text-slate-800 dark:bg-gray-900 dark:text-gray-400">
+                    Thank you for reading! For more insights & stories, check
+                    out my other posts.
+                  </p>
 
-<p className="text-center text-4xl max-w-2xl mb-10 pb-8 mx-auto font-bold mb-8 tracking-tight  text-slate-800 dark:bg-gray-900 dark:text-gray-400">
-Thank you for reading! For more insights & stories, check out my other posts.
-                          </p> 
+                  <section className="body-font text-gray-600">
+                    <div className="container mx-auto flex max-w-6xl flex-wrap items-start  gap-x-4 lg:flex-nowrap">
+                      <div className="mb-10  pb-10 md:mb-0 md:w-4/12">
+                        <div className=" flex flex-col gap-y-4">
+                          <div className="flex flex-col items-start justify-start rounded-3xl bg-white p-5">
+                            <div className="h-[70px] w-[70px] overflow-hidden rounded-full">
+                              {siteData?.logo ? (
+                                <BlurImage
+                                  alt={siteData?.logo ?? "User Avatar"}
+                                  width={70}
+                                  height={70}
+                                  className="h-full w-full scale-100 rounded-full object-cover blur-0 duration-700 ease-in-out"
+                                  src={
+                                    siteData?.logo ??
+                                    "https://public.blob.vercel-storage.com/eEZHAoPTOBSYGBE3/JRajRyC-PhBHEinQkupt02jqfKacBVHLWJq7Iy.png"
+                                  }
+                                />
+                              ) : (
+                                <div className="absolute flex h-full w-full select-none items-center justify-center bg-stone-100 text-4xl text-stone-500">
+                                  ?
+                                </div>
+                              )}
+                            </div>
+                            <div className="mt-2 font-semibold tracking-wide text-slate-700">
+                              {siteData?.name}
+                            </div>
+                            <div className="text-left text-sm text-gray-800 ">
+                              {parse(siteData?.bio)}
+                            </div>
 
-<section className="text-gray-600 body-font">
-
-
-  <div className="container max-w-6xl flex gap-x-4 flex-wrap lg:flex-nowrap  mx-auto items-start">
-    <div className="md:w-4/12  mb-10 md:mb-0 pb-10">
-      
-        
-                          
-                <div className=" flex flex-col gap-y-4">
-
-                <div className="p-5 bg-white rounded-3xl flex flex-col items-start justify-start">
-                          
-                        
-
-                          <div className="h-[70px] w-[70px] overflow-hidden rounded-full">
-                            {siteData?.logo ? (
-                              <BlurImage
-                                alt={siteData?.logo ?? "User Avatar"}
-                                width={70}
-                                height={70}
-                                className="h-full w-full scale-100 rounded-full object-cover blur-0 duration-700 ease-in-out"
-                                src={
-                                  siteData?.logo ??
-                                  "https://public.blob.vercel-storage.com/eEZHAoPTOBSYGBE3/JRajRyC-PhBHEinQkupt02jqfKacBVHLWJq7Iy.png"
-                                }
-                              />
-                            ) : (
-                              <div className="absolute flex h-full w-full select-none items-center justify-center bg-stone-100 text-4xl text-stone-500">
-                                ?
-                              </div>
-                            )}
+                            <div className="my-2 flex w-full justify-start">
+                              <SocialLinks linksData={siteData.links} />
+                            </div>
                           </div>
-                          <div className="mt-2 text-slate-700 font-semibold tracking-wide">
-                            {siteData?.name}
+
+                          <div className="rounded-3xl bg-teal-100 py-6 text-left dark:bg-teal-700">
+                            <Subscribe
+                              siteId={data.siteId}
+                              view="homepage"
+                              searchKey={siteData.id}
+                              type="siteId"
+                            />
                           </div>
-                          <div className="text-left text-sm text-gray-800 ">
-                            {parse(siteData?.bio)}
-                          </div>
-                          
-                          <div className="flex justify-start w-full my-2">
-                          <SocialLinks linksData={siteData.links} />
-                          </div>
-                         
                         </div>
-
-
-
-                  <div className="rounded-3xl bg-teal-100 dark:bg-teal-700 py-6 text-left">
-                  <Subscribe siteId={data.siteId} view="homepage" />
-                  </div>
-
-
-                </div>
-   
-
-
-    </div>
-    <div className="flex flex-col md:w-8/12 ">
-
-
-      <div className="relative rounded-2xl  text-slate-400  dark:text-gray-400">
-                    {data.adjacentPosts && (
-                      <>
-                        <div className="relative grid gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2">
-                          {data.adjacentPosts
-                            .slice(0, 4)
-                            .map((value: any, index: number) => (
-                              <div key={index}>
-                                <BlogCard key={index} data={value} />
+                      </div>
+                      <div className="flex flex-col md:w-8/12 ">
+                        <div className="relative rounded-2xl  text-slate-400  dark:text-gray-400">
+                          {data.adjacentPosts && (
+                            <>
+                              <div className="relative grid gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2">
+                                {data.adjacentPosts
+                                  .slice(0, 4)
+                                  .map((value: any, index: number) => (
+                                    <div key={index}>
+                                      <BlogCard key={index} data={value} />
+                                    </div>
+                                  ))}
                               </div>
-                            ))}
+                            </>
+                          )}
                         </div>
-                       
-                      </>
-                    )}
-                  </div>
-
-    
-    </div>
-  </div>
-</section>
-
-
-
-
-                 
-               
-                
-
-              
+                      </div>
+                    </div>
+                  </section>
                 </div>
               )}
             </div>

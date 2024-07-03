@@ -10,15 +10,18 @@ import { useState } from "react";
 import { useFormStatus } from "react-dom";
 import { toast } from "sonner";
 import { Integration } from "@prisma/client";
+import { addSubscriberToIntegrations } from "@/lib/actions";
 
 export const Subscribe = ({
   siteId,
   view,
-  integrations,
+  searchKey,
+  type,
 }: {
   siteId: string;
   view: string;
-  integrations?: Integration[];
+  searchKey: string;
+  type: string;
 }) => {
   const [data, setData] = useState({
     firstName: "",
@@ -30,42 +33,42 @@ export const Subscribe = ({
 
   const [isSubscribed, setIsSubscribed] = useState(false); // New state variable
 
+  const handleSubscribeClick = () => {
+    if (!data.email) {
+      toast.error("Please enter your email address");
+      return;
+    }
+    setShowName(true);
+  };
+
   const addToSubscribe = async (e: any) => {
     e.preventDefault();
 
-    const resendIntegration = integrations?.find(
-      (integration) => integration.type === "resend" && integration.active,
-    );
+    const res = await fetch("/api/subscribe", {
+      method: "POST",
+      body: JSON.stringify({
+        ...data,
+        siteId,
+      }),
+    });
 
-    if (resendIntegration) {
-      const res = await fetch("/api/resend", {
-        method: "POST",
-        body: JSON.stringify({
-          ...data,
-        }),
+    const response: SubscribeReponse = await res.json();
+
+    if (!response.success) {
+      toast.error(response.message);
+    } else {
+      // send subscription data to bloggers integrations
+      addSubscriberToIntegrations(searchKey, type, data);
+
+      toast.success(response.message);
+      setData({
+        firstName: "",
+        lastName: "",
+        email: "",
       });
-
-      const response: SubscribeReponse = await res.json();
-      console.log(response);
+      setShowName(false);
+      setIsSubscribed(true);
     }
-
-    // const res = await fetch("/api/subscribe", {
-    //   method: "POST",
-    //   body: JSON.stringify({
-    //     ...data,
-    //     siteId,
-    //   }),
-    // });
-
-    // const response: SubscribeReponse = await res.json();
-
-    // if (!response.success) {
-    //   toast.error(response.message);
-    // } else {
-    //   toast.success(response.message);
-    //   setEmail("");
-    //   setIsSubscribed(true);
-    // }
   };
 
   return (
@@ -106,7 +109,7 @@ export const Subscribe = ({
                     view={view}
                     type="button"
                     btnText="Subscribe"
-                    onClick={() => setShowName(true)}
+                    onClick={handleSubscribeClick}
                   />
                 </div>
                 {/* Additional form fields */}
@@ -157,7 +160,7 @@ export const Subscribe = ({
                     view={view}
                     type="button"
                     btnText="Subscribe"
-                    onClick={() => setShowName(true)}
+                    onClick={handleSubscribeClick}
                   />
                 </div>
 
