@@ -36,6 +36,12 @@ interface IntegrationData {
   active: boolean;
 }
 
+interface AddIntegrationData {
+  firstName: string;
+  lastName: string;
+  email: string;
+}
+
 interface SubscribeData {
   siteId: string;
   email: string;

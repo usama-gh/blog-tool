@@ -21,7 +21,13 @@ import { del, put } from "@vercel/blob";
 import { customAlphabet } from "nanoid";
 import { getBlurDataURL } from "@/lib/utils";
 import { createId as cuid } from "@paralleldrive/cuid2";
-import { IntegrationData, LeadData, SubscribeData, leadSlide } from "@/types";
+import {
+  AddIntegrationData,
+  IntegrationData,
+  LeadData,
+  SubscribeData,
+  leadSlide,
+} from "@/types";
 
 export const deleteFileFromBlob = async (urlToDelete: string) => {
   await del(urlToDelete);

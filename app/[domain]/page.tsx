@@ -9,7 +9,12 @@ import {
   r2Asset,
   toDateString,
 } from "@/lib/utils";
-import { getLeadsForSite, getPostsForSite, getSiteData } from "@/lib/fetchers";
+import {
+  getIntegrationsForSite,
+  getLeadsForSite,
+  getPostsForSite,
+  getSiteData,
+} from "@/lib/fetchers";
 import Image from "next/image";
 import SocialLinks from "@/components/social-links";
 import { Subscribe } from "@/components/subscribe";
@@ -22,10 +27,11 @@ export default async function SiteHomePage({
 }: {
   params: { domain: string };
 }) {
-  const [data, posts, leads] = await Promise.all([
+  const [data, posts, leads, integrations] = await Promise.all([
     getSiteData(params.domain),
     getPostsForSite(params.domain),
     getLeadsForSite(params.domain),
+    getIntegrationsForSite(params.domain),
   ]);
   const imageSrc = isDefaultImage(posts[0].image) ? "" : posts[0].image || "";
 
@@ -86,7 +92,11 @@ export default async function SiteHomePage({
                 />
               </div>
 
-              <Subscribe siteId={data.id} view="homepage" />
+              <Subscribe
+                siteId={data.id}
+                view="homepage"
+                integrations={integrations}
+              />
             </div>
 
             <div>
@@ -140,7 +150,7 @@ export default async function SiteHomePage({
               <div className="">
                 <div>
                   <Link href={`/${posts[0].slug}`}>
-                    <div className="ease relative mb-5  h-[30rem]   overflow-hidden rounded-3xl p-6	 transition-all  bg-slate-100 hover:bg-slate-200 dark:bg-gray-700 hover:dark:bg-gray-600  md:w-full">
+                    <div className="ease relative mb-5  h-[30rem]   overflow-hidden rounded-3xl bg-slate-100	 p-6  transition-all hover:bg-slate-200 dark:bg-gray-700 hover:dark:bg-gray-600  md:w-full">
                       {!isDefaultImage(posts[0].image) && (
                         <Image
                           src={imageSrc}
@@ -157,12 +167,11 @@ export default async function SiteHomePage({
                         <div className="absolute left-0 top-0 z-20 h-full w-full bg-gradient-to-t from-black  via-[#0000008c] to-transparent"></div>
                       )}
 
-                      <div className="flex h-full items-end justify-between flex-col">
-
+                      <div className="flex h-full flex-col items-end justify-between">
                         <div>
-                        <button
+                          <button
                             className={cn(
-                              "rounded-full border px-4 py-1 text-center text-md",
+                              "text-md rounded-full border px-4 py-1 text-center",
                               isDefaultImage(posts[0].image)
                                 ? "border-slate-500 text-slate-500 hover:border-slate-700 hover:text-slate-600 dark:border-gray-400 dark:bg-transparent dark:text-gray-400 dark:hover:border-gray-300 dark:hover:text-gray-300"
                                 : "border-white bg-white text-black",
@@ -182,7 +191,7 @@ export default async function SiteHomePage({
                           </p>
                           <h2
                             className={cn(
-                              "text-2xl font-semibold tracking-tight max-w-4xl text-slate-600  dark:text-white md:text-3xl",
+                              "max-w-4xl text-2xl font-semibold tracking-tight text-slate-600  dark:text-white md:text-3xl",
                               !isDefaultImage(posts[0].image) && "text-white",
                             )}
                           >
@@ -190,13 +199,12 @@ export default async function SiteHomePage({
                           </h2>
                           <p
                             className={cn(
-                              "line-clamp-3 w-full text-lg max-w-2xl leading-6 text-slate-500 dark:text-gray-300",
+                              "line-clamp-3 w-full max-w-2xl text-lg leading-6 text-slate-500 dark:text-gray-300",
                               !isDefaultImage(posts[0].image) && "text-white",
                             )}
                           >
                             {posts[0].description}
                           </p>
-                         
                         </div>
                       </div>
                     </div>
@@ -340,7 +348,11 @@ export default async function SiteHomePage({
           <h2 className="mb-2 text-3xl font-bold text-teal-700 dark:text-teal-50">
             Subscribe to my newsletter
           </h2>
-          <Subscribe siteId={data.id} view="homepage" />
+          <Subscribe
+            siteId={data.id}
+            view="homepage"
+            integrations={integrations}
+          />
         </div>
       </div>
     </>
