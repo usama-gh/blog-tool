@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 import { useParams, useRouter } from "next/navigation";
 // ts-ignore because experimental_useFormStatus is not in the types
 // @ts-ignore
-import { experimental_useFormStatus as useFormStatus } from "react-dom";
+import { useFormStatus } from "react-dom";
 import { toast } from "sonner";
 import { deletePost } from "@/lib/actions";
 

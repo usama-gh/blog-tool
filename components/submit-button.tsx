@@ -1,6 +1,6 @@
 // ts-ignore because experimental_useFormStatus is not in the types
 // @ts-ignore
-import { experimental_useFormStatus as useFormStatus } from "react-dom";
+import { useFormStatus } from "react-dom";
 import { cn } from "@/lib/utils";
 import LoadingDots from "@/components/icons/loading-dots";
 
