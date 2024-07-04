@@ -19,6 +19,7 @@ export const LeadDownload = ({
   const [loading, setLoading] = useState<boolean>(false);
 
   const [data, setData] = useState({
+    name: "",
     firstName: "",
     lastName: "",
     email: "",
@@ -45,7 +46,7 @@ export const LeadDownload = ({
       const res = await fetch("/api/leads", {
         method: "POST",
         body: JSON.stringify({
-          email,
+          email: data.email,
           postId: postId,
           leadId: lead.id,
         }),
@@ -62,6 +63,7 @@ export const LeadDownload = ({
       }
 
       setData({
+        name: "",
         firstName: "",
         lastName: "",
         email: "",
@@ -72,6 +74,15 @@ export const LeadDownload = ({
       toast.error(error.message);
     }
     setLoading(false);
+  };
+
+  const handleNameChange = (e: { target: { value: any } }) => {
+    const fullName = e.target.value;
+    const nameParts = fullName.split(" ");
+    const firstName = nameParts[0];
+    const lastName = nameParts.slice(1).join(" "); // Combine remaining parts as last name
+
+    setData({ ...data, name: fullName, firstName, lastName });
   };
 
   return (
@@ -110,44 +121,34 @@ export const LeadDownload = ({
             setLoading(true);
             handleDownload(e);
           }}
-          className="mt-5 flex items-center gap-3"
         >
-          <input
-            name="name"
-            type="email"
-            placeholder="Enter your email"
-            // onChange={(e) => setEmail(e.target.value)}
-            value={data.email}
-            onChange={(e) => setData({ ...data, email: e.target.value })}
-            required
-            className="w-full flex-1 rounded-md border border-slate-200 bg-slate-50 px-4 py-2 text-sm text-slate-600 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-blue-400 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-300 dark:focus:ring-white"
-          />
-          <DownloadLeadButton
-            type="button"
-            loading={loading}
-            btnText={lead.buttonCta as string}
-            onClick={handleSubscribeClick}
-          />
+          <div className="mt-5 flex items-center gap-3">
+            <input
+              name="name"
+              type="email"
+              placeholder="Enter your email"
+              // onChange={(e) => setEmail(e.target.value)}
+              value={data.email}
+              onChange={(e) => setData({ ...data, email: e.target.value })}
+              required
+              className="w-full flex-1 rounded-md border border-slate-200 bg-slate-50 px-4 py-2 text-sm text-slate-600 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-blue-400 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-300 dark:focus:ring-white"
+            />
+            <DownloadLeadButton
+              type="button"
+              loading={loading}
+              btnText={lead.buttonCta as string}
+              onClick={handleSubscribeClick}
+            />
+          </div>
 
           {showName && (
             <div className="mt-3 flex flex-col gap-4">
               <input
-                name="firstName"
+                name="name"
                 type="text"
-                placeholder="Enter your first name"
-                value={data.firstName}
-                onChange={(e) =>
-                  setData({ ...data, firstName: e.target.value })
-                }
-                required
-                className="w-full flex-1 rounded-md border border-slate-200 bg-slate-50 px-4 py-2 text-sm text-slate-600 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-blue-400 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-300 dark:focus:ring-white"
-              />
-              <input
-                name="lastName"
-                type="text"
-                placeholder="Enter your last name"
-                value={data.lastName}
-                onChange={(e) => setData({ ...data, lastName: e.target.value })}
+                placeholder="Enter your full name"
+                value={data.name}
+                onChange={handleNameChange}
                 required
                 className="w-full flex-1 rounded-md border border-slate-200 bg-slate-50 px-4 py-2 text-sm text-slate-600 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-blue-400 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-300 dark:focus:ring-white"
               />

@@ -24,17 +24,15 @@ export const Subscribe = ({
   type: string;
 }) => {
   const [data, setData] = useState({
+    name: "",
     firstName: "",
     lastName: "",
     email: "",
   });
 
-  
   const [showName, setShowName] = useState(false);
 
   const [isSubscribed, setIsSubscribed] = useState(false); // New state variable
-
-
 
   const handleSubscribeClick = () => {
     if (!data.email) {
@@ -46,6 +44,9 @@ export const Subscribe = ({
 
   const addToSubscribe = async (e: any) => {
     e.preventDefault();
+
+    // send subscription data to bloggers integrations
+    addSubscriberToIntegrations(searchKey, type, data);
 
     const res = await fetch("/api/subscribe", {
       method: "POST",
@@ -60,11 +61,9 @@ export const Subscribe = ({
     if (!response.success) {
       toast.error(response.message);
     } else {
-      // send subscription data to bloggers integrations
-      addSubscriberToIntegrations(searchKey, type, data);
-
       toast.success(response.message);
       setData({
+        name: "",
         firstName: "",
         lastName: "",
         email: "",
@@ -96,29 +95,28 @@ export const Subscribe = ({
               </p>
 
               <form onSubmit={addToSubscribe}>
-              {!showName && (
-                <div className="mt-3 flex  gap-y-2">
-                  <input
-                    name="name"
-                    type="email"
-                    placeholder="Enter your email"
-                    value={data.email}
-                    onChange={(e) =>
-                      setData({ ...data, email: e.target.value })
-                    }
-                    required
-                    className="w-full flex-1 rounded-l-md border-0 bg-white text-xs"
-                  />
-                   
-                  <SubscribeButton
-                    view={view}
-                    type="button"
-                    btnText="Subscribe"
-                    onClick={handleSubscribeClick}
-                  />
-               
-                </div>
-              )}
+                {!showName && (
+                  <div className="mt-3 flex  gap-y-2">
+                    <input
+                      name="name"
+                      type="email"
+                      placeholder="Enter your email"
+                      value={data.email}
+                      onChange={(e) =>
+                        setData({ ...data, email: e.target.value })
+                      }
+                      required
+                      className="w-full flex-1 rounded-l-md border-0 bg-white text-xs"
+                    />
+
+                    <SubscribeButton
+                      view={view}
+                      type="button"
+                      btnText="Subscribe"
+                      onClick={handleSubscribeClick}
+                    />
+                  </div>
+                )}
                 {/* Additional form fields */}
                 {showName && (
                   <NameAttributesInputs
@@ -194,27 +192,28 @@ function NameAttributesInputs({
   view,
 }: {
   data: {
+    name: string;
     firstName: string;
     lastName: string;
   };
   setData: any;
   view: string;
 }) {
-  const handleNameChange = (e: { target: { value: any; }; }) => {
+  const handleNameChange = (e: { target: { value: any } }) => {
     const fullName = e.target.value;
-    const nameParts = fullName.split(' ');
+    const nameParts = fullName.split(" ");
     const firstName = nameParts[0];
-    const lastName = nameParts.slice(1).join(' '); // Combine remaining parts as last name
+    const lastName = nameParts.slice(1).join(" "); // Combine remaining parts as last name
 
-    setData({ firstName: fullName, lastName });
+    setData({ ...data, name: fullName, firstName, lastName });
   };
   return (
     <div className="mt-3 flex gap-y-2">
       <input
-        name="firstName"
+        name="name"
         type="text"
         placeholder="Your Full Name"
-        value={data.firstName}
+        value={data.name}
         onChange={handleNameChange}
         required
         className="w-full flex-1 rounded-l-md border-0 bg-white text-xs"
