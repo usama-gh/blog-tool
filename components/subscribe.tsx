@@ -29,9 +29,12 @@ export const Subscribe = ({
     email: "",
   });
 
+  
   const [showName, setShowName] = useState(false);
 
   const [isSubscribed, setIsSubscribed] = useState(false); // New state variable
+
+
 
   const handleSubscribeClick = () => {
     if (!data.email) {
@@ -93,7 +96,8 @@ export const Subscribe = ({
               </p>
 
               <form onSubmit={addToSubscribe}>
-                <div className="mt-5 flex items-center">
+              {!showName && (
+                <div className="mt-3 flex  gap-y-2">
                   <input
                     name="name"
                     type="email"
@@ -105,13 +109,16 @@ export const Subscribe = ({
                     required
                     className="w-full flex-1 rounded-l-md border-0 bg-white text-xs"
                   />
+                   
                   <SubscribeButton
                     view={view}
                     type="button"
                     btnText="Subscribe"
                     onClick={handleSubscribeClick}
                   />
+               
                 </div>
+              )}
                 {/* Additional form fields */}
                 {showName && (
                   <NameAttributesInputs
@@ -193,30 +200,38 @@ function NameAttributesInputs({
   setData: any;
   view: string;
 }) {
+  const handleNameChange = (e: { target: { value: any; }; }) => {
+    const fullName = e.target.value;
+    const nameParts = fullName.split(' ');
+    const firstName = nameParts[0];
+    const lastName = nameParts.slice(1).join(' '); // Combine remaining parts as last name
+
+    setData({ firstName: fullName, lastName });
+  };
   return (
-    <div className="mt-3 flex flex-col gap-4">
+    <div className="mt-3 flex gap-y-2">
       <input
         name="firstName"
         type="text"
-        placeholder="Enter your first name"
+        placeholder="Your Full Name"
         value={data.firstName}
-        onChange={(e) => setData({ ...data, firstName: e.target.value })}
+        onChange={handleNameChange}
         required
-        className="w-full flex-1 rounded-md border border-slate-200 bg-slate-50 px-4 py-2 text-sm text-slate-600 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-blue-400 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-300 dark:focus:ring-white"
+        className="w-full flex-1 rounded-l-md border-0 bg-white text-xs"
       />
-      <input
+      {/* <input
         name="lastName"
         type="text"
         placeholder="Enter your last name"
         value={data.lastName}
         onChange={(e) => setData({ ...data, lastName: e.target.value })}
         required
-        className="w-full flex-1 rounded-md border border-slate-200 bg-slate-50 px-4 py-2 text-sm text-slate-600 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-blue-400 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-300 dark:focus:ring-white"
-      />
+        className="w-full flex-1 rounded-md border-0 bg-white text-xs"
+      /> */}
       <SubscribeButton
         view={view}
         type="submit"
-        btnText="Submit"
+        btnText="Confirm"
         roundedLeft={false}
       />
     </div>
@@ -245,7 +260,7 @@ function SubscribeButton({
           className={cn(
             "flex h-8 w-auto items-center justify-center space-x-2  px-4 py-1 text-xs text-white transition-all focus:outline-none",
             pending ? "cursor-not-allowed " : "border-0 bg-teal-600",
-            roundedLeft ? "rounded-r-md" : "rounded-md",
+            roundedLeft ? "rounded-r-md" : "rounded-r-md",
           )}
           disabled={pending}
           onClick={onClick}
