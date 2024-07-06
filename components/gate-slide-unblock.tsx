@@ -102,15 +102,17 @@ export const UnblockSlides = ({
                 handleSubscribe(e);
               }}
             >
+
+{!showName && (
               <div className="flex items-center gap-3">
                 <input
                   name="email"
                   type="email"
-                  placeholder="Your email"
+                  placeholder="Your Email"
                   value={data.email}
                   onChange={(e) => setData({ ...data, email: e.target.value })}
                   required
-                  className="text-md w-full flex-1 rounded-md border border-slate-200 bg-slate-50 px-4 py-2 text-slate-600 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-blue-400 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-300 dark:focus:ring-white lg:text-2xl"
+                  className="text-base w-full flex-1 rounded-md border border-slate-200 bg-slate-50 px-4 py-2 text-slate-600 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-blue-400 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-300 dark:focus:ring-white lg:text-md"
                 />
                 <Button
                   type="button"
@@ -119,8 +121,9 @@ export const UnblockSlides = ({
                   onClick={handleSubscribeClick}
                 />
               </div>
+)}
               {showName && (
-                <div className="mt-2 flex items-center gap-3">
+                <div className="flex items-center gap-3">
                   <input
                     name="name"
                     type="text"
@@ -128,9 +131,9 @@ export const UnblockSlides = ({
                     value={data.name}
                     onChange={handleNameChange}
                     required
-                    className="text-md w-full flex-1 rounded-md border border-slate-200 bg-slate-50 px-4 py-2 text-slate-600 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-blue-400 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-300 dark:focus:ring-white lg:text-2xl"
+                    className="text-base w-full flex-1 rounded-md border border-slate-200 bg-slate-50 px-4 py-2 text-slate-600 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-blue-400 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-300 dark:focus:ring-white lg:text-md"
                   />
-                  <Button type="submit" loading={loading} btnText="Subscribe" />
+                  <Button type="submit" loading={loading} btnText="Unlock" />
                 </div>
               )}
             </form>
@@ -166,7 +169,7 @@ function Button({
       <button
         type={type}
         disabled={loading}
-        className="inline-flex items-center gap-x-2 rounded-lg  bg-gradient-to-br	 from-blue-600 to-blue-400 px-6 py-4 text-sm font-semibold uppercase tracking-wide text-white shadow-xl transition-all hover:shadow-blue-800/60 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
+        className="flex items-center justify-center space-x-2 rounded-lg px-5 py-2 text-xs font-regular text-white shadow-lg shadow-blue-800/10 transition-all hover:shadow-blue-800/20 focus:outline-none lg:text-lg bg-gradient-to-br from-blue-600 to-blue-400"
         onClick={onClick}
       >
         {loading ? (

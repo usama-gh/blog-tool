@@ -68,7 +68,7 @@ export default async function Stats() {
           </div>
         </div>
 
-        <div className="flex flex-col space-y-6">
+        <div className="flex flex-col gap-y-6">
           <BlogStats blogs={blogs} />
         </div>
       </div>

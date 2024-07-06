@@ -106,7 +106,7 @@ export const Subscribe = ({
                         setData({ ...data, email: e.target.value })
                       }
                       required
-                      className="w-full flex-1 rounded-l-md border-0 bg-white text-xs"
+                      className="w-full flex-1 rounded-l-md border-0 bg-white text-xs  text-gray-900"
                     />
 
                     <SubscribeButton
@@ -216,7 +216,7 @@ function NameAttributesInputs({
         value={data.name}
         onChange={handleNameChange}
         required
-        className="w-full flex-1 rounded-l-md border-0 bg-white text-xs"
+        className="w-full flex-1 rounded-l-md border-0 bg-white text-xs  text-gray-900"
       />
       {/* <input
         name="lastName"
