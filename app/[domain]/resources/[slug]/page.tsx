@@ -51,7 +51,7 @@ export default async function SiteLeadPage({
     notFound();
   }
 
-  const siteData = await getSiteData(params.domain);
+  const siteData = await getSiteData(domain);
 
   return (
     <>
@@ -120,7 +120,7 @@ export default async function SiteLeadPage({
                   <div className="flex flex-col items-center justify-center gap-4">
                     {lead.thumbnailFile && (
                       <Image
-                      className="rounded-lg"
+                        className="rounded-lg"
                         alt={lead.title}
                         src={r2Asset(lead.thumbnailFile)}
                         width={150}

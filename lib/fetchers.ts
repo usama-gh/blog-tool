@@ -9,6 +9,23 @@ import rehypeRaw from "rehype-raw";
 import { SlideStyle, gateSlide, leadSlide } from "@/types";
 import { styledSlide } from "./utils";
 
+export async function getSiteIntegrations(siteId: string) {
+  return await unstable_cache(
+    async () => {
+      return prisma.integration.findMany({
+        where: {
+          siteId,
+        },
+      });
+    },
+    [`${siteId}-integrations`],
+    {
+      revalidate: 900,
+      tags: [`${siteId}-integrations`],
+    },
+  )();
+}
+
 export async function getSiteData(domain: string) {
   const subdomain = domain.endsWith(`.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`)
     ? domain.replace(`.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`, "")
@@ -85,6 +102,31 @@ export async function getLeadsForSite(domain: string) {
     {
       revalidate: 900,
       tags: [`${site?.id}-leads`],
+    },
+  )();
+}
+
+export async function getIntegrationsForSite(domain: string) {
+  const subdomain = domain.endsWith(`.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`)
+    ? domain.replace(`.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`, "")
+    : null;
+  const site = await prisma.site.findUnique({
+    where: subdomain ? { subdomain } : { customDomain: domain },
+  });
+
+  return await unstable_cache(
+    async () => {
+      return prisma.integration.findMany({
+        where: {
+          site: subdomain ? { subdomain } : { customDomain: domain },
+          active: true,
+        },
+      });
+    },
+    [`${site?.id}-integrations`],
+    {
+      revalidate: 900,
+      tags: [`${site?.id}-integrations`],
     },
   )();
 }

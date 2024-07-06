@@ -5,6 +5,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import LoadingDots from "./icons/loading-dots";
 import { r2Asset } from "@/lib/utils";
+import { addSubscriberToIntegrations } from "@/lib/actions";
 
 export const LeadDownload = ({
   postId,
@@ -17,15 +18,35 @@ export const LeadDownload = ({
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState<boolean>(false);
 
+  const [data, setData] = useState({
+    name: "",
+    firstName: "",
+    lastName: "",
+    email: "",
+  });
+
+  const [showName, setShowName] = useState(false);
+
+  const handleSubscribeClick = () => {
+    if (!data.email) {
+      toast.error("Please enter your email address");
+      return;
+    }
+    setShowName(true);
+  };
+
   const handleDownload = async (e: any) => {
     e.preventDefault();
 
     try {
+      // send subscription data to bloggers integrations
+      addSubscriberToIntegrations(lead.siteId, "siteId", data);
+
       // creating lead collectors
       const res = await fetch("/api/leads", {
         method: "POST",
         body: JSON.stringify({
-          email,
+          email: data.email,
           postId: postId,
           leadId: lead.id,
         }),
@@ -40,12 +61,28 @@ export const LeadDownload = ({
         link.click();
         document.body.removeChild(link);
       }
-      setEmail("");
+
+      setData({
+        name: "",
+        firstName: "",
+        lastName: "",
+        email: "",
+      });
+      setShowName(false);
       setIsCollected(true);
     } catch (error: any) {
       toast.error(error.message);
     }
     setLoading(false);
+  };
+
+  const handleNameChange = (e: { target: { value: any } }) => {
+    const fullName = e.target.value;
+    const nameParts = fullName.split(" ");
+    const firstName = nameParts[0];
+    const lastName = nameParts.slice(1).join(" "); // Combine remaining parts as last name
+
+    setData({ ...data, name: fullName, firstName, lastName });
   };
 
   return (
@@ -84,20 +121,44 @@ export const LeadDownload = ({
             setLoading(true);
             handleDownload(e);
           }}
-          className="mt-5 flex items-center gap-3"
         >
-          <input
-            name="name"
-            type="email"
-            placeholder="Enter your email"
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            className="w-full flex-1 rounded-md border border-slate-200 bg-slate-50 px-4 py-2 text-sm text-slate-600 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-blue-400 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-300 dark:focus:ring-white"
-          />
-          <DownloadLeadButton
-            loading={loading}
-            btnText={lead.buttonCta as string}
-          />
+          <div className="mt-5 flex items-center gap-3">
+            <input
+              name="name"
+              type="email"
+              placeholder="Enter your email"
+              // onChange={(e) => setEmail(e.target.value)}
+              value={data.email}
+              onChange={(e) => setData({ ...data, email: e.target.value })}
+              required
+              className="w-full flex-1 rounded-md border border-slate-200 bg-slate-50 px-4 py-2 text-sm text-slate-600 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-blue-400 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-300 dark:focus:ring-white"
+            />
+            <DownloadLeadButton
+              type="button"
+              loading={loading}
+              btnText={lead.buttonCta as string}
+              onClick={handleSubscribeClick}
+            />
+          </div>
+
+          {showName && (
+            <div className="mt-3 flex flex-col gap-4">
+              <input
+                name="name"
+                type="text"
+                placeholder="Enter your full name"
+                value={data.name}
+                onChange={handleNameChange}
+                required
+                className="w-full flex-1 rounded-md border border-slate-200 bg-slate-50 px-4 py-2 text-sm text-slate-600 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-blue-400 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-300 dark:focus:ring-white"
+              />
+              <DownloadLeadButton
+                type="submit"
+                loading={loading}
+                btnText={"Download"}
+              />
+            </div>
+          )}
         </form>
       ) : (
         <form
@@ -108,6 +169,7 @@ export const LeadDownload = ({
           className="mt-5 text-center"
         >
           <DownloadLeadButton
+            type="submit"
             loading={loading}
             btnText={lead.buttonCta as string}
           />
@@ -117,18 +179,23 @@ export const LeadDownload = ({
   );
 };
 function DownloadLeadButton({
+  type,
   loading,
   btnText,
+  onClick,
 }: {
+  type: "submit" | "button";
   loading: boolean;
   btnText: string;
+  onClick?: () => void;
 }) {
   return (
     <>
       <button
-        type="submit"
+        type={type}
         disabled={loading}
         className="inline-flex items-center gap-x-2 rounded-lg border border-transparent bg-blue-600 px-3 py-2 text-sm font-semibold text-white hover:bg-blue-700 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
+        onClick={onClick}
       >
         {loading ? (
           <>

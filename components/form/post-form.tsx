@@ -11,7 +11,7 @@ import { useEffect, useRef, useState } from "react";
 import { useDebounce } from "use-debounce";
 // ts-ignore because experimental_useFormStatus is not in the types
 // @ts-ignore
-import { experimental_useFormStatus as useFormStatus } from "react-dom";
+import { useFormStatus } from "react-dom";
 
 export default function PostForm({
   title,

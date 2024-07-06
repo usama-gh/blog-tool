@@ -28,6 +28,24 @@ interface LeadData {
   featured: boolean;
 }
 
+interface IntegrationData {
+  siteId: string;
+  type: string;
+  apiKey: string;
+  audienceId: string;
+  active: boolean;
+}
+
+interface AddIntegrationData {
+  firstName: string;
+  lastName: string;
+  email: string;
+}
+
+interface SubscribeData {
+  siteId: string;
+  email: string;
+}
 interface SubscribeData {
   siteId: string;
   email: string;

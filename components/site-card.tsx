@@ -7,7 +7,7 @@ import Link from "next/link";
 export default function SiteCard({ data }: { data: Site }) {
   const url = `${data.subdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`;
   return (
-    <div className="relative rounded-lg border border-gray-200 pb-10 transition-all hover:border-gray-300 dark:border-gray-700 dark:hover:border-white">
+    <div className="relative rounded-xl  pb-10 transition-all bg-slate-100 dark:bg-gray-900/80 hover:bg-slate-200 dark:hover:bg-gray-900">
       <Link
         href={`/site/${data.id}`}
         className="flex flex-col overflow-hidden rounded-lg"
@@ -39,7 +39,7 @@ export default function SiteCard({ data }: { data: Site }) {
           }
           target="_blank"
           rel="noreferrer"
-          className="truncate rounded-md bg-gray-100 px-2 py-1 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700"
+          className="truncate rounded-md bg-slate-200 px-2 py-1 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700"
         >
           {url} ↗
         </a>
