@@ -6,11 +6,11 @@ interface Props {
 
 export default function PlanUsage({ title, planLimit, usage }: Props) {
   return (
-    <div className="relative flex flex-col rounded-lg dark:bg-black  transition-all border border-gray-300">
+    <div className="relative flex flex-col rounded-lg  bg-slate-200 dark:bg-gray-900  transition-all">
       {/* plan overview */}
-      <div className="flex justify-between  p-8 dark:border-gray-700">
+      <div className="flex justify-between  p-8 dark:border-gray-600">
         <div className="flex flex-col">
-          <h4 className="text-lg font-medium uppercase text-gray-500 dark:text-white">
+          <h4 className="text-md font-medium uppercase tracking-widest text-gray-500 dark:text-white">
             {title}
           </h4>
           <span className="text-lg text-sm text-gray-400 dark:text-white">

@@ -20,9 +20,9 @@ interface Props {
 
 export default function Plan({ plan, isCurrentPlan, email }: Props) {
   return (
-    <div className="relative flex flex-col rounded-lg border border-stone-200 shadow-md transition-all hover:shadow-xl dark:border-stone-700 dark:hover:border-white">
+    <div className="relative flex flex-col rounded-lg  bg-slate-200 dark:bg-gray-900  transition-all">
       {/* plan overview */}
-      <div className="flex justify-between border-b border-stone-200 p-8 dark:border-stone-700">
+      <div className="flex justify-between border-b border-slate-300 p-6 dark:border-gray-700">
         <div className="flex flex-col">
           <h4 className="text-2xl font-bold dark:text-white">{plan.name}</h4>
           <span className="text-md text-gray-400 dark:text-white">
@@ -32,8 +32,8 @@ export default function Plan({ plan, isCurrentPlan, email }: Props) {
         <p className="text-3xl text-gray-500 dark:text-white">${plan.price}</p>
       </div>
       {/* plan specifications */}
-      <div className="p-8 pb-0">
-        <ul className="mb-5 ml-5 list-disc dark:text-white">
+      <div className="p-5 pb-0">
+        <ul className="mb-5 ml-5 text-sm list-disc dark:text-white">
           {plan.specifications.map((item: any) => (
             <li key={item} className="mb-1">
               {item}
@@ -46,7 +46,7 @@ export default function Plan({ plan, isCurrentPlan, email }: Props) {
         <button
           type="button"
           disabled={isCurrentPlan}
-          className="inline-flex w-full items-center justify-center gap-2 rounded-md border border-transparent bg-gray-800 py-3 text-sm font-semibold text-white transition-all hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-800 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-90 dark:focus:ring-gray-900 dark:focus:ring-offset-gray-800"
+          className="flex items-center disabled:cursor-not-allowed justify-center space-x-2 uppercase rounded-lg px-5 py-2 text-xs font-regular w-full text-white shadow-lg shadow-blue-800/10 transition-all hover:shadow-blue-800/20 focus:outline-none lg:text-sm tracking-widest bg-gradient-to-br from-blue-600 to-blue-400"
           onClick={() => {
             // @ts-ignore
             Paddle.Checkout.open({
