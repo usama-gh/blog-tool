@@ -126,9 +126,9 @@ export default async function SiteHomePage({
                                 {lead.title}
                               </h2>
 
-                              {lead.description && (
+                              {lead.heroDescription && (
                                 <span className="line-clamp-3 w-full text-base leading-6 text-slate-500 dark:text-gray-300">
-                                  {parse(lead.description)}
+                                  {parse(lead.heroDescription)}
                                 </span>
                               )}
 
