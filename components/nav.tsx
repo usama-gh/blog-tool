@@ -51,13 +51,13 @@ export default function Nav({ children }: { children: ReactNode }) {
 
   const session = useSession();
 
-  useEffect(() => {
-    if (segments[0] === "post" && id) {
-      getSiteFromPostId(id).then((id) => {
-        setSiteId(id);
-      });
-    }
-  }, [segments, id]);
+  // useEffect(() => {
+  //   if (segments[0] === "post" && id) {
+  //     getSiteFromPostId(id).then((id) => {
+  //       setSiteId(id);
+  //     });
+  //   }
+  // }, [segments, id]);
 
   useEffect(() => {
     if (session.data?.user?.email) {
