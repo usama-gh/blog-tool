@@ -1,7 +1,7 @@
 "use client";
 
 import LoadingDots from "@/components/icons/loading-dots";
-import { cn } from "@/lib/utils";
+import { cn, isDefaultImage } from "@/lib/utils";
 import { useSession } from "next-auth/react";
 import { useParams, useRouter } from "next/navigation";
 // ts-ignore because experimental_useFormStatus is not in the types
@@ -67,10 +67,11 @@ export default function Form({
           return;
         }
 
-        // delete image from vercel blob if exists
+        // delete image from vercel blob if exists and image is not default
         if (
           (inputAttrs.name === "image" || inputAttrs.name === "logo") &&
-          !inputAttrs.defaultValue.includes("unsplash.com")
+          !inputAttrs.defaultValue.includes("unsplash.com") &&
+          !isDefaultImage(inputAttrs.defaultValue)
         ) {
           await deleteFileFromBlob(inputAttrs.defaultValue);
         }
