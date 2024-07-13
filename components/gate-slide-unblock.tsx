@@ -92,7 +92,7 @@ export const UnblockSlides = ({
   }
 
   return (
-    <div className="mb-[120px] bg-blue-100 dark:bg-gray-900 mx-auto flex  shadow-xl px-8 py-6 items-center justify-center">
+    <div className="bg-blue-100 dark:bg-gray-900 mx-auto flex  shadow-xl px-8 py-6 items-center justify-center">
       <>
         {gateSlide.type === "email" ? (
           <div>

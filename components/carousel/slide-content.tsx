@@ -72,7 +72,7 @@ const SlideContent = ({
 
         <div
           className={cn(
-            "max-h-screen	h-full overflow-y-auto scrollbar-thumb-rounded-full scrollbar-track-rounded-full relative z-20  flex w-full items-center justify-start  py-10 pt-20 text-slate-600 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-gray-200 dark:text-gray-400 dark:scrollbar-thumb-gray-800 [&>*]:rounded-xl [&>*]:text-lg ",
+            "h-screen overflow-y-auto scrollbar-thumb-rounded-full scrollbar-track-rounded-full relative z-20  flex w-full items-start justify-start my-auto  py-10 pt-20 text-slate-600 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-gray-200 dark:text-gray-400 dark:scrollbar-thumb-gray-800 [&>*]:rounded-xl [&>*]:text-lg ",
             (isGateSlide || isLeadSlide) && "flex-col",
           )}
         >

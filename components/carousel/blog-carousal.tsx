@@ -131,13 +131,18 @@ const Carousel = ({ data, siteData, lead }: any) => {
           ))}
         </div>
         <div className="mx-auto flex items-center ">
-        {contentStyling?.bgImage && (
+    
+          <div className=" w-full overflow-hidden" ref={viewportRef}>
+            <div className="flex ">
+              <div className="relative min-w-full  text-slate-50 dark:text-gray-400 ">
+
+              {contentStyling?.bgImage && (
                   <Image
                     alt="Mountains"
                     src={contentStyling?.bgImage}
                     quality={100}
                     fill
-                   
+                    sizes="100vw"
                     style={{
                       objectFit: "cover",
                     }}
@@ -159,10 +164,6 @@ const Carousel = ({ data, siteData, lead }: any) => {
                       : "bg-" + contentStyling?.bgColor
                   }`}
                 ></div>
-          <div className=" w-full overflow-hidden" ref={viewportRef}>
-            <div className="flex ">
-              <div className=" min-w-full  text-slate-50 dark:text-gray-400 ">
-               
 
                 <div className="h-screen overflow-y-auto scrollbar-thumb-rounded-full scrollbar-track-rounded-full relative z-20  flex w-full items-start justify-center  py-10 pt-20 text-slate-600 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-gray-200 dark:text-gray-400 dark:scrollbar-thumb-gray-800 [&>*]:rounded-xl [&>*]:text-lg ">
                   <MDX source={data.mdxSource} />
@@ -172,7 +173,7 @@ const Carousel = ({ data, siteData, lead }: any) => {
               {data.slides &&
                 JSON.parse(data.slides).map((value: string, index: number) => (
                   <div
-                    className={`relative  flex  min-w-full `}
+                    className={`relative min-w-full my-auto`}
                     key={`slide-${index}`}
                   >
                     <SlideContent

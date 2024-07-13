@@ -328,7 +328,7 @@ export default async function SiteHomePage({
         {/* susbcribe to blog */}
 
         <div></div>
-        <div className="mb-10 rounded-3xl bg-teal-100 py-16 text-center dark:bg-teal-700">
+        <div className="mx-4 mb-10 rounded-3xl bg-teal-100 py-16 text-center dark:bg-teal-700">
           <div className=" mx-auto mb-4 text-center">
             {data.logo ? (
               <Image
