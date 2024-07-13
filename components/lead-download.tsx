@@ -122,7 +122,11 @@ export const LeadDownload = ({
             handleDownload(e);
           }}
         >
-          <div className="mt-5 flex items-center gap-3">
+          <div className="mt-5 flex items-center gap-3 bg-blue-100 dark:bg-gray-900 px-8 py-6 rounded-xl shadow-xl ">
+
+          {!showName && (     
+            <div className="flex items-center gap-3">       
+          <p className="pr-2 text-md tracking-wide">Enter your email</p>
             <input
               name="name"
               type="email"
@@ -131,7 +135,7 @@ export const LeadDownload = ({
               value={data.email}
               onChange={(e) => setData({ ...data, email: e.target.value })}
               required
-              className="w-full flex-1 rounded-md border border-slate-200 bg-slate-50 px-4 py-2 text-sm text-slate-600 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-blue-400 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-300 dark:focus:ring-white"
+              className="w-full flex-1 rounded-md border border-slate-200 bg-slate-50 px-4 py-2 text-lg text-slate-600 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-blue-400 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-300 dark:focus:ring-white"
             />
             <DownloadLeadButton
               type="button"
@@ -139,10 +143,11 @@ export const LeadDownload = ({
               btnText={lead.buttonCta as string}
               onClick={handleSubscribeClick}
             />
-          </div>
-
-          {showName && (
-            <div className="mt-3 flex flex-col gap-4">
+            </div>
+          )}
+{showName && (
+            <div className=" flex gap-3 items-center">
+                <p className="pr-2 text-md tracking-wide">Enter your name</p>
               <input
                 name="name"
                 type="text"
@@ -159,6 +164,10 @@ export const LeadDownload = ({
               />
             </div>
           )}
+
+          </div>
+
+      
         </form>
       ) : (
         <form
@@ -194,7 +203,7 @@ function DownloadLeadButton({
       <button
         type={type}
         disabled={loading}
-        className="inline-flex items-center gap-x-2 rounded-lg border border-transparent bg-blue-600 px-3 py-2 text-sm font-semibold text-white hover:bg-blue-700 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
+        className="flex tracking-wide items-center justify-center space-x-2 rounded-lg px-5 py-2 text-xs font-regular text-white shadow-lg shadow-blue-800/10 transition-all hover:shadow-blue-800/20 focus:outline-none lg:text-lg bg-gradient-to-br from-blue-600 to-blue-400"
         onClick={onClick}
       >
         {loading ? (

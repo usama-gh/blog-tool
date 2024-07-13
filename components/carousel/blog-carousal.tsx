@@ -120,7 +120,7 @@ const Carousel = ({ data, siteData, lead }: any) => {
   return (
     <>
       <div className="relative" {...swipeHandlers}>
-        <div className="relative z-30 flex list-none justify-between space-x-2">
+        <div className="absolute z-50 w-full top-0 flex bg-transparent list-none justify-around gap-x-4">
           {scrollSnaps.map((_, index: number) => (
             <DotButton
               key={index}
@@ -217,7 +217,7 @@ const Carousel = ({ data, siteData, lead }: any) => {
               {/* showing adjacent posts */}
               {data.adjacentPosts.length > 0 && (
                 <div className="scrollbar-thumb-rounded-full scrollbar-track-rounded-full relative mx-auto h-screen w-9/12 min-w-full  overflow-y-auto bg-slate-200 pb-[120px] pt-40 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-gray-200 dark:bg-gray-900 dark:scrollbar-thumb-gray-800">
-                  <p className="mx-auto mb-10 mb-8 max-w-2xl pb-8 text-center text-4xl font-bold tracking-tight  text-slate-800 dark:bg-gray-900 dark:text-gray-400">
+                  <p className="mx-auto mb-10 mb-8 max-w-2xl pb-8 text-center text-4xl font-bold tracking-tight  text-slate-800 dark:bg-gray-900 dark:text-gray-100">
                     Thank you for reading! For more insights & stories, check
                     out my other posts.
                   </p>
@@ -226,7 +226,7 @@ const Carousel = ({ data, siteData, lead }: any) => {
                     <div className="container mx-auto flex max-w-6xl flex-wrap items-start  gap-x-4 lg:flex-nowrap">
                       <div className="mb-10  pb-10 md:mb-0 md:w-4/12">
                         <div className=" flex flex-col gap-y-4">
-                          <div className="flex flex-col items-start justify-start rounded-3xl bg-white p-5">
+                          <div className="flex flex-col items-start justify-start rounded-3xl bg-white dark:bg-gray-700 p-5">
                             <div className="h-[70px] w-[70px] overflow-hidden rounded-full">
                               {siteData?.logo ? (
                                 <BlurImage
@@ -248,7 +248,7 @@ const Carousel = ({ data, siteData, lead }: any) => {
                             <div className="mt-2 font-semibold tracking-wide text-slate-700">
                               {siteData?.name}
                             </div>
-                            <div className="text-left text-sm text-gray-800 ">
+                            <div className="text-left text-sm text-gray-800 dark:text-white ">
                               {parse(siteData?.bio)}
                             </div>
 
@@ -292,7 +292,7 @@ const Carousel = ({ data, siteData, lead }: any) => {
           </div>
           {lead && data.leadSlide && (
             <div className="z-90 fixed bottom-12 left-1/2  -translate-x-1/2 transform lg:bottom-4">
-              <div className="flex w-fit items-center justify-between gap-3 rounded-full bg-slate-200 p-1 dark:bg-gray-200">
+              <div className="flex w-fit items-center justify-between gap-3 rounded-full bg-slate-200 p-1 dark:bg-gray-700">
                 <p className="text-dark whitespace-nowrap	 pl-4 text-sm font-semibold">
                   {lead.title}
                 </p>

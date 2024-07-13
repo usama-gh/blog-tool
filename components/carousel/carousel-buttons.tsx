@@ -2,10 +2,10 @@ import React from "react";
 
 export const DotButton = ({ selected, onClick }: any) => (
   <button
-    className={`relative flex h-[2px] w-full cursor-pointer items-center rounded-sm border-0 p-0  outline-0 ${
+    className={`flex h-[2px]  w-full cursor-pointer items-center rounded-sm border-0 p-0  outline-0 ${
       selected
-        ? "opacity-100 bg-gray-900 opacity-60 dark:bg-gray-400"
-        : "bg-gray-500 dark:bg-gray-700"
+        ? "opacity-100 bg-gray-100 opacity-60 dark:bg-gray-100"
+        : "bg-gray-600 dark:bg-gray-700"
     }`}
     type="button"
     onClick={onClick}

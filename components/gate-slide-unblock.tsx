@@ -92,7 +92,7 @@ export const UnblockSlides = ({
   }
 
   return (
-    <div className="mb-[120px] flex w-full items-center justify-center">
+    <div className="mb-[120px] bg-blue-100 dark:bg-gray-900 mx-auto flex  shadow-xl px-8 py-6 items-center justify-center">
       <>
         {gateSlide.type === "email" ? (
           <div>
@@ -105,6 +105,7 @@ export const UnblockSlides = ({
 
 {!showName && (
               <div className="flex items-center gap-3">
+                <p className="pr-2 text-md tracking-wide">Enter your email</p>
                 <input
                   name="email"
                   type="email"
@@ -112,18 +113,19 @@ export const UnblockSlides = ({
                   value={data.email}
                   onChange={(e) => setData({ ...data, email: e.target.value })}
                   required
-                  className="text-base w-full flex-1 rounded-md border border-slate-200 bg-slate-50 px-4 py-2 text-slate-600 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-blue-400 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-300 dark:focus:ring-white lg:text-md"
+                  className="text-base w-full flex-1 rounded-md border border-slate-200 bg-slate-50 px-4 py-2 text-slate-600 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-blue-400 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-300 dark:focus:ring-white lg:text-lg"
                 />
                 <Button
                   type="button"
                   loading={loading}
-                  btnText="Continue"
+                  btnText="Unlock"
                   onClick={handleSubscribeClick}
                 />
               </div>
 )}
               {showName && (
                 <div className="flex items-center gap-3">
+                   <p className="pr-2 text-md tracking-wide">Enter your name</p>
                   <input
                     name="name"
                     type="text"
@@ -131,7 +133,7 @@ export const UnblockSlides = ({
                     value={data.name}
                     onChange={handleNameChange}
                     required
-                    className="text-base w-full flex-1 rounded-md border border-slate-200 bg-slate-50 px-4 py-2 text-slate-600 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-blue-400 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-300 dark:focus:ring-white lg:text-md"
+                    className="text-base w-full flex-1 rounded-md border border-slate-200 bg-slate-50 px-4 py-2 text-slate-600 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-blue-400 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-300 dark:focus:ring-white lg:text-lg"
                   />
                   <Button type="submit" loading={loading} btnText="Unlock" />
                 </div>
@@ -169,7 +171,7 @@ function Button({
       <button
         type={type}
         disabled={loading}
-        className="flex items-center justify-center space-x-2 rounded-lg px-5 py-2 text-xs font-regular text-white shadow-lg shadow-blue-800/10 transition-all hover:shadow-blue-800/20 focus:outline-none lg:text-lg bg-gradient-to-br from-blue-600 to-blue-400"
+        className="flex tracking-wide items-center justify-center space-x-2 rounded-lg px-5 py-2 text-xs font-regular text-white shadow-lg shadow-blue-800/10 transition-all hover:shadow-blue-800/20 focus:outline-none lg:text-lg bg-gradient-to-br from-blue-600 to-blue-400"
         onClick={onClick}
       >
         {loading ? (

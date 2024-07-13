@@ -25,7 +25,7 @@ export default function MDX({ source, gated }: { source: MDXRemoteProps; gated?:
       className={`lg:px-0 px-6 prose-md w-full prose h-fit prose-slate dark:prose-invert sm:prose-lg text-slate-600 dark:text-gray-100 ${pbClass} ${styles.root}`}
       suppressHydrationWarning={true}
     >
-      <div className="pb-18 [&>h1]:mb-2 [&>h1]:tracking-tight [&>h2]:tracking-tight">
+      <div className="pb-18 [&>h1]:mb-2 [&>h1]:tracking-tight [&>h1]:leading-snug [&>h2]:tracking-tight">
         {/* @ts-ignore */}
         <MDXRemote {...source} components={components}/>
       </div>
