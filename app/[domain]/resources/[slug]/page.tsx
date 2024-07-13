@@ -116,7 +116,7 @@ export default async function SiteLeadPage({
                 ></div>
 
                 {/* lead description */}
-                <div className="scrollbar-thumb-rounded-full scrollbar-track-rounded-full relative z-20 mx-auto my-auto flex h-screen w-full max-w-2xl items-center justify-center overflow-y-auto py-10 pt-20 text-slate-700 scrollbar-thin  scrollbar-track-transparent scrollbar-thumb-gray-200 dark:text-white dark:scrollbar-thumb-gray-800 [&>*]:rounded-xl [&>*]:text-lg">
+                <div className="scrollbar-thumb-rounded-full scrollbar-track-rounded-full relative z-20 mx-auto my-auto flex w-full max-w-2xl items-center justify-center overflow-y-auto py-10 pt-20 text-slate-700 scrollbar-thin  scrollbar-track-transparent scrollbar-thumb-gray-200 dark:text-white dark:scrollbar-thumb-gray-800 [&>*]:rounded-xl [&>*]:text-lg">
                   <div className="flex flex-col items-center justify-center gap-4">
                     {lead.thumbnailFile && (
                       <Image

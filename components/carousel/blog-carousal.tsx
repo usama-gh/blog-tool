@@ -130,17 +130,14 @@ const Carousel = ({ data, siteData, lead }: any) => {
             />
           ))}
         </div>
-        <div className="mx-auto my-auto flex items-center">
-          <div className="relative w-full overflow-hidden" ref={viewportRef}>
-            <div className="flex h-fit items-start ">
-              <div className="relative h-fit min-w-full  text-slate-50 dark:text-gray-400 ">
-                {contentStyling?.bgImage && (
+        <div className="mx-auto flex items-center ">
+        {contentStyling?.bgImage && (
                   <Image
                     alt="Mountains"
                     src={contentStyling?.bgImage}
                     quality={100}
                     fill
-                    sizes="100vw"
+                   
                     style={{
                       objectFit: "cover",
                     }}
@@ -162,8 +159,12 @@ const Carousel = ({ data, siteData, lead }: any) => {
                       : "bg-" + contentStyling?.bgColor
                   }`}
                 ></div>
+          <div className=" w-full overflow-hidden" ref={viewportRef}>
+            <div className="flex ">
+              <div className=" min-w-full  text-slate-50 dark:text-gray-400 ">
+               
 
-                <div className=" scrollbar-thumb-rounded-full scrollbar-track-rounded-full relative z-20 my-auto flex h-screen w-full items-center justify-center overflow-y-auto py-10 pt-20 text-slate-600 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-gray-200 dark:text-gray-400 dark:scrollbar-thumb-gray-800 [&>*]:rounded-xl [&>*]:text-lg ">
+                <div className="h-screen overflow-y-auto scrollbar-thumb-rounded-full scrollbar-track-rounded-full relative z-20  flex w-full items-start justify-center  py-10 pt-20 text-slate-600 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-gray-200 dark:text-gray-400 dark:scrollbar-thumb-gray-800 [&>*]:rounded-xl [&>*]:text-lg ">
                   <MDX source={data.mdxSource} />
                 </div>
               </div>
@@ -171,7 +172,7 @@ const Carousel = ({ data, siteData, lead }: any) => {
               {data.slides &&
                 JSON.parse(data.slides).map((value: string, index: number) => (
                   <div
-                    className={`relative flex h-fit min-w-full items-start justify-center`}
+                    className={`relative  flex  min-w-full `}
                     key={`slide-${index}`}
                   >
                     <SlideContent
@@ -191,32 +192,15 @@ const Carousel = ({ data, siteData, lead }: any) => {
                       lead={lead}
                     />
 
-                    {/* <div className="scrollbar-thumb-rounded-full scrollbar-track-rounded-full my-auto flex h-screen w-full flex-1 items-center justify-center overflow-y-auto py-10 text-slate-600 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-gray-200 dark:text-gray-400 dark:scrollbar-thumb-gray-800 [&>*]:text-xl">
-                      <MDX source={data.slidesMdxSource[index]} />
-                    </div> */}
+              
                   </div>
                 ))}
 
-              {/* showing lead */}
-              {/* {lead && (
-                <div className="scrollbar-thumb-rounded-full scrollbar-track-rounded-full relative mx-auto my-auto mt-0 flex h-screen w-9/12  min-w-full items-center  justify-center overflow-y-auto pb-[120px] scrollbar-thin scrollbar-track-transparent scrollbar-thumb-gray-200 dark:scrollbar-thumb-gray-800">
-                  <div className="mx-auto max-w-xl px-6">
-                    <h4 className="pb-4 text-center text-5xl font-bold tracking-tight text-gray-800 dark:bg-gray-800 dark:text-gray-100">
-                      {lead.title}
-                    </h4>
-                    <div className="font-regular overflow-hidden  text-center text-lg text-slate-800 dark:text-gray-50">
-                      <div
-                        dangerouslySetInnerHTML={{ __html: lead.description }}
-                      />
-                    </div>
-                    <LeadDownload postId={data.id} lead={lead} />
-                  </div>
-                </div>
-              )} */}
+            
 
               {/* showing adjacent posts */}
               {data.adjacentPosts.length > 0 && (
-                <div className="scrollbar-thumb-rounded-full scrollbar-track-rounded-full relative mx-auto h-screen w-9/12 min-w-full  overflow-y-auto bg-slate-200 pb-[120px] pt-40 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-gray-200 dark:bg-gray-900 dark:scrollbar-thumb-gray-800">
+                <div className="scrollbar-thumb-rounded-full scrollbar-track-rounded-full relative mx-auto w-9/12 min-w-full  overflow-y-auto bg-slate-200 pb-[120px] pt-40 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-gray-200 dark:bg-gray-900 dark:scrollbar-thumb-gray-800">
                   <p className="mx-auto mb-10 mb-8 max-w-2xl pb-8 text-center text-4xl font-bold tracking-tight  text-slate-800 dark:bg-gray-900 dark:text-gray-100">
                     Thank you for reading! For more insights & stories, check
                     out my other posts.
