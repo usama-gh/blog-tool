@@ -12,9 +12,9 @@ export default function PostCard({
   const url = `${data.site?.subdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}/${data.slug}`;
 
   return (
-    <div className="relative rounded-xl  pb-10 transition-all bg-slate-100 dark:bg-gray-900/80 hover:bg-slate-200 dark:hover:bg-gray-900">
+    <div className="relative rounded-xl  bg-slate-100 pb-10 transition-all hover:bg-slate-200 dark:bg-gray-900/80 dark:hover:bg-gray-900">
       <Link
-        href={`/post/${data.id}`}
+        href={`/post/${data.id}?siteId=${data.siteId}`}
         className="flex flex-col overflow-hidden rounded-lg"
       >
         <div className="relative overflow-hidden">
@@ -34,7 +34,7 @@ export default function PostCard({
           )}
         </div>
         <div className="p-4">
-          <h3 className="my-0 truncate font-inter text-xl font-bold tracking-wide dark:text-white">
+          <h3 className="font-inter my-0 truncate text-xl font-bold tracking-wide dark:text-white">
             {data.title}
           </h3>
           <p className="mt-2 line-clamp-1 text-sm font-normal leading-snug text-slate-500 dark:text-gray-400">

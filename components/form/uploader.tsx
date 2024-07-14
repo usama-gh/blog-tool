@@ -156,15 +156,12 @@ export default function Uploader({
       <div className="flex flex-row justify-evenly pt-4">
         {unsplash && (
           <Popover>
-            <PopoverTrigger>
-              <button
-                type="button"
-                className={
-                  "flex items-center justify-center space-x-2 rounded-md border border-black bg-black px-3 py-1 text-sm text-white transition-all hover:bg-white hover:text-black focus:outline-none dark:border-gray-700 dark:hover:border-gray-200 dark:hover:bg-black dark:hover:text-white dark:active:bg-gray-800"
-                }
-              >
-                <p>Upload from Unsplash</p>
-              </button>
+            <PopoverTrigger
+              className={
+                "flex items-center justify-center space-x-2 rounded-md border border-black bg-black px-3 py-1 text-sm text-white transition-all hover:bg-white hover:text-black focus:outline-none dark:border-gray-700 dark:hover:border-gray-200 dark:hover:bg-black dark:hover:text-white dark:active:bg-gray-800"
+              }
+            >
+              Upload from Unsplash
             </PopoverTrigger>
             <PopoverContent className="my-4 w-min rounded-xl border-0 shadow-2xl dark:bg-gray-800">
               <UnsplashImageSearch onSelect={handleImageSelect} />

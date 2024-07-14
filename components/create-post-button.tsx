@@ -17,18 +17,18 @@ export default function CreatePostButton() {
         startTransition(async () => {
           const post = await createPost(null, id, null);
           router.refresh();
-          router.push(`/post/${post.id}`);
+          router.push(`/post/${post.id}?siteId=${post.siteId}`);
         })
       }
       className={cn(
-        "flex h-8 w-full lg:w-36 items-center justify-center space-x-2 rounded-lg border text-sm transition-all focus:outline-none sm:h-9",
+        "flex h-8 w-full items-center justify-center space-x-2 rounded-lg border text-sm transition-all focus:outline-none sm:h-9 lg:w-36",
         isPending
           ? "cursor-not-allowed border-gray-200 bg-gray-100 text-gray-400 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300"
           : "border border-black bg-black text-white hover:bg-white hover:text-black active:bg-stone-100 dark:border-gray-700 dark:hover:border-gray-200 dark:hover:bg-black dark:hover:text-white dark:active:bg-gray-800",
       )}
       disabled={isPending}
     >
-      {isPending ? <LoadingDots color="#808080" /> : 'Create New Post'}
+      {isPending ? <LoadingDots color="#808080" /> : "Create New Post"}
     </button>
   );
 }

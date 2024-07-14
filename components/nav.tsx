@@ -51,13 +51,17 @@ export default function Nav({ children }: { children: ReactNode }) {
 
   const session = useSession();
 
-  // useEffect(() => {
-  //   if (segments[0] === "post" && id) {
-  //     getSiteFromPostId(id).then((id) => {
-  //       setSiteId(id);
-  //     });
-  //   }
-  // }, [segments, id]);
+  useEffect(() => {
+    const queryParams = window?.location?.search;
+    if (segments[0] === "post" && id && queryParams.includes("?siteId=")) {
+      const siteIdParam = new URLSearchParams(queryParams).get("siteId");
+      setSiteId(siteIdParam);
+
+      // getSiteFromPostId(id).then((id) => {
+      //   setSiteId(id);
+      // });
+    }
+  }, [segments, id]);
 
   useEffect(() => {
     if (session.data?.user?.email) {
