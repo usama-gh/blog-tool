@@ -92,7 +92,7 @@ export const UnblockSlides = ({
   }
 
   return (
-    <div className="bg-blue-100 dark:bg-gray-900 mx-auto flex  shadow-xl px-8 py-6 items-center justify-center">
+    <div className="mb-[80px] bg-blue-100 dark:bg-gray-900 mx-auto flex  shadow-xl px-8 py-6 items-center justify-center">
       <>
         {gateSlide.type === "email" ? (
           <div>
@@ -105,7 +105,7 @@ export const UnblockSlides = ({
 
 {!showName && (
               <div className="flex items-center gap-3 lg:flex-row flex-col">
-                <p className="pr-2 text-md tracking-wide">Enter your email</p>
+                <p className="pr-2 text-md tracking-tight">Enter your email</p>
                 <input
                   name="email"
                   type="email"
@@ -125,7 +125,7 @@ export const UnblockSlides = ({
 )}
               {showName && (
                 <div className="flex items-center gap-3">
-                   <p className="pr-2 text-md tracking-wide">Enter your name</p>
+                   <p className="pr-2 text-md tracking-tight">Enter your name</p>
                   <input
                     name="name"
                     type="text"

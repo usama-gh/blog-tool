@@ -173,7 +173,7 @@ const Carousel = ({ data, siteData, lead }: any) => {
               {data.slides &&
                 JSON.parse(data.slides).map((value: string, index: number) => (
                   <div
-                    className={`relative min-w-full my-auto`}
+                    className={`relative min-w-full`}
                     key={`slide-${index}`}
                   >
                     <SlideContent

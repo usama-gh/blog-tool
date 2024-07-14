@@ -125,8 +125,8 @@ export const LeadDownload = ({
           <div className="mt-5 flex items-center gap-3 bg-blue-100 dark:bg-gray-900 px-8 py-6 rounded-xl shadow-xl ">
 
           {!showName && (     
-            <div className="flex items-center gap-3">       
-          <p className="pr-2 text-md tracking-wide">Enter your email</p>
+            <div className="flex items-center gap-3 flex-col lg:flex-row">       
+          <p className="pr-2 text-md tracking-tight">Enter your email</p>
             <input
               name="name"
               type="email"
@@ -146,8 +146,8 @@ export const LeadDownload = ({
             </div>
           )}
 {showName && (
-            <div className=" flex gap-3 items-center">
-                <p className="pr-2 text-md tracking-wide">Enter your name</p>
+            <div className=" flex gap-3 items-center flex-col lg:flex-row">
+                <p className="pr-2 text-md tracking-tight">Enter your name</p>
               <input
                 name="name"
                 type="text"
@@ -155,7 +155,7 @@ export const LeadDownload = ({
                 value={data.name}
                 onChange={handleNameChange}
                 required
-                className="w-full flex-1 rounded-md border border-slate-200 bg-slate-50 px-4 py-2 text-sm text-slate-600 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-blue-400 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-300 dark:focus:ring-white"
+                className="w-full flex-1 rounded-md border border-slate-200 bg-slate-50 px-4 py-2 text-lg text-slate-600 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-blue-400 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-300 dark:focus:ring-white"
               />
               <DownloadLeadButton
                 type="submit"

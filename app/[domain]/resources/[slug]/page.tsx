@@ -55,7 +55,7 @@ export default async function SiteLeadPage({
 
   return (
     <>
-      <div className="animate-fade absolute left-0 top-0 z-30 mx-auto flex w-full w-screen items-center justify-between	bg-gradient-to-b from-[#000000a8] via-[#0000004d] to-transparent px-2 pb-5 pt-2 lg:px-2">
+      <div className="animate-fade absolute left-0 top-0 z-30 mx-auto flex w-full w-screen items-center justify-between	bg-gradient-to-b from-[#000000a8] via-[#00000075] to-transparent px-2 pb-5 pt-2 lg:px-2">
         <div className="flex items-center gap-x-2">
           <div className="flex items-center gap-x-2">
             <Link href="/">
@@ -98,25 +98,15 @@ export default async function SiteLeadPage({
       <div className="relative">
         <div className="mx-auto my-auto flex items-center">
           <div className="relative w-full overflow-hidden">
-            <div className="flex h-fit items-start ">
+            <div className="flex">
               <div className="relative h-fit min-w-full  text-slate-50 dark:text-gray-400 ">
-                {/* <Image
-                  alt="Mountains"
-                  src="https://images.unsplash.com/photo-1542831371-29b0f74f9713?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                  quality={100}
-                  fill
-                  sizes="100vw"
-                  style={{
-                    objectFit: "cover",
-                  }}
-                /> */}
-                {/* bg overrelay */}
+             
                 <div
                   className={`absolute left-0 top-0 h-full w-full bg-white dark:bg-gray-800`}
                 ></div>
 
                 {/* lead description */}
-                <div className="scrollbar-thumb-rounded-full scrollbar-track-rounded-full relative z-20 mx-auto my-auto flex w-full max-w-2xl items-center justify-center overflow-y-auto py-10 pt-20 text-slate-700 scrollbar-thin  scrollbar-track-transparent scrollbar-thumb-gray-200 dark:text-white dark:scrollbar-thumb-gray-800 [&>*]:rounded-xl [&>*]:text-lg">
+                <div className="scrollbar-thumb-rounded-full scrollbar-track-rounded-full relative z-20 mx-auto flex w-full max-w-2xl items-center justify-center  py-10 pt-20 text-slate-700 scrollbar-thin  scrollbar-track-transparent scrollbar-thumb-gray-200 dark:text-white dark:scrollbar-thumb-gray-800 [&>*]:rounded-xl [&>*]:text-lg">
                   <div className="flex flex-col items-center justify-center gap-4">
                     {lead.thumbnailFile && (
                       <Image
