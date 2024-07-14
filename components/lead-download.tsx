@@ -122,7 +122,7 @@ export const LeadDownload = ({
             handleDownload(e);
           }}
         >
-          <div className="mt-5 flex items-center gap-3 bg-blue-100 dark:bg-gray-900 px-8 py-6 rounded-xl shadow-xl ">
+          <div className="w-full mt-5 flex items-center gap-3 bg-blue-100 dark:bg-gray-900 px-8 py-6 rounded-xl shadow-xl ">
 
           {!showName && (     
             <div className="flex items-center gap-3 flex-col lg:flex-row">       
@@ -203,7 +203,7 @@ function DownloadLeadButton({
       <button
         type={type}
         disabled={loading}
-        className="flex tracking-wide items-center justify-center space-x-2 rounded-lg px-5 py-2 text-xs font-regular text-white shadow-lg shadow-blue-800/10 transition-all hover:shadow-blue-800/20 focus:outline-none lg:text-lg bg-gradient-to-br from-blue-600 to-blue-400"
+        className="flex tracking-wide items-center justify-center space-x-2 rounded-lg px-5 py-2 font-regular text-white shadow-lg shadow-blue-800/10 transition-all hover:shadow-blue-800/20 focus:outline-none text-lg bg-gradient-to-br from-blue-600 to-blue-400"
         onClick={onClick}
       >
         {loading ? (

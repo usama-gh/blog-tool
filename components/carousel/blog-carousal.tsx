@@ -201,7 +201,7 @@ const Carousel = ({ data, siteData, lead }: any) => {
 
               {/* showing adjacent posts */}
               {data.adjacentPosts.length > 0 && (
-                <div className="scrollbar-thumb-rounded-full scrollbar-track-rounded-full relative mx-auto w-9/12 min-w-full  overflow-y-auto bg-slate-200 pb-[120px] pt-40 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-gray-200 dark:bg-gray-900 dark:scrollbar-thumb-gray-800">
+                <div className="h-screen scrollbar-thumb-rounded-full scrollbar-track-rounded-full relative mx-auto w-9/12 min-w-full  overflow-y-auto bg-slate-200 pb-[120px] pt-40 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-gray-200 dark:bg-gray-900 dark:scrollbar-thumb-gray-800">
                   <p className="mx-auto mb-10 mb-8 max-w-2xl pb-8 text-center text-4xl font-bold tracking-tight  text-slate-800 dark:bg-gray-900 dark:text-gray-100">
                     Thank you for reading! For more insights & stories, check
                     out my other posts.

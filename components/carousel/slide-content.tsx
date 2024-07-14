@@ -40,7 +40,7 @@ const SlideContent = ({
 
   return (
     <>
-      <div className="w-full">
+      <div className="w-full relative">
         {style?.bgImage && (
           <Image
             alt="Mountains"
@@ -72,7 +72,7 @@ const SlideContent = ({
 
         <div
           className={cn(
-            "h-screen overflow-y-auto scrollbar-thumb-rounded-full scrollbar-track-rounded-full relative z-20  flex w-full items-start justify-start my-auto  py-10 pt-20 text-slate-600 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-gray-200 dark:text-gray-400 dark:scrollbar-thumb-gray-800 [&>*]:rounded-xl [&>*]:text-lg ",
+            "h-screen overflow-y-auto scrollbar-thumb-rounded-full scrollbar-track-rounded-full relative z-20  flex w-full items-center justify-start my-auto  py-10 pt-20 text-slate-600 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-gray-200 dark:text-gray-400 dark:scrollbar-thumb-gray-800 [&>*]:rounded-xl [&>*]:text-lg ",
             (isGateSlide || isLeadSlide) && "flex-col",
           )}
         >
@@ -89,6 +89,7 @@ const SlideContent = ({
                   />
                 </>
               ) : (
+                <div className="mx-4">
                 <div className="mx-auto mb-12 max-w-xl rounded-2xl border-2 border-blue-400 px-6 py-6 text-center shadow-md shadow-blue-200/40">
                   {/* <div className="absolute top-0 left-0 h-full w-full  bg-white">
                   
@@ -110,6 +111,7 @@ const SlideContent = ({
                       Continue
                     </button>
                   </div>
+                </div>
                 </div>
               )}
             </>
