@@ -228,7 +228,7 @@ export default function Nav({ children }: { children: ReactNode }) {
               href="/"
               className="rounded-lg p-2 hover:bg-gray-200 dark:hover:bg-gray-700"
             >
-              <h3 className="text-sm font-semibold uppercase tracking-widest text-slate-800 dark:text-white">
+              <h3 className="text-md font-bold uppercase tracking-tight text-slate-800 dark:text-white">
                 Typedd
               </h3>
               {/* <Image
@@ -241,34 +241,34 @@ export default function Nav({ children }: { children: ReactNode }) {
             </Link>
             <ThemeToggle />
           </div>
-          <div className="grid gap-1">
+          <div className="grid gap-0.5">
             {tabs.map(({ name, href, isActive, icon }) => (
               <Link
                 key={name}
                 href={href}
                 className={`flex items-center space-x-3 ${
                   isActive ? "bg-slate-200 text-black dark:bg-gray-800" : ""
-                } rounded-lg px-2 py-1.5 transition-all duration-150 ease-in-out hover:bg-slate-200 active:bg-slate-300 dark:text-white dark:hover:bg-gray-700 dark:active:bg-gray-800`}
+                } rounded-lg px-2 py-0.5 transition-all duration-150 ease-in-out hover:bg-slate-200 active:bg-slate-300 dark:text-white dark:hover:bg-gray-700 dark:active:bg-gray-800`}
               >
                 {icon}
-                <span className="text-sm font-medium">{name}</span>
+                <span className="text-xs font-medium">{name}</span>
               </Link>
             ))}
           </div>
         </div>
         <div>
-          <div className="grid gap-1">
+          <div className="grid gap-0.5">
             {externalLinks.map(({ name, href, icon }) => (
               <a
                 key={name}
                 href={href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center justify-between rounded-lg px-2 py-1.5 transition-all duration-150 ease-in-out hover:bg-slate-200 active:bg-slate-300 dark:text-white dark:hover:bg-gray-700 dark:active:bg-gray-800"
+                className="flex items-center justify-between rounded-lg px-2 py-0.5 transition-all duration-150 ease-in-out hover:bg-slate-200 active:bg-slate-300 dark:text-white dark:hover:bg-gray-700 dark:active:bg-gray-800"
               >
                 <div className="flex items-center space-x-3">
                   {icon}
-                  <span className="text-sm font-medium">{name}</span>
+                  <span className="text-xs font-medium">{name}</span>
                 </div>
                 <p>↗</p>
               </a>

@@ -25,11 +25,11 @@ export default function Plan({ plan, isCurrentPlan, email }: Props) {
       <div className="flex justify-between border-b border-slate-300 p-6 dark:border-gray-700">
         <div className="flex flex-col">
           <h4 className="text-2xl font-bold dark:text-white">{plan.name}</h4>
-          <span className="text-md text-gray-400 dark:text-white">
+          <span className="text-sm text-gray-600 dark:text-white">
             {plan.payType}
           </span>
         </div>
-        <p className="text-3xl text-gray-500 dark:text-white">${plan.price}</p>
+        <p className="text-3xl font-semibold text-gray-900 dark:text-white">${plan.price}</p>
       </div>
       {/* plan specifications */}
       <div className="p-5 pb-0">

@@ -5,6 +5,7 @@ import { plans } from "@/data";
 import { getSession } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import prisma from "@/lib/prisma";
+import Image from "next/image";
 import { getUserPlanAnalytics } from "@/lib/fetchers";
 
 export default async function Plans() {
@@ -40,6 +41,30 @@ export default async function Plans() {
               email={session.user.email}
             />
           ))}
+          <div className="flex items-center justify-center">
+          <div className="flex flex-col justify-center items-center">
+              <h3 className="text-sm italic max-w-lg text-gray-800 dark:text-white tracking-wide mb-4">One of our customer says</h3>
+
+              <div
+                className="aspect-auto p-8 border border-gray-100 rounded-3xl bg-white dark:bg-gray-800 dark:border-gray-700 shadow-2xl shadow-gray-600/10 dark:shadow-none">
+                <div className="flex gap-4">
+                    <img className="w-12 h-12 rounded-full" src="https://typedd.com/wp-content/uploads/2023/12/image-5-e1702754608163.jpg" alt="user avatar" width="400" height="400" loading="lazy"/>
+                    <div>
+                        <h6 className="text-lg font-medium text-gray-700 dark:text-white">Donald Chan</h6>
+                        <p className="text-sm text-gray-500 dark:text-gray-300">Founder & CEO</p>
+                    </div>
+                </div>
+                <p className="mt-8">Rather than let those posts disappear into the void, you can extend their shelf life by curating them onto a Typedd blog & <strong>build a new audience</strong> through it.<br/><br/> So your content gets a second wind in the form of <strong>SEO</strong> traffic.
+                </p>
+            </div>
+
+          </div>
+        
+
+            
+       
+
+          </div>
         </div>
         {/* Grid End */}
 

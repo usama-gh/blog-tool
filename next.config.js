@@ -70,6 +70,11 @@ module.exports = {
         pathname: "**",
       },
       {
+        protocol:"https",
+        hostname:"typedd.com",
+        pathname: "**",
+      },
+      {
         protocol: "https",
         hostname: "images.pexels.com",
         pathname: "**",

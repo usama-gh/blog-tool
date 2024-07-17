@@ -34,7 +34,7 @@ export default function PostCard({
           )}
         </div>
         <div className="p-4">
-          <h3 className="font-inter my-0 truncate text-xl font-bold tracking-wide dark:text-white">
+          <h3 className="font-inter my-0 text-xl font-bold tracking-normal dark:text-white">
             {data.title}
           </h3>
           <p className="mt-2 line-clamp-1 text-sm font-normal leading-snug text-slate-500 dark:text-gray-400">

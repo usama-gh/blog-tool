@@ -21,7 +21,7 @@ export default function PlanUsage({ title, planLimit, usage }: Props) {
 
       {/* plan usage statistic */}
       <div className="mt-auto p-8">
-        <h4 className="text-2xl font-medium text-gray-400 dark:text-white">
+        <h4 className="text-2xl font-medium text-gray-800 dark:text-white">
           {usage}
           {title === "website created" && `/${planLimit}`}
         </h4>
