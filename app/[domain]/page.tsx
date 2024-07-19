@@ -32,7 +32,7 @@ export default async function SiteHomePage({
     getPostsForSite(params.domain),
     getLeadsForSite(params.domain),
   ]);
-  const imageSrc = isDefaultImage(posts[0].image) ? "" : posts[0].image || "";
+  const imageSrc = isDefaultImage(posts[0]?.image) ? "" : posts[0]?.image || "";
 
   if (!data) {
     notFound();
