@@ -29,6 +29,7 @@ import { triggerEvent } from "./usermaven";
 import { useSession } from "next-auth/react";
 import { isUserAdmin } from "@/lib/utils";
 import { ThemeToggle } from "./theme-toggle";
+import { ToyBrick } from "lucide-react";
 
 const externalLinks = [
   {
@@ -100,6 +101,12 @@ export default function Nav({ children }: { children: ReactNode }) {
           href: `/site/${id}/subscribers`,
           isActive: segments.includes("subscribers"),
           icon: <Users width={18} />,
+        },
+        {
+          name: "Integrations",
+          href: `/site/${id}/integrations`,
+          isActive: segments.includes("integrations"),
+          icon: <ToyBrick width={18} />,
         },
         {
           name: "Analytics",

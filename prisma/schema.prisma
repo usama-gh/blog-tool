@@ -217,6 +217,7 @@ model Integration {
   type       String
   apiKey     String?
   audienceId String?
+  webhookUrl String?
   active     Boolean
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt

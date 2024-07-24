@@ -1,7 +1,7 @@
 "use client";
 
 import { Lead } from "@prisma/client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import LoadingDots from "./icons/loading-dots";
 import { r2Asset } from "@/lib/utils";
@@ -9,9 +9,11 @@ import { addSubscriberToIntegrations } from "@/lib/actions";
 
 export const LeadDownload = ({
   postId,
+  postTitle,
   lead,
 }: {
   postId: string;
+  postTitle?: string;
   lead: Lead;
 }) => {
   const [isCollected, setIsCollected] = useState<boolean>(false);
@@ -23,9 +25,19 @@ export const LeadDownload = ({
     firstName: "",
     lastName: "",
     email: "",
+    source: postTitle ? "gated_content" : "lead_magnet",
+    sourceTitle: postTitle ?? lead.title,
+    websiteUrl: "",
   });
 
   const [showName, setShowName] = useState(false);
+
+  useEffect(() => {
+    setData({
+      ...data,
+      websiteUrl: window.location.href,
+    });
+  }, []);
 
   const handleSubscribeClick = () => {
     if (!data.email) {
@@ -53,6 +65,7 @@ export const LeadDownload = ({
       });
 
       const resData = await res.json();
+
       if (resData.success && lead.delivery === "file") {
         const link = document.createElement("a");
         link.href = r2Asset(lead.file!);
@@ -63,6 +76,7 @@ export const LeadDownload = ({
       }
 
       setData({
+        ...data,
         name: "",
         firstName: "",
         lastName: "",
@@ -122,52 +136,48 @@ export const LeadDownload = ({
             handleDownload(e);
           }}
         >
-          <div className="w-full mt-5 flex items-center gap-3 bg-blue-100 dark:bg-gray-900 px-8 py-6 rounded-xl shadow-xl ">
-
-          {!showName && (     
-            <div className="flex items-center gap-3 flex-col lg:flex-row">       
-          <p className="pr-2 text-md tracking-tight">Enter your email</p>
-            <input
-              name="name"
-              type="email"
-              placeholder="Enter your email"
-              // onChange={(e) => setEmail(e.target.value)}
-              value={data.email}
-              onChange={(e) => setData({ ...data, email: e.target.value })}
-              required
-              className="w-full flex-1 rounded-md border border-slate-200 bg-slate-50 px-4 py-2 text-lg text-slate-600 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-blue-400 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-300 dark:focus:ring-white"
-            />
-            <DownloadLeadButton
-              type="button"
-              loading={loading}
-              btnText={lead.buttonCta as string}
-              onClick={handleSubscribeClick}
-            />
-            </div>
-          )}
-{showName && (
-            <div className=" flex gap-3 items-center flex-col lg:flex-row">
-                <p className="pr-2 text-md tracking-tight">Enter your name</p>
-              <input
-                name="name"
-                type="text"
-                placeholder="Enter your full name"
-                value={data.name}
-                onChange={handleNameChange}
-                required
-                className="w-full flex-1 rounded-md border border-slate-200 bg-slate-50 px-4 py-2 text-lg text-slate-600 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-blue-400 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-300 dark:focus:ring-white"
-              />
-              <DownloadLeadButton
-                type="submit"
-                loading={loading}
-                btnText={"Download"}
-              />
-            </div>
-          )}
-
+          <div className="mt-5 flex w-full items-center gap-3 rounded-xl bg-blue-100 px-8 py-6 shadow-xl dark:bg-gray-900 ">
+            {!showName && (
+              <div className="flex flex-col items-center gap-3 lg:flex-row">
+                <p className="text-md pr-2 tracking-tight">Enter your email</p>
+                <input
+                  name="name"
+                  type="email"
+                  placeholder="Enter your email"
+                  // onChange={(e) => setEmail(e.target.value)}
+                  value={data.email}
+                  onChange={(e) => setData({ ...data, email: e.target.value })}
+                  required
+                  className="w-full flex-1 rounded-md border border-slate-200 bg-slate-50 px-4 py-2 text-lg text-slate-600 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-blue-400 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-300 dark:focus:ring-white"
+                />
+                <DownloadLeadButton
+                  type="button"
+                  loading={loading}
+                  btnText={lead.buttonCta as string}
+                  onClick={handleSubscribeClick}
+                />
+              </div>
+            )}
+            {showName && (
+              <div className=" flex flex-col items-center gap-3 lg:flex-row">
+                <p className="text-md pr-2 tracking-tight">Enter your name</p>
+                <input
+                  name="name"
+                  type="text"
+                  placeholder="Enter your full name"
+                  value={data.name}
+                  onChange={handleNameChange}
+                  required
+                  className="w-full flex-1 rounded-md border border-slate-200 bg-slate-50 px-4 py-2 text-lg text-slate-600 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-blue-400 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-300 dark:focus:ring-white"
+                />
+                <DownloadLeadButton
+                  type="submit"
+                  loading={loading}
+                  btnText={"Download"}
+                />
+              </div>
+            )}
           </div>
-
-      
         </form>
       ) : (
         <form
@@ -203,7 +213,7 @@ function DownloadLeadButton({
       <button
         type={type}
         disabled={loading}
-        className="flex tracking-wide items-center justify-center space-x-2 rounded-lg px-5 py-2 font-regular text-white shadow-lg shadow-blue-800/10 transition-all hover:shadow-blue-800/20 focus:outline-none text-lg bg-gradient-to-br from-blue-600 to-blue-400"
+        className="font-regular flex items-center justify-center space-x-2 rounded-lg bg-gradient-to-br from-blue-600 to-blue-400 px-5 py-2 text-lg tracking-wide text-white shadow-lg shadow-blue-800/10 transition-all hover:shadow-blue-800/20 focus:outline-none"
         onClick={onClick}
       >
         {loading ? (

@@ -146,8 +146,10 @@ export function r2Asset(fileName: string) {
 }
 
 export function isDefaultImage(image: string | null) {
-  return (
-    image ===
-    "https://ige9ec25vizexnyy.public.blob.vercel-storage.com/tQidqrn-Z2Nd3W4IJXq3XBZZMOllnA06WIkhlq.jpeg"
-  );
+  const defaultImages = [
+    "https://public.blob.vercel-storage.com/eEZHAoPTOBSYGBE3/JRajRyC-PhBHEinQkupt02jqfKacBVHLWJq7Iy.png",
+    "https://ige9ec25vizexnyy.public.blob.vercel-storage.com/tQidqrn-Z2Nd3W4IJXq3XBZZMOllnA06WIkhlq.jpeg",
+  ];
+
+  return defaultImages.includes(image as string);
 }

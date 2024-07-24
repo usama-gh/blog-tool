@@ -966,6 +966,7 @@ export const createSiteIntegeration = async (data: IntegrationData) => {
         type: data.type,
         apiKey: data.apiKey,
         audienceId: data.audienceId,
+        webhookUrl: data.webhookUrl,
         active: data.active,
         user: {
           connect: {
@@ -1015,6 +1016,7 @@ export const updateSiteIntegeration = withIntegrationAuth(
           type: data.type,
           apiKey: data.apiKey,
           audienceId: data.audienceId,
+          webhookUrl: data.webhookUrl,
           active: data.active,
           user: {
             connect: {
@@ -1078,6 +1080,7 @@ export const addSubscriberToIntegrations = async (
 ) => {
   try {
     let integrations: Integration[] | [] = [];
+    let site: Site | null = null;
 
     if (key === "domain") {
       const subdomain = searchKey.endsWith(
@@ -1086,25 +1089,46 @@ export const addSubscriberToIntegrations = async (
         ? searchKey.replace(`.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`, "")
         : null;
 
+      // fetch integration data
       integrations = await prisma.integration.findMany({
         where: {
           site: subdomain ? { subdomain } : { customDomain: searchKey },
           active: true,
         },
       });
+      // fetch site data
+      site = await prisma.site.findUnique({
+        where: subdomain ? { subdomain } : { customDomain: searchKey },
+      });
     } else if (key === "siteId") {
+      // fetch integration data
       integrations = await prisma.integration.findMany({
         where: {
           site: { id: searchKey },
           active: true,
         },
       });
+
+      // fetch site data
+      site = await prisma.site.findUnique({
+        where: {
+          id: searchKey,
+        },
+      });
     }
+
+    const url: string = site?.customDomain
+      ? site?.customDomain
+      : `${site?.subdomain}. ${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`;
 
     const resendIntegration = integrations.find(
       (integration) => integration.type === "resend" && integration.active,
     );
+    const zapierIntegration = integrations.find(
+      (integration) => integration.type === "zapier" && integration.active,
+    );
 
+    // send data to resend integration
     if (resendIntegration) {
       const resend = new Resend(resendIntegration.apiKey as string);
       await resend.contacts.create({
@@ -1112,6 +1136,36 @@ export const addSubscriberToIntegrations = async (
         unsubscribed: false,
         audienceId: resendIntegration.audienceId as string,
       });
+    }
+
+    // send data to zapier integration
+    if (zapierIntegration) {
+      const date = new Date();
+
+      // sending data to zapier integration using fetch API
+      const zapierRequest = await fetch(
+        zapierIntegration.webhookUrl as string,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            source: data.source ?? "subscribe_form",
+            source_title: data.sourceTitle ?? "Subscribe Form",
+            lead_email: data.email,
+            lead_first_name: data.firstName,
+            lead_second_name: data.lastName,
+            date: new Date(),
+            // date: `${date.getDate()}-${
+            //   date.getMonth() + 1
+            // }-${date.getFullYear()}`,
+            website_url: data.websiteUrl ?? url,
+          }),
+        },
+      );
+      // const response = await zapierRequest.json();
+      // console.log("zapier response: " + JSON.stringify(response));
     }
 
     return true;

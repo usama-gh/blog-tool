@@ -120,7 +120,7 @@ const Carousel = ({ data, siteData, lead }: any) => {
   return (
     <>
       <div className="relative" {...swipeHandlers}>
-        <div className="absolute z-50 w-full top-0 flex bg-transparent list-none justify-around gap-x-4">
+        <div className="absolute top-0 z-50 flex w-full list-none justify-around gap-x-4 bg-transparent">
           {scrollSnaps.map((_, index: number) => (
             <DotButton
               key={index}
@@ -131,12 +131,10 @@ const Carousel = ({ data, siteData, lead }: any) => {
           ))}
         </div>
         <div className="mx-auto flex items-center ">
-    
           <div className=" w-full overflow-hidden" ref={viewportRef}>
             <div className="flex ">
               <div className="relative min-w-full  text-slate-50 dark:text-gray-400 ">
-
-              {contentStyling?.bgImage && (
+                {contentStyling?.bgImage && (
                   <Image
                     alt="Mountains"
                     src={contentStyling?.bgImage}
@@ -165,21 +163,19 @@ const Carousel = ({ data, siteData, lead }: any) => {
                   }`}
                 ></div>
 
-                <div className="h-screen overflow-y-auto scrollbar-thumb-rounded-full scrollbar-track-rounded-full relative z-20  flex w-full items-start justify-center  py-10 pt-20 text-slate-600 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-gray-200 dark:text-gray-400 dark:scrollbar-thumb-gray-800 [&>*]:rounded-xl [&>*]:text-lg ">
+                <div className="scrollbar-thumb-rounded-full scrollbar-track-rounded-full relative z-20 flex h-screen  w-full items-start justify-center overflow-y-auto  py-10 pt-20 text-slate-600 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-gray-200 dark:text-gray-400 dark:scrollbar-thumb-gray-800 [&>*]:rounded-xl [&>*]:text-lg ">
                   <MDX source={data.mdxSource} />
                 </div>
               </div>
 
               {data.slides &&
                 JSON.parse(data.slides).map((value: string, index: number) => (
-                  <div
-                    className={`relative min-w-full`}
-                    key={`slide-${index}`}
-                  >
+                  <div className={`relative min-w-full`} key={`slide-${index}`}>
                     <SlideContent
                       key={index + 1}
                       index={index + 1}
                       postId={data.id}
+                      postTitle={data.title}
                       content={data.slidesMdxSource[index]}
                       style={stylings.find(
                         (item: SlideStyle) => item.id == index + 1,
@@ -192,16 +188,12 @@ const Carousel = ({ data, siteData, lead }: any) => {
                       leadSlide={data.leadSlide}
                       lead={lead}
                     />
-
-              
                   </div>
                 ))}
 
-            
-
               {/* showing adjacent posts */}
               {data.adjacentPosts.length > 0 && (
-                <div className="h-screen scrollbar-thumb-rounded-full scrollbar-track-rounded-full relative mx-auto w-9/12 min-w-full  overflow-y-auto bg-slate-200 pb-[120px] pt-40 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-gray-200 dark:bg-gray-900 dark:scrollbar-thumb-gray-800">
+                <div className="scrollbar-thumb-rounded-full scrollbar-track-rounded-full relative mx-auto h-screen w-9/12 min-w-full  overflow-y-auto bg-slate-200 pb-[120px] pt-40 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-gray-200 dark:bg-gray-900 dark:scrollbar-thumb-gray-800">
                   <p className="mx-auto mb-10 mb-8 max-w-2xl pb-8 text-center text-4xl font-bold tracking-tight  text-slate-800 dark:bg-gray-900 dark:text-gray-100">
                     Thank you for reading! For more insights & stories, check
                     out my other posts.
@@ -211,7 +203,7 @@ const Carousel = ({ data, siteData, lead }: any) => {
                     <div className="container mx-auto flex max-w-6xl flex-wrap items-start  gap-x-4 lg:flex-nowrap">
                       <div className="mb-10  pb-10 md:mb-0 md:w-4/12">
                         <div className=" flex flex-col gap-y-4">
-                          <div className="flex flex-col items-start justify-start rounded-3xl bg-white dark:bg-gray-700 p-5">
+                          <div className="flex flex-col items-start justify-start rounded-3xl bg-white p-5 dark:bg-gray-700">
                             <div className="h-[70px] w-[70px] overflow-hidden rounded-full">
                               {siteData?.logo ? (
                                 <BlurImage

@@ -1,21 +1,12 @@
 import { getSession } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import Subscribers from "@/components/subscribers";
-import IntegrationButton from "@/components/integration-button";
-import ResendIntegrationModal from "@/components/modal/resend-integration";
-import { getSiteIntegrations } from "@/lib/fetchers";
-import { Integration } from "@prisma/client";
 
 async function Subscibers({ params }: { params: { id: string } }) {
   const session = await getSession();
   if (!session) {
     redirect("/login");
   }
-
-  const integrations = await getSiteIntegrations(params.id);
-  const resendIntegration = integrations?.find(
-    (integration: Integration) => integration.type === "resend",
-  );
 
   return (
     <>
@@ -29,10 +20,6 @@ async function Subscibers({ params }: { params: { id: string } }) {
               List of people who are subscribed to your posts
             </p>
           </div>
-
-          <IntegrationButton>
-            <ResendIntegrationModal integration={resendIntegration} />
-          </IntegrationButton>
         </div>
       </div>
 

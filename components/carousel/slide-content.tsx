@@ -12,6 +12,7 @@ import { LeadDownload } from "../lead-download";
 
 const SlideContent = ({
   postId,
+  postTitle,
   index,
   content,
   style,
@@ -25,6 +26,7 @@ const SlideContent = ({
 }: {
   index: number;
   postId: string;
+  postTitle: string;
   content: any;
   style: SlideStyle | undefined;
   gateSlide: gateSlide | undefined;
@@ -40,7 +42,7 @@ const SlideContent = ({
 
   return (
     <>
-      <div className="w-full relative">
+      <div className="relative w-full">
         {style?.bgImage && (
           <Image
             alt="Mountains"
@@ -72,7 +74,7 @@ const SlideContent = ({
 
         <div
           className={cn(
-            "h-screen overflow-y-auto scrollbar-thumb-rounded-full scrollbar-track-rounded-full relative z-20  flex w-full items-center justify-start my-auto  py-10 pt-20 text-slate-600 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-gray-200 dark:text-gray-400 dark:scrollbar-thumb-gray-800 [&>*]:rounded-xl [&>*]:text-lg ",
+            "scrollbar-thumb-rounded-full scrollbar-track-rounded-full relative z-20 my-auto flex  h-screen w-full items-center justify-start overflow-y-auto  py-10 pt-20 text-slate-600 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-gray-200 dark:text-gray-400 dark:scrollbar-thumb-gray-800 [&>*]:rounded-xl [&>*]:text-lg ",
             (isGateSlide || isLeadSlide) && "flex-col",
           )}
         >
@@ -84,41 +86,42 @@ const SlideContent = ({
                   <UnblockSlides
                     postId={postId}
                     siteId={siteId}
+                    postTitle={postTitle}
                     gateSlide={gateSlide}
                     setGateSlideUnblock={setGateSlideUnblock}
                   />
                 </>
               ) : (
                 <div className="mx-4">
-                <div className="mx-auto mb-12 max-w-xl rounded-2xl border-2 border-blue-400 px-6 py-6 text-center shadow-md shadow-blue-200/40">
-                  {/* <div className="absolute top-0 left-0 h-full w-full  bg-white">
+                  <div className="mx-auto mb-12 max-w-xl rounded-2xl border-2 border-blue-400 px-6 py-6 text-center shadow-md shadow-blue-200/40">
+                    {/* <div className="absolute top-0 left-0 h-full w-full  bg-white">
                   
                   </div> */}
-                  <div className="relative z-20">
-                    <Sparkles
-                      strokeWidth={"1.2px"}
-                      size={80}
-                      className="mx-auto text-blue-400"
-                    />
-                    <h4 className="inline-block bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text pb-4 text-center text-5xl font-bold tracking-tight text-transparent">
-                      You've unlocked your exclusive content
-                    </h4>
-                    <button
-                      type="submit"
-                      className="inline-flex items-center gap-x-2 rounded-lg bg-gradient-to-tr from-blue-400 to-blue-600	 px-6  py-2 text-sm  font-semibold uppercase tracking-wide text-white shadow-lg shadow-blue-600/20 transition-all hover:shadow-blue-500/50 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
-                      onClick={scrollNext}
-                    >
-                      Continue
-                    </button>
+                    <div className="relative z-20">
+                      <Sparkles
+                        strokeWidth={"1.2px"}
+                        size={80}
+                        className="mx-auto text-blue-400"
+                      />
+                      <h4 className="inline-block bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text pb-4 text-center text-5xl font-bold tracking-tight text-transparent">
+                        You've unlocked your exclusive content
+                      </h4>
+                      <button
+                        type="submit"
+                        className="inline-flex items-center gap-x-2 rounded-lg bg-gradient-to-tr from-blue-400 to-blue-600	 px-6  py-2 text-sm  font-semibold uppercase tracking-wide text-white shadow-lg shadow-blue-600/20 transition-all hover:shadow-blue-500/50 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
+                        onClick={scrollNext}
+                      >
+                        Continue
+                      </button>
+                    </div>
                   </div>
-                </div>
                 </div>
               )}
             </>
           ) : isLeadSlide && lead ? (
             <>
               <MDX source={content} gated={true} />
-              <LeadDownload postId={postId} lead={lead} />
+              <LeadDownload postId={postId} lead={lead} postTitle={postTitle} />
             </>
           ) : (
             <MDX source={content} />

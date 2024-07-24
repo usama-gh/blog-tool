@@ -28,6 +28,7 @@ export const Subscribe = ({
     firstName: "",
     lastName: "",
     email: "",
+    source: "subscribe_form",
   });
 
   const [showName, setShowName] = useState(false);
@@ -63,6 +64,7 @@ export const Subscribe = ({
     } else {
       toast.success(response.message);
       setData({
+        ...data,
         name: "",
         firstName: "",
         lastName: "",

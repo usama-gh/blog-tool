@@ -2,7 +2,7 @@
 
 import { Lead } from "@prisma/client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import LoadingDots from "./icons/loading-dots";
 import { gateSlide } from "@/types";
@@ -11,11 +11,13 @@ import { addSubscriberToIntegrations } from "@/lib/actions";
 export const UnblockSlides = ({
   postId,
   siteId,
+  postTitle,
   gateSlide,
   setGateSlideUnblock,
 }: {
   postId: string;
   siteId: string;
+  postTitle?: string;
   gateSlide: gateSlide;
   setGateSlideUnblock: any;
 }) => {
@@ -28,9 +30,19 @@ export const UnblockSlides = ({
     firstName: "",
     lastName: "",
     email: "",
+    source: "gated_content",
+    sourceTitle: postTitle,
+    websiteUrl: "",
   });
 
   const [showName, setShowName] = useState(false);
+
+  useEffect(() => {
+    setData({
+      ...data,
+      websiteUrl: window.location.href,
+    });
+  }, []);
 
   const handleSubscribeClick = () => {
     if (!data.email) {
@@ -92,7 +104,7 @@ export const UnblockSlides = ({
   }
 
   return (
-    <div className="mb-[80px] bg-blue-100 dark:bg-gray-900 mx-auto flex  shadow-xl px-8 py-6 items-center justify-center">
+    <div className="mx-auto mb-[80px] flex items-center justify-center  bg-blue-100 px-8 py-6 shadow-xl dark:bg-gray-900">
       <>
         {gateSlide.type === "email" ? (
           <div>
@@ -102,30 +114,33 @@ export const UnblockSlides = ({
                 handleSubscribe(e);
               }}
             >
-
-{!showName && (
-              <div className="flex items-center gap-3 lg:flex-row flex-col">
-                <p className="pr-2 text-md tracking-tight">Enter your email</p>
-                <input
-                  name="email"
-                  type="email"
-                  placeholder="Your Email"
-                  value={data.email}
-                  onChange={(e) => setData({ ...data, email: e.target.value })}
-                  required
-                  className="text-base w-full flex-1 rounded-md border border-slate-200 bg-slate-50 px-4 py-2 text-slate-600 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-blue-400 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-300 dark:focus:ring-white lg:text-lg"
-                />
-                <Button
-                  type="button"
-                  loading={loading}
-                  btnText="Unlock"
-                  onClick={handleSubscribeClick}
-                />
-              </div>
-)}
+              {!showName && (
+                <div className="flex flex-col items-center gap-3 lg:flex-row">
+                  <p className="text-md pr-2 tracking-tight">
+                    Enter your email
+                  </p>
+                  <input
+                    name="email"
+                    type="email"
+                    placeholder="Your Email"
+                    value={data.email}
+                    onChange={(e) =>
+                      setData({ ...data, email: e.target.value })
+                    }
+                    required
+                    className="w-full flex-1 rounded-md border border-slate-200 bg-slate-50 px-4 py-2 text-base text-slate-600 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-blue-400 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-300 dark:focus:ring-white lg:text-lg"
+                  />
+                  <Button
+                    type="button"
+                    loading={loading}
+                    btnText="Unlock"
+                    onClick={handleSubscribeClick}
+                  />
+                </div>
+              )}
               {showName && (
                 <div className="flex items-center gap-3">
-                   <p className="pr-2 text-md tracking-tight">Enter your name</p>
+                  <p className="text-md pr-2 tracking-tight">Enter your name</p>
                   <input
                     name="name"
                     type="text"
@@ -133,7 +148,7 @@ export const UnblockSlides = ({
                     value={data.name}
                     onChange={handleNameChange}
                     required
-                    className="text-base w-full flex-1 rounded-md border border-slate-200 bg-slate-50 px-4 py-2 text-slate-600 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-blue-400 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-300 dark:focus:ring-white lg:text-lg"
+                    className="w-full flex-1 rounded-md border border-slate-200 bg-slate-50 px-4 py-2 text-base text-slate-600 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-blue-400 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-300 dark:focus:ring-white lg:text-lg"
                   />
                   <Button type="submit" loading={loading} btnText="Unlock" />
                 </div>
@@ -171,7 +186,7 @@ function Button({
       <button
         type={type}
         disabled={loading}
-        className="flex tracking-wide items-center justify-center space-x-2 rounded-lg px-5 py-2 text-lg font-regular text-white shadow-lg shadow-blue-800/10 transition-all hover:shadow-blue-800/20 focus:outline-none bg-gradient-to-br from-blue-600 to-blue-400"
+        className="font-regular flex items-center justify-center space-x-2 rounded-lg bg-gradient-to-br from-blue-600 to-blue-400 px-5 py-2 text-lg tracking-wide text-white shadow-lg shadow-blue-800/10 transition-all hover:shadow-blue-800/20 focus:outline-none"
         onClick={onClick}
       >
         {loading ? (

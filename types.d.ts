@@ -31,8 +31,10 @@ interface LeadData {
 interface IntegrationData {
   siteId: string;
   type: string;
-  apiKey: string;
-  audienceId: string;
+  apiKey?: string;
+  audienceId?: string;
+  audienceId?: string;
+  webhookUrl?: string;
   active: boolean;
 }
 
@@ -40,6 +42,9 @@ interface AddIntegrationData {
   firstName: string;
   lastName: string;
   email: string;
+  source?: string;
+  sourceTitle?: string;
+  websiteUrl?: string;
 }
 
 interface SubscribeData {

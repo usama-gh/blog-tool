@@ -171,7 +171,7 @@ export default async function SiteHomePage({
                         <div>
                           <button
                             className={cn(
-                              "text-md rounded-full border px-4 py-1 text-center relative z-20",
+                              "text-md relative z-20 rounded-full border px-4 py-1 text-center",
                               isDefaultImage(posts[0].image)
                                 ? "border-slate-500 text-slate-500 hover:border-slate-700 hover:text-slate-600 dark:border-gray-400 dark:bg-transparent dark:text-gray-400 dark:hover:border-gray-300 dark:hover:text-gray-300"
                                 : "border-white bg-white text-black",
