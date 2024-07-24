@@ -622,7 +622,7 @@ export default function Editor({
 
   // send post to zapier
   async function handleSendPostToZapier() {
-    if (zapier) {
+    if (zapier?.postWebhookUrl) {
       setSendingZapier(true);
       await sendPostToZapier(zapier.postWebhookUrl as string, {
         title: data.title!,
@@ -665,7 +665,7 @@ export default function Editor({
             type="leadId"
           />
         </LeadButton> */}
-        {zapier && (
+        {zapier?.postWebhookUrl && (
           <button
             className={cn(
               "flex items-center justify-center  space-x-2 rounded-lg px-5 py-2  text-xs font-semibold text-white shadow-lg shadow-blue-800/10  transition-all hover:shadow-blue-800/20 focus:outline-none lg:text-lg",
@@ -705,7 +705,11 @@ export default function Editor({
               );
 
               // send post to zapier if post is not published
-              if (zapier && !data.published) {
+              if (
+                zapier?.postWebhookActive &&
+                zapier?.postWebhookUrl &&
+                !data.published
+              ) {
                 await sendPostToZapier(zapier.postWebhookUrl as string, {
                   title: data.title!,
                   slug: data.slug!,

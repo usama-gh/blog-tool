@@ -45,7 +45,6 @@ export default async function PostPage({ params }: { params: { id: string } }) {
     where: {
       siteId: data.siteId as string,
       type: "zapier",
-      postWebhookActive: true,
     },
   });
 
