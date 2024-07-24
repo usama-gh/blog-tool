@@ -40,13 +40,25 @@ export default async function PostPage({ params }: { params: { id: string } }) {
       siteId: data.siteId as string,
     },
   });
-  
+
+  const zapierIntegration = await prisma.integration.findFirst({
+    where: {
+      siteId: data.siteId as string,
+      type: "zapier",
+      postWebhookActive: true,
+    },
+  });
 
   return (
     <>
       <div className="flex flex-wrap justify-between gap-y-2">
         <div className="w-full px-2 lg:px-4">
-          <Editor post={data} canUseAI={canUseAI} leads={leads} />
+          <Editor
+            post={data}
+            canUseAI={canUseAI}
+            leads={leads}
+            zapier={zapierIntegration}
+          />
         </div>
         <div className="mb-10  ml-auto mt-10 px-2 lg:px-4 xl:mb-0">
           <div className="flex flex-col space-y-6">

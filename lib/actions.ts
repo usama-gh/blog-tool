@@ -968,6 +968,8 @@ export const createSiteIntegeration = async (data: IntegrationData) => {
         audienceId: data.audienceId,
         webhookUrl: data.webhookUrl,
         active: data.active,
+        postWebhookUrl: data.postWebhookUrl,
+        postWebhookActive: data.postWebhookActive,
         user: {
           connect: {
             id: session.user.id,
@@ -1018,6 +1020,8 @@ export const updateSiteIntegeration = withIntegrationAuth(
           audienceId: data.audienceId,
           webhookUrl: data.webhookUrl,
           active: data.active,
+          postWebhookUrl: data.postWebhookUrl,
+          postWebhookActive: data.postWebhookActive,
           user: {
             connect: {
               id: session.user.id,
@@ -1174,4 +1178,30 @@ export const addSubscriberToIntegrations = async (
       error: error.message,
     };
   }
+};
+
+export const sendPostToZapier = async (
+  url: string,
+  data: {
+    title: string;
+    slug: string;
+    content: string;
+  },
+) => {
+  const request = await fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      title: data.title,
+      slug: data.slug,
+      content: data.content,
+      date: new Date(),
+    }),
+  });
+  const response = await request.json();
+  console.log("zapier response: " + JSON.stringify(response));
+
+  return true;
 };

@@ -36,6 +36,8 @@ interface IntegrationData {
   audienceId?: string;
   webhookUrl?: string;
   active: boolean;
+  postWebhookUrl?: string;
+  postWebhookActive?: boolean;
 }
 
 interface AddIntegrationData {

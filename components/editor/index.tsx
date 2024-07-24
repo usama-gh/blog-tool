@@ -11,8 +11,12 @@ import PostForm from "@/components/form/post-form";
 import { toast } from "sonner";
 import TextareaAutosize from "react-textarea-autosize";
 import { EditorBubbleMenu } from "./bubble-menu";
-import { Lead, Post } from "@prisma/client";
-import { updatePost, updatePostMetadata } from "@/lib/actions";
+import { Integration, Lead, Post } from "@prisma/client";
+import {
+  sendPostToZapier,
+  updatePost,
+  updatePostMetadata,
+} from "@/lib/actions";
 import {
   cn,
   convertToRgba,
@@ -47,10 +51,12 @@ export default function Editor({
   post,
   canUseAI,
   leads,
+  zapier,
 }: {
   post: PostWithSite;
   canUseAI: boolean;
   leads: Lead[];
+  zapier: Integration | null;
 }) {
   const router = useRouter();
 
@@ -72,6 +78,7 @@ export default function Editor({
   const MAX_CHUNK_LENGTH =
     Number(process.env.NEXT_PUBLIC_MAX_CHUNK_LENGTH) || 300;
 
+  const [sendingZapier, setSendingZapier] = useState(false);
   const [slidesStyles, setSlidesStyles] = useState<SlideStyle[] | [] | any>(
     () => {
       try {
@@ -367,11 +374,9 @@ export default function Editor({
         );
 
         // delete image if slide style has
-      
+
         updatedSlides.splice(index, 1);
         setSlides(updatedSlides);
-
-
 
         const styledSlides = slidesStyles.filter(
           (slide: SlideStyle) => slide.id != index + 1,
@@ -428,11 +433,9 @@ export default function Editor({
               body: JSON.stringify({ image: slideStyle.bgImage }),
             });
           }
-        }catch(e){
-          console.log(e)
+        } catch (e) {
+          console.log(e);
         }
-       
-
 
         toast("Slide deleted");
         break;
@@ -617,6 +620,20 @@ export default function Editor({
     });
   }, [slides, slidesStyles]);
 
+  // send post to zapier
+  async function handleSendPostToZapier() {
+    if (zapier) {
+      setSendingZapier(true);
+      await sendPostToZapier(zapier.postWebhookUrl as string, {
+        title: data.title!,
+        slug: data.slug!,
+        content: data.content!,
+      });
+      setSendingZapier(false);
+      toast.success("Post sent to Zapier!");
+    }
+  }
+
   return (
     <>
       <div className="my-5 mb-0 flex items-center justify-end space-x-3 lg:my-0 lg:mb-4">
@@ -648,6 +665,20 @@ export default function Editor({
             type="leadId"
           />
         </LeadButton> */}
+        {zapier && (
+          <button
+            className={cn(
+              "flex items-center justify-center  space-x-2 rounded-lg px-5 py-2  text-xs font-semibold text-white shadow-lg shadow-blue-800/10  transition-all hover:shadow-blue-800/20 focus:outline-none lg:text-lg",
+              sendingZapier
+                ? "cursor-not-allowed bg-gradient-to-br from-blue-600  to-blue-400 "
+                : " bg-gradient-to-br from-blue-600  to-blue-400",
+            )}
+            onClick={handleSendPostToZapier}
+            disabled={sendingZapier}
+          >
+            {sendingZapier ? "Sending..." : "Send to Zapier"}
+          </button>
+        )}
 
         <button
           onClick={() => {
@@ -672,6 +703,15 @@ export default function Editor({
                   }));
                 },
               );
+
+              // send post to zapier if post is not published
+              if (zapier && !data.published) {
+                await sendPostToZapier(zapier.postWebhookUrl as string, {
+                  title: data.title!,
+                  slug: data.slug!,
+                  content: data.content!,
+                });
+              }
             });
           }}
           className={cn(
