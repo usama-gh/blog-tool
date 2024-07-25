@@ -28,7 +28,7 @@ async function Integrations({ params }: { params: { id: string } }) {
               Integrations
             </h1>
             <p className="mt-3 text-base font-normal text-slate-800 dark:text-gray-400">
-              Get more done with typedd using its integrations
+            Build automations on your posts & leads with Typedd's integrations.
             </p>
           </div>
         </div>

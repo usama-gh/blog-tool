@@ -1,5 +1,5 @@
 import localFont from "next/font/local";
-import { Inter, Lora, Work_Sans } from "next/font/google";
+import { Inter, Lora, Work_Sans, Figtree, Jost } from "next/font/google";
 
 export const inter = Inter({
   variable: "--font-inter",
@@ -8,14 +8,12 @@ export const inter = Inter({
 export const cal = localFont({
   src: "./CalSans-SemiBold.otf",
   variable: "--font-cal",
-  weight: "600",
   display: "swap",
 });
 
 export const calTitle = localFont({
   src: "./CalSans-SemiBold.otf",
   variable: "--font-title",
-  weight: "600",
   display: "swap",
 });
 export const lora = Lora({
@@ -31,8 +29,22 @@ export const work = Work_Sans({
   display: "swap",
 });
 
+export const figtree = Figtree({
+  variable: "--font-title",
+  subsets: ["latin"],
+  display: "swap",
+});
+
+export const jost = Jost({
+  variable: "--font-title",
+  subsets: ["latin"],
+  display: "swap",
+});
+
 export const fontMapper = {
   "font-cal": calTitle.variable,
   "font-lora": lora.variable,
   "font-work": work.variable,
+  "font-figtree": figtree.variable,
+  "font-jost": jost.variable,
 } as Record<string, string>;

@@ -1,4 +1,5 @@
 import type { Config } from "tailwindcss";
+import { figtree } from "./styles/fonts";
 const { fontFamily } = require("tailwindcss/defaultTheme");
 
 const config = {
@@ -155,6 +156,8 @@ const config = {
       fontFamily: {
         default: ["var(--font-inter)", ...fontFamily.sans],
         cal: ["var(--font-cal)", ...fontFamily.sans],
+        figtree: ["var(--font-figtree)", ...fontFamily.sans],
+        jost: ["var(--font-jost)", ...fontFamily.sans],
         title: ["var(--font-title)", ...fontFamily.sans],
         mono: ["Consolas", ...fontFamily.mono],
       },
@@ -162,13 +165,13 @@ const config = {
         DEFAULT: {
           css: {
             h1: {
-              fontFamily: "'Inter', sans-serif",
+              fontFamily: "Cal Sans",
             },
             h2: {
-              fontFamily: "'Inter', sans-serif",
+              fontFamily: "Cal Sans",
             },
             h3: {
-              fontFamily: "'Inter', sans-serif",
+              fontFamily: "Cal Sans",
             },
             "blockquote p:first-of-type::before": { content: "none" },
             "blockquote p:first-of-type::after": { content: "none" },

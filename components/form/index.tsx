@@ -16,6 +16,16 @@ import NobelEditor from "../editor/novel-editor";
 import { triggerEvent } from "../usermaven";
 import { deleteFileFromBlob } from "@/lib/actions";
 
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+
 export default function Form({
   title,
   description,
@@ -120,17 +130,37 @@ export default function Form({
             setUnsplashImage={setUnsplashImage}
           />
         ) : inputAttrs.name === "font" ? (
-          <div className="flex max-w-sm items-center overflow-hidden rounded-lg border border-gray-600">
-            <select
+          <div className="flex max-w-sm items-center overflow-hidden rounded-lg">
+
+<Select name="font" defaultValue={inputAttrs.defaultValue}>
+  <SelectTrigger>
+    <SelectValue placeholder="Font Family" />
+  </SelectTrigger>
+  <SelectContent>
+    <SelectItem value="font-inter">Inter</SelectItem>
+    <SelectItem value="font-figtree">Figtree</SelectItem>
+    <SelectItem value="font-jost">Jost</SelectItem>
+    <SelectItem value="font-cal">Cal Sans</SelectItem>
+    <SelectItem value="font-lora">Lora</SelectItem>
+    <SelectItem value="font-work">Work Sans</SelectItem>
+  </SelectContent>
+</Select>
+
+
+
+            {/* <select
               name="font"
               defaultValue={inputAttrs.defaultValue}
               className="w-full rounded-none border-none bg-white px-4 py-2 text-sm font-medium text-gray-700 focus:outline-none focus:ring-black dark:bg-black dark:text-gray-200 dark:focus:ring-white"
             >
               <option value="font-inter">Inter</option>
+              <option value="font-figtree">Figtree</option>
+              <option value="font-jost">Jost</option>
+
               <option value="font-cal">Cal Sans</option>
               <option value="font-lora">Lora</option>
               <option value="font-work">Work Sans</option>
-            </select>
+            </select> */}
           </div>
         ) : inputAttrs.name === "subdomain" ? (
           <div className="flex w-full max-w-md">

@@ -8,7 +8,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 const title =
   "Typedd – Turn your social media posts into blogs & create a personal social blog";
 const description =
-  "Easily turn your social media posts into blogs and build a persona blog for yourself. It has a new way to read blog which is more interactive. Built for personal brands";
+  "Easily turn your social media posts into blogs and build a personal blog for yourself. It has a new way to read blog which is more interactive. Built for personal brands";
 const image = "/og-image.png";
 
 export const metadata: Metadata = {

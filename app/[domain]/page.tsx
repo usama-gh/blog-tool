@@ -61,7 +61,7 @@ export default async function SiteHomePage({
                   )}
                 </div>
 
-                <h1 className="bg-gradient-to-br from-slate-600 to-slate-600 bg-clip-text text-lg font-bold text-transparent dark:from-gray-50 dark:to-gray-500  dark:drop-shadow-md">
+                <h1 className="font-title bg-gradient-to-br from-slate-600 to-slate-600 bg-clip-text text-lg font-bold text-transparent dark:from-gray-50 dark:to-gray-500  dark:drop-shadow-md">
                   {data.name}
                 </h1>
                 {data?.bio && (

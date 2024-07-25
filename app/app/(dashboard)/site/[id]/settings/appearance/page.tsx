@@ -37,7 +37,7 @@ export default async function SiteSettingsAppearance({
         }}
         handleSubmit={updateSite}
       />
-      {/* <Form
+      <Form
         title="Font"
         description="The font for the heading text your site."
         helpText="Please select a font."
@@ -47,7 +47,7 @@ export default async function SiteSettingsAppearance({
           defaultValue: data?.font!,
         }}
         handleSubmit={updateSite}
-      /> */}
+      />
       <Form
         title="404 Page Message"
         description="Message to be displayed on the 404 page."

@@ -43,15 +43,20 @@ export default function ResendIntegration({
           toast.success(`Successfully integrated Resend`);
         }
       }}
-      className="w-full rounded-md bg-white dark:bg-black md:max-w-md md:border md:border-gray-200 md:shadow dark:md:border-gray-700"
+      className="w-full rounded-md bg-white dark:bg-black shadow-xl"
     >
-      <div className="relative flex flex-col space-y-4 p-5 md:p-10">
+      <div className="relative flex flex-col space-y-6 p-5 md:p-10">
+
+        <div>
         <h2 className="font-inter text-2xl font-bold tracking-tight dark:text-white">
           Resend
         </h2>
         <p className="text-base font-normal text-slate-800 dark:text-gray-400">
           Send your subscriber to Resend to send newsletters
-        </p>
+        </p> 
+
+        </div>
+       
 
         <div className="flex flex-col space-y-2">
           <Label htmlFor="apiKey">Resend API Key</Label>
@@ -93,6 +98,7 @@ export default function ResendIntegration({
           </Label>
         </div>
       </div>
+      <br></br>
       <div className="flex items-center justify-end rounded-b-lg border-t border-slate-200 bg-slate-50 p-3 dark:border-gray-700 dark:bg-gray-800 md:px-10">
         <SubmitButton btnText="Save" />
       </div>

@@ -44,45 +44,52 @@ export default function ZapierIntegration({
           toast.success(`Successfully integrated Zapier`);
         }
       }}
-      className="w-full rounded-md bg-white dark:bg-black md:max-w-md md:border md:border-gray-200 md:shadow dark:md:border-gray-700"
+      className="w-full rounded-md bg-white dark:bg-black  dark:md:border-gray-700 shadow-xl"
     >
-      <div className="relative flex flex-col space-y-4 p-5 md:p-10">
+      <div className="relative flex flex-col space-y-6 p-5 md:p-10">
+
+        <div>
         <h2 className="font-inter text-2xl font-bold tracking-tight dark:text-white">
-          Zapier
+          Zapier/Make
         </h2>
         <p className="text-base font-normal text-slate-800 dark:text-gray-400">
           Enter your Zapier Catch Webhook & do cool things
         </p>
+        </div>
+       
 
         <div className="flex flex-col space-y-2">
-          <Label htmlFor="apiKey">Zapier Webhook URL</Label>
+          <Label htmlFor="leadapiKey">Webhook URL When Leads Is Collected</Label>
           <input
-            id="apiKey"
-            name="apiKey"
+            id="leadapiKey"
+            name="leadapiKey"
             type="text"
-            placeholder="Zapier Webhook URL"
+            placeholder="Webhook for contact URL"
             value={data.webhookUrl}
             onChange={(e) => setData({ ...data, webhookUrl: e.target.value })}
             required
             className="w-full rounded-md border border-slate-200 bg-slate-50 px-4 py-2 text-sm text-slate-600 placeholder:text-slate-400 focus:border-black focus:outline-none focus:ring-black dark:border-gray-600 dark:bg-black dark:text-white dark:placeholder-gray-700 dark:focus:ring-white"
           />
-        </div>
 
-        <div className="flex items-center space-x-2">
+<div className="flex items-center space-x-2">
           <Switch
-            id="active"
-            name="active"
+            id="zapierContact"
+            name="zapierContact"
             checked={data.active}
             onCheckedChange={(value) => setData({ ...data, active: value })}
           />
-          <Label htmlFor="active">
+          <Label htmlFor="zapierContact">
             Automatically send new contact to Zapier
           </Label>
         </div>
 
-        <div className="w-full border-t border-gray-500"></div>
+        </div>
+
+       
+
+       
         <div className="flex flex-col space-y-2">
-          <Label htmlFor="postWebhookUrl">Post Publishing Webhook URL</Label>
+          <Label htmlFor="postWebhookUrl">Webhook URL When Post Is Published</Label>
           <input
             id="postWebhookUrl"
             name="postWebhookUrl"
@@ -95,9 +102,7 @@ export default function ZapierIntegration({
             required
             className="w-full rounded-md border border-slate-200 bg-slate-50 px-4 py-2 text-sm text-slate-600 placeholder:text-slate-400 focus:border-black focus:outline-none focus:ring-black dark:border-gray-600 dark:bg-black dark:text-white dark:placeholder-gray-700 dark:focus:ring-white"
           />
-        </div>
-
-        <div className="flex items-center space-x-2">
+           <div className="flex items-center space-x-2">
           <Switch
             id="postWebhookActive"
             name="postWebhookActive"
@@ -107,9 +112,12 @@ export default function ZapierIntegration({
             }
           />
           <Label htmlFor="postWebhookActive">
-            Automatically send new contact to Zapier
+            Automatically hit webhook on every publish
           </Label>
         </div>
+        </div>
+
+       
       </div>
       <div className="flex items-center justify-end rounded-b-lg border-t border-slate-200 bg-slate-50 p-3 dark:border-gray-700 dark:bg-gray-800 md:px-10">
         <SubmitButton btnText="Save" />
