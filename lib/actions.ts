@@ -352,6 +352,8 @@ export const createPost = withSiteAuth(async (_: FormData, site: Site) => {
   }
   const response = await prisma.post.create({
     data: {
+      title:'Untitled Post',
+      description:'Add description of this untitled post',
       siteId: site.id,
       userId: session.user.id,
     },

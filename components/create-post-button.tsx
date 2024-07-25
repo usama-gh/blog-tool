@@ -21,11 +21,9 @@ export default function CreatePostButton() {
         })
       }
       className={cn(
-        "flex h-8 w-full items-center justify-center space-x-2 rounded-lg border text-sm transition-all focus:outline-none sm:h-9 lg:w-36",
-        isPending
-          ? "cursor-not-allowed border-gray-200 bg-gray-100 text-gray-400 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300"
-          : "border border-black bg-black text-white hover:bg-white hover:text-black active:bg-stone-100 dark:border-gray-700 dark:hover:border-gray-200 dark:hover:bg-black dark:hover:text-white dark:active:bg-gray-800",
-      )}
+        "bg-gradient-to-br from-blue-600 to-blue-400 flex items-center justify-center space-x-2 rounded-lg px-5 py-2 text-xs font-semibold text-white shadow-lg shadow-blue-800/10 transition-all hover:shadow-blue-800/20 focus:outline-none lg:text-lg",
+        { "cursor-not-allowed text-white": isPending } // Correct conditional class usage
+      )}      
       disabled={isPending}
     >
       {isPending ? <LoadingDots color="#808080" /> : "Create New Post"}

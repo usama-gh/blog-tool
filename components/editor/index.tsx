@@ -665,20 +665,29 @@ export default function Editor({
             type="leadId"
           />
         </LeadButton> */}
-        {zapier?.postWebhookUrl && (
-          <button
-            className={cn(
-              "flex items-center justify-center  space-x-2 rounded-lg px-5 py-2  text-xs font-semibold text-white shadow-lg shadow-blue-800/10  transition-all hover:shadow-blue-800/20 focus:outline-none lg:text-lg",
-              sendingZapier
-                ? "cursor-not-allowed bg-gradient-to-br from-blue-600  to-blue-400 "
-                : " bg-gradient-to-br from-blue-600  to-blue-400",
-            )}
-            onClick={handleSendPostToZapier}
-            disabled={sendingZapier}
-          >
-            {sendingZapier ? "Sending..." : "Send to Zapier"}
-          </button>
-        )}
+      
+   
+<button
+  className={cn(
+    "flex items-center justify-center space-x-2 rounded-lg px-5 py-2 text-xs font-semibold text-white shadow-lg shadow-blue-800/10 transition-all hover:shadow-blue-800/20 focus:outline-none lg:text-lg",
+    sendingZapier
+      ? "cursor-not-allowed bg-gradient-to-br from-blue-600 to-blue-400"
+      : "bg-gradient-to-br from-blue-600 to-blue-400"
+  )}
+  onClick={() => {
+    if (zapier?.postWebhookUrl) {
+      handleSendPostToZapier();
+    } else {
+      toast.success("Please add publishing webhook on integrations page to send to Zapier/Make");
+    }
+  }}
+  disabled={sendingZapier}
+>
+  {sendingZapier ? "Sending..." : "Send to Zapier"}
+</button>
+
+
+
 
         <button
           onClick={() => {
@@ -737,7 +746,7 @@ export default function Editor({
       <input
         type="text"
         placeholder="Title"
-        defaultValue={post?.title || ""}
+        defaultValue={post?.title || "Untitled"}
         autoFocus
         onChange={(e) => setData({ ...data, title: e.target.value })}
         className="dark:placeholder-text-600 font-inter mb-2 w-full rounded-md border-none bg-slate-100 px-8 py-4 text-3xl font-bold placeholder:text-gray-400 focus:outline-none focus:ring-0 dark:bg-black dark:bg-gray-900/80 dark:text-white"

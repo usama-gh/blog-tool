@@ -3,6 +3,7 @@ import { placeholderBlurhash, random } from "@/lib/utils";
 import { Post, Site } from "@prisma/client";
 import { BarChart, ExternalLink } from "lucide-react";
 import Link from "next/link";
+import cn from "clsx";
 
 export default function PostCard({
   data,
@@ -15,9 +16,9 @@ export default function PostCard({
     <div className="relative rounded-xl  bg-slate-100 pb-10 transition-all hover:bg-slate-200 dark:bg-gray-900/80 dark:hover:bg-gray-900">
       <Link
         href={`/post/${data.id}?siteId=${data.siteId}`}
-        className="flex flex-col overflow-hidden rounded-lg"
+        className="flex flex-col overflow-hidden relative rounded-lg"
       >
-        <div className="relative overflow-hidden">
+        <div>
           {/* <BlurImage
             alt={data.title ?? "Card thumbnail"}
             width={500}
@@ -27,19 +28,26 @@ export default function PostCard({
             placeholder="blur"
             blurDataURL={data.imageBlurhash ?? placeholderBlurhash}
           /> */}
-          {!data.published && (
-            <span className="absolute bottom-2 right-2 rounded-md border border-stone-200 bg-white px-3 py-0.5 text-sm font-medium text-stone-600 shadow-md">
-              Draft
-            </span>
-          )}
+      
         </div>
         <div className="p-4">
           <h3 className="font-inter my-0 text-xl font-bold tracking-normal dark:text-white">
             {data.title}
           </h3>
-          <p className="mt-2 line-clamp-1 text-sm font-normal leading-snug text-slate-500 dark:text-gray-400">
+          <p className="mt-2 mb-2 line-clamp-1 text-sm font-normal leading-snug text-slate-500 dark:text-gray-400">
             {data.description}
           </p>
+          <span
+  className={cn(
+    "rounded-md  text-center px-2 py-0.5 text-xs font-medium uppercase",
+    data.published
+      ? "bg-green-50 text-green-800 dark:bg-green-950 dark:text-green-100" // Classes for "Live" status
+      : "bg-yellow-50 text-yellow-800  dark:bg-yellow-950 dark:text-yellow-100" // Classes for "Draft" status
+  )}
+>
+  {data.published ? "Published" : "Draft"}
+</span>
+
         </div>
       </Link>
       <div className="absolute bottom-4 flex w-full px-4">

@@ -43,7 +43,7 @@ export default function ResendIntegration({
           toast.success(`Successfully integrated Resend`);
         }
       }}
-      className="w-full rounded-md bg-white dark:bg-black shadow-xl"
+      className="w-full rounded-md bg-white dark:bg-gray-900 shadow-xl"
     >
       <div className="relative flex flex-col space-y-6 p-5 md:p-10">
 
