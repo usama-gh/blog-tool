@@ -22,7 +22,7 @@ export default function MDX({ source, gated }: { source: MDXRemoteProps; gated?:
 
   return (
     <article
-      className={`lg:px-0 px-6 prose-md w-full prose h-fit mx-auto prose-slate dark:prose-invert sm:prose-lg text-slate-600 dark:text-gray-100 ${pbClass} ${styles.root}`}
+      className={`lg:px-0 px-6 prose-md w-full prose h-fit mx-auto prose-slate dark:prose-invert sm:prose-lg text-slate-600 dark:text-gray-100 tracking-normal ${pbClass} ${styles.root}`}
       suppressHydrationWarning={true}
     >
       <div className="pb-18 [&>h1]:mb-2 [&>h1]:tracking-tight [&>h1]:leading-snug [&>h2]:tracking-tight">
