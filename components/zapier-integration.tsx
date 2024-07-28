@@ -67,7 +67,7 @@ export default function ZapierIntegration({
             placeholder="Webhook for contact URL"
             value={data.webhookUrl}
             onChange={(e) => setData({ ...data, webhookUrl: e.target.value })}
-            required
+            
             className="w-full rounded-md border border-slate-200 bg-slate-50 px-4 py-2 text-sm text-slate-600 placeholder:text-slate-400 focus:border-black focus:outline-none focus:ring-black dark:border-gray-600 dark:bg-black dark:text-white dark:placeholder-gray-700 dark:focus:ring-white"
           />
 
@@ -99,7 +99,7 @@ export default function ZapierIntegration({
             onChange={(e) =>
               setData({ ...data, postWebhookUrl: e.target.value })
             }
-            required
+            
             className="w-full rounded-md border border-slate-200 bg-slate-50 px-4 py-2 text-sm text-slate-600 placeholder:text-slate-400 focus:border-black focus:outline-none focus:ring-black dark:border-gray-600 dark:bg-black dark:text-white dark:placeholder-gray-700 dark:focus:ring-white"
           />
            <div className="flex items-center space-x-2">
