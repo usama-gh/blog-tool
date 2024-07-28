@@ -33,7 +33,7 @@ export default async function SiteSettingsDomains({
       />
       <Form
         title="Custom Domain"
-        description="The custom domain for your site."
+        description="The custom domain for your site"
         helpText="Please enter a valid domain."
         inputAttrs={{
           name: "customDomain",
