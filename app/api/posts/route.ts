@@ -4,6 +4,7 @@ import { headers } from "next/headers";
 import { z } from "zod";
 import { revalidateTag } from "next/cache";
 import { markdownToTxt } from "markdown-to-txt";
+import { sendPostToZapier } from "@/lib/actions";
 
 // Force dynamic (server) route instead of static page
 export const dynamic = "force-dynamic";
@@ -22,7 +23,7 @@ export async function POST(request: Request) {
   };
 
   // make slug from post title
-  const makeSlug = (title: string) => {
+  const makeSlug: any = (title: string) => {
     return title
       .toString()
       .normalize("NFD")
@@ -82,6 +83,7 @@ export async function POST(request: Request) {
         images: z.array(z.string().optional()),
       }),
     ),
+    pushToZapier: z.boolean(),
   });
 
   const requestBody = await request.json();
@@ -193,6 +195,25 @@ export async function POST(request: Request) {
           userId: apiToken.userId,
         },
       });
+
+      // if send to zapier is set true
+      if (data.pushToZapier) {
+        const zapierIntegration = await prisma.integration.findFirst({
+          where: {
+            site: { id: apiToken.siteId, userId: apiToken.userId },
+            active: true,
+            type: "zapier",
+          },
+        });
+
+        if (zapierIntegration) {
+          await sendPostToZapier(zapierIntegration.postWebhookUrl as string, {
+            title: data.title,
+            slug,
+            content,
+          });
+        }
+      }
 
       // 12: forcing the site to cache the new data
       revalidateTag(
