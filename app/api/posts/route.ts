@@ -206,8 +206,8 @@ export async function POST(request: Request) {
           },
         });
 
-        if (zapierIntegration) {
-          await sendPostToZapier(zapierIntegration.postWebhookUrl as string, {
+        if (zapierIntegration && zapierIntegration.postWebhookUrl) {
+          await sendPostToZapier(zapierIntegration.postWebhookUrl, {
             title: data.title,
             slug,
             content,
