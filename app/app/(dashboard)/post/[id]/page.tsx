@@ -7,6 +7,7 @@ import DeletePostForm from "@/components/form/delete-post-form";
 import PostForm from "@/components/form/post-form";
 import Form from "@/components/form";
 import { getUserPlanAnalytics } from "@/lib/fetchers";
+import { PlunkContact } from "@/types";
 
 export default async function PostPage({ params }: { params: { id: string } }) {
   let canUseAI = false;
@@ -47,6 +48,27 @@ export default async function PostPage({ params }: { params: { id: string } }) {
       type: "zapier",
     },
   });
+  const plunkIntegration = await prisma.integration.findFirst({
+    where: {
+      siteId: data.siteId as string,
+      type: "plunk",
+      active: true,
+    },
+  });
+
+  let subscribers: string[] = [];
+  if (plunkIntegration) {
+    const plunkData: PlunkContact[] | [] = await fetch(
+      `https://api.useplunk.com/v1/contacts`,
+      {
+        headers: {
+          Authorization: `Bearer ${plunkIntegration.plunkKey}`,
+        },
+      },
+    ).then((res) => res.json());
+
+    subscribers = plunkData.map((data: PlunkContact) => data.email);
+  }
 
   return (
     <>
@@ -57,6 +79,8 @@ export default async function PostPage({ params }: { params: { id: string } }) {
             canUseAI={canUseAI}
             leads={leads}
             zapier={zapierIntegration}
+            plunk={plunkIntegration}
+            subscribers={subscribers}
           />
         </div>
         <div className="mb-10  ml-auto mt-10 px-2 lg:px-4 xl:mb-0">
