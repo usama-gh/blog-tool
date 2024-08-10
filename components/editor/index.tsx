@@ -11,6 +11,7 @@ import PostForm from "@/components/form/post-form";
 import { toast } from "sonner";
 import TextareaAutosize from "react-textarea-autosize";
 import { EditorBubbleMenu } from "./bubble-menu";
+import { Button } from "@/components/ui/button"
 import { Integration, Lead, Post } from "@prisma/client";
 import {
   sendPostToZapier,
@@ -44,6 +45,19 @@ import ContentCustomizer from "./editor-content/content-customizer";
 import ShowSlides from "./show-slides";
 import AddSlide from "./add-slide";
 import { Item } from "@radix-ui/react-dropdown-menu";
+import { useModal } from "../modal/provider";
+import PlunkNewsletter from "../modal/plunk-newsletter";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 
 type PostWithSite = Post & { site: { subdomain: string | null } | null };
 
@@ -52,11 +66,15 @@ export default function Editor({
   canUseAI,
   leads,
   zapier,
+  plunk,
+  subscribers,
 }: {
   post: PostWithSite;
   canUseAI: boolean;
   leads: Lead[];
   zapier: Integration | null;
+  plunk?: Integration | null;
+  subscribers: string[] | [];
 }) {
   const router = useRouter();
 
@@ -73,12 +91,14 @@ export default function Editor({
   const [isPasted, setIsPasted] = useState<boolean>(false);
   const [leadId, setLeadId] = useState<string | null>(data.leadId);
 
+  const componentRef = useRef(null);
   const firstRender = useRef<boolean>(true);
   const firstRenderLead = useRef<boolean>(true);
   const MAX_CHUNK_LENGTH =
     Number(process.env.NEXT_PUBLIC_MAX_CHUNK_LENGTH) || 300;
 
   const [sendingZapier, setSendingZapier] = useState(false);
+  const [sendingPlunk, setSendingPlunk] = useState(false);
   const [slidesStyles, setSlidesStyles] = useState<SlideStyle[] | [] | any>(
     () => {
       try {
@@ -106,6 +126,8 @@ export default function Editor({
     }
   });
 
+  const modal = useModal();
+
   useEffect(() => {
     // @ts-ignore
     if (post && post.content) {
@@ -131,7 +153,7 @@ export default function Editor({
       let abc = editor.getText();
 
       // @ts-ignore
-      console.log(abc);
+      // console.log(abc);
       if (abc) {
         let plainText = abc;
         const first170Characters = plainText?.substring(0, 170) || "";
@@ -182,7 +204,8 @@ export default function Editor({
       debouncedData.styling === post.styling &&
       debouncedData.gateSlides === post.gateSlides &&
       debouncedData.leadSlides === post.leadSlides &&
-      debouncedData.leadId === post.leadId
+      debouncedData.leadId === post.leadId &&
+      debouncedData.sendToPlunk === post.sendToPlunk
     ) {
       return;
     }
@@ -665,29 +688,82 @@ export default function Editor({
             type="leadId"
           />
         </LeadButton> */}
-      
-   
-<button
-  className={cn(
-    "flex items-center justify-center space-x-2 rounded-lg px-5 py-2 text-xs font-semibold text-white shadow-lg shadow-blue-800/10 transition-all hover:shadow-blue-800/20 focus:outline-none lg:text-lg",
-    sendingZapier
-      ? "cursor-not-allowed bg-gradient-to-br from-blue-600 to-blue-400"
-      : "bg-gradient-to-br from-blue-600 to-blue-400"
-  )}
+
+        <Popover>
+          <TooltipProvider delayDuration={100}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <PopoverTrigger ref={componentRef} asChild>
+                  <button
+                    type="button"
+                    className="flex items-center justify-center space-x-2 rounded-lg bg-gradient-to-br from-blue-600 to-blue-400 px-5 py-2 text-xs font-semibold text-white shadow-lg shadow-blue-800/10 transition-all hover:shadow-blue-800/20 focus:outline-none lg:text-lg"
+                  >
+                    Send
+                  </button>
+                </PopoverTrigger>
+              </TooltipTrigger>
+              <TooltipContent side="bottom">
+                <p>Send Posts</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+
+          <PopoverContent className="mt-2 flex flex-col w-auto space-y-1 rounded-lg border-0 p-2 shadow-lg dark:bg-gray-800">
+         
+          
+         
+
+<Button
+  variant="secondary"
+  size="sm"
   onClick={() => {
     if (zapier?.postWebhookUrl) {
       handleSendPostToZapier();
     } else {
-      toast.success("Please add publishing webhook on integrations page to send to Zapier/Make");
+      toast.success(
+        "Please add publishing webhook on integrations page to send to Zapier/Make"
+      );
     }
   }}
   disabled={sendingZapier}
 >
   {sendingZapier ? "Sending..." : "Send to Zapier"}
-</button>
+</Button>
 
 
+<Button
+  variant="secondary"
+  size="sm"
 
+  onClick={() => {
+    if (plunk?.plunkKey) {
+      modal?.show(
+        <PlunkNewsletter
+          plunkKey={plunk.plunkKey}
+          postTitle={data.title!}
+          postBody={data.content!}
+          subscribers={subscribers}
+          isSend={data.sendToPlunk}
+          successAction={() => {
+            setData((prev) => ({
+              ...prev,
+              sendToPlunk: true,
+            }));
+          }}
+        />,
+      );
+    } else {
+      toast.success(
+        "Please add secret key of Plunk on the integrations page to send to the newsletter using Plunk"
+      );
+    }
+  }}
+  disabled={true}
+>
+  {sendingPlunk ? "Sending..." : "Plunk"}
+</Button>
+          </PopoverContent>
+        </Popover>
 
         <button
           onClick={() => {

@@ -2,6 +2,7 @@
 
 import useUsermaven from "@/lib/hooks/useUsermaven";
 import { usermavenClient, UsermavenClient } from "@usermaven/sdk-js";
+import { AnalyticsBrowser } from '@june-so/analytics-next';
 
 interface pageProps {
   email: string;
@@ -64,6 +65,11 @@ interface userProps {
 
 export default function CreateUsermavenUser({ user }: userProps) {
   const usermaven = useUsermaven();
+
+  const analytics = AnalyticsBrowser.load({
+    writeKey: 'E9yxAiNvGLLQn5Rg',
+  });
+
 
   if (usermaven) {
     usermaven.id({

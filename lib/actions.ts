@@ -352,8 +352,8 @@ export const createPost = withSiteAuth(async (_: FormData, site: Site) => {
   }
   const response = await prisma.post.create({
     data: {
-      title:'Untitled Post',
-      description:'Add description of this untitled post',
+      title: "Untitled Post",
+      description: "Add description of this untitled post",
       siteId: site.id,
       userId: session.user.id,
     },
@@ -403,6 +403,7 @@ export const updatePost = async (data: Post) => {
         gateSlides: data.gateSlides,
         leadId: data.leadId,
         leadSlides: data.leadSlides,
+        sendToPlunk: data.sendToPlunk,
       },
     });
 
@@ -972,6 +973,7 @@ export const createSiteIntegeration = async (data: IntegrationData) => {
         active: data.active,
         postWebhookUrl: data.postWebhookUrl,
         postWebhookActive: data.postWebhookActive,
+        plunkKey: data.plunkKey,
         user: {
           connect: {
             id: session.user.id,
@@ -1024,6 +1026,7 @@ export const updateSiteIntegeration = withIntegrationAuth(
           active: data.active,
           postWebhookUrl: data.postWebhookUrl,
           postWebhookActive: data.postWebhookActive,
+          plunkKey: data.plunkKey,
           user: {
             connect: {
               id: session.user.id,
@@ -1125,13 +1128,16 @@ export const addSubscriberToIntegrations = async (
 
     const url: string = site?.customDomain
       ? site?.customDomain
-      : `${site?.subdomain}. ${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`;
+      : `${site?.subdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`;
 
     const resendIntegration = integrations.find(
       (integration) => integration.type === "resend" && integration.active,
     );
     const zapierIntegration = integrations.find(
       (integration) => integration.type === "zapier" && integration.active,
+    );
+    const plunkIntegration = integrations.find(
+      (integration) => integration.type === "plunk" && integration.active,
     );
 
     // send data to resend integration
@@ -1172,6 +1178,31 @@ export const addSubscriberToIntegrations = async (
       );
       // const response = await zapierRequest.json();
       // console.log("zapier response: " + JSON.stringify(response));
+    }
+
+    if (plunkIntegration) {
+      // sending data to zapier integration using fetch API
+      const plunkRequest = await fetch("https://api.useplunk.com/v1/contacts", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${plunkIntegration.plunkKey as string}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: data.email,
+          subscribed: true,
+          data: {
+            firstName: data.firstName,
+            lastName: data.lastName,
+            source: data.source ?? "Subscribe Form",
+            sourceTitle: data.sourceTitle ?? "Subscribe Form",
+            websiteUrl: data.websiteUrl ?? url,
+            date: new Date(),
+          },
+        }),
+      });
+      // const response = await plunkRequest.json();
+      // console.log("plunk response: " + JSON.stringify(response));
     }
 
     return true;

@@ -129,6 +129,7 @@ model Post {
   createdAt     DateTime        @default(now())
   updatedAt     DateTime        @updatedAt
   published     Boolean         @default(false)
+  sendToPlunk   Boolean         @default(false)
   site          Site?           @relation(fields: [siteId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   siteId        String?
   user          User?           @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
@@ -221,6 +222,7 @@ model Integration {
   active            Boolean
   postWebhookUrl    String?
   postWebhookActive Boolean  @default(false)
+  plunkKey          String?
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
   user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)

@@ -38,6 +38,7 @@ interface IntegrationData {
   active: boolean;
   postWebhookUrl?: string;
   postWebhookActive?: boolean;
+  plunkKey?: string;
 }
 
 interface AddIntegrationData {
@@ -88,4 +89,12 @@ interface leadSlide extends gateSlide {
   name: string;
   leadId: string;
   ctaBtnText: string | null | undefined;
+}
+interface PlunkContact {
+  id: string;
+  email: string;
+  subscribed: boolean;
+  data: string;
+  createdAt: string;
+  updatedAt: string;
 }
