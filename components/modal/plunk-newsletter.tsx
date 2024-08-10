@@ -46,20 +46,29 @@ export default function PlunkNewsletter(props: ModelProps) {
   }
 
   async function sendEmail(email: string) {
-    await fetch("https://api.useplunk.com/v1/send", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${props.plunkKey as string}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        to: email,
-        subject,
-        body,
-        subscribed: false,
-      }),
-    });
+    try {
+      const response = await fetch("https://api.useplunk.com/v1/send", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${props.plunkKey as string}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          to: email,
+          subject, // Ensure that 'subject' and 'body' are defined or passed as parameters
+          body,
+          subscribed: false,
+        }),
+      });
+  
+      const data = await response.json();
+  
+      console.log('API Response:', data);
+    } catch (error) {
+      console.error('Error sending email:', error);
+    }
   }
+  
 
   return (
     <form

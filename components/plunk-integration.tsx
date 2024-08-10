@@ -2,7 +2,7 @@
 
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-
+import { ExternalLink } from 'lucide-react';
 import { useEffect, useState } from "react";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
@@ -46,16 +46,16 @@ export default function PlunkIntegration({
     >
       <div className="relative flex flex-col space-y-6 p-5 md:p-10">
         <div>
-          <h2 className="font-inter text-2xl font-bold tracking-tight dark:text-white">
-            Plunk
+          <h2 className="flex gap-x-2 items-center font-inter text-2xl font-bold tracking-tight dark:text-white hover:text-blue-600">
+           <a href="https://useplunk.com" target="_blank">Plunk</a>
           </h2>
           <p className="text-base font-normal text-slate-800 dark:text-gray-400">
-            Enter your Plunk Secret Key & do cool things
+            Most affordable email sending tool
           </p>
         </div>
 
         <div className="flex flex-col space-y-2">
-          <Label htmlFor="leadapiKey">Secret Key When Leads Is Collected</Label>
+          <Label htmlFor="leadapiKey">Secret Key</Label>
           <input
             id="leadapiKey"
             name="leadapiKey"
@@ -74,7 +74,7 @@ export default function PlunkIntegration({
               onCheckedChange={(value) => setData({ ...data, active: value })}
             />
             <Label htmlFor="plunkContact">
-              Automatically send new contact to Plunk
+              Automatically send new contacts to Plunk
             </Label>
           </div>
         </div>

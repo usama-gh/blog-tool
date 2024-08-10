@@ -48,11 +48,11 @@ export default function ResendIntegration({
       <div className="relative flex flex-col space-y-6 p-5 md:p-10">
 
         <div>
-        <h2 className="font-inter text-2xl font-bold tracking-tight dark:text-white">
-          Resend
-        </h2>
+        <h2 className="flex gap-x-2 items-center font-inter text-2xl font-bold tracking-tight dark:text-white hover:text-blue-600">
+           <a href="https://resend.com" target="_blank">Resend</a>
+          </h2>
         <p className="text-base font-normal text-slate-800 dark:text-gray-400">
-          Send your subscriber to Resend to send newsletters
+          Send your subscriber to Resend so you can send newsletters
         </p> 
 
         </div>

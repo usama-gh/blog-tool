@@ -39,7 +39,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body
         className={
-          "h-full min-h-screen overflow-y-auto bg-gradient-to-b from-white to-[#F4F8FF] tracking-tight dark:bg-gray-950 dark:bg-none " +
+          "h-full min-h-screen overflow-y-auto bg-gradient-to-b from-white to-[#F4F8FF] tracking-normal dark:bg-gray-950 dark:bg-none " +
           cn(cal.variable, inter.variable)
         }
       >

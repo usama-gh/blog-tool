@@ -11,12 +11,16 @@ import { useParams } from "next/navigation";
 import { Integration } from "@prisma/client";
 import SubmitButton from "./submit-button";
 
+
+
 export default function ZapierIntegration({
   integration,
 }: {
   integration: Integration | null | undefined;
 }) {
   const { id: siteId } = useParams() as { id?: string };
+
+
 
   const router = useRouter();
 
@@ -49,11 +53,11 @@ export default function ZapierIntegration({
       <div className="relative flex flex-col space-y-6 p-5 md:p-10">
 
         <div>
-        <h2 className="font-inter text-2xl font-bold tracking-tight dark:text-white">
-          Zapier/Make
-        </h2>
+        <h2 className="flex gap-x-2 items-center font-inter text-2xl font-bold tracking-tight dark:text-white hover:text-blue-600">
+           <a href="https://zapier.com" target="_blank">Zapier/Make</a>
+          </h2>
         <p className="text-base font-normal text-slate-800 dark:text-gray-400">
-          Enter your Zapier Catch Webhook & do cool things
+          Enter your Zapier catch webhook & create automations
         </p>
         </div>
        
