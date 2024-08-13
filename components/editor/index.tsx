@@ -758,7 +758,7 @@ export default function Editor({
       );
     }
   }}
-  disabled={true}
+  // disabled={true}
 >
   {sendingPlunk ? "Sending..." : "Plunk"}
 </Button>

@@ -33,6 +33,20 @@ export default function PlunkNewsletter(props: ModelProps) {
   const router = useRouter();
   const modal = useModal();
 
+  const [subscribers] = useState<string[] | []>(() => {
+    const emails: string[] | [] = [];
+
+    props?.subscribers?.forEach((email: string) => {
+      // @ts-ignore
+      if (emails.includes(email)) {
+        return; // ignore duplicates
+      }
+      // @ts-ignore
+      emails.push(email);
+    });
+
+    return emails;
+  });
   const [receivers, setReceivers] = useState<string | string[]>("all");
   const [subject, setSubject] = useState(props.postTitle);
   const [body, setBody] = useState(props.postBody);
@@ -41,47 +55,65 @@ export default function PlunkNewsletter(props: ModelProps) {
     if (value === "all") {
       setReceivers(props.subscribers);
     } else {
-      setReceivers(value);
+      setReceivers([value]);
     }
   }
 
-  async function sendEmail(email: string) {
+  async function createCompaign() {
     try {
-      const response = await fetch("https://api.useplunk.com/v1/send", {
+      const request = await fetch("https://api.useplunk.com/v1/campaigns", {
         method: "POST",
         headers: {
           Authorization: `Bearer ${props.plunkKey as string}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          to: email,
-          subject, // Ensure that 'subject' and 'body' are defined or passed as parameters
+          subject,
           body,
-          subscribed: false,
+          style: "HTML",
+          recipients: receivers,
         }),
       });
-  
-      const data = await response.json();
-  
-      console.log('API Response:', data);
+
+      const response = await request.json();
+      return response;
     } catch (error) {
-      console.error('Error sending email:', error);
+      console.error("Error sending compaign:", error);
     }
   }
-  
+
+  async function sendCompaign(id: string) {
+    try {
+      await fetch("https://api.useplunk.com/v1/campaigns/send", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${props.plunkKey as string}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          id,
+          delay: 1,
+          live: false,
+        }),
+      });
+
+      return true;
+    } catch (error) {
+      console.error("Error sending compaign:", error);
+    }
+  }
 
   return (
     <form
       action={async () => {
-        if (Array.isArray(receivers)) {
-          receivers.forEach((email) => {
-            sendEmail(email);
-          });
-        } else {
-          sendEmail(receivers);
+        const compaign = await createCompaign();
+        if (compaign.error) {
+          toast.error("Failed to create compaign!");
+          return;
         }
+        await sendCompaign(compaign.id);
 
-        toast.success("Email sent successfully");
+        toast.success("Newsletter sent successfully!");
         modal?.hide();
         props.successAction();
       }}
@@ -107,11 +139,11 @@ export default function PlunkNewsletter(props: ModelProps) {
               <SelectValue placeholder="Select Subscribers" />
             </SelectTrigger>
             <SelectContent className="">
-              {props?.subscribers?.length > 0 && (
+              {subscribers.length > 0 && (
                 <SelectItem value="all">All Subscribers</SelectItem>
               )}
-              {props?.subscribers.map((email: string) => (
-                <SelectItem key={email} value={email}>
+              {subscribers.map((email: string, idx: number) => (
+                <SelectItem key={idx} value={email}>
                   {email}
                 </SelectItem>
               ))}
