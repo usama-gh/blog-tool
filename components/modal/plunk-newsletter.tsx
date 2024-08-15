@@ -20,10 +20,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Post } from "@prisma/client";
 
 interface ModelProps {
-  postTitle: string;
-  postBody: string;
+  data: Post;
   plunkKey: string;
   isSend: boolean;
   subscribers: string[] | [];
@@ -32,6 +32,34 @@ interface ModelProps {
 export default function PlunkNewsletter(props: ModelProps) {
   const router = useRouter();
   const modal = useModal();
+  const [gatedSlidesIds, setgatedSlidesIds] = useState(() => {
+    const ids: number[] = [];
+    const gateSides: any[] = JSON.parse(props.data.gateSlides ?? "[]");
+    gateSides.forEach((slide: { id: string; type: string }) => {
+      ids.push(Number(slide.id));
+    });
+
+    const leadSides: any[] = JSON.parse(props.data.leadSlides ?? "[]");
+    leadSides.forEach((slide: { id: string; name: string; leadId: string }) => {
+      ids.push(Number(slide.id));
+    });
+
+    return ids;
+  });
+
+  const [slides, setSlides] = useState(() => {
+    let slideData: string[] = [];
+
+    const slides = JSON.parse(props.data.slides ?? "[]");
+
+    slides.forEach((slide: string, idx: number) => {
+      if (!gatedSlidesIds.includes(idx + 1)) {
+        slideData.push(slide);
+      }
+    });
+
+    return slideData;
+  });
 
   const [subscribers] = useState<string[] | []>(() => {
     const emails: string[] | [] = [];
@@ -48,8 +76,16 @@ export default function PlunkNewsletter(props: ModelProps) {
     return emails;
   });
   const [receivers, setReceivers] = useState<string | string[]>("all");
-  const [subject, setSubject] = useState(props.postTitle);
-  const [body, setBody] = useState(props.postBody);
+  const [subject, setSubject] = useState(props.data.title!);
+  const [body, setBody] = useState(() => {
+    let content = props.data.content!;
+    slides.forEach((slide) => {
+      content += "\n\n" + slide;
+    });
+    return content;
+  });
+
+  // const [body, setBody] = useState(props.data.content!);
 
   function handleSubscribersChange(value: string) {
     if (value === "all") {
@@ -117,7 +153,7 @@ export default function PlunkNewsletter(props: ModelProps) {
         modal?.hide();
         props.successAction();
       }}
-      className="w-full rounded-md bg-white dark:bg-black md:max-w-md md:border md:border-gray-200 md:shadow dark:md:border-gray-700"
+      className="w-full overflow-y-auto rounded-md bg-white dark:bg-black md:max-w-md md:border md:border-gray-200 md:shadow dark:md:border-gray-700"
     >
       <div className="relative flex flex-col space-y-4 p-5 md:p-10">
         <h2 className="font-inter text-3xl font-bold tracking-tight dark:text-white">

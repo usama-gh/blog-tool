@@ -11,7 +11,7 @@ import PostForm from "@/components/form/post-form";
 import { toast } from "sonner";
 import TextareaAutosize from "react-textarea-autosize";
 import { EditorBubbleMenu } from "./bubble-menu";
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 import { Integration, Lead, Post } from "@prisma/client";
 import {
   sendPostToZapier,
@@ -708,60 +708,53 @@ export default function Editor({
             </Tooltip>
           </TooltipProvider>
 
-          <PopoverContent className="mt-2 flex flex-col w-auto space-y-1 rounded-lg border-0 p-2 shadow-lg dark:bg-gray-800">
-         
-          
-         
+          <PopoverContent className="mt-2 flex w-auto flex-col space-y-1 rounded-lg border-0 p-2 shadow-lg dark:bg-gray-800">
+            <Button
+              variant="secondary"
+              size="sm"
+              onClick={() => {
+                if (zapier?.postWebhookUrl) {
+                  handleSendPostToZapier();
+                } else {
+                  toast.success(
+                    "Please add publishing webhook on integrations page to send to Zapier/Make",
+                  );
+                }
+              }}
+              disabled={sendingZapier}
+            >
+              {sendingZapier ? "Sending..." : "Send to Zapier"}
+            </Button>
 
-<Button
-  variant="secondary"
-  size="sm"
-  onClick={() => {
-    if (zapier?.postWebhookUrl) {
-      handleSendPostToZapier();
-    } else {
-      toast.success(
-        "Please add publishing webhook on integrations page to send to Zapier/Make"
-      );
-    }
-  }}
-  disabled={sendingZapier}
->
-  {sendingZapier ? "Sending..." : "Send to Zapier"}
-</Button>
-
-
-<Button
-  variant="secondary"
-  size="sm"
-
-  onClick={() => {
-    if (plunk?.plunkKey) {
-      modal?.show(
-        <PlunkNewsletter
-          plunkKey={plunk.plunkKey}
-          postTitle={data.title!}
-          postBody={data.content!}
-          subscribers={subscribers}
-          isSend={data.sendToPlunk}
-          successAction={() => {
-            setData((prev) => ({
-              ...prev,
-              sendToPlunk: true,
-            }));
-          }}
-        />,
-      );
-    } else {
-      toast.success(
-        "Please add secret key of Plunk on the integrations page to send to the newsletter using Plunk"
-      );
-    }
-  }}
-  // disabled={true}
->
-  {sendingPlunk ? "Sending..." : "Plunk"}
-</Button>
+            <Button
+              variant="secondary"
+              size="sm"
+              onClick={() => {
+                if (plunk?.plunkKey) {
+                  modal?.show(
+                    <PlunkNewsletter
+                      plunkKey={plunk.plunkKey}
+                      data={data}
+                      subscribers={subscribers}
+                      isSend={data.sendToPlunk}
+                      successAction={() => {
+                        setData((prev) => ({
+                          ...prev,
+                          sendToPlunk: true,
+                        }));
+                      }}
+                    />,
+                  );
+                } else {
+                  toast.success(
+                    "Please add secret key of Plunk on the integrations page to send to the newsletter using Plunk",
+                  );
+                }
+              }}
+              // disabled={true}
+            >
+              {sendingPlunk ? "Sending..." : "Plunk"}
+            </Button>
           </PopoverContent>
         </Popover>
 
