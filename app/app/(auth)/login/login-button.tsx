@@ -10,7 +10,7 @@ import Image from "next/image";
 export default function LoginButton() {
   const [loading, setLoading] = useState(false);
 
-  // Get error message added by next/auth in URL.
+  // Get error message added by
   const searchParams = useSearchParams();
   const error = searchParams?.get("error");
 
