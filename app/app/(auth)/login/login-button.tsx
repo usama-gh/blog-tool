@@ -10,7 +10,7 @@ import Image from "next/image";
 export default function LoginButton() {
   const [loading, setLoading] = useState(false);
 
-  // Get error message added by next/auth in URL.
+  // Get error message added by
   const searchParams = useSearchParams();
   const error = searchParams?.get("error");
 
@@ -24,8 +24,8 @@ export default function LoginButton() {
       disabled={loading}
       onClick={() => {
         setLoading(true);
-        signIn("github");
-        // signIn("google");
+        // signIn("github");
+        signIn("google");
       }}
       className={`${
         loading
