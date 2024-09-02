@@ -57,10 +57,8 @@ export default function PostForm({
   // const [slug, setSlug] = useState(makeSlug(postTitle));
   const [slug, setSlug] = useState(inputAttrs.defaultValue);
 
-
   const [debouncedSlug] = useDebounce(slug, 1000);
 
-  
   const formRef = useRef<HTMLFormElement>(null);
   const firstRender = useRef<boolean>(true);
   const firstRenderDebounce = useRef<boolean>(true);
@@ -75,28 +73,29 @@ export default function PostForm({
   }, [postTitle]);
 
   useEffect(() => {
+    // if title is save then don't change
     if (debouncedSlug === makeSlug(postTitle)) {
       return;
     }
-      if (firstRenderDebounce.current) {
+
+    if (firstRenderDebounce.current) {
       firstRenderDebounce.current = false;
       return;
     }
     // Add your logic to handle the debounced slug change here
     // For example, you can submit the form, set loading flags, or show notifications
     // You can call `formRef.current?.requestSubmit();` to submit the form.
-  
+
     // Example: Submit the form
     if (formRef.current) {
       formRef.current.requestSubmit(); // This submits the form
     }
-  
+
     // Example: Set a loading flag
     setIsLoading(true);
-  
+
     // Example: Show a notification on success
     // toast.success(`Slug updated to ${debouncedSlug}`);
-  
   }, [debouncedSlug, postTitle]);
 
   // useEffect(() => {
@@ -120,7 +119,6 @@ export default function PostForm({
   return (
     <form
       ref={formRef}
-      
       action={async (data: FormData) => {
         if (!slug) {
           setIsLoading(false);
