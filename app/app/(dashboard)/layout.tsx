@@ -6,12 +6,11 @@ import Script from "next/script";
 export default function DashboardLayout({ children }: { children: ReactNode }) {
   return (
     <div>
-        <Script
+      <Script
         src="https://assets.userscom.com/script.js"
         id="userscom-chat"
+        nonce="XUENAJFW"
         data-reference="6553c9324bb5c"
-        strategy="lazyOnload" // Load script after the page is loaded
-        onLoad={() => console.log('Script loaded successfully')}
       />
       <Nav>
         <Suspense fallback={<div>Loading...</div>}>
