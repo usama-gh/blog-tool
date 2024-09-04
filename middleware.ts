@@ -54,6 +54,7 @@ export default async function middleware(req: NextRequest) {
     );
   }
 
-  // Rewrite everything else to `/[domain]/[path]` dynamic route
-  return NextResponse.rewrite(new URL(`/${hostname}${url.pathname}`, req.url));
+  // Check for existing valid routes in the application
+  // If no specific rewrite was done, ensure to allow default 404 handling
+  return NextResponse.next();
 }
