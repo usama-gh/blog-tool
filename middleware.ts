@@ -16,7 +16,12 @@ export default async function middleware(req: NextRequest) {
   // Basic bot detection
   const userAgent = req.headers.get("user-agent") || "";
   const isBot = /bot|crawl|slurp|spider|robot|crawling/i.test(userAgent);
-  
+
+  // Manual check for .php in URL
+  if (url.pathname.includes(".php")) {
+    return new NextResponse("Bad Request", { status: 400 });
+  }
+
   if (isBot) {
     return NextResponse.rewrite(new URL(`/bots${url.pathname}`, req.url));
   }
