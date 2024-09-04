@@ -16,12 +16,7 @@ export default async function middleware(req: NextRequest) {
   // Basic bot detection
   const userAgent = req.headers.get("user-agent") || "";
   const isBot = /bot|crawl|slurp|spider|robot|crawling/i.test(userAgent);
-
-  // Manual check for .php in URL
-  if (url.pathname.includes(".php")) {
-    return new NextResponse("Bad Request", { status: 400 });
-  }
-
+  
   if (isBot) {
     return NextResponse.rewrite(new URL(`/bots${url.pathname}`, req.url));
   }
@@ -54,7 +49,6 @@ export default async function middleware(req: NextRequest) {
     );
   }
 
-  // Check for existing valid routes in the application
-  // If no specific rewrite was done, ensure to allow default 404 handling
-  return NextResponse.next();
+  // Rewrite everything else to `/[domain]/[path]` dynamic route
+  return NextResponse.rewrite(new URL(`/${hostname}${url.pathname}`, req.url));
 }
