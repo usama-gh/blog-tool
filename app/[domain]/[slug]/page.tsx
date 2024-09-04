@@ -5,7 +5,7 @@ import BlurImage from "@/components/blur-image";
 import { toDateString } from "@/lib/utils";
 import Carousel from "@/components/carousel/blog-carousal";
 import Link from "next/link";
-import { addVisitor } from "@/lib/actions";
+// import { addVisitor } from "@/lib/actions";
 import Script from "next/script";
 
 export async function generateMetadata({
@@ -51,8 +51,8 @@ export default async function SitePostPage({
     notFound();
   }
 
-  // increment the views count to visit row
-  await addVisitor(data?.siteId as string);
+  // // increment the views count to visit row
+  // await addVisitor(data?.siteId as string);
 
   const siteData = await getSiteData(params.domain);
 
