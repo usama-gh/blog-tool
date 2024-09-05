@@ -153,7 +153,7 @@ export default function PlunkNewsletter(props: ModelProps) {
         modal?.hide();
         props.successAction();
       }}
-      className="w-full overflow-y-auto rounded-md bg-white dark:bg-black md:max-w-md md:border md:border-gray-200 md:shadow dark:md:border-gray-700"
+      className="w-full  rounded-md bg-white dark:bg-black md:max-w-4xl md:border md:border-gray-200 md:shadow dark:md:border-gray-700"
     >
       <div className="relative flex flex-col space-y-4 p-5 md:p-10">
         <h2 className="font-inter text-3xl font-bold tracking-tight dark:text-white">
@@ -213,7 +213,10 @@ export default function PlunkNewsletter(props: ModelProps) {
           >
             Body
           </label>
+          <div className="max-h-[40vh] overflow-auto">
           <NobelEditor text={body} setText={setBody} canUseAI={false} />
+          </div>
+         
         </div>
       </div>
       <div className="flex items-center justify-between rounded-b-lg border-t border-slate-200 bg-slate-50 p-3 dark:border-gray-700 dark:bg-gray-800 md:px-10">
