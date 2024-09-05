@@ -156,12 +156,15 @@ export default function PlunkNewsletter(props: ModelProps) {
       className="w-full  rounded-md bg-white dark:bg-black md:max-w-4xl md:border md:border-gray-200 md:shadow dark:md:border-gray-700"
     >
       <div className="relative flex flex-col space-y-4 p-5 md:p-10">
+        <div className="mb-4">
         <h2 className="font-inter text-3xl font-bold tracking-tight dark:text-white">
           Send newsletter
         </h2>
-        <h2 className="font-inter mb-4 text-base dark:text-white">
-          Sendout newsletter using Plunk
+        <h2 className="font-inter text-base dark:text-white">
+          Send out newsletter using Plunk. More integrations comign soon.
         </h2>
+        </div>
+       
 
         <div className="flex flex-col space-y-2">
           <label
