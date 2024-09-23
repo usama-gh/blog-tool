@@ -46,15 +46,15 @@ export default async function Plans() {
               <h3 className="text-sm italic max-w-lg text-gray-800 dark:text-white tracking-wide mb-4">One of our customer says</h3>
 
               <div
-                className="aspect-auto p-8 border border-gray-100 rounded-3xl bg-gradient-to-br from-blue-700 to-blue-600 shadow-2xl shadow-gray-600/10 dark:shadow-none">
+                className="aspect-auto p-8 border border-gray-100 rounded-3xl bg-gradient-to-br from-blue-500 to-blue-600 shadow-2xl shadow-gray-600/10 dark:shadow-none">
                 <div className="flex gap-4">
                     <img className="w-12 h-12 rounded-full" src="https://typedd.com/wp-content/uploads/2023/12/image-5-e1702754608163.jpg" alt="user avatar" width="400" height="400" loading="lazy"/>
                     <div>
-                        <h6 className="text-lg font-medium text-gray-700 dark:text-white">Donald Chan</h6>
-                        <p className="text-sm text-gray-500 dark:text-gray-300">Founder & CEO</p>
+                        <h6 className="text-lg font-medium text-white">Donald Chan</h6>
+                        <p className="text-sm text-white">Founder & CEO</p>
                     </div>
                 </div>
-                <p className="mt-8 text-sm">Rather than let those posts disappear into the void, you can extend their shelf life by curating them onto a Typedd blog & <strong>build a new audience</strong> through it.<br/><br/> So your content gets a second wind in the form of <strong>SEO</strong> traffic.
+                <p className="mt-8 text-sm text-white">Rather than let those posts disappear into the void, you can extend their shelf life by curating them onto a Typedd blog & <strong>build a new audience</strong> through it.<br/><br/> So your content gets a second wind in the form of <strong>SEO</strong> traffic.
                 </p>
             </div>
 
