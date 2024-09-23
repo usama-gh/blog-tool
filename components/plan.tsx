@@ -20,7 +20,7 @@ interface Props {
 
 export default function Plan({ plan, isCurrentPlan, email }: Props) {
   return (
-    <div className="relative flex flex-col rounded-lg  bg-slate-200 dark:bg-gray-900  transition-all">
+    <div className="relative flex flex-col rounded-lg  bg-slate-200 dark:bg-gray-800 dark:border dark:border-gray-700  transition-all">
       {/* plan overview */}
       <div className="flex justify-between border-b border-slate-300 p-6 dark:border-gray-700">
         <div className="flex flex-col">
