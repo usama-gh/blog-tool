@@ -37,6 +37,8 @@ export default async function SiteHomePage({
 }: {
   params: { domain: string };
 }) {
+
+  console.log('dasdas',params.domain)
   const [data, posts, leads, pages, banners] = await Promise.all([
     getSiteData(params.domain),
     getPostsForSite(params.domain),

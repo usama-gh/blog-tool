@@ -1,6 +1,7 @@
 import { getSession } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import prisma from "@/lib/prisma";
+
 import Image from "next/image";
 import PageCard from "./page-card";
 import { getUserStaticPages } from "@/lib/fetchers";
@@ -16,6 +17,17 @@ export default async function PagesTable({
   if (!session?.user) {
     redirect("/login");
   }
+
+
+  const data = await prisma.site.findUnique({
+    where: {
+      id: siteId,
+    },
+  });
+
+  const siteURL = `${data.subdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`;
+
+
 
   const pages = await getUserStaticPages(siteId!);
 
@@ -56,7 +68,7 @@ export default async function PagesTable({
               <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
                 {pages.map((page) => (
                   // @ts-ignore
-                  <PageCard key={page.id} page={page} />
+                  <PageCard key={page.id} siteURL={siteURL} page={page} />
                 ))}
               </tbody>
             </table>

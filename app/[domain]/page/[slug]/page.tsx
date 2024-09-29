@@ -6,6 +6,7 @@ import { r2Asset, toDateString } from "@/lib/utils";
 import Link from "next/link";
 import Image from "next/image";
 import parse from "html-react-parser";
+import SocialLinks from "@/components/social-links";
 import { LeadDownload } from "@/components/lead-download";
 
 export async function generateMetadata({
@@ -40,7 +41,7 @@ export async function generateMetadata({
   };
 }
 
-export default async function SiteLeadPage({
+export default async function StaticPages({
   params,
 }: {
   params: { domain: string; slug: string };
@@ -48,6 +49,9 @@ export default async function SiteLeadPage({
   const { domain, slug } = params;
 
   const page = await getPageData(domain, slug);
+
+  console.log('here',domain)
+  const data =  await getSiteData(domain);
 
   if (!page) {
     notFound();
@@ -57,6 +61,41 @@ export default async function SiteLeadPage({
 
   return (
     <>
+
+    <div className="bg-white dark:bg-gray-800 min-h-screen py-16 px-5">
+
+        
+    <div className="mt-10 max-w-2xl mx-auto flex w-full flex-col items-center justify-center gap-3 px-4 text-center">
+                <div className=" text-center">
+                  {data.logo ? (
+                    <Image
+                      alt={data.user?.name ?? "User Avatar"}
+                      width={80}
+                      height={80}
+                      className="mb-3 rounded-3xl object-cover"
+                      src={data.logo}
+                    />
+                  ) : (
+                    <div className="absolute flex h-full w-full select-none items-center justify-center bg-slate-100 text-4xl text-stone-500">
+                      ?
+                    </div>
+                  )}
+                </div>
+
+                <h1 className="bg-gradient-to-br from-slate-600 to-slate-600 bg-clip-text font-title text-lg font-bold text-transparent dark:from-gray-50 dark:to-gray-500  dark:drop-shadow-md">
+                  {data.name}
+                </h1>
+                {data?.bio && (
+                  <div className="font-regular site-bio text-md overflow-hidden text-center">
+                    {parse(data.bio)}
+                  </div>
+                )}
+
+                <SocialLinks linksData={data.links} />
+              </div>
+
+
+    </div>
       <div className="animate-fade absolute left-0 top-0 z-30 mx-auto flex w-full w-screen items-center justify-between	bg-gradient-to-b from-[#000000a8] via-[#00000075] to-transparent px-2 pb-5 pt-2 lg:px-2">
         <div className="flex items-center gap-x-2">
           <div className="flex items-center gap-x-2">
@@ -97,6 +136,8 @@ export default async function SiteLeadPage({
         </p>
       </div>
 
+     
+
       <div className="relative">
         <div className="mx-auto my-auto flex items-center">
           <div className="relative w-full overflow-hidden">
@@ -106,10 +147,37 @@ export default async function SiteLeadPage({
                   className={`absolute left-0 top-0 h-full w-full bg-white dark:bg-gray-800`}
                 ></div>
 
+
                 {/* lead description */}
                 <div className="scrollbar-thumb-rounded-full scrollbar-track-rounded-full relative z-20 mx-auto flex w-full max-w-2xl items-center justify-center  py-10 pt-20 text-slate-700 scrollbar-thin  scrollbar-track-transparent scrollbar-thumb-gray-200 dark:text-white dark:scrollbar-thumb-gray-800 [&>*]:rounded-xl [&>*]:text-lg">
                   <div className="flex flex-col items-center justify-center gap-4 px-6">
+
+                  <Link href="/">
+              <div className="h-[80px] w-[80px] overflow-hidden rounded-full">
+                {siteData?.logo ? (
+                  <BlurImage
+                    alt={siteData?.logo ?? "User Avatar"}
+                    width={20}
+                    height={20}
+                    className="h-full w-full scale-100 rounded-full object-cover blur-0 duration-700 ease-in-out"
+                    src={
+                      siteData?.logo ??
+                      "https://public.blob.vercel-storage.com/eEZHAoPTOBSYGBE3/JRajRyC-PhBHEinQkupt02jqfKacBVHLWJq7Iy.png"
+                    }
+                  />
+                ) : (
+                  <div className="absolute flex h-full w-full select-none items-center justify-center bg-stone-100 text-4xl text-stone-500">
+                    ?
+                  </div>
+                )}
+              </div>
+            </Link>
+
+                  <SocialLinks linksData={data.links} />
+
                     <h2 className="text-4xl font-bold">{page.title}</h2>
+                    
+              
                     {parse(page.body as string)}
                   </div>
                 </div>

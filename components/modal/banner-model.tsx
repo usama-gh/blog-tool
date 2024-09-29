@@ -18,6 +18,7 @@ import { Switch } from "@/components/ui/switch";
 import parse from "html-react-parser";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
+
 export default function BannerModel({
   siteId,
   banner,
@@ -28,8 +29,6 @@ export default function BannerModel({
   const router = useRouter();
   const modal = useModal();
 
-  const firstRender = useRef<boolean>(true);
-
   const [data, setData] = useState({
     name: (banner ? banner.name : "") as string,
     body: (banner ? banner.body : "") as string,
@@ -37,8 +36,6 @@ export default function BannerModel({
     btnText: (banner ? banner.btnText : "") as string,
     btnLink: (banner ? banner.btnLink : "") as string,
   });
-
-  const [body, setBody] = useState(data.body);
 
   const type = banner ? "Update" : "Create";
 
@@ -67,15 +64,11 @@ export default function BannerModel({
     }
   };
 
-  useEffect(() => {
-    // if (firstRender.current) {
-    //   firstRender.current = false;
-    //   return;
-    // }
-    if (body !== "<p></p>") {
-      setData({ ...data, body });
+  const handleBodyChange = (newBody: string) => {
+    if (newBody !== "<p></p>") {
+      setData(prevData => ({ ...prevData, body: newBody }));
     }
-  }, [body, data]);
+  };
 
   return (
     <form
@@ -103,7 +96,7 @@ export default function BannerModel({
             placeholder="SaaS guide #1"
             autoFocus
             value={data.name}
-            onChange={(e) => setData({ ...data, name: e.target.value })}
+            onChange={(e) => setData(prevData => ({ ...prevData, name: e.target.value }))}
             required
             className="w-full rounded-md border border-slate-200 bg-slate-50 px-4 py-2 text-sm text-slate-600 placeholder:text-slate-400 focus:border-black focus:outline-none focus:ring-black dark:border-gray-600 dark:bg-black dark:text-white dark:placeholder-gray-700 dark:focus:ring-white"
           />
@@ -117,7 +110,7 @@ export default function BannerModel({
             Body
           </label>
           <span className="lead-body h-full max-h-[150px] overflow-y-auto">
-            <NovelEditor text={body} setText={setBody} canUseAI={false} />
+            <NovelEditor text={data.body} setText={handleBodyChange} canUseAI={false} />
           </span>
         </div>
 
@@ -131,7 +124,7 @@ export default function BannerModel({
             </label>
             <Switch
               defaultChecked={data.showBtn}
-              onCheckedChange={(value) => setData({ ...data, showBtn: value })}
+              onCheckedChange={(value) => setData(prevData => ({ ...prevData, showBtn: value }))}
             />
           </div>
         </div>
@@ -151,7 +144,7 @@ export default function BannerModel({
                 type="text"
                 placeholder="Free Guide"
                 value={data.btnText}
-                onChange={(e) => setData({ ...data, btnText: e.target.value })}
+                onChange={(e) => setData(prevData => ({ ...prevData, btnText: e.target.value }))}
                 maxLength={50}
                 required
                 className="w-full rounded-md border border-slate-200 bg-slate-50 px-4 py-2 text-sm text-slate-600 placeholder:text-slate-400 focus:border-black focus:outline-none focus:ring-black dark:border-gray-600 dark:bg-black dark:text-white dark:placeholder-gray-700 dark:focus:ring-white"
@@ -171,7 +164,7 @@ export default function BannerModel({
                 type="text"
                 placeholder="Download Link"
                 value={data.btnLink}
-                onChange={(e) => setData({ ...data, btnLink: e.target.value })}
+                onChange={(e) => setData(prevData => ({ ...prevData, btnLink: e.target.value }))}
                 maxLength={50}
                 required
                 className="w-full rounded-md border border-slate-200 bg-slate-50 px-4 py-2 text-sm text-slate-600 placeholder:text-slate-400 focus:border-black focus:outline-none focus:ring-black dark:border-gray-600 dark:bg-black dark:text-white dark:placeholder-gray-700 dark:focus:ring-white"
@@ -203,10 +196,6 @@ export default function BannerModel({
                   </button>
                 )}
               </div>
-
-              {/* <p className="mt-2 py-1 text-xs tracking-wide text-gray-500 dark:text-gray-400">
-                Overlay popup on posts
-              </p> */}
             </div>
           </div>
         </div>
