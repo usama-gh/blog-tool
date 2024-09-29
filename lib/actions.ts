@@ -1,11 +1,13 @@
 "use server";
 
 import prisma from "@/lib/prisma";
-import { Integration, Lead, Post, Site } from "@prisma/client";
+import { Banner, Integration, Lead, Page, Post, Site } from "@prisma/client";
 import { revalidateTag } from "next/cache";
 import {
+  withBannerAuth,
   withIntegrationAuth,
   withLeadAuth,
+  withPageAuth,
   withPostAuth,
   withSiteAuth,
 } from "./auth";
@@ -23,8 +25,10 @@ import { getBlurDataURL } from "@/lib/utils";
 import { createId as cuid } from "@paralleldrive/cuid2";
 import {
   AddIntegrationData,
+  BannerData,
   IntegrationData,
   LeadData,
+  PageData,
   SubscribeData,
   leadSlide,
 } from "@/types";
@@ -1238,3 +1242,250 @@ export const sendPostToZapier = async (
 
   return true;
 };
+
+export const createStaticPage = async (data: PageData) => {
+  const session = await getSession();
+  if (!session?.user.id) {
+    return {
+      error: "Not authenticated",
+    };
+  }
+
+  // check weather current user has any other page with same slug
+  const existingPage = await prisma.page.findFirst({
+    where: {
+      slug: data.slug,
+      siteId: data.siteId,
+    },
+  });
+  if (existingPage) {
+    return {
+      error: `Page with slug ${data.slug} already exists.`,
+    };
+  }
+
+  try {
+    // creating site lead
+    const response = await prisma.page.create({
+      data: {
+        name: data.name,
+        slug: data.slug,
+        body: data.body,
+        title: data.title,
+        description: data.description,
+        published: data.published,
+        user: {
+          connect: {
+            id: session.user.id,
+          },
+        },
+        site: {
+          connect: {
+            id: data.siteId,
+          },
+        },
+      },
+    });
+
+    revalidateTag(`${data.siteId}-pages`);
+    revalidateTag(`${response.id}-page`);
+
+    return response;
+  } catch (error: any) {
+    if (error.code === "P2002") {
+      return {
+        error: `Error`,
+      };
+    } else {
+      return {
+        error: error.message,
+      };
+    }
+  }
+};
+
+export const updateStaticPage = withPageAuth(
+  async (data: PageData, page: Page, key: string) => {
+    const session = await getSession();
+    if (!session?.user.id) {
+      return {
+        error: "Not authenticated",
+      };
+    }
+
+    // check if slug is updated
+    if (data.slug !== page.slug) {
+      // check weather current user has any other page with same slug
+      const existingPage = await prisma.page.findFirst({
+        where: {
+          slug: data.slug,
+          siteId: data.siteId,
+        },
+      });
+      if (existingPage) {
+        return {
+          error: `Page with slug ${data.slug} already exists.`,
+        };
+      }
+    }
+
+    try {
+      const response = await prisma.page.update({
+        where: {
+          id: page.id,
+        },
+        data: {
+          name: data.name,
+          slug: data.slug,
+          body: data.body,
+          title: data.title,
+          description: data.description,
+          published: data.published,
+        },
+      });
+
+      revalidateTag(`${page.siteId}-pages`);
+      revalidateTag(`${page.id}-page`);
+      return response;
+    } catch (error: any) {
+      return {
+        error: error.message,
+      };
+    }
+  },
+);
+
+export const deleteStaticPage = withPageAuth(
+  async (_: FormData, page: Page) => {
+    const session = await getSession();
+    if (!session?.user.id) {
+      return {
+        error: "Not authenticated",
+      };
+    }
+    const siteId = page.siteId;
+
+    try {
+      const response = await prisma.page.delete({
+        where: {
+          id: page.id,
+        },
+      });
+
+      revalidateTag(`${siteId}-pages`);
+      return response;
+    } catch (error: any) {
+      return {
+        error: error.message,
+      };
+    }
+  },
+);
+
+export const createMarketingBanner = async (data: BannerData) => {
+  const session = await getSession();
+  if (!session?.user.id) {
+    return {
+      error: "Not authenticated",
+    };
+  }
+
+  try {
+    // creating site lead
+    const response = await prisma.banner.create({
+      data: {
+        name: data.name,
+        body: data.body,
+        showBtn: data.showBtn,
+        btnText: data.btnText,
+        btnLink: data.btnLink,
+        user: {
+          connect: {
+            id: session.user.id,
+          },
+        },
+        site: {
+          connect: {
+            id: data.siteId,
+          },
+        },
+      },
+    });
+
+    revalidateTag(`${data.siteId}-banners`);
+    revalidateTag(`${response.id}-banner`);
+
+    return response;
+  } catch (error: any) {
+    if (error.code === "P2002") {
+      return {
+        error: `Error`,
+      };
+    } else {
+      return {
+        error: error.message,
+      };
+    }
+  }
+};
+
+export const updateMarketingBanner = withBannerAuth(
+  async (data: BannerData, banner: Banner, key: string) => {
+    const session = await getSession();
+    if (!session?.user.id) {
+      return {
+        error: "Not authenticated",
+      };
+    }
+
+    try {
+      const response = await prisma.banner.update({
+        where: {
+          id: banner.id,
+        },
+        data: {
+          name: data.name,
+          body: data.body,
+          showBtn: data.showBtn,
+          btnText: data.btnText,
+          btnLink: data.btnLink,
+        },
+      });
+
+      revalidateTag(`${banner.siteId}-banners`);
+      revalidateTag(`${banner.id}-banner`);
+      return response;
+    } catch (error: any) {
+      return {
+        error: error.message,
+      };
+    }
+  },
+);
+
+export const deleteMarketingBanner = withBannerAuth(
+  async (_: FormData, banner: Banner) => {
+    const session = await getSession();
+    if (!session?.user.id) {
+      return {
+        error: "Not authenticated",
+      };
+    }
+    const siteId = banner.siteId;
+
+    try {
+      const response = await prisma.banner.delete({
+        where: {
+          id: banner.id,
+        },
+      });
+
+      revalidateTag(`${siteId}-banners`);
+      return response;
+    } catch (error: any) {
+      return {
+        error: error.message,
+      };
+    }
+  },
+);

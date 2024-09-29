@@ -3,7 +3,7 @@ import GitHubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import prisma from "@/lib/prisma";
-import { IntegrationData, LeadData } from "@/types";
+import { BannerData, IntegrationData, LeadData, PageData } from "@/types";
 
 const VERCEL_DEPLOYMENT = !!process.env.VERCEL_URL;
 
@@ -163,6 +163,56 @@ export function withLeadAuth(action: any) {
     }
 
     return action(data, lead, key);
+  };
+}
+
+export function withPageAuth(action: any) {
+  return async (data: PageData | null, pageId: string, key: string | null) => {
+    const session = await getSession();
+    if (!session?.user.id) {
+      return {
+        error: "Not authenticated",
+      };
+    }
+    const page = await prisma.page.findUnique({
+      where: {
+        id: pageId,
+      },
+    });
+    if (!page || page.userId !== session.user.id) {
+      return {
+        error: "Page not found",
+      };
+    }
+
+    return action(data, page, key);
+  };
+}
+
+export function withBannerAuth(action: any) {
+  return async (
+    data: BannerData | null,
+    bannerId: string,
+    key: string | null,
+  ) => {
+    const session = await getSession();
+    if (!session?.user.id) {
+      return {
+        error: "Not authenticated",
+      };
+    }
+    const banner = await prisma.banner.findUnique({
+      where: {
+        id: bannerId,
+      },
+    });
+    if (!banner || banner.userId !== session.user.id) {
+      return {
+        error: "Marketing banner not found",
+      };
+    }
+
+    return action(data, banner, key);
   };
 }
 

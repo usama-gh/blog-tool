@@ -34,7 +34,7 @@ import ImportJsonModal from "../modal/import-json";
 import { TiptapExtensionsAI } from "./extensions/index-ai";
 import { markdownToTxt } from "markdown-to-txt";
 import Form from "@/components/form";
-import { triggerEvent } from "../usermaven";
+import { triggerEvent } from "@/components/posthug";
 import LeadButton from "../lead-button";
 import LinkLeadModal from "../modal/link-lead";
 import { useRouter } from "next/navigation";

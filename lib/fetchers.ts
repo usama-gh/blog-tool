@@ -106,6 +106,55 @@ export async function getLeadsForSite(domain: string) {
   )();
 }
 
+export async function getPagesForSite(domain: string) {
+  const subdomain = domain.endsWith(`.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`)
+    ? domain.replace(`.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`, "")
+    : null;
+  const site = await prisma.site.findUnique({
+    where: subdomain ? { subdomain } : { customDomain: domain },
+  });
+
+  return await unstable_cache(
+    async () => {
+      return prisma.page.findMany({
+        where: {
+          site: subdomain ? { subdomain } : { customDomain: domain },
+          published: true,
+        },
+      });
+    },
+    [`${site?.id}-pages`],
+    {
+      revalidate: 900,
+      tags: [`${site?.id}-pages`],
+    },
+  )();
+}
+
+export async function getBannersForSite(domain: string) {
+  const subdomain = domain.endsWith(`.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`)
+    ? domain.replace(`.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`, "")
+    : null;
+  const site = await prisma.site.findUnique({
+    where: subdomain ? { subdomain } : { customDomain: domain },
+  });
+
+  return await unstable_cache(
+    async () => {
+      return prisma.banner.findMany({
+        where: {
+          site: subdomain ? { subdomain } : { customDomain: domain },
+        },
+      });
+    },
+    [`${site?.id}-banners`],
+    {
+      revalidate: 900,
+      tags: [`${site?.id}-banners`],
+    },
+  )();
+}
+
 export async function getIntegrationsForSite(domain: string) {
   const subdomain = domain.endsWith(`.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`)
     ? domain.replace(`.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`, "")
@@ -284,6 +333,38 @@ export async function getPostData(domain: string, slug: string) {
   )();
 }
 
+export async function getPageData(domain: string, slug: string) {
+  const subdomain = domain.endsWith(`.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`)
+    ? domain.replace(`.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`, "")
+    : null;
+  const site = await prisma.site.findFirst({
+    where: {
+      ...(subdomain
+        ? {
+            subdomain,
+          }
+        : { customDomain: domain }),
+    },
+  });
+
+  return await unstable_cache(
+    async () => {
+      return await prisma.page.findFirst({
+        where: {
+          site: subdomain ? { subdomain } : { customDomain: domain },
+          slug,
+          published: true,
+        },
+      });
+    },
+    [`${site?.id}-pages`],
+    {
+      revalidate: 900, // 15 minutes
+      tags: [`${site?.id}-pages`],
+    },
+  )();
+}
+
 export async function getLead(leadId: string) {
   return await unstable_cache(
     async () => {
@@ -450,6 +531,40 @@ export async function getUserDetails() {
     {
       revalidate: 900,
       tags: [`user-details`],
+    },
+  )();
+}
+
+export async function getUserStaticPages(siteId: string) {
+  return await unstable_cache(
+    async () => {
+      return await prisma.page.findMany({
+        where: {
+          siteId: siteId,
+        },
+      });
+    },
+    [`${siteId}-pages`],
+    {
+      revalidate: 900, // 15 minutes
+      tags: [`${siteId}-pages`],
+    },
+  )();
+}
+
+export async function getSiteMarketingBanners(siteId: string) {
+  return await unstable_cache(
+    async () => {
+      return await prisma.banner.findMany({
+        where: {
+          siteId,
+        },
+      });
+    },
+    [`${siteId}-banners`],
+    {
+      revalidate: 900, // 15 minutes
+      tags: [`${siteId}-banners`],
     },
   )();
 }

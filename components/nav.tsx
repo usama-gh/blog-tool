@@ -17,6 +17,7 @@ import {
   Users,
   ChromeIcon,
   Shield,
+  StickyNote,
 } from "lucide-react";
 import {
   useParams,
@@ -25,7 +26,7 @@ import {
 } from "next/navigation";
 import { ReactNode, useEffect, useMemo, useState } from "react";
 import { getSiteFromPostId } from "@/lib/actions";
-import { triggerEvent } from "./usermaven";
+import { triggerEvent } from "@/components/posthug";
 import { useSession } from "next-auth/react";
 import { isUserAdmin } from "@/lib/utils";
 import { ThemeToggle } from "./theme-toggle";
@@ -90,6 +91,18 @@ export default function Nav({ children }: { children: ReactNode }) {
           href: `/site/${id}/leads`,
           isActive: segments.includes("leads"),
           icon: <Magnet width={18} />,
+        },
+        {
+          name: "Static Pages",
+          href: `/site/${id}/pages`,
+          isActive: segments.includes("pages"),
+          icon: <StickyNote width={18} />,
+        },
+        {
+          name: "Merketing Banners",
+          href: `/site/${id}/banners`,
+          isActive: segments.includes("banners"),
+          icon: <Megaphone width={18} />,
         },
         {
           name: "Add Social Links",
@@ -269,7 +282,6 @@ export default function Nav({ children }: { children: ReactNode }) {
               <a
                 key={name}
                 href={href}
-              
                 rel="noopener noreferrer"
                 className="flex items-center justify-between rounded-lg px-2 py-0.5 transition-all duration-150 ease-in-out hover:bg-slate-200 active:bg-slate-300 dark:text-white dark:hover:bg-gray-700 dark:active:bg-gray-800"
               >

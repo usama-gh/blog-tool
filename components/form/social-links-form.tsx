@@ -6,10 +6,10 @@ import { useSession } from "next-auth/react";
 import { useParams, useRouter } from "next/navigation";
 // ts-ignore because experimental_useFormStatus is not in the types
 // @ts-ignore
-import {  useFormStatus } from "react-dom";
+import { useFormStatus } from "react-dom";
 import { toast } from "sonner";
-import { useEffect } from 'react';
-import { triggerEvent } from "../usermaven";
+import { useEffect } from "react";
+import { triggerEvent } from "@/components/posthug";
 import {
   FacebookIcon,
   GithubIcon,
@@ -30,14 +30,13 @@ export default function SocialLinksForm({
   handleSubmit: any;
   links: any;
 }) {
-
   useEffect(() => {
     // Check if the URL contains "#socials"
-    if (window.location.hash === '#socials') {
+    if (window.location.hash === "#socials") {
       // Scroll to the section with the id "socials"
-      const socialsSection = document.getElementById('socials');
+      const socialsSection = document.getElementById("socials");
       if (socialsSection) {
-        socialsSection.scrollIntoView({ behavior: 'smooth' });
+        socialsSection.scrollIntoView({ behavior: "smooth" });
       }
     }
   }, []);
@@ -73,7 +72,7 @@ export default function SocialLinksForm({
         </p>
         <div className="mt-0 flex flex-wrap justify-between">
           <div className="mt-4 w-[48%]">
-            <h4 className="mb-1 font-inter text-sm font-medium dark:text-white">
+            <h4 className="font-inter mb-1 text-sm font-medium dark:text-white">
               Facebook
             </h4>
             <div className="absolute flex items-center rounded-l-md border border-l-0 border-gray-300 px-3 py-2.5 text-sm dark:border-gray-600 dark:text-gray-400">
@@ -88,7 +87,7 @@ export default function SocialLinksForm({
             />
           </div>
           <div className="mt-4 w-[48%]">
-            <h4 className="mb-1 font-inter text-sm font-medium dark:text-white">
+            <h4 className="font-inter mb-1 text-sm font-medium dark:text-white">
               Twitter
             </h4>
             <div className="absolute flex items-center rounded-l-md border border-l-0 border-gray-300  px-3 py-2.5 text-sm dark:border-gray-600 dark:text-gray-400">
@@ -103,7 +102,7 @@ export default function SocialLinksForm({
             />
           </div>
           <div className="mt-4 w-[48%]">
-            <h4 className="mb-1 font-inter text-sm font-medium dark:text-white">
+            <h4 className="font-inter mb-1 text-sm font-medium dark:text-white">
               Instagram
             </h4>
             <div className="absolute flex items-center rounded-l-md border border-l-0 border-gray-300 px-3 py-2.5 text-sm dark:border-gray-600  dark:text-gray-400">
@@ -118,7 +117,7 @@ export default function SocialLinksForm({
             />
           </div>
           <div className="mt-4 w-[48%]">
-            <h4 className="mb-1 font-inter text-sm font-medium dark:text-white">
+            <h4 className="font-inter mb-1 text-sm font-medium dark:text-white">
               Github
             </h4>
             <div className="absolute flex items-center rounded-l-md border border-l-0 border-gray-300  px-3 py-2.5 text-sm dark:border-gray-600  dark:text-gray-400">
@@ -133,7 +132,7 @@ export default function SocialLinksForm({
             />
           </div>
           <div className="mt-4 w-[48%]">
-            <h4 className="mb-1 font-inter text-sm font-medium dark:text-white">
+            <h4 className="font-inter mb-1 text-sm font-medium dark:text-white">
               Telegram
             </h4>
             <div className="absolute flex items-center rounded-l-md border border-l-0 border-gray-300 px-3 py-2.5 text-sm dark:border-gray-600 dark:text-gray-400">
@@ -148,7 +147,7 @@ export default function SocialLinksForm({
             />
           </div>
           <div className="mt-4 w-[48%]">
-            <h4 className="mb-1 font-inter text-sm font-medium dark:text-white">
+            <h4 className="font-inter mb-1 text-sm font-medium dark:text-white">
               LinkedIn
             </h4>
             <div className="absolute flex items-center rounded-l-md border border-l-0 border-gray-300 px-3 py-2.5 text-sm dark:border-gray-600 dark:text-gray-400">
@@ -163,7 +162,7 @@ export default function SocialLinksForm({
             />
           </div>
           <div className="mt-4 w-[48%]">
-            <h4 className="mb-1 font-inter text-sm font-medium dark:text-white">
+            <h4 className="font-inter mb-1 text-sm font-medium dark:text-white">
               Email
             </h4>
             <div className="absolute flex items-center rounded-l-md border border-l-0 border-gray-300  px-3 py-2.5 text-sm dark:border-gray-600 dark:text-gray-400">
@@ -178,7 +177,7 @@ export default function SocialLinksForm({
             />
           </div>
           <div className="mt-4 w-[48%]">
-            <h4 className="mb-1 font-inter text-sm font-medium dark:text-white">
+            <h4 className="font-inter mb-1 text-sm font-medium dark:text-white">
               Youtube
             </h4>
             <div className="absolute flex items-center rounded-l-md border border-l-0 border-gray-300 px-3 py-2.5 text-sm dark:border-gray-600  dark:text-gray-400">
@@ -193,7 +192,7 @@ export default function SocialLinksForm({
             />
           </div>
           <div className="mt-4 w-[48%]">
-            <h4 className="font mb-1 font-inter text-sm font-medium dark:text-white">
+            <h4 className="font font-inter mb-1 text-sm font-medium dark:text-white">
               WhatsApp
             </h4>
             <div className="absolute flex items-center rounded-l-md border border-l-0 border-gray-300 px-3 py-2.5 text-sm dark:border-gray-600 dark:text-gray-400">
@@ -208,7 +207,7 @@ export default function SocialLinksForm({
             />
           </div>
           <div className="mt-4 w-[48%]">
-            <h4 className="mb-1 font-inter text-sm font-medium dark:text-white">
+            <h4 className="font-inter mb-1 text-sm font-medium dark:text-white">
               Website
             </h4>
             <div className="absolute flex items-center rounded-l-md border border-l-0 border-gray-300 px-3 py-2.5 text-sm dark:border-gray-600 dark:text-gray-400">

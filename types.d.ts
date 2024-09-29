@@ -28,6 +28,25 @@ interface LeadData {
   featured: boolean;
 }
 
+interface PageData {
+  siteId: string;
+  name: string;
+  title: string;
+  description: string;
+  slug: string;
+  body: string;
+  published: boolean;
+}
+
+interface BannerData {
+  siteId: string;
+  name: string;
+  body: string;
+  showBtn: boolean;
+  btnText: string;
+  btnLink: string;
+}
+
 interface IntegrationData {
   siteId: string;
   type: string;

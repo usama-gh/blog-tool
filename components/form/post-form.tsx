@@ -1,7 +1,7 @@
 "use client";
 
 import LoadingDots from "@/components/icons/loading-dots";
-import { cn } from "@/lib/utils";
+import { cn, makeSlug } from "@/lib/utils";
 import { useSession } from "next-auth/react";
 import { useParams, useRouter } from "next/navigation";
 import { toast } from "sonner";
@@ -38,21 +38,6 @@ export default function PostForm({
   const { id } = useParams() as { id?: string };
   const router = useRouter();
   const { update } = useSession();
-
-  const makeSlug = (title: string | null | undefined) => {
-    return (
-      title
-        ?.toString()
-        ?.normalize("NFD")
-        ?.replace(/[\u0300-\u036f]/g, "")
-        ?.toLowerCase()
-        ?.trim()
-        ?.replace(/[`~!@#$%^*()_|+\=?;:'",.<>\{\}\[\]\\\/]/gi, "")
-        // ?.replaceAll(" ", "-")
-        ?.replace(/[^a-z0-9 ]/g, "")
-        ?.replace(/\s+/g, "-")
-    );
-  };
   const [isLoading, setIsLoading] = useState(false);
   // const [slug, setSlug] = useState(makeSlug(postTitle));
   const [slug, setSlug] = useState(inputAttrs.defaultValue);

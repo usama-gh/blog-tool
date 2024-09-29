@@ -153,3 +153,18 @@ export function isDefaultImage(image: string | null) {
 
   return defaultImages.includes(image as string);
 }
+
+export const makeSlug = (title: string | null | undefined) => {
+  return (
+    title
+      ?.toString()
+      ?.normalize("NFD")
+      ?.replace(/[\u0300-\u036f]/g, "")
+      ?.toLowerCase()
+      ?.trim()
+      ?.replace(/[`~!@#$%^*()_|+\=?;:'",.<>\{\}\[\]\\\/]/gi, "")
+      // ?.replaceAll(" ", "-")
+      ?.replace(/[^a-z0-9 ]/g, "")
+      ?.replace(/\s+/g, "-")
+  );
+};

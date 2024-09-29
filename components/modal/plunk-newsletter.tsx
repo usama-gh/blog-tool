@@ -11,7 +11,7 @@ import LoadingDots from "@/components/icons/loading-dots";
 import { useModal } from "./provider";
 import { useEffect, useState } from "react";
 import LogoUploader from "../form/logo-uploader";
-import { triggerEvent } from "../usermaven";
+import { triggerEvent } from "@/components/posthug";
 import NobelEditor from "../editor/novel-editor";
 import {
   Select,

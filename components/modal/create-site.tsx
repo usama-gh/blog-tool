@@ -5,13 +5,13 @@ import { createSite } from "@/lib/actions";
 import { useRouter } from "next/navigation";
 // ts-ignore because experimental_useFormStatus is not in the types
 // @ts-ignore
-import {  useFormStatus } from "react-dom";
+import { useFormStatus } from "react-dom";
 import { cn } from "@/lib/utils";
 import LoadingDots from "@/components/icons/loading-dots";
 import { useModal } from "./provider";
 import { useEffect, useState } from "react";
 import LogoUploader from "../form/logo-uploader";
-import { triggerEvent } from "../usermaven";
+import { triggerEvent } from "@/components/posthug";
 
 export default function CreateSiteModal() {
   const router = useRouter();
@@ -57,7 +57,7 @@ export default function CreateSiteModal() {
       className="w-full rounded-md bg-white dark:bg-black md:max-w-md md:border md:border-gray-200 md:shadow dark:md:border-gray-700"
     >
       <div className="relative flex flex-col space-y-4 p-5 md:p-10">
-        <h2 className="font-inter tracking-tight mb-4 font-bold text-3xl dark:text-white">
+        <h2 className="font-inter mb-4 text-3xl font-bold tracking-tight dark:text-white">
           Create a new blog
         </h2>
 
@@ -111,7 +111,9 @@ export default function CreateSiteModal() {
               .{process.env.NEXT_PUBLIC_ROOT_DOMAIN}
             </div>
           </div>
-          <p className="text-xs text-slate-500 dark:text-gray-300 text-center">You can add your custom domain later</p>
+          <p className="text-center text-xs text-slate-500 dark:text-gray-300">
+            You can add your custom domain later
+          </p>
         </div>
 
         <div className="flex flex-col space-y-2">

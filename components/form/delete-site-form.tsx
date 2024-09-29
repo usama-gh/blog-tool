@@ -7,7 +7,6 @@ import { useParams, useRouter } from "next/navigation";
 // @ts-ignore
 import { useFormStatus } from "react-dom";
 
-
 import { toast } from "sonner";
 import { deleteSite } from "@/lib/actions";
 
@@ -16,6 +15,7 @@ export default function DeleteSiteForm({ siteName }: { siteName: string }) {
   const router = useRouter();
   return (
     <form
+      // @ts-ignore
       action={async (data: FormData) =>
         window.confirm("Are you sure you want to delete your site?") &&
         deleteSite(data, id, "delete")
