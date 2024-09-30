@@ -45,6 +45,8 @@ interface BannerData {
   showBtn: boolean;
   btnText: string;
   btnLink: string;
+  thumbnail: string;
+  thumbnailFile: string;
 }
 
 interface IntegrationData {

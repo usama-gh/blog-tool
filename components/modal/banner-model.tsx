@@ -16,8 +16,13 @@ import NovelEditor from "../editor/novel-editor";
 import { BannerData } from "@/types";
 import { Switch } from "@/components/ui/switch";
 import parse from "html-react-parser";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { customAlphabet } from "nanoid";
+import FileUploader from "../form/file-uploader";
 
+const nanoid = customAlphabet(
+  "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz",
+  10,
+); // 10-character random string
 
 export default function BannerModel({
   siteId,
@@ -35,11 +40,40 @@ export default function BannerModel({
     showBtn: (banner ? banner.showBtn : false) as boolean,
     btnText: (banner ? banner.btnText : "") as string,
     btnLink: (banner ? banner.btnLink : "") as string,
+    thumbnail: (banner ? banner.thumbnail : "") as string,
+    thumbnailFile: (banner ? banner.thumbnailFile : "") as string,
   });
+
+  const [thumbnail, setThumbnail] = useState(banner ? banner.thumbnail : "");
+  const [originalThumbnail, setOriginalThumbnail] = useState<File>();
 
   const type = banner ? "Update" : "Create";
 
+  async function uploadToR2(fileUrl: string, file: File) {
+    try {
+      const response = await fetch("/api/r2", {
+        method: "POST",
+        body: JSON.stringify({ key: fileUrl }),
+      });
+      const { url } = await response.json();
+      await fetch(url, {
+        method: "PUT",
+        body: file,
+      });
+      return true;
+    } catch (error: any) {
+      toast.error(error.message);
+      return false;
+    }
+  }
+
   const handleAction = async () => {
+    let thumbnailFileUrl = banner?.thumbnailFile ?? "";
+    if (originalThumbnail) {
+      thumbnailFileUrl = `${nanoid()}.${originalThumbnail.type.split("/")[1]}`;
+      await uploadToR2(thumbnailFileUrl, originalThumbnail);
+    }
+
     const body: BannerData = {
       siteId: banner?.siteId ?? (siteId as string),
       name: data.name,
@@ -47,6 +81,8 @@ export default function BannerModel({
       showBtn: data.showBtn,
       btnText: data.btnText,
       btnLink: data.btnLink,
+      thumbnailFile: thumbnail ? thumbnailFileUrl : "",
+      thumbnail: thumbnail as string,
     };
 
     const response = banner
@@ -66,7 +102,7 @@ export default function BannerModel({
 
   const handleBodyChange = (newBody: string) => {
     if (newBody !== "<p></p>") {
-      setData(prevData => ({ ...prevData, body: newBody }));
+      setData((prevData) => ({ ...prevData, body: newBody }));
     }
   };
 
@@ -96,7 +132,9 @@ export default function BannerModel({
             placeholder="SaaS guide #1"
             autoFocus
             value={data.name}
-            onChange={(e) => setData(prevData => ({ ...prevData, name: e.target.value }))}
+            onChange={(e) =>
+              setData((prevData) => ({ ...prevData, name: e.target.value }))
+            }
             required
             className="w-full rounded-md border border-slate-200 bg-slate-50 px-4 py-2 text-sm text-slate-600 placeholder:text-slate-400 focus:border-black focus:outline-none focus:ring-black dark:border-gray-600 dark:bg-black dark:text-white dark:placeholder-gray-700 dark:focus:ring-white"
           />
@@ -110,8 +148,28 @@ export default function BannerModel({
             Body
           </label>
           <span className="lead-body h-full max-h-[150px] overflow-y-auto">
-            <NovelEditor text={data.body} setText={handleBodyChange} canUseAI={false} />
+            <NovelEditor
+              text={data.body}
+              setText={handleBodyChange}
+              canUseAI={false}
+            />
           </span>
+        </div>
+        <div className="flex flex-col space-y-2">
+          <label
+            htmlFor="description"
+            className="pt-3 text-xs font-medium  text-slate-500 dark:text-gray-400"
+          >
+            Upload Thumbnail
+          </label>
+          <FileUploader
+            fileName={thumbnail}
+            setFileName={setThumbnail}
+            setOriginalFile={setOriginalThumbnail}
+            inputId="thumbnailFile"
+            labelText="Upload your thumbnail"
+          />
+          <div id="preview"></div>
         </div>
 
         <div className="flex flex-col space-y-2">
@@ -124,7 +182,9 @@ export default function BannerModel({
             </label>
             <Switch
               defaultChecked={data.showBtn}
-              onCheckedChange={(value) => setData(prevData => ({ ...prevData, showBtn: value }))}
+              onCheckedChange={(value) =>
+                setData((prevData) => ({ ...prevData, showBtn: value }))
+              }
             />
           </div>
         </div>
@@ -144,7 +204,12 @@ export default function BannerModel({
                 type="text"
                 placeholder="Free Guide"
                 value={data.btnText}
-                onChange={(e) => setData(prevData => ({ ...prevData, btnText: e.target.value }))}
+                onChange={(e) =>
+                  setData((prevData) => ({
+                    ...prevData,
+                    btnText: e.target.value,
+                  }))
+                }
                 maxLength={50}
                 required
                 className="w-full rounded-md border border-slate-200 bg-slate-50 px-4 py-2 text-sm text-slate-600 placeholder:text-slate-400 focus:border-black focus:outline-none focus:ring-black dark:border-gray-600 dark:bg-black dark:text-white dark:placeholder-gray-700 dark:focus:ring-white"
@@ -164,7 +229,12 @@ export default function BannerModel({
                 type="text"
                 placeholder="Download Link"
                 value={data.btnLink}
-                onChange={(e) => setData(prevData => ({ ...prevData, btnLink: e.target.value }))}
+                onChange={(e) =>
+                  setData((prevData) => ({
+                    ...prevData,
+                    btnLink: e.target.value,
+                  }))
+                }
                 maxLength={50}
                 required
                 className="w-full rounded-md border border-slate-200 bg-slate-50 px-4 py-2 text-sm text-slate-600 placeholder:text-slate-400 focus:border-black focus:outline-none focus:ring-black dark:border-gray-600 dark:bg-black dark:text-white dark:placeholder-gray-700 dark:focus:ring-white"

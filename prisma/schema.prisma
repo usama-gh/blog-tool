@@ -270,16 +270,18 @@ model Page {
 }
 
 model Banner {
-  id        String   @id @default(cuid())
-  userId    String
-  siteId    String
-  name      String
-  body      String   @db.Text
-  showBtn   Boolean  @default(false)
-  btnText   String?
-  btnLink   String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id            String   @id @default(cuid())
+  userId        String
+  siteId        String
+  name          String
+  body          String   @db.Text
+  showBtn       Boolean  @default(false)
+  btnText       String?
+  btnLink       String?
+  thumbnail     String? // original filename of the thumbnail
+  thumbnailFile String? // the name of the thumbnail saved on server
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
   site Site @relation(fields: [siteId], references: [id], onDelete: Cascade)

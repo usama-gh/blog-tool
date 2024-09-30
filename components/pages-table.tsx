@@ -5,6 +5,7 @@ import prisma from "@/lib/prisma";
 import Image from "next/image";
 import PageCard from "./page-card";
 import { getUserStaticPages } from "@/lib/fetchers";
+import { notFound } from "next/navigation";
 
 export default async function PagesTable({
   siteId,
@@ -18,16 +19,20 @@ export default async function PagesTable({
     redirect("/login");
   }
 
-
   const data = await prisma.site.findUnique({
     where: {
       id: siteId,
     },
   });
 
+  if (!data) {
+    notFound();
+  }
+
   const siteURL = `${data.subdomain}.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`;
-
-
+  const baseUrl = process.env.NEXT_PUBLIC_VERCEL_ENV
+    ? `https://${siteURL}`
+    : `http://${data.subdomain}.localhost:3000`;
 
   const pages = await getUserStaticPages(siteId!);
 
@@ -68,7 +73,7 @@ export default async function PagesTable({
               <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
                 {pages.map((page) => (
                   // @ts-ignore
-                  <PageCard key={page.id} siteURL={siteURL} page={page} />
+                  <PageCard key={page.id} baseUrl={baseUrl} page={page} />
                 ))}
               </tbody>
             </table>

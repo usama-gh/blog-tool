@@ -1399,6 +1399,8 @@ export const createMarketingBanner = async (data: BannerData) => {
         showBtn: data.showBtn,
         btnText: data.btnText,
         btnLink: data.btnLink,
+        thumbnail: data.thumbnail,
+        thumbnailFile: data.thumbnailFile,
         user: {
           connect: {
             id: session.user.id,
@@ -1449,6 +1451,8 @@ export const updateMarketingBanner = withBannerAuth(
           showBtn: data.showBtn,
           btnText: data.btnText,
           btnLink: data.btnLink,
+          thumbnail: data.thumbnail,
+          thumbnailFile: data.thumbnailFile,
         },
       });
 

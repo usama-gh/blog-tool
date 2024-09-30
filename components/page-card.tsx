@@ -16,17 +16,19 @@ interface Post {
   id: string;
   title: string;
 }
-export default async function PageCard({ siteURL, page }: { siteURL: string; page: Page }) {
+export default function PageCard({
+  baseUrl,
+  page,
+}: {
+  baseUrl: string;
+  page: Page;
+}) {
   const router = useRouter();
 
-  
-
-
   const openPageInNewTab = () => {
-    const pageURL = `https://${siteURL}/pages/${page.slug}`;
+    const pageURL = `${baseUrl}/pages/${page.slug}`;
     window.open(pageURL, "_blank"); // Opens the page URL in a new tab
   };
-
 
   const handlePageDelete = () => {
     window.confirm("Are you sure you want to delete page?") &&
@@ -54,11 +56,10 @@ export default async function PageCard({ siteURL, page }: { siteURL: string; pag
       </td>
       <td className="whitespace-nowrap px-6 py-4 text-sm font-medium">
         <div className="flex gap-2">
+          <Button variant="outline" size="icon" onClick={openPageInNewTab}>
+            <Eye className="h-4 w-4" />
+          </Button>
 
-        <Button variant="outline" size="icon" onClick={openPageInNewTab}>
-      <Eye className="h-4 w-4" />
-    </Button>
-     
           <PageButton btnText="Update">
             <PageModal page={page} />
           </PageButton>
