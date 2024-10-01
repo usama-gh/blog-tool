@@ -114,7 +114,7 @@ export default async function SiteLayout({
 
   return (
     <div className={fontMapper[data.font]} id="font_comes">
-      <div className="overflow-hidden bg-white dark:bg-gray-800 font-title">{children}</div>
+      <div className="overflow-hidden bg-gradient-to-br from-white to-slate-100  dark:from-gray-800 dark:to-gray-950 font-title">{children}</div>
 
       {params.domain == `demo.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}` ||
       params.domain == `platformize.co` ? (

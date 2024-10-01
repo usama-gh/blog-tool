@@ -29,7 +29,7 @@ export default function UserHeader({
 
   return (
     <>
-      <div className="ease left-0 right-0 top-0 z-30 flex w-full transition-all duration-150 dark:bg-gray-800 dark:text-white">
+      <div className="ease left-0 right-0 top-0 z-30 flex w-full transition-all duration-150 dark:text-white">
         <div className="mx-auto w-full max-w-3xl py-12 text-center">
           <div>
             <div className="flex w-full flex-col items-center justify-center gap-3 px-4 text-center">
