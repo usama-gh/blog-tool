@@ -116,7 +116,7 @@ export default function NovelEditor({
     <div className="relative">
     {editor && <EditorBubbleMenu editor={editor} />}
       <EditorContent
-        className="w-full min-h-[200px] rounded-md border border-gray-300 px-4 py-1 text-sm text-gray-900 placeholder-gray-300 focus:border-gray-500 focus:outline-none focus:ring-gray-500 dark:border-gray-600 dark:bg-black dark:text-white dark:placeholder-gray-700"
+        className="w-full min-h-[200px] max-h-[400px] overflow-y-auto rounded-md border border-gray-300 px-4 py-1 text-sm text-gray-900 placeholder-gray-300 focus:border-gray-500 focus:outline-none focus:ring-gray-500 dark:border-gray-600 dark:bg-black dark:text-white dark:placeholder-gray-700"
         editor={editor}
       ></EditorContent>
     </div>
