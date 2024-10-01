@@ -64,26 +64,17 @@ export default function UserHeader({
                   <SocialLinks linksData={data.links} />
                 </>
               )}
-            </div>
 
-            {/* susbcribe to blog */}
-            <div className="w-1/4 ">{/* <Subscribe siteId={data.id} /> */}</div>
-
-            {/* show pages menu */}
-
-
-            
-          
 
 {pages.length > 0 && (
   <nav className="flex justify-center items-center p-4">
-    <div className="border border-slate-300 rounded-full">
-      <ul className="flex items-center divide-x divide-slate-300 px-3 py-1">
+    <div className="border border-slate-300 dark:border-gray-500 rounded-full">
+      <ul className="flex items-center divide-x divide-slate-300 0 dark:divide-gray-500  px-3 py-1">
         <li className="px-3 first:pl-0 last:pr-0">
           <Link href={baseUrl} passHref legacyBehavior>
             <a
-              className={`text-slate-500 hover:text-slate-800 transition-colors duration-200 ${
-                !slug ? "text-slate-700 rounded-full" : ""
+              className={`text-slate-500 hover:text-slate-800 dark:text-gray-400 dark:hover:text-gray-200 transition-colors duration-200 ${
+                !slug ? "text-slate-700 dark:text-gray-50" : ""
               }`}
             >
               Home
@@ -94,8 +85,8 @@ export default function UserHeader({
           <li key={page.id} className="px-3 first:pl-0 last:pr-0">
             <Link href={`/page/${page.slug}`} passHref legacyBehavior>
               <a
-                className={`text-slate-500 hover:text-slate-800 transition-colors duration-200 ${
-                  page.slug === slug ? "text-slate-700 rounded-full" : ""
+                className={`text-slate-500 hover:text-slate-800 dark:text-gray-400 dark:hover:text-gray-200 transition-colors duration-200 ${
+                  page.slug === slug ? "text-slate-700  dark:text-gray-50" : ""
                 }`}
               >
                 {page.name}
@@ -107,6 +98,18 @@ export default function UserHeader({
     </div>
   </nav>
 )}
+
+            </div>
+
+            {/* susbcribe to blog */}
+           
+
+            {/* show pages menu */}
+
+
+            
+          
+
 
 
 
