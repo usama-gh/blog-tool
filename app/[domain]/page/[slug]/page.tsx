@@ -70,10 +70,12 @@ export default async function StaticPages({
       <div className="mx-auto max-w-6xl">
         <UserHeader data={data} pages={pages} slug={slug} />
         <div className="px-6">
-          <h2 className="mb-5 text-center text-4xl font-bold text-center">{page.name}</h2>
+          <h2 className="mb-5 text-center text-center text-4xl font-bold">
+            {page.name}
+          </h2>
           {parse(page.body as string)}
         </div>
-          <div className="h-0.5 w-8 dark:bg-gray-700 my-10 mx-auto"></div>
+        <div className="mx-auto my-10 h-0.5 w-8 dark:bg-gray-700"></div>
         {/* susbcribe to blog */}
         <UserFooter data={data} domain={params.domain} slug={slug} />
       </div>

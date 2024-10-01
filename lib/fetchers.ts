@@ -347,22 +347,30 @@ export async function getPageData(domain: string, slug: string) {
     },
   });
 
-  return await unstable_cache(
-    async () => {
-      return await prisma.page.findFirst({
-        where: {
-          site: subdomain ? { subdomain } : { customDomain: domain },
-          slug,
-          published: true,
-        },
-      });
+  return await prisma.page.findFirst({
+    where: {
+      site: subdomain ? { subdomain } : { customDomain: domain },
+      slug,
+      published: true,
     },
-    [`${site?.id}-pages`],
-    {
-      revalidate: 900, // 15 minutes
-      tags: [`${site?.id}-pages`],
-    },
-  )();
+  });
+
+  // return await unstable_cache(
+  //   async () => {
+  //     return await prisma.page.findFirst({
+  //       where: {
+  //         site: subdomain ? { subdomain } : { customDomain: domain },
+  //         slug,
+  //         published: true,
+  //       },
+  //     });
+  //   },
+  //   [`${site?.id}-pages`,''],
+  //   {
+  //     revalidate: 900, // 15 minutes
+  //     tags: [`${site?.id}-pages`],
+  //   },
+  // )();
 }
 
 export async function getLead(leadId: string) {
