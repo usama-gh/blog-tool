@@ -148,7 +148,7 @@ export const EditorBubbleMenu: FC<EditorBubbleMenuProps> = (props) => {
         <button
           key={index}
           onClick={item.command}
-          className="p-2 text-stone-600 hover:bg-stone-100 active:bg-stone-200"
+          className="p-2 text-gray-600 hover:bg-gray-100 active:bg-gray-200"
         >
           <item.icon
             className={cn("h-4 w-4", {

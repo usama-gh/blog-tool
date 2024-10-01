@@ -12,8 +12,8 @@ import DomainStatus from "./domain-status";
 import DomainConfiguration from "./domain-configuration";
 import Uploader from "./uploader";
 import { useState } from "react";
-import NobelEditor from "../editor/novel-editor";
-import { triggerEvent } from "../usermaven";
+import NovelEditor from "../editor/novel-editor";
+import { triggerEvent } from "@/components/posthug";
 import { deleteFileFromBlob } from "@/lib/actions";
 
 import {
@@ -24,7 +24,7 @@ import {
   SelectLabel,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"
+} from "@/components/ui/select";
 
 export default function Form({
   title,
@@ -131,22 +131,19 @@ export default function Form({
           />
         ) : inputAttrs.name === "font" ? (
           <div className="flex max-w-sm items-center overflow-hidden rounded-lg">
-
-<Select name="font" defaultValue={inputAttrs.defaultValue}>
-  <SelectTrigger>
-    <SelectValue placeholder="Font Family" />
-  </SelectTrigger>
-  <SelectContent>
-    <SelectItem value="font-inter">Inter</SelectItem>
-    <SelectItem value="font-figtree">Figtree</SelectItem>
-    <SelectItem value="font-jost">Jost</SelectItem>
-    <SelectItem value="font-cal">Cal Sans</SelectItem>
-    <SelectItem value="font-lora">Lora</SelectItem>
-    <SelectItem value="font-work">Work Sans</SelectItem>
-  </SelectContent>
-</Select>
-
-
+            <Select name="font" defaultValue={inputAttrs.defaultValue}>
+              <SelectTrigger>
+                <SelectValue placeholder="Font Family" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="font-inter">Inter</SelectItem>
+                <SelectItem value="font-figtree">Figtree</SelectItem>
+                <SelectItem value="font-jost">Jost</SelectItem>
+                <SelectItem value="font-cal">Cal Sans</SelectItem>
+                <SelectItem value="font-lora">Lora</SelectItem>
+                <SelectItem value="font-work">Work Sans</SelectItem>
+              </SelectContent>
+            </Select>
 
             {/* <select
               name="font"
@@ -193,7 +190,7 @@ export default function Form({
             className="w-full max-w-xl rounded-md border border-gray-300 text-sm text-gray-900 placeholder-gray-300 focus:border-gray-500 focus:outline-none focus:ring-gray-500 dark:border-gray-600 dark:bg-black dark:text-white dark:placeholder-gray-700"
           />
         ) : inputAttrs.name === "bio" ? (
-          <NobelEditor text={bio} setText={setBio} canUseAI={canUseAI} />
+          <NovelEditor text={bio} setText={setBio} canUseAI={canUseAI} />
         ) : (
           <input
             {...inputAttrs}

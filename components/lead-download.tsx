@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import LoadingDots from "./icons/loading-dots";
 import { r2Asset } from "@/lib/utils";
 import { addSubscriberToIntegrations } from "@/lib/actions";
+import { Button } from "./ui/button";
 
 export const LeadDownload = ({
   postId,
@@ -19,6 +20,7 @@ export const LeadDownload = ({
   const [isCollected, setIsCollected] = useState<boolean>(false);
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState<boolean>(false);
+  const [counter, setCounter] = useState(5);
 
   const [data, setData] = useState({
     name: "",
@@ -99,6 +101,24 @@ export const LeadDownload = ({
     setData({ ...data, name: fullName, firstName, lastName });
   };
 
+  useEffect(() => {
+    let timeout: any = null;
+
+    if (lead.delivery === "link") {
+      timeout = setTimeout(() => {
+        if (counter > 0) {
+          setCounter(counter - 1);
+        } else {
+          window.location.href = lead.file!;
+        }
+      }, 1000);
+    }
+
+    () => {
+      timeout && clearTimeout(timeout);
+    };
+  }, [counter]);
+
   return (
     <>
       {isCollected ? (
@@ -108,7 +128,7 @@ export const LeadDownload = ({
           </p>
         ) : (
           <div className="mt-5 text-center">
-            <p className="flex justify-center text-center text-sm text-slate-700 dark:text-gray-200">
+            {/* <p className="flex justify-center text-center text-sm text-slate-700 dark:text-gray-200">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -126,7 +146,20 @@ export const LeadDownload = ({
             </p>
             <div className="mt-4 rounded-md bg-slate-100 p-2 text-slate-800 dark:bg-gray-600 dark:text-gray-100">
               {lead.file}
+            </div> */}
+            <div className="">
+              <p className="flex justify-center text-center text-sm text-slate-700 dark:text-gray-200">
+                You will be redirected automatically after seconds
+              </p>
+              <h2 className="text-xl font-semibold">{counter}</h2>
             </div>
+
+            <a
+              href={lead.file!}
+              className="mt-2 flex h-10 w-full items-center justify-center space-x-2 rounded-md border border-black bg-black text-sm text-white transition-all hover:bg-white hover:text-black focus:outline-none dark:border-gray-700 dark:hover:border-gray-600 dark:hover:bg-black dark:hover:text-white dark:active:bg-gray-800"
+            >
+              View
+            </a>
           </div>
         )
       ) : lead.download === "email" ? (

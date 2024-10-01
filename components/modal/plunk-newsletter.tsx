@@ -11,8 +11,8 @@ import LoadingDots from "@/components/icons/loading-dots";
 import { useModal } from "./provider";
 import { useEffect, useState } from "react";
 import LogoUploader from "../form/logo-uploader";
-import { triggerEvent } from "../usermaven";
-import NobelEditor from "../editor/novel-editor";
+import { triggerEvent } from "@/components/posthug";
+import NovelEditor from "../editor/novel-editor";
 import {
   Select,
   SelectContent,
@@ -153,6 +153,7 @@ export default function PlunkNewsletter(props: ModelProps) {
         modal?.hide();
         props.successAction();
       }}
+      id="our_modal"
       className="w-full  rounded-md bg-white dark:bg-black md:max-w-4xl md:border md:border-gray-200 md:shadow dark:md:border-gray-700"
     >
       <div className="relative flex flex-col space-y-4 p-5 md:p-10">
@@ -217,7 +218,7 @@ export default function PlunkNewsletter(props: ModelProps) {
             Body
           </label>
           <div className="max-h-[40vh] overflow-auto">
-          <NobelEditor text={body} setText={setBody} canUseAI={false} />
+          <NovelEditor text={body} setText={setBody} canUseAI={false} />
           </div>
          
         </div>

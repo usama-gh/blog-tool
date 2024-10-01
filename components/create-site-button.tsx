@@ -3,7 +3,7 @@
 import { useModal } from "@/components/modal/provider";
 import { ReactNode } from "react";
 import { toast } from "sonner";
-import { triggerEvent } from "./usermaven";
+import { triggerEvent } from "@/components/posthug";
 
 export default function CreateSiteButton({
   canCreateSite,

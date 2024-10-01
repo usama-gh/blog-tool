@@ -14,6 +14,7 @@ export default function DeletePostForm({ postName }: { postName: string }) {
   const router = useRouter();
   return (
     <form
+      // @ts-ignore
       action={async (data: FormData) =>
         window.confirm("Are you sure you want to delete your post?") &&
         deletePost(data, id, "delete").then((res) => {
@@ -28,7 +29,7 @@ export default function DeletePostForm({ postName }: { postName: string }) {
       }
       className="rounded-lg dark:bg-black"
     >
-      <div className="relative flex flex-col space-y-4 p-5 sm:p-10 hidden">
+      <div className="relative flex hidden flex-col space-y-4 p-5 sm:p-10">
         {/* <h2 className="font-inter text-xl dark:text-white">Delete Post</h2> */}
         {/* <p className="text-sm text-gray-500 dark:text-gray-400">
           Deletes your post permanently. Type in the name of your post{" "}
@@ -45,16 +46,15 @@ export default function DeletePostForm({ postName }: { postName: string }) {
         /> */}
       </div>
 
-        <div className="w-32 mx-auto">
-          <FormButton />
-        </div>
-     
+      <div className="mx-auto w-32">
+        <FormButton />
+      </div>
     </form>
   );
 }
 
 function FormButton() {
-  'use client'
+  "use client";
   const { pending } = useFormStatus();
   return (
     <button
@@ -62,7 +62,7 @@ function FormButton() {
         "flex h-8 w-32 items-center justify-center space-x-2 rounded-full border text-sm transition-all focus:outline-none sm:h-8",
         pending
           ? "cursor-not-allowed border-gray-200 bg-gray-100 text-gray-400 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300"
-          : "border-red-600 bg-transparent hover:bg-red-100 bg-opacity-20  text-red-600 hover:text-red-600 dark:hover:bg-transparent",
+          : "border-red-600 bg-transparent bg-opacity-20 text-red-600  hover:bg-red-100 hover:text-red-600 dark:hover:bg-transparent",
       )}
       disabled={pending}
     >

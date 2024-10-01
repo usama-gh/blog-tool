@@ -21,7 +21,7 @@ export default async function Overview() {
   return (
     <>
       <QueryBlog />
-      <CreateUsermavenUser user={user} />
+      {/* <CreateUsermavenUser user={user} /> */}
       <div className="flex max-w-screen-xl flex-col space-y-12 p-8">
         <div className="flex flex-col gap-y-6">
           <h1 className="font-inter hide_onboarding text-3xl font-bold dark:text-white">

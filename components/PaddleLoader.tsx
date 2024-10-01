@@ -4,7 +4,7 @@ import Script from "next/script";
 import { plans } from "@/data";
 import { updateSubscription } from "@/lib/actions";
 import { toast } from "sonner";
-import { triggerEvent } from "./usermaven";
+import { triggerEvent } from "@/components/posthug";
 
 interface Props {
   subscriptionId?: string;

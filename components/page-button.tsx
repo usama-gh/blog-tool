@@ -4,9 +4,8 @@ import { useModal } from "@/components/modal/provider";
 import { cn } from "@/lib/utils";
 import { ReactNode } from "react";
 import { Button } from "@/components/ui/button";
-import { Magnet } from "lucide-react";
-
-export default function LeadButton({
+import { Plus, Pencil } from "lucide-react";
+export default function PageButton({
   btnText,
   style,
   disable,
@@ -26,7 +25,14 @@ export default function LeadButton({
         variant="secondary"
         disabled={disable}
       >
-        <Magnet className="mr-2" width={18} /> {btnText}
+        {btnText === "Update" ? (
+          <Pencil width={18} />
+        ) : (
+          <>
+            <Plus className="mr-2" width={18} />
+            {btnText}
+          </>
+        )}
       </Button>
     </>
   );
