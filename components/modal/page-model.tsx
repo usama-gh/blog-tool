@@ -6,6 +6,7 @@ import {
   updateLeadImage,
   updateStaticPage,
 } from "@/lib/actions";
+
 import { useRouter } from "next/navigation";
 // ts-ignore because experimental_useFormStatus is not in the types
 // @ts-ignore
@@ -37,6 +38,8 @@ export default function PageModal({
 }) {
   const router = useRouter();
   const modal = useModal();
+
+
 
   const [slug, setSlug] = useState((page ? page.slug : "") as string);
   const [data, setData] = useState({
@@ -188,14 +191,14 @@ export default function PageModal({
             htmlFor="title"
             className="pt-3 text-xs font-medium text-slate-500 dark:text-gray-400"
           >
-            Title
+            Meta Title
           </label>
 
           <input
             name="title"
             type="text"
             placeholder="Build your SaaS in just two weeks! Free Guide"
-            value={data.title}
+            value={data.title || data.name}
             onChange={(e) => setData({ ...data, title: e.target.value })}
             maxLength={50}
             required
@@ -208,7 +211,7 @@ export default function PageModal({
             htmlFor="heroDescription"
             className="pt-3 text-xs font-medium text-slate-500 dark:text-gray-400"
           >
-            Description
+            Meta Description
           </label>
 
           <textarea
