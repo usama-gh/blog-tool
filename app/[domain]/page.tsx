@@ -67,10 +67,10 @@ export default async function SiteHomePage({
                   Announcements
                   </h3>
 
-                  <div className="grid grid-cols-1">
+                  <div className="flex flex-col gap-y-5">
                     {banners.map((banner, index) => (
                       <div key={`lead-${index}`}>
-                        <div className="ease mb-5 rounded-3xl bg-slate-100 p-6 transition-all hover:bg-slate-200  dark:bg-gray-700  hover:dark:bg-gray-600  md:w-full">
+                        <div className="ease rounded-3xl bg-slate-100 p-6 transition-all hover:bg-slate-200  dark:bg-gray-700  hover:dark:bg-gray-600  md:w-full">
                           {banner.thumbnailFile && (
                             <Image
                               width={80}
