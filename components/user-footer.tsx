@@ -17,17 +17,22 @@ export default function UserFooter({
     <>
       {/* only show bio and social links on footer on static pages */}
       {slug !== "" && (
-        <div className="mb-5">
+        
+        <div className="mb-5 text-center max-w-2xl mx-auto">
+          <h4 className="uppercase text-sm text-slate-500 font-semibold dark:text-gray-300 tracking-wide">ABOUT {data.user?.name }</h4>
           {data?.bio && (
             <div className="font-regular site-bio text-md overflow-hidden text-center">
               {parse(data.bio)}
             </div>
           )}
 
+          <div className="flex items-center justify-center">
           <SocialLinks linksData={data.links} />
+          </div>
+         
         </div>
       )}
-      <div className="mx-4 mb-10 rounded-3xl bg-teal-100 py-16 text-center dark:bg-teal-700">
+      <div className="mx-4 mt-10 mb-10 rounded-3xl bg-teal-100 py-16 text-center dark:bg-teal-700">
         <div className=" mx-auto mb-4 text-center">
           {data.logo ? (
             <Image

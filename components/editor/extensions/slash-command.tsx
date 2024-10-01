@@ -293,7 +293,9 @@ const CommandList = ({
   const selectItem = useCallback(
     (index: number) => {
       const item = items[index];
+      console.log(item)
       if (item) {
+       
         if (item.title === "Continue writing") {
           // we're using this for now until we can figure out a way to stream markdown text with proper formatting: https://github.com/steven-tey/novel/discussions/7
           complete(editor.getText());
@@ -395,11 +397,16 @@ const renderItems = () => {
       // @ts-ignore
       popup = tippy("body", {
         getReferenceClientRect: props.clientRect,
-        appendTo: () => document.body,
+        appendTo: () => {
+          const modalElement = document.querySelector('#our_modal');
+          return modalElement || document.body;
+        },
+        // appendTo: () => document.body,
         content: component.element,
         showOnCreate: true,
         interactive: true,
         trigger: "manual",
+        zIndex: 9999, // Adjust this value as needed
         placement: "bottom-start",
       });
     },

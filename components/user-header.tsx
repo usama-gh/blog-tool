@@ -70,43 +70,46 @@ export default function UserHeader({
             <div className="w-1/4 ">{/* <Subscribe siteId={data.id} /> */}</div>
 
             {/* show pages menu */}
-            {pages.length > 0 && (
-              <div className="mt-5 flex items-center justify-center border-y py-1">
-                <NavigationMenu>
-                  <NavigationMenuList>
-                    <NavigationMenuItem>
-                      <Link href={baseUrl} legacyBehavior passHref>
-                        <NavigationMenuLink
-                          className={navigationMenuTriggerStyle()}
-                        >
-                          Home
-                        </NavigationMenuLink>
-                      </Link>
-                    </NavigationMenuItem>
-                    {pages.map((page: Page) => (
-                      <NavigationMenuItem key={page.id} className="">
-                        <Link
-                          href={`${baseUrl}/page/${page.slug}`}
-                          legacyBehavior
-                          passHref
-                          className=""
-                        >
-                          <NavigationMenuLink
-                            className={cn(
-                              navigationMenuTriggerStyle(),
-                              page.slug === slug &&
-                                "!bg-accent !text-accent-foreground",
-                            )}
-                          >
-                            {page.name}
-                          </NavigationMenuLink>
-                        </Link>
-                      </NavigationMenuItem>
-                    ))}
-                  </NavigationMenuList>
-                </NavigationMenu>
-              </div>
-            )}
+
+
+            
+          
+
+{pages.length > 0 && (
+  <nav className="flex justify-center items-center p-4">
+    <div className="border border-slate-300 rounded-full">
+      <ul className="flex items-center divide-x divide-slate-300 px-3 py-1">
+        <li className="px-3 first:pl-0 last:pr-0">
+          <Link href={baseUrl} passHref legacyBehavior>
+            <a
+              className={`text-slate-500 hover:text-slate-800 transition-colors duration-200 ${
+                !slug ? "text-slate-700 rounded-full" : ""
+              }`}
+            >
+              Home
+            </a>
+          </Link>
+        </li>
+        {pages.map((page: Page) => (
+          <li key={page.id} className="px-3 first:pl-0 last:pr-0">
+            <Link href={`${baseUrl}/page/${page.slug}`} passHref legacyBehavior>
+              <a
+                className={`text-slate-500 hover:text-slate-800 transition-colors duration-200 ${
+                  page.slug === slug ? "text-slate-700 rounded-full" : ""
+                }`}
+              >
+                {page.name}
+              </a>
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </nav>
+)}
+
+
+
           </div>
         </div>
       </div>

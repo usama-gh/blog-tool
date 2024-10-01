@@ -64,7 +64,7 @@ export default async function SiteHomePage({
               {banners.length > 0 && (
                 <>
                   <h3 className="mb-5 text-xs font-semibold uppercase tracking-widest  text-slate-600 dark:text-gray-500">
-                    Marketing banner
+                  Announcements
                   </h3>
 
                   <div className="grid grid-cols-1">
@@ -234,7 +234,7 @@ export default async function SiteHomePage({
                   height={400}
                   className="hidden dark:block"
                 />
-                <p className="font-title text-2xl text-stone-600 dark:text-stone-400">
+                <p className="font-title text-2xl text-slate-600 dark:text-gray-400">
                   No posts yet.
                 </p>
               </div>
@@ -323,7 +323,7 @@ export default async function SiteHomePage({
                     height={400}
                     className="hidden dark:block"
                   />
-                  <p className="font-title text-2xl text-stone-600 dark:text-stone-400">
+                  <p className="font-title text-2xl text-slate-600 dark:text-gray-400">
                     No posts yet.
                   </p>
                 </div>

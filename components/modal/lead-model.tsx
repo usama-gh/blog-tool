@@ -135,6 +135,7 @@ export default function LeadModal({
       e.preventDefault();
       await handleAction();
     }}
+    id="our_modal"
       className="flex w-full flex-col justify-start rounded-md bg-white dark:bg-black md:max-w-6xl md:border md:border-gray-200 md:shadow dark:md:border-gray-700 lg:flex-row"
     >
       <div className="relative flex flex-col space-y-4 p-5 md:p-10 lg:min-w-[500px]">
@@ -216,7 +217,7 @@ export default function LeadModal({
               >
                 Body
               </label>
-              <span className="lead-body h-full max-h-[150px] overflow-y-auto">
+              <span className="h-full max-h-[300px] overflow-y-auto">
                 <NovelEditor
                   text={description}
                   setText={setDescription}
@@ -428,7 +429,7 @@ export default function LeadModal({
       <div className="hidden w-[700px] bg-slate-100 px-4 text-center dark:bg-gray-800 lg:block">
        <div className="flex items-start justify-center h-full">
         <div>
-        <h3 className="my-5 text-sm text-slate-100">Preview</h3>
+        <h3 className="my-5 text-sm text-slate-800 dark:text-gray-200">Preview</h3>
         <div className="">
 
         <Tabs defaultValue="preview_1" className="w-[400px]">
@@ -486,7 +487,7 @@ export default function LeadModal({
 
 <div>
 
-<div className="flex items-center flex-col space-x-2 bg-white dark:bg-gray-700 rounded-sm p-4    shadow w-full max-w-md">
+<div className="flex items-center w-full flex-col space-x-2 bg-white dark:bg-gray-700 rounded-sm p-4   ">
               <div className="flex flex-col items-center mx-auto">
                 {data.thumbnail ? (
                        <Image     src={r2Asset(data.thumbnailFile)} width={150} height={200} alt="Thumbnail" className="mb-4 w-32 h-32 object-cover rounded-full shadow-sm" />

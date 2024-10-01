@@ -9,7 +9,7 @@ import { TiptapExtensionsAI } from "./extensions/index-ai";
 import { useCompletion } from "ai/react";
 import { toast } from "sonner";
 
-export default function NobelEditor({
+export default function NovelEditor({
   text,
   setText,
   canUseAI,
@@ -20,6 +20,7 @@ export default function NobelEditor({
 }) {
   const [hydrated, setHydrated] = useState(false);
   const editor = useEditor({
+    immediatelyRender:false,
     extensions: canUseAI ? TiptapExtensionsAI : TiptapExtensions,
     editorProps: TiptapEditorProps,
     onUpdate: (e) => {
@@ -112,11 +113,14 @@ export default function NobelEditor({
 
   return (
     <>
-      {editor && <EditorBubbleMenu editor={editor} />}
+    <div className="relative">
+    {editor && <EditorBubbleMenu editor={editor} />}
       <EditorContent
-        className="w-full min-h-[100px] rounded-md border border-gray-300 px-4 py-1 text-sm text-gray-900 placeholder-gray-300 focus:border-gray-500 focus:outline-none focus:ring-gray-500 dark:border-gray-600 dark:bg-black dark:text-white dark:placeholder-gray-700"
+        className="w-full min-h-[200px] rounded-md border border-gray-300 px-4 py-1 text-sm text-gray-900 placeholder-gray-300 focus:border-gray-500 focus:outline-none focus:ring-gray-500 dark:border-gray-600 dark:bg-black dark:text-white dark:placeholder-gray-700"
         editor={editor}
       ></EditorContent>
+    </div>
+     
     </>
   );
 }

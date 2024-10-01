@@ -249,25 +249,39 @@ export default function BannerModel({
       </div>
 
       <div className="hidden w-[700px] bg-slate-100 px-4 text-center dark:bg-gray-800 lg:block">
-        <div className="flex h-full items-start justify-center">
+        <div className="flex flex-col h-full items-center justify-center">
           <div>
-            <h3 className="my-5 text-sm text-slate-100">Preview</h3>
+          <h3 className="my-5 text-sm text-slate-800 dark:text-gray-200">Preview</h3>
             <div>
-              <div className="flex w-full max-w-md flex-col items-center space-x-2 rounded-full bg-white p-2 shadow">
-                <h3 className="overflow-x-auto rounded-full bg-transparent px-4 py-2 font-semibold text-gray-800 placeholder-gray-500">
+              <div className="flex w-full w-[240px] flex-col items-start  dark:bg-gray-700 rounded-2xl bg-white p-4 shadow">
+
+             
+
+                {data.thumbnail ? (
+        <Image     src={r2Asset(data.thumbnailFile)} width={100} height={100} alt="Thumbnail" className="mb-4 w-20 object-cover rounded-xl shadow-sm" />
+      ) : (
+        <div></div>
+      )}
+
+      
+             
+
+                <h3 className="text-left font-bold text-gray-800 dark:text-white placeholder-gray-500">
                   {data.name || "Marketing Name"}
                 </h3>
-                <span className="max-h-[150px] rounded-full bg-transparent px-4 py-2 text-gray-800 placeholder-gray-500">
+                <span className="rounded-full text-sm bg-transparent  dark:text-white text-left text-gray-800 placeholder-gray-500">
                   {parse(data.body as string)}
                 </span>
                 {data.showBtn && (
-                  <button className="rounded-full bg-blue-600 px-4 py-2 text-white hover:bg-blue-700">
+                  <button className="mt-2 w-auto rounded-full border border-slate-500 px-4 py-1 text-center text-sm text-slate-500 hover:border-slate-700 hover:text-slate-600 dark:border-gray-400 dark:bg-transparent dark:text-gray-400 dark:hover:border-gray-300 dark:hover:text-gray-300">
                     {data.btnText}
                   </button>
                 )}
               </div>
             </div>
           </div>
+          <h3 className="my-5 text-sm text-slate-400 dark:text-gray-300">This appears on homepage in left sidebar</h3>
+        
         </div>
       </div>
     </form>

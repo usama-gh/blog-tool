@@ -5,6 +5,7 @@ import {
   ArrowLeft,
   BarChart3,
   Edit3,
+  Share2,
   Globe,
   LayoutDashboard,
   Megaphone,
@@ -107,7 +108,7 @@ export default function Nav({ children }: { children: ReactNode }) {
         {
           name: "Add Social Links",
           href: `/site/${id}/settings#socials`,
-          icon: <Megaphone width={18} />,
+          icon: <Share2 width={18} />,
         },
         {
           name: "Subscribers",

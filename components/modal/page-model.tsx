@@ -20,6 +20,14 @@ import { PageData } from "@/types";
 import { Switch } from "@/components/ui/switch";
 import { useDebounce } from "use-debounce";
 
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion"
+
+
 export default function PageModal({
   siteId,
   page,
@@ -114,7 +122,7 @@ export default function PageModal({
       }}
       className="flex w-full flex-col justify-start rounded-md bg-white dark:bg-black md:max-w-6xl md:border md:border-gray-200 md:shadow dark:md:border-gray-700 lg:flex-row"
     >
-      <div className="relative flex w-full flex-col space-y-4 p-5 md:p-10">
+      <div className="relative flex w-full flex-col space-y-4 p-5 md:p-10" id="our_modal">
         <h2 className="font-inter mb-2 text-2xl font-bold dark:text-white">
           {type} your page
         </h2>
@@ -165,12 +173,17 @@ export default function PageModal({
           >
             Body
           </label>
-          <span className="lead-body h-full max-h-[250px] overflow-y-auto">
+          <div className="relative">
             <NovelEditor text={body} setText={setBody} canUseAI={false} />
-          </span>
+          </div>
         </div>
 
-        <div className="flex flex-col space-y-2">
+
+        <Accordion type="single" collapsible>
+  <AccordionItem value="item-1">
+    <AccordionTrigger className="hover:no-underline">SEO settings</AccordionTrigger>
+    <AccordionContent>
+    <div className="flex flex-col space-y-2">
           <label
             htmlFor="title"
             className="pt-3 text-xs font-medium text-slate-500 dark:text-gray-400"
@@ -207,6 +220,12 @@ export default function PageModal({
             className="w-full rounded-md border border-slate-200 bg-slate-50 px-4 py-2 text-sm text-slate-600 placeholder:text-slate-400 focus:border-black focus:outline-none focus:ring-black dark:border-gray-600 dark:bg-black dark:text-white dark:placeholder-gray-700 dark:focus:ring-white"
           ></textarea>
         </div>
+    </AccordionContent>
+  </AccordionItem>
+</Accordion>
+
+
+    
 
         <div className="flex flex-col space-y-2">
           <div className="flex items-center gap-3 pt-3">
@@ -239,7 +258,7 @@ function CreateSiteFormButton({ type }: { type: string }) {
       <button
         type="submit"
         className={cn(
-          "flex h-10 w-full items-center justify-center space-x-2 rounded-md border text-sm transition-all focus:outline-none",
+          "flex h-10 px-4 items-center justify-center space-x-2 rounded-md border text-sm transition-all focus:outline-none",
           pending
             ? "cursor-not-allowed border-slate-200 bg-slate-100 text-slate-400 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300"
             : "border-black bg-black text-white hover:bg-white hover:text-black dark:border-gray-700 dark:hover:border-gray-600 dark:hover:bg-black dark:hover:text-white dark:active:bg-gray-800",

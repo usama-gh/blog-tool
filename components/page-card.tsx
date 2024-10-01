@@ -26,7 +26,7 @@ export default function PageCard({
   const router = useRouter();
 
   const openPageInNewTab = () => {
-    const pageURL = `${baseUrl}/pages/${page.slug}`;
+    const pageURL = `${baseUrl}/page/${page.slug}`;
     window.open(pageURL, "_blank"); // Opens the page URL in a new tab
   };
 
