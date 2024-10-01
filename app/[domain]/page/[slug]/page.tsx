@@ -73,7 +73,7 @@ export default async function StaticPages({
           <h2 className="mb-12 text-center text-center text-4xl font-bold">
             {page.name}
           </h2>
-          <div className="my-5 rounded-3xl bg-white dark:bg-gray-800  border border-slate-100 dark:border-gray-800 px-6 py-12">
+          <div className="my-5 rounded-3xl bg-white dark:bg-gray-800  border border-slate-100 dark:border-gray-800 p-12">
           {parse(page.body as string)}
           </div>
         
