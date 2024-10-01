@@ -92,7 +92,7 @@ export default function UserHeader({
         </li>
         {pages.map((page: Page) => (
           <li key={page.id} className="px-3 first:pl-0 last:pr-0">
-            <Link href={`${baseUrl}/page/${page.slug}`} passHref legacyBehavior>
+            <Link href={`/page/${page.slug}`} passHref legacyBehavior>
               <a
                 className={`text-slate-500 hover:text-slate-800 transition-colors duration-200 ${
                   page.slug === slug ? "text-slate-700 rounded-full" : ""
