@@ -100,7 +100,7 @@ export default function Nav({ children }: { children: ReactNode }) {
           icon: <StickyNote width={18} />,
         },
         {
-          name: "Merketing Banners",
+          name: "Marketing Banners",
           href: `/site/${id}/banners`,
           isActive: segments.includes("banners"),
           icon: <Megaphone width={18} />,

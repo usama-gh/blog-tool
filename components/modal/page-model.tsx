@@ -118,11 +118,7 @@ export default function PageModal({
   };
 
   return (
-    <form
-      onSubmit={async (e) => {
-        e.preventDefault();
-        await handleAction();
-      }}
+    <div
       className="flex w-full flex-col justify-start rounded-md bg-white dark:bg-black md:max-w-6xl md:border md:border-gray-200 md:shadow dark:md:border-gray-700 lg:flex-row"
     >
       <div className="relative flex w-full flex-col space-y-4 p-5 md:p-10" id="our_modal">
@@ -248,24 +244,35 @@ export default function PageModal({
         </div>
 
         <div className="pt-4">
-          <CreateSiteFormButton type={type} />
+        <CreateSiteFormButton type={type} handleAction={handleAction} />
         </div>
       </div>
-    </form>
+    </div>
   );
 }
-function CreateSiteFormButton({ type }: { type: string }) {
+function CreateSiteFormButton({
+  type,
+  handleAction,
+}: {
+  type: string;
+  handleAction: () => Promise<void>;
+}) {
   const { pending } = useFormStatus();
   return (
     <>
       <button
-        type="submit"
+        type="button" // Change this to "button" to prevent form submission
         className={cn(
           "flex h-10 px-4 items-center justify-center space-x-2 rounded-md border text-sm transition-all focus:outline-none",
           pending
             ? "cursor-not-allowed border-slate-200 bg-slate-100 text-slate-400 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300"
             : "border-black bg-black text-white hover:bg-white hover:text-black dark:border-gray-700 dark:hover:border-gray-600 dark:hover:bg-black dark:hover:text-white dark:active:bg-gray-800",
         )}
+        onClick={async () => {
+          if (!pending) {
+            await handleAction(); // Directly call handleAction on button click
+          }
+        }}
         disabled={pending}
       >
         {pending ? (
