@@ -8,6 +8,7 @@ import {
 } from "@/lib/actions";
 
 import { useRouter } from "next/navigation";
+import { triggerEvent } from "@/components/posthug";
 // ts-ignore because experimental_useFormStatus is not in the types
 // @ts-ignore
 import { useFormStatus } from "react-dom";
@@ -270,6 +271,7 @@ function CreateSiteFormButton({
         )}
         onClick={async () => {
           if (!pending) {
+            triggerEvent("created_static_page", {});
             await handleAction(); // Directly call handleAction on button click
           }
         }}

@@ -7,7 +7,7 @@ import OverviewSitesCTA from "@/components/overview-sites-cta";
 import { getSession } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { getUserDetails } from "@/lib/fetchers";
-import CreateUsermavenUser from "@/components/usermaven";
+import IdentifyUser from "@/components/posthug";
 import { QueryBlog } from "@/components/query-blog";
 
 export default async function Overview() {
@@ -21,7 +21,7 @@ export default async function Overview() {
   return (
     <>
       <QueryBlog />
-      {/* <CreateUsermavenUser user={user} /> */}
+      <IdentifyUser user={user} />
       <div className="flex max-w-screen-xl flex-col space-y-12 p-8">
         <div className="flex flex-col gap-y-6">
           <h1 className="font-inter hide_onboarding text-3xl font-bold dark:text-white">

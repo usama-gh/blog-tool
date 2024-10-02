@@ -17,6 +17,7 @@ import { BannerData } from "@/types";
 import { Switch } from "@/components/ui/switch";
 import parse from "html-react-parser";
 import { customAlphabet } from "nanoid";
+import { triggerEvent } from "@/components/posthug";
 import FileUploader from "../form/file-uploader";
 
 const nanoid = customAlphabet(
@@ -73,6 +74,8 @@ export default function BannerModel({
       thumbnailFileUrl = `${nanoid()}.${originalThumbnail.type.split("/")[1]}`;
       await uploadToR2(thumbnailFileUrl, originalThumbnail);
     }
+    
+    triggerEvent("created_marketing_banner", {});
 
     const body: BannerData = {
       siteId: banner?.siteId ?? (siteId as string),

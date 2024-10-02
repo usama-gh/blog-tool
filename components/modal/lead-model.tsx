@@ -17,6 +17,7 @@ import { Lead } from "@prisma/client";
 import NovelEditor from "../editor/novel-editor";
 import { customAlphabet } from "nanoid";
 import { LeadData } from "@/types";
+import { triggerEvent } from "@/components/posthug";
 import { Switch } from "@/components/ui/switch";
 import parse from "html-react-parser";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -106,6 +107,7 @@ export default function LeadModal({
     } else {
       modal?.hide();
       router.refresh();
+      triggerEvent("created_lead_magnet", {});
       toast.success(`Successfully ${lead ? "updated" : "created"} lead magnet`);
     }
   };

@@ -4,7 +4,7 @@ import { notFound, redirect } from "next/navigation";
 import Posts from "@/components/posts";
 import CreatePostButton from "@/components/create-post-button";
 import { getUserDetails } from "@/lib/fetchers";
-import CreateUsermavenUser from "@/components/usermaven";
+import IdentifyUser from "@/components/posthug";
 import { QueryBlog } from "@/components/query-blog";
 
 export default async function SitePosts({
@@ -33,7 +33,7 @@ export default async function SitePosts({
   return (
     <>
       <QueryBlog />
-      {/* <CreateUsermavenUser user={user} /> */}
+      <IdentifyUser user={user} />
       <div className="flex flex-col items-center justify-between space-y-4 sm:flex-row sm:space-y-0">
         <div className="flex flex-col items-center space-y-2 sm:flex-row sm:space-x-4 sm:space-y-0">
           <h1 className="font-inter truncate text-lg font-bold dark:text-white sm:w-auto sm:text-2xl">
