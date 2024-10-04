@@ -2,6 +2,14 @@
  * @type {import('next').NextConfig}
  */
 module.exports = {
+  async rewrites() {
+    return [
+      {
+        source: '/robots.txt',
+        destination: '/api/robots.txt', // or `/api/robots.txt` in the app directory
+      },
+    ];
+  },
   images: {
     remotePatterns: [
       {
@@ -118,6 +126,16 @@ module.exports = {
           },
         ],
       },
+      {
+        source: '/:path*',
+        headers: [
+          {
+            key: 'X-Robots-Tag',
+            value: 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1',
+          },
+        ],
+      },
     ];
+    
   },
 };
