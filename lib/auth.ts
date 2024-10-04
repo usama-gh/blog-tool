@@ -4,6 +4,7 @@ import GoogleProvider from "next-auth/providers/google";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import prisma from "@/lib/prisma";
 import { BannerData, IntegrationData, LeadData, PageData } from "@/types";
+import { PostHog } from "posthog-node";
 
 const VERCEL_DEPLOYMENT = !!process.env.VERCEL_URL;
 
@@ -70,6 +71,24 @@ export const authOptions: NextAuthOptions = {
       };
 
       return session;
+    },
+  },
+  events: {
+    createUser: async (message) => {
+      const client = new PostHog(process.env.NEXT_PUBLIC_POSTHOG_KEY!, {
+        host: process.env.NEXT_PUBLIC_POSTHOG_HOST,
+      });
+
+      await client.shutdown();
+
+      client.capture({
+        distinctId: message.user.id,
+        event: "user signed up",
+        properties: {
+          name: message.user.name,
+          email: message.user.email,
+        },
+      });
     },
   },
 };
