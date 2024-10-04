@@ -6,79 +6,55 @@ import { notFound, redirect } from "next/navigation";
 import { getSiteData, getUserPlanAnalytics } from "@/lib/fetchers";
 import { fontMapper } from "@/styles/fonts";
 import { Metadata } from "next";
-import { headers } from 'next/headers';
 
-export async function generateMetadata({ 
-  params, 
-}: { 
-  params: { domain: string }; 
-}): Promise<Metadata | null> { 
-  const data = await getSiteData(params.domain); 
+export async function generateMetadata({
+  params,
+}: {
+  params: { domain: string };
+}): Promise<Metadata | null> {
+  const data = await getSiteData(params.domain);
 
-  if (!data) { 
-    return null; 
+  console.log('HEEE',params)
+  let domain='https://'+data?.subdomain+'.typedd.com'
+  if(data?.customDomain){
+    domain='https://'+data.customDomain
   }
-
-  const { 
-    name: title, 
-    description, 
-    image, 
-    logo, 
-    subdomain,
-    customDomain,
-  } = data as { 
-    name: string; 
-    description: string; 
-    image: string; 
-    logo: string; 
-    subdomain: string;
-    customDomain?: string;
-  }; 
-
-  const headersList = headers();
-  const host = headersList.get('host') || 'typedd.com';
-  const protocol = process.env.NODE_ENV === 'production' ? 'https' : 'http';
-
-  let domain = `${protocol}://${host}`;
-
-  // If there's a custom domain in the data, use it
-  if (customDomain) {
-    domain = `https://${customDomain}`;
+  if (!data) {
+    return null;
   }
+  const {
+    name: title,
+    description,
+    image,
+    logo,
+  } = data as {
+    name: string;
+    description: string;
+    image: string;
+    logo: string;
+  };
 
-  return { 
-    title, 
-    description, 
-    openGraph: { 
-      title, 
-      description, 
-      type: "website", 
-      url: domain,
-    }, 
-    twitter: { 
-      card: "summary_large_image", 
-      title, 
-      description, 
-      creator: "@" + title, 
-    }, 
-    icons: [logo], 
-    alternates: { 
-      canonical: domain,
-    }, 
-    metadataBase: new URL(domain),
-    robots: {
-      index: true,
-      follow: true,
-      googleBot: {
-        index: true,
-        follow: true,
-        noimageindex: true,
-        'max-video-preview': -1,
-        'max-image-preview': 'large',
-        'max-snippet': -1,
-      },
+  return {
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      type: "website",
+      url: new URL(`https://${params.domain}`),
     },
-  }; 
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      creator: "@" + title,
+    },
+    icons: [logo],
+    alternates: {
+      canonical: new URL(`https://${params.domain}`),
+    },
+    metadataBase: new URL(`https://${params.domain}`),
+  };
 }
 
 export async function generateStaticParams() {
