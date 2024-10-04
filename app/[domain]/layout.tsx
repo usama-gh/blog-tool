@@ -8,20 +8,24 @@ import { fontMapper } from "@/styles/fonts";
 import { Metadata } from "next";
 
 function sanitizeDomain(domain: string): string {
-  // Split the domain into parts
-  const urlParts = domain.split('/');
+  // Create a URL object to easily manipulate the parts
+  const url = new URL(domain);
+
+  // Get the hostname (domain)
+  const baseDomain = url.hostname;
+
+  // Check if the pathname starts with the base domain
+  const pathParts = url.pathname.split('/').filter(part => part !== '');
   
-  // Extract the base domain (first part)
-  const baseDomain = urlParts[0];
-  
-  // Check if the first path part matches the base domain
-  if (urlParts.length > 1 && urlParts[1] === baseDomain) {
-    // Remove the duplicate path part if it matches the base domain
-    urlParts.splice(1, 1); // Remove the second element
+  // Remove duplicate base domain from the path if it exists
+  if (pathParts.length > 0 && pathParts[0] === baseDomain) {
+    pathParts.shift(); // Remove the first part if it's a duplicate
   }
-  
-  // Join the remaining parts back together
-  return urlParts.join('/');
+
+  // Reconstruct the pathname without the duplicate
+  url.pathname = '/' + pathParts.join('/');
+
+  return url.toString(); // Return the sanitized URL as a string
 }
 
 
