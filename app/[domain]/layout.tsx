@@ -7,6 +7,24 @@ import { getSiteData, getUserPlanAnalytics } from "@/lib/fetchers";
 import { fontMapper } from "@/styles/fonts";
 import { Metadata } from "next";
 
+function sanitizeDomain(domain: string): string {
+  // Split the domain into parts
+  const urlParts = domain.split('/');
+  
+  // Extract the base domain (first part)
+  const baseDomain = urlParts[0];
+  
+  // Check if the first path part matches the base domain
+  if (urlParts.length > 1 && urlParts[1] === baseDomain) {
+    // Remove the duplicate path part if it matches the base domain
+    urlParts.splice(1, 1); // Remove the second element
+  }
+  
+  // Join the remaining parts back together
+  return urlParts.join('/');
+}
+
+
 export async function generateMetadata({
   params,
 }: {
@@ -14,11 +32,11 @@ export async function generateMetadata({
 }): Promise<Metadata | null> {
   const data = await getSiteData(params.domain);
 
-  console.log('HEEE',params)
-  let domain='https://'+data?.subdomain+'.typedd.com'
-  if(data?.customDomain){
-    domain='https://'+data.customDomain
-  }
+  const sanitizedDomain = sanitizeDomain(params.domain);
+
+
+  
+  
   if (!data) {
     return null;
   }
@@ -51,9 +69,22 @@ export async function generateMetadata({
     },
     icons: [logo],
     alternates: {
-      canonical: new URL(`https://${params.domain}`),
+      canonical: new URL(`https://${sanitizedDomain}`),
     },
     metadataBase: new URL(`https://${params.domain}`),
+    robots: {
+      index: true,
+      follow: true,
+      nocache: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        noimageindex: true,
+        'max-video-preview': -1,
+        'max-image-preview': 'large',
+        'max-snippet': -1,
+      },
+    },
   };
 }
 
