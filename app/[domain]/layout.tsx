@@ -9,6 +9,11 @@ import { Metadata } from "next";
 
 function sanitizeDomain(domain: string): string {
   // Create a URL object to easily manipulate the parts
+  if (!/^https?:\/\//i.test(domain)) {
+    domain = `https://${domain}`;
+  }
+
+  // Create a URL object to easily manipulate the parts
   const url = new URL(domain);
 
   // Get the hostname (domain)
@@ -16,7 +21,7 @@ function sanitizeDomain(domain: string): string {
 
   // Check if the pathname starts with the base domain
   const pathParts = url.pathname.split('/').filter(part => part !== '');
-  
+
   // Remove duplicate base domain from the path if it exists
   if (pathParts.length > 0 && pathParts[0] === baseDomain) {
     pathParts.shift(); // Remove the first part if it's a duplicate
