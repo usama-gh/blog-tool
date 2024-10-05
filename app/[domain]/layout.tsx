@@ -86,8 +86,9 @@ export async function generateMetadata({
   };
 
   // Sanitize the canonical URL dynamically
+  const canonical=new URL(`https://${params.domain}`).href
   console.log('DOMAINED',new URL(`https://${params.domain}`))
-  const canonicalUrl = sanitizeCanonicalURL(new URL(`https://${params.domain}`));
+  // const canonicalUrl = sanitizeCanonicalURL(new URL(`https://${params.domain}`));
 
 
   return {
@@ -107,7 +108,7 @@ export async function generateMetadata({
     },
     icons: [logo],
     alternates: {
-      canonical: canonicalUrl,
+      canonical: canonical,
     },
     metadataBase: new URL(`https://${params.domain}`),
     robots: {
