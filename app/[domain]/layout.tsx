@@ -7,6 +7,60 @@ import { getSiteData, getUserPlanAnalytics } from "@/lib/fetchers";
 import { fontMapper } from "@/styles/fonts";
 import { Metadata } from "next";
 
+function sanitizeDomain(domain: string): string {
+ 
+   // Check if the input domain is a valid URL or domain without a scheme
+   let url;
+
+   // Try to create a URL object to check if it's a valid URL
+   try {
+     url = new URL(domain); // This works if 'domain' already includes the scheme
+   } catch {
+     // If it throws an error, it means the domain doesn't include a scheme
+     // Ensure the domain starts with 'http://' or 'https://'
+     if (!/^https?:\/\//i.test(domain)) {
+       domain = `https://${domain}`;
+     }
+     url = new URL(domain); // Create the URL object again after prepending the scheme
+   }
+ 
+   // Get the hostname (domain)
+   const baseDomain = url.hostname;
+ 
+   // Split the pathname into parts, filtering out empty strings
+   const pathParts = url.pathname.split('/').filter(part => part !== '');
+ 
+   // Remove duplicate base domain from the path if it exists
+   if (pathParts.length > 0 && pathParts[0] === baseDomain) {
+     pathParts.shift(); // Remove the first part if it's a duplicate
+   }
+ 
+   // Reconstruct the pathname without the duplicate
+   url.pathname = '/' + pathParts.join('/');
+ 
+   return url.toString(); // Return the sanitized URL as a string
+
+}
+function sanitizeCanonicalURL(url: string | URL) {
+  try {
+    const parsedUrl = new URL(url);
+    const parts = parsedUrl.href.split('/');
+
+    // Check if the domain part repeats after the first domain
+    if (parts[2] === parts[3]) {
+      // Return just the base URL if the domain is repeated
+      return `${parsedUrl.protocol}//${parts[2]}`;
+    }
+
+    return url; // Return original URL if no changes
+  } catch (error) {
+    console.error("Invalid URL provided:", error);
+    return url; // Return original URL if it's invalid
+  }
+}
+
+
+
 
 export async function generateMetadata({
   params,
@@ -15,12 +69,10 @@ export async function generateMetadata({
 }): Promise<Metadata | null> {
   const data = await getSiteData(params.domain);
 
-  console.log(params)
-
-  
   if (!data) {
     return null;
   }
+
   const {
     name: title,
     description,
@@ -32,6 +84,10 @@ export async function generateMetadata({
     image: string;
     logo: string;
   };
+
+  // Sanitize the canonical URL dynamically
+  const canonicalUrl = sanitizeCanonicalURL(new URL(`https://${params.domain}`));
+
 
   return {
     title,
@@ -50,8 +106,9 @@ export async function generateMetadata({
     },
     icons: [logo],
     alternates: {
-      canonical:  new URL(`https://${params.domain}`),
+      canonical: canonicalUrl,
     },
+    metadataBase: new URL(`https://${params.domain}`),
     robots: {
       index: true,
       follow: true,
@@ -67,6 +124,7 @@ export async function generateMetadata({
     },
   };
 }
+
 
 export async function generateStaticParams() {
   const [subdomains, customDomains] = await Promise.all([
