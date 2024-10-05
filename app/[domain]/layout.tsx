@@ -48,63 +48,77 @@ export async function generateMetadata({
 }: {
   params: { domain: string };
 }): Promise<Metadata | null> {
-  const data = await getSiteData(params.domain);
+  try {
+    const data = await getSiteData(params.domain);
 
-  const domain = decodeURIComponent(params.domain);
+    if (!data) {
+      console.log('No site data found for domain:', params.domain);
+      return null;
+    }
 
-  console.log('DOMAIN', domain);
-  
-  if (!data) {
-    return null;
-  }
-  const {
-    name: title,
-    description,
-    image,
-    logo,
-  } = data as {
-    name: string;
-    description: string;
-    image: string;
-    logo: string;
-  };
+    const domain = decodeURIComponent(params.domain);
+    console.log('DOMAIN', domain);
 
-  const baseUrl = `https://${domain}`;
+    const {
+      name: title,
+      description,
+      image,
+      logo,
+    } = data as {
+      name: string;
+      description: string;
+      image: string;
+      logo: string;
+    };
 
-  return {
-    title,
-    description,
-    openGraph: {
+    const baseUrl = `https://${domain}`;
+
+    // Get the current path from the window object if available
+    let currentPath = '';
+    if (typeof window !== 'undefined') {
+      currentPath = window.location.pathname;
+    }
+
+    const fullUrl = `${baseUrl}${currentPath}`;
+
+    return {
       title,
       description,
-      type: "website",
-      url: baseUrl,
-    },
-    twitter: {
-      card: "summary_large_image",
-      title,
-      description,
-      creator: "@" + title,
-    },
-    icons: [logo],
-    alternates: {
-      canonical: baseUrl,
-    },
-    metadataBase: new URL(baseUrl),
-    robots: {
-      index: true,
-      follow: true,
-      nocache: true,
-      googleBot: {
+      openGraph: {
+        title,
+        description,
+        type: "website",
+        url: fullUrl,
+      },
+      twitter: {
+        card: "summary_large_image",
+        title,
+        description,
+        creator: "@" + title,
+      },
+      icons: [logo],
+      alternates: {
+        canonical: fullUrl,
+      },
+      metadataBase: new URL(baseUrl),
+      robots: {
         index: true,
         follow: true,
-        noimageindex: true,
-        'max-video-preview': -1,
-        'max-image-preview': 'large',
-        'max-snippet': -1,
+        nocache: true,
+        googleBot: {
+          index: true,
+          follow: true,
+          noimageindex: true,
+          'max-video-preview': -1,
+          'max-image-preview': 'large',
+          'max-snippet': -1,
+        },
       },
-    },
-  };
+    };
+  } catch (error) {
+    console.error('Error generating metadata:', error);
+    return null;
+  }
 }
 
 export async function generateStaticParams() {

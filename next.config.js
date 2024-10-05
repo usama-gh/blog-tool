@@ -8,6 +8,7 @@ module.exports = {
         source: '/robots.txt',
         destination: '/api/robots.txt', // or `/api/robots.txt` in the app directory
       },
+      
     ];
   },
   images: {
