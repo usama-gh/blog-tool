@@ -83,7 +83,7 @@ export const authOptions: NextAuthOptions = {
 
       client.capture({
         distinctId: message.user.id,
-        event: "user signed up",
+        event: "signed_up",
         properties: {
           name: message.user.name,
           email: message.user.email,
