@@ -6,8 +6,6 @@ import { notFound, redirect } from "next/navigation";
 import { getSiteData, getUserPlanAnalytics } from "@/lib/fetchers";
 import { fontMapper } from "@/styles/fonts";
 import { Metadata } from "next";
-import { headers } from 'next/headers';
-
 
 function sanitizeDomain(domain: string): string {
  
@@ -45,81 +43,67 @@ function sanitizeDomain(domain: string): string {
 }
 
 
-
 export async function generateMetadata({
   params,
 }: {
   params: { domain: string };
 }): Promise<Metadata | null> {
-  try {
-    const data = await getSiteData(params.domain);
+  const data = await getSiteData(params.domain);
 
-    if (!data) {
-      console.log('No site data found for domain:', params.domain);
-      return null;
-    }
+  console.log(params)
+  const domain = decodeURIComponent(params.domain);
 
-    const domain = decodeURIComponent(params.domain);
-    console.log('DOMAIN', domain);
-
-    const {
-      name: title,
-      description,
-      image,
-      logo,
-    } = data as {
-      name: string;
-      description: string;
-      image: string;
-      logo: string;
-    };
-
-    // Get the full URL from the headers
-    const headersList = headers();
-    const host = headersList.get('host') || domain;
-    const proto = headersList.get('x-forwarded-proto') || 'https';
-    const fullUrl = `${proto}://${host}${headersList.get('x-invoke-path') || ''}`;
-
-    console.log('FULL URL', fullUrl);
-
-    return {
-      title,
-      description,
-      openGraph: {
-        title,
-        description,
-        type: "website",
-        url: fullUrl,
-      },
-      twitter: {
-        card: "summary_large_image",
-        title,
-        description,
-        creator: "@" + title,
-      },
-      icons: [logo],
-      alternates: {
-        canonical: new URL(`${proto}://${host}`),
-      },
-      metadataBase: new URL(`${proto}://${host}`),
-      robots: {
-        index: true,
-        follow: true,
-        nocache: true,
-        googleBot: {
-          index: true,
-          follow: true,
-          noimageindex: true,
-          'max-video-preview': -1,
-          'max-image-preview': 'large',
-          'max-snippet': -1,
-        },
-      },
-    };
-  } catch (error) {
-    console.error('Error generating metadata:', error);
+  console.log('DOMAIN',domain)
+  
+  if (!data) {
     return null;
   }
+  const {
+    name: title,
+    description,
+    image,
+    logo,
+  } = data as {
+    name: string;
+    description: string;
+    image: string;
+    logo: string;
+  };
+
+  return {
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      type: "website",
+      url: new URL(`https://${params.domain}`),
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      creator: "@" + title,
+    },
+    icons: [logo],
+    alternates: {
+      canonical: './',
+    },
+    metadataBase: new URL(`https://${params.domain}`),
+    robots: {
+      index: true,
+      follow: true,
+      nocache: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        noimageindex: true,
+        'max-video-preview': -1,
+        'max-image-preview': 'large',
+        'max-snippet': -1,
+      },
+    },
+  };
 }
 
 export async function generateStaticParams() {
