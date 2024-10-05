@@ -86,6 +86,7 @@ export async function generateMetadata({
   };
 
   // Sanitize the canonical URL dynamically
+  console.log('DOMAINED',new URL(`https://${params.domain}`))
   const canonicalUrl = sanitizeCanonicalURL(new URL(`https://${params.domain}`));
 
 
