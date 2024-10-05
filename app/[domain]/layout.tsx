@@ -49,9 +49,8 @@ export async function generateMetadata({
       creator: "@" + title,
     },
     icons: [logo],
-    metadataBase: new URL(`https://${params.domain}`),
     alternates: {
-      canonical: './',
+      canonical:  new URL(`https://${params.domain}`),
     },
     robots: {
       index: true,
