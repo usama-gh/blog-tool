@@ -27,7 +27,6 @@ export const metadata: Metadata = {
     images: [image],
     creator: "@typedd",
   },
-  metadataBase: new URL("https://typedd.com"),
 };
 
 export default function RootLayout({

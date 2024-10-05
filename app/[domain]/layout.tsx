@@ -7,41 +7,6 @@ import { getSiteData, getUserPlanAnalytics } from "@/lib/fetchers";
 import { fontMapper } from "@/styles/fonts";
 import { Metadata } from "next";
 
-function sanitizeDomain(domain: string): string {
- 
-   // Check if the input domain is a valid URL or domain without a scheme
-   let url;
-
-   // Try to create a URL object to check if it's a valid URL
-   try {
-     url = new URL(domain); // This works if 'domain' already includes the scheme
-   } catch {
-     // If it throws an error, it means the domain doesn't include a scheme
-     // Ensure the domain starts with 'http://' or 'https://'
-     if (!/^https?:\/\//i.test(domain)) {
-       domain = `https://${domain}`;
-     }
-     url = new URL(domain); // Create the URL object again after prepending the scheme
-   }
- 
-   // Get the hostname (domain)
-   const baseDomain = url.hostname;
- 
-   // Split the pathname into parts, filtering out empty strings
-   const pathParts = url.pathname.split('/').filter(part => part !== '');
- 
-   // Remove duplicate base domain from the path if it exists
-   if (pathParts.length > 0 && pathParts[0] === baseDomain) {
-     pathParts.shift(); // Remove the first part if it's a duplicate
-   }
- 
-   // Reconstruct the pathname without the duplicate
-   url.pathname = '/' + pathParts.join('/');
- 
-   return url.toString(); // Return the sanitized URL as a string
-
-}
-
 
 export async function generateMetadata({
   params,
@@ -51,9 +16,7 @@ export async function generateMetadata({
   const data = await getSiteData(params.domain);
 
   console.log(params)
-  const domain = decodeURIComponent(params.domain);
 
-  console.log('DOMAIN',domain)
   
   if (!data) {
     return null;
@@ -86,10 +49,10 @@ export async function generateMetadata({
       creator: "@" + title,
     },
     icons: [logo],
+    metadataBase: new URL(`https://${params.domain}`),
     alternates: {
       canonical: './',
     },
-    metadataBase: new URL(`https://${params.domain}`),
     robots: {
       index: true,
       follow: true,
