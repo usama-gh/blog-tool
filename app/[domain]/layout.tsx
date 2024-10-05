@@ -6,6 +6,8 @@ import { notFound, redirect } from "next/navigation";
 import { getSiteData, getUserPlanAnalytics } from "@/lib/fetchers";
 import { fontMapper } from "@/styles/fonts";
 import { Metadata } from "next";
+import { headers } from 'next/headers';
+
 
 function sanitizeDomain(domain: string): string {
  
@@ -43,6 +45,7 @@ function sanitizeDomain(domain: string): string {
 }
 
 
+
 export async function generateMetadata({
   params,
 }: {
@@ -71,15 +74,13 @@ export async function generateMetadata({
       logo: string;
     };
 
-    const baseUrl = `https://${domain}`;
+    // Get the full URL from the headers
+    const headersList = headers();
+    const host = headersList.get('host') || domain;
+    const proto = headersList.get('x-forwarded-proto') || 'https';
+    const fullUrl = `${proto}://${host}${headersList.get('x-invoke-path') || ''}`;
 
-    // Get the current path from the window object if available
-    let currentPath = '';
-    if (typeof window !== 'undefined') {
-      currentPath = window.location.pathname;
-    }
-
-    const fullUrl = `${baseUrl}${currentPath}`;
+    console.log('FULL URL', fullUrl);
 
     return {
       title,
@@ -98,9 +99,9 @@ export async function generateMetadata({
       },
       icons: [logo],
       alternates: {
-        canonical: fullUrl,
+        canonical: new URL(`${proto}://${host}`),
       },
-      metadataBase: new URL(baseUrl),
+      metadataBase: new URL(`${proto}://${host}`),
       robots: {
         index: true,
         follow: true,
