@@ -52,11 +52,7 @@ export async function generateMetadata({
 
   const domain = decodeURIComponent(params.domain);
 
-  console.log(domain)
-  // const sanitizedDomain = sanitizeDomain(params.domain);
-
-
-  
+  console.log('DOMAIN', domain);
   
   if (!data) {
     return null;
@@ -73,6 +69,8 @@ export async function generateMetadata({
     logo: string;
   };
 
+  const baseUrl = `https://${domain}`;
+
   return {
     title,
     description,
@@ -80,7 +78,7 @@ export async function generateMetadata({
       title,
       description,
       type: "website",
-      url: new URL(`https://${params.domain}`),
+      url: baseUrl,
     },
     twitter: {
       card: "summary_large_image",
@@ -90,9 +88,9 @@ export async function generateMetadata({
     },
     icons: [logo],
     alternates: {
-      canonical: new URL(`https://${params.domain}`),
+      canonical: baseUrl,
     },
-    metadataBase: new URL(`https://${params.domain}`),
+    metadataBase: new URL(baseUrl),
     robots: {
       index: true,
       follow: true,
