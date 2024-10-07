@@ -35,6 +35,23 @@ export async function generateMetadata({
       description,
       creator: "@" + domain,
     },
+    alternates: {
+      canonical: new URL(`https://${params.domain}`), // Use baseUrl for the canonical URL
+    },
+    canonical: new URL(`https://${params.domain}`),
+    robots: {
+      index: true,
+      follow: true,
+      nocache: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        noimageindex: true,
+        'max-video-preview': -1,
+        'max-image-preview': 'large',
+        'max-snippet': -1,
+      },
+    },
   };
 }
 
