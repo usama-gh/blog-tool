@@ -15,11 +15,9 @@ export async function generateMetadata({
 }) {
   const { domain, slug } = params;
   const data = await getPostData(domain, slug);
-
   if (!data) {
     return null;
   }
-
   const { title, description } = data;
 
   return {
@@ -29,21 +27,18 @@ export async function generateMetadata({
       title,
       description,
       type: "website",
-      url: `https://${domain}/${slug}`,  // URL with both domain and slug
+      url: new URL(`https://${params.domain}/${params.slug}`),
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
-      creator: `@${domain}`,
-    },
-    metadataBase: `https://${domain}/${slug}`,  // Concatenated string for metadata base
-    alternates: {
-      canonical: `https://${domain}/${slug}`, // Full URL including the slug for the canonical URL
+      creator: "@" + domain,
     },
     robots: {
       index: true,
       follow: true,
+      nocache: true,
       googleBot: {
         index: true,
         follow: true,
