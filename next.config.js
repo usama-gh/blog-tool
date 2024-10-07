@@ -2,14 +2,6 @@
  * @type {import('next').NextConfig}
  */
 module.exports = {
-  async rewrites() {
-    return [
-      {
-        source: '/robots.txt',
-        destination: '/app/robots.txt', // or `/api/robots.txt` in the app directory
-      },
-    ];
-  },
   images: {
     remotePatterns: [
       {
