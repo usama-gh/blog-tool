@@ -71,7 +71,7 @@ export default function UserHeader({
     <div className="border border-slate-300 dark:border-gray-500 rounded-full">
       <ul className="flex items-center divide-x divide-slate-300 0 dark:divide-gray-500  px-3 py-1">
         <li className="px-3 first:pl-0 last:pr-0">
-          <Link href={baseUrl} passHref legacyBehavior>
+          <Link href="/" passHref legacyBehavior>
             <a
               className={`text-slate-500 hover:text-slate-800 dark:text-gray-400 dark:hover:text-gray-200 transition-colors duration-200 ${
                 !slug ? "text-slate-700 dark:text-gray-50" : ""
