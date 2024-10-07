@@ -37,7 +37,7 @@ export async function generateMetadata({
       description,
       creator: `@${domain}`,
     },
-    metadataBase: `https://${domain}`,  // Concatenated string for metadata base
+    metadataBase: `https://${domain}/${slug}`,  // Concatenated string for metadata base
     alternates: {
       canonical: `https://${domain}/${slug}`, // Full URL including the slug for the canonical URL
     },
