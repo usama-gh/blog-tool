@@ -8,14 +8,20 @@ import Link from "next/link";
 // import { addVisitor } from "@/lib/actions";
 import Script from "next/script";
 
+
 export async function generateMetadata({
   params,
 }: {
   params: { domain: string; slug: string };
 }) {
-  const { domain, slug } = params;
-  const data = await getPostData(domain, slug);
-  if (!data) {
+  const domain = decodeURIComponent(params.domain);
+  const slug = decodeURIComponent(params.slug);
+
+  const [data, siteData] = await Promise.all([
+    getPostData(domain, slug),
+    getSiteData(domain),
+  ]);
+  if (!data || !siteData) {
     return null;
   }
   const { title, description } = data;
@@ -26,24 +32,23 @@ export async function generateMetadata({
     openGraph: {
       title,
       description,
-      type: "website",
-      url: new URL(`https://${params.domain}/${params.slug}`),
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
-      creator: "@" + domain,
+      creator: "@vercel",
     },
-    alternates: {
-      canonical: new URL(`https://${params.domain}`), // Use baseUrl for the canonical URL
-    },
-    robots: {
-      index: true,
-      follow: true
-    },
+    // Optional: Set canonical URL to custom domain if it exists
+    ...(params.domain.endsWith(`.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`) &&
+      siteData.customDomain && {
+        alternates: {
+          canonical: `https://${siteData.customDomain}/${params.slug}`,
+        },
+      }),
   };
 }
+
 
 export default async function SitePostPage({
   params,
