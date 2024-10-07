@@ -44,17 +44,14 @@ function sanitizeDomain(domain: string): string {
 
 export async function generateMetadata({
   params,
-  pathname,
 }: {
   params: { domain: string };
-  pathname: string;
 }): Promise<Metadata | null> {
-  const data = await getSiteData(params.domain);
-
+  const domain = decodeURIComponent(params.domain);
+  const data = await getSiteData(domain);
   if (!data) {
     return null;
   }
-  
   const {
     name: title,
     description,
@@ -67,43 +64,111 @@ export async function generateMetadata({
     logo: string;
   };
 
-  const baseUrl = `https://${params.domain}`;
-  const fullUrl = new URL(pathname, baseUrl);
-
   return {
     title,
     description,
     openGraph: {
       title,
       description,
-      type: "website",
-      url: fullUrl.toString(),
+      images: [image],
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
-      creator: "@" + title,
+      images: [image],
+      creator: "@vercel",
     },
-    icons: [logo],
-    alternates: {
-      canonical: baseUrl, // Use baseUrl for the canonical URL
-    },
-    metadataBase: new URL(baseUrl),
     robots: {
-      index: true,
-      follow: true,
-      googleBot: {
-        index: true,
-        follow: true,
-        noimageindex: true,
-        'max-video-preview': -1,
-        'max-image-preview': 'large',
-        'max-snippet': -1,
-      },
-    },
+            index: true,
+            follow: true,
+            googleBot: {
+              index: true,
+              follow: true,
+              noimageindex: true,
+              'max-video-preview': -1,
+              'max-image-preview': 'large',
+              'max-snippet': -1,
+            },
+          },
+    icons: [logo],
+    metadataBase: new URL(`https://${domain}`),
+    // Optional: Set canonical URL to custom domain if it exists
+    ...(params.domain.endsWith(`.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`) &&
+      data.customDomain && {
+        alternates: {
+          canonical: `https://${data.customDomain}`,
+        },
+      }),
+      
   };
 }
+
+
+// export async function generateMetadata({
+//   params,
+//   pathname,
+// }: {
+//   params: { domain: string };
+//   pathname: string;
+// }): Promise<Metadata | null> {
+//   const data = await getSiteData(params.domain);
+
+//   if (!data) {
+//     return null;
+//   }
+
+//   console.log('hello')
+  
+//   const {
+//     name: title,
+//     description,
+//     image,
+//     logo,
+//   } = data as {
+//     name: string;
+//     description: string;
+//     image: string;
+//     logo: string;
+//   };
+
+//   const baseUrl = `https://${params.domain}`;
+//   const fullUrl = new URL(pathname, baseUrl);
+
+//   return {
+//     title,
+//     description,
+//     openGraph: {
+//       title,
+//       description,
+//       type: "website",
+//       url: fullUrl.toString(),
+//     },
+//     twitter: {
+//       card: "summary_large_image",
+//       title,
+//       description,
+//       creator: "@" + title,
+//     },
+//     icons: [logo],
+//     alternates: {
+//       canonical: baseUrl, // Use baseUrl for the canonical URL
+//     },
+//     metadataBase: new URL(baseUrl),
+//     robots: {
+//       index: true,
+//       follow: true,
+//       googleBot: {
+//         index: true,
+//         follow: true,
+//         noimageindex: true,
+//         'max-video-preview': -1,
+//         'max-image-preview': 'large',
+//         'max-snippet': -1,
+//       },
+//     },
+//   };
+// }
 
 export async function generateStaticParams() {
   const [subdomains, customDomains] = await Promise.all([
