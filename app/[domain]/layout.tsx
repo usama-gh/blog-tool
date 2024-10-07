@@ -67,7 +67,8 @@ export async function generateMetadata({
     logo: string;
   };
 
-  const fullUrl = new URL(pathname, `https://${params.domain}`);
+  const baseUrl = `https://${params.domain}`;
+  const fullUrl = new URL(pathname, baseUrl);
 
   return {
     title,
@@ -76,7 +77,7 @@ export async function generateMetadata({
       title,
       description,
       type: "website",
-      url: fullUrl,
+      url: fullUrl.toString(),
     },
     twitter: {
       card: "summary_large_image",
@@ -86,9 +87,9 @@ export async function generateMetadata({
     },
     icons: [logo],
     alternates: {
-      canonical: fullUrl,
+      canonical: baseUrl, // Use baseUrl for the canonical URL
     },
-    metadataBase: new URL(`https://${params.domain}`),
+    metadataBase: new URL(baseUrl),
     robots: {
       index: true,
       follow: true,
