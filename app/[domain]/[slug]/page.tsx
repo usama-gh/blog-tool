@@ -8,22 +8,18 @@ import Link from "next/link";
 // import { addVisitor } from "@/lib/actions";
 import Script from "next/script";
 
-
 export async function generateMetadata({
   params,
 }: {
   params: { domain: string; slug: string };
 }) {
-  const domain = decodeURIComponent(params.domain);
-  const slug = decodeURIComponent(params.slug);
+  const { domain, slug } = params;
+  const data = await getPostData(domain, slug);
 
-  const [data, siteData] = await Promise.all([
-    getPostData(domain, slug),
-    getSiteData(domain),
-  ]);
-  if (!data || !siteData) {
+  if (!data) {
     return null;
   }
+
   const { title, description } = data;
 
   return {
@@ -32,23 +28,33 @@ export async function generateMetadata({
     openGraph: {
       title,
       description,
+      type: "website",
+      url: `https://${domain}/${slug}`,  // URL with both domain and slug
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
-      creator: "@vercel",
+      creator: `@${domain}`,
     },
-    // Optional: Set canonical URL to custom domain if it exists
-    ...(params.domain.endsWith(`.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`) &&
-      siteData.customDomain && {
-        alternates: {
-          canonical: `https://${siteData.customDomain}/${params.slug}`,
-        },
-      }),
+    metadataBase: `https://${domain}`,  // Concatenated string for metadata base
+    alternates: {
+      canonical: `https://${domain}/${slug}`, // Full URL including the slug for the canonical URL
+    },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        noimageindex: true,
+        'max-video-preview': -1,
+        'max-image-preview': 'large',
+        'max-snippet': -1,
+      },
+    },
   };
 }
-
 
 export default async function SitePostPage({
   params,
