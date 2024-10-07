@@ -13,14 +13,9 @@ export async function generateMetadata({
 }: {
   params: { domain: string; slug: string };
 }) {
-  const domain = decodeURIComponent(params.domain);
-  const slug = decodeURIComponent(params.slug);
-
-  const [data, siteData] = await Promise.all([
-    getPostData(domain, slug),
-    getSiteData(domain),
-  ]);
-  if (!data || !siteData) {
+  const { domain, slug } = params;
+  const data = await getPostData(domain, slug);
+  if (!data) {
     return null;
   }
   const { title, description } = data;
@@ -31,66 +26,33 @@ export async function generateMetadata({
     openGraph: {
       title,
       description,
+      type: "website",
+      url: new URL(`https://${params.domain}/${params.slug}`),
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
-      creator: "@vercel",
+      creator: "@" + domain,
     },
-    // Optional: Set canonical URL to custom domain if it exists
-    ...(params.domain.endsWith(`.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`) &&
-      siteData.customDomain && {
-        alternates: {
-          canonical: `https://${siteData.customDomain}/${params.slug}`,
-        },
-      }),
+    alternates: {
+      canonical: new URL(`https://${params.domain}/${params.slug}`), // Use baseUrl for the canonical URL
+    },
+    robots: {
+      index: true,
+      follow: true,
+      nocache: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        noimageindex: true,
+        'max-video-preview': -1,
+        'max-image-preview': 'large',
+        'max-snippet': -1,
+      },
+    },
   };
 }
-
-
-// export async function generateMetadata({
-//   params,
-// }: {
-//   params: { domain: string; slug: string };
-// }) {
-//   const { domain, slug } = params;
-//   const data = await getPostData(domain, slug);
-//   if (!data) {
-//     return null;
-//   }
-//   const { title, description } = data;
-
-//   return {
-//     title,
-//     description,
-//     openGraph: {
-//       title,
-//       description,
-//       type: "website",
-//       url: new URL(`https://${params.domain}/${params.slug}`),
-//     },
-//     twitter: {
-//       card: "summary_large_image",
-//       title,
-//       description,
-//       creator: "@" + domain,
-//     },
-//     robots: {
-//       index: true,
-//       follow: true,
-//       nocache: true,
-//       googleBot: {
-//         index: true,
-//         follow: true,
-//         noimageindex: true,
-//         'max-video-preview': -1,
-//         'max-image-preview': 'large',
-//         'max-snippet': -1,
-//       },
-//     },
-//   };
-// }
 
 export default async function SitePostPage({
   params,
