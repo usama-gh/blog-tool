@@ -38,7 +38,6 @@ export async function generateMetadata({
     alternates: {
       canonical: new URL(`https://${params.domain}`), // Use baseUrl for the canonical URL
     },
-    canonical: new URL(`https://${params.domain}`),
     robots: {
       index: true,
       follow: true
