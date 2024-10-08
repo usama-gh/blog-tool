@@ -2,6 +2,7 @@
  * @type {import('next').NextConfig}
  */
 module.exports = {
+  transpilePackages: ["next-mdx-remote"],
   images: {
     remotePatterns: [
       {
