@@ -14,29 +14,48 @@ export async function generateMetadata({
   params: { domain: string; slug: string };
 }) {
   const { domain, slug } = params;
-  const data = await getPostData(domain, slug);
+  const data = await getLead(slug);
+ 
   if (!data) {
     return null;
   }
-  const { title, description } = data;
+  const siteData= await getSiteData(domain)
+  console.log(siteData)
+  const { title,heroDescription } = data;
 
   return {
-    title,
-    description,
+    title: title+' | '+siteData?.name,
+    description: heroDescription,
     openGraph: {
       title,
-      description,
+      description: heroDescription,
       type: "website",
-      url: new URL(`https://${params.domain}/${params.slug}`),
+      url: new URL(`https://${params.domain}/resources/${params.slug}`),
     },
     twitter: {
       card: "summary_large_image",
       title,
-      description,
+      description: heroDescription,
       creator: "@" + domain,
+    },
+    alternates: {
+      canonical: new URL(`https://${params.domain}/resources/${params.slug}`), // Use baseUrl for the canonical URL
+    },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        noimageindex: true,
+        'max-video-preview': -1,
+        'max-image-preview': 'large',
+        'max-snippet': -1,
+      },
     },
   };
 }
+
 
 export default async function SiteLeadPage({
   params,
@@ -95,19 +114,8 @@ export default async function SiteLeadPage({
         </p>
       </div>
 
-      <div className="relative">
-        <div className="mx-auto my-auto flex items-center">
-          <div className="relative w-full overflow-hidden">
-            <div className="flex">
-              <div className="relative h-fit min-w-full  text-slate-50 dark:text-gray-400 ">
-             
-                <div
-                  className={`absolute left-0 top-0 h-full w-full bg-white dark:bg-gray-800`}
-                ></div>
-
-                {/* lead description */}
-                <div className="scrollbar-thumb-rounded-full scrollbar-track-rounded-full relative z-20 mx-auto flex w-full max-w-2xl items-center justify-center  py-10 pt-20 text-slate-700 scrollbar-thin  scrollbar-track-transparent scrollbar-thumb-gray-200 dark:text-white dark:scrollbar-thumb-gray-800 [&>*]:rounded-xl [&>*]:text-lg">
-                  <div className="flex flex-col items-center justify-center gap-4 px-6">
+    
+      <div className="flex flex-col items-center justify-center gap-4 px-12 py-20 min-h-screen">
                     {lead.thumbnailFile && (
                       <Image
                         className="rounded-lg"
@@ -128,12 +136,8 @@ export default async function SiteLeadPage({
 
                     <LeadDownload postId="" lead={lead} />
                   </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+
+
     </>
   );
 }

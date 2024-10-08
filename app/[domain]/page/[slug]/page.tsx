@@ -24,7 +24,7 @@ export async function generateMetadata({
   const { domain, slug } = params;
 
   const data = await getPageData(domain, slug);
-
+  
   if (!data) {
     return null;
   }
@@ -45,6 +45,22 @@ export async function generateMetadata({
       description,
       creator: "@" + domain,
     },
+    alternates: {
+      canonical: new URL(`https://${params.domain}/pages/${params.slug}`), // Use baseUrl for the canonical URL
+    },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        noimageindex: true,
+        'max-video-preview': -1,
+        'max-image-preview': 'large',
+        'max-snippet': -1,
+      },
+    },
+    
   };
 }
 

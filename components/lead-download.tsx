@@ -101,23 +101,23 @@ export const LeadDownload = ({
     setData({ ...data, name: fullName, firstName, lastName });
   };
 
-  useEffect(() => {
-    let timeout: any = null;
+  // useEffect(() => {
+  //   let timeout: any = null;
 
-    if (lead.delivery === "link") {
-      timeout = setTimeout(() => {
-        if (counter > 0) {
-          setCounter(counter - 1);
-        } else {
-          window.location.href = lead.file!;
-        }
-      }, 1000);
-    }
+  //   if (lead.delivery === "link") {
+  //     timeout = setTimeout(() => {
+  //       if (counter > 0) {
+  //         setCounter(counter - 1);
+  //       } else {
+  //         window.location.href = lead.file!;
+  //       }
+  //     }, 1000);
+  //   }
 
-    () => {
-      timeout && clearTimeout(timeout);
-    };
-  }, [counter]);
+  //   () => {
+  //     timeout && clearTimeout(timeout);
+  //   };
+  // }, [counter]);
 
   return (
     <>
