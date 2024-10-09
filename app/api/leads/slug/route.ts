@@ -12,11 +12,15 @@ export async function POST(request: Request) {
     });
 
     leads.forEach(async (lead) => {
-      const slug = makeSlug(lead.title);
-      await prisma.lead.update({
-        where: { id: lead.id },
-        data: { slug },
-      });
+      try {
+        const slug = makeSlug(lead.title);
+        await prisma.lead.update({
+          where: { id: lead.id },
+          data: { slug },
+        });
+      } catch (error: any) {
+        console.log(error.message);
+      }
     });
 
     return Response.json(
