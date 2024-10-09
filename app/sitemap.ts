@@ -4,6 +4,7 @@ import {
   getSiteAllLeads,
   getSiteStaticPages,
 } from "@/lib/fetchers";
+import prisma from "@/lib/prisma";
 
 export default async function Sitemap() {
   const headersList = headers();
@@ -13,9 +14,27 @@ export default async function Sitemap() {
       ?.replace(".localhost:3000", `.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`) ??
     "vercel.pub";
 
-  const posts = await getPostsForSite(domain);
-  const leads = await getSiteAllLeads(domain);
-  const pages = await getSiteStaticPages(domain);
+  const subdomain = domain.endsWith(`.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`)
+    ? domain.replace(`.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`, "")
+    : null;
+
+  const posts = await prisma.post.findMany({
+    where: {
+      site: subdomain ? { subdomain } : { customDomain: domain },
+      published: true,
+    },
+  });
+
+  const leads = await prisma.lead.findMany({
+    where: {
+      site: subdomain ? { subdomain } : { customDomain: domain },
+    },
+  });
+  const pages = await prisma.page.findMany({
+    where: {
+      site: subdomain ? { subdomain } : { customDomain: domain },
+    },
+  });
 
   return [
     {
