@@ -40,8 +40,6 @@ export default function PageModal({
   const router = useRouter();
   const modal = useModal();
 
-
-
   const [slug, setSlug] = useState((page ? page.slug : "") as string);
   const [data, setData] = useState({
     name: (page ? page.name : "") as string,

@@ -106,6 +106,17 @@ export async function getLeadsForSite(domain: string) {
   )();
 }
 
+export async function getSiteAllLeads(domain: string) {
+  const subdomain = domain.endsWith(`.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`)
+    ? domain.replace(`.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`, "")
+    : null;
+  return prisma.lead.findMany({
+    where: {
+      site: subdomain ? { subdomain } : { customDomain: domain },
+    },
+  });
+}
+
 export async function getPagesForSite(domain: string) {
   const subdomain = domain.endsWith(`.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`)
     ? domain.replace(`.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`, "")
@@ -373,12 +384,12 @@ export async function getPageData(domain: string, slug: string) {
   // )();
 }
 
-export async function getLead(leadId: string) {
+export async function getLead(slug: string) {
   return await unstable_cache(
     async () => {
       const lead = await prisma.lead.findFirst({
         where: {
-          id: leadId,
+          slug: slug,
         },
       });
 
@@ -386,10 +397,10 @@ export async function getLead(leadId: string) {
 
       return lead;
     },
-    [`${leadId}-lead`],
+    [`${slug}-lead`],
     {
       revalidate: 900, // 15 minutes
-      tags: [`${leadId}-lead`],
+      tags: [`${slug}-lead`],
     },
   )();
 }
@@ -539,6 +550,30 @@ export async function getUserDetails() {
     {
       revalidate: 900,
       tags: [`user-details`],
+    },
+  )();
+}
+
+export async function getSiteStaticPages(domain: string) {
+  const subdomain = domain.endsWith(`.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`)
+    ? domain.replace(`.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`, "")
+    : null;
+  const site = await prisma.site.findUnique({
+    where: subdomain ? { subdomain } : { customDomain: domain },
+  });
+
+  return await unstable_cache(
+    async () => {
+      return await prisma.page.findMany({
+        where: {
+          site: subdomain ? { subdomain } : { customDomain: domain },
+        },
+      });
+    },
+    [`${site?.id}-pages`],
+    {
+      revalidate: 900, // 15 minutes
+      tags: [`${site?.id}-pages`],
     },
   )();
 }

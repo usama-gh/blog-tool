@@ -16,6 +16,7 @@ interface LeadData {
   siteId: string;
   name: string;
   title: string;
+  slug: string;
   description: string;
   buttonCta: string;
   download: string;

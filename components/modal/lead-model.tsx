@@ -7,11 +7,11 @@ import { useRouter } from "next/navigation";
 // ts-ignore because experimental_useFormStatus is not in the types
 // @ts-ignore
 import { useFormStatus } from "react-dom";
-import { cn,r2Asset } from "@/lib/utils";
+import { cn, makeSlug, r2Asset } from "@/lib/utils";
 import Image from "next/image";
 import LoadingDots from "@/components/icons/loading-dots";
 import { useModal } from "./provider";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import FileUploader from "../form/file-uploader";
 import { Lead } from "@prisma/client";
 import NovelEditor from "../editor/novel-editor";
@@ -47,6 +47,7 @@ export default function LeadModal({
   const [data, setData] = useState({
     name: (lead ? lead.name : "") as string,
     title: (lead ? lead.title : "") as string,
+    slug: (lead ? lead.slug : "") as string,
     description: (lead ? lead.description : "") as string,
     heroDescription: (lead ? lead.heroDescription : "") as string,
     thumbnail: (lead ? lead.thumbnail : "") as string,
@@ -57,12 +58,22 @@ export default function LeadModal({
     delivery: (lead ? lead.delivery : "file") as string,
     link: (lead && lead.delivery === "link" ? lead.file : "") as string,
   });
+  const firstRender = useRef<boolean>(true);
   const [fileName, setFileName] = useState(lead ? lead.fileName : "");
   const [originalFile, setOriginalFile] = useState<File>();
   const [thumbnail, setThumbnail] = useState(lead ? lead.thumbnail : "");
   const [originalThumbnail, setOriginalThumbnail] = useState<File>();
   const [description, setDescription] = useState(data.description);
   const type = lead ? "Update" : "Create";
+
+  useEffect(() => {
+    if (firstRender.current) {
+      firstRender.current = false;
+      return;
+    }
+
+    setData({ ...data, slug: makeSlug(data.title)! });
+  }, [data.title]);
 
   const handleAction = async () => {
     if (data.delivery === "file" && !fileName) {
@@ -83,14 +94,15 @@ export default function LeadModal({
     }
 
     const body: LeadData = {
-      siteId: lead?.siteId ?? siteId as string,
+      siteId: lead?.siteId ?? (siteId as string),
       name: data.name,
       title: data.title,
+      slug: data.slug,
       description: description as string,
       buttonCta: data.buttonCta,
       download: data.download,
       delivery: data.delivery,
-      url: data.delivery === "file" ? fileUrl : data.link as string,
+      url: data.delivery === "file" ? fileUrl : (data.link as string),
       fileName: fileName as string,
       thumbnailFile: thumbnail ? thumbnailFileUrl : "",
       thumbnail: thumbnail as string,
@@ -112,7 +124,6 @@ export default function LeadModal({
     }
   };
 
-
   async function uploadToR2(fileUrl: string, file: File) {
     try {
       const response = await fetch("/api/r2", {
@@ -133,11 +144,11 @@ export default function LeadModal({
 
   return (
     <form
-    onSubmit={async (e) => {
-      e.preventDefault();
-      await handleAction();
-    }}
-    id="our_modal"
+      onSubmit={async (e) => {
+        e.preventDefault();
+        await handleAction();
+      }}
+      id="our_modal"
       className="flex w-full flex-col justify-start rounded-md bg-white dark:bg-black md:max-w-6xl md:border md:border-gray-200 md:shadow dark:md:border-gray-700 lg:flex-row"
     >
       <div className="relative flex flex-col space-y-4 p-5 md:p-10 lg:min-w-[500px]">
@@ -186,6 +197,25 @@ export default function LeadModal({
                 value={data.title}
                 onChange={(e) => setData({ ...data, title: e.target.value })}
                 maxLength={50}
+                required
+                className="w-full rounded-md border border-slate-200 bg-slate-50 px-4 py-2 text-sm text-slate-600 placeholder:text-slate-400 focus:border-black focus:outline-none focus:ring-black dark:border-gray-600 dark:bg-black dark:text-white dark:placeholder-gray-700 dark:focus:ring-white"
+              />
+            </div>
+
+            <div className="flex flex-col space-y-2">
+              <label
+                htmlFor="slug"
+                className="pt-3 text-xs font-medium text-slate-500 dark:text-gray-400"
+              >
+                Lead Slug
+              </label>
+
+              <input
+                name="slug"
+                type="text"
+                placeholder="build-your-saas-in-just-two weeks-free-guide"
+                value={data.slug}
+                onChange={(e) => setData({ ...data, slug: e.target.value })}
                 required
                 className="w-full rounded-md border border-slate-200 bg-slate-50 px-4 py-2 text-sm text-slate-600 placeholder:text-slate-400 focus:border-black focus:outline-none focus:ring-black dark:border-gray-600 dark:bg-black dark:text-white dark:placeholder-gray-700 dark:focus:ring-white"
               />
@@ -429,101 +459,113 @@ export default function LeadModal({
       </div>
 
       <div className="hidden w-[700px] bg-slate-100 px-4 text-center dark:bg-gray-800 lg:block">
-       <div className="flex items-start justify-center h-full">
-        <div>
-        <h3 className="my-5 text-sm text-slate-800 dark:text-gray-200">Preview</h3>
-        <div className="">
-
-        <Tabs defaultValue="preview_1" className="w-[400px]">
-  <TabsList>
-    <TabsTrigger value="preview_1">1</TabsTrigger>
-    <TabsTrigger value="preview_2">2</TabsTrigger>
-    <TabsTrigger value="preview_3">3</TabsTrigger>
-  </TabsList>
-  <TabsContent value="preview_1" className="flex items-center justify-center">
-    
-  <div>
-            <div className="flex items-center space-x-2 bg-white rounded-full p-2 shadow w-full max-w-md">
-                    <span className="flex-grow bg-transparent text-gray-800 placeholder-gray-500 rounded-full py-2 px-4 max-w-xl overflow-x-auto">
-                    {data.name || "Text"}
-                    </span>
-                    <button className="bg-blue-600 hover:bg-blue-700 text-white rounded-full px-4 py-2">
-                    {data.buttonCta}
-                    </button>
-                  </div>
-
-              <p className="mt-2 py-1 text-xs tracking-wide text-gray-500 dark:text-gray-400">
-                Overlay popup on posts
-              </p>
-            </div>
-
-    
-    </TabsContent>
-  <TabsContent value="preview_2" className="flex items-center justify-center">
-
-  <div>
-
-<div className="max-w-xs bg-white dark:bg-gray-600 text-left rounded-3xl p-5  flex flex-col items-center">
-    <div className="flex flex-col gap-y-2  items-start justify-left">
-      {data.thumbnail ? (
-        <Image     src={r2Asset(data.thumbnailFile)} width={150} height={200} alt="Thumbnail" className="mb-4 w-32 h-32 object-cover rounded-full shadow-sm" />
-      ) : (
-        <div></div>
-      )}
-      <h3 className="text-xl font-bold tracking-normal text-gray-800 dark:text-white">{data.title || "Title of lead magnet"}</h3>
-      <p className="text-sm text-gray-600 dark:text-gray-200 items-start">{data.heroDescription || "Description"}</p>
-      <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 mt-2 px-4 rounded-full">
-        View
-      </button>
-    </div>
-  </div>
-  <p className="mt-4 py-1 text-xs tracking-wide text-center text-gray-500 dark:text-gray-400">
-  Card that appears on homepage
-</p>
-</div>
-
-  
-  </TabsContent>
-  <TabsContent value="preview_3" className="flex items-center justify-center">
-
-
-<div>
-
-<div className="flex items-center w-full flex-col space-x-2 bg-white dark:bg-gray-700 rounded-sm p-4   ">
-              <div className="flex flex-col items-center mx-auto">
-                {data.thumbnail ? (
-                       <Image     src={r2Asset(data.thumbnailFile)} width={150} height={200} alt="Thumbnail" className="mb-4 w-32 h-32 object-cover rounded-full shadow-sm" />
-                  ) : (
-                    <div className="bg-gray-200 rounded-full h-16 w-16 flex items-center justify-center mb-4">
-                      <span className="text-xl font-medium text-gray-500 dark:text-gray-300">S</span>
+        <div className="flex h-full items-start justify-center">
+          <div>
+            <h3 className="my-5 text-sm text-slate-800 dark:text-gray-200">
+              Preview
+            </h3>
+            <div className="">
+              <Tabs defaultValue="preview_1" className="w-[400px]">
+                <TabsList>
+                  <TabsTrigger value="preview_1">1</TabsTrigger>
+                  <TabsTrigger value="preview_2">2</TabsTrigger>
+                  <TabsTrigger value="preview_3">3</TabsTrigger>
+                </TabsList>
+                <TabsContent
+                  value="preview_1"
+                  className="flex items-center justify-center"
+                >
+                  <div>
+                    <div className="flex w-full max-w-md items-center space-x-2 rounded-full bg-white p-2 shadow">
+                      <span className="max-w-xl flex-grow overflow-x-auto rounded-full bg-transparent px-4 py-2 text-gray-800 placeholder-gray-500">
+                        {data.name || "Text"}
+                      </span>
+                      <button className="rounded-full bg-blue-600 px-4 py-2 text-white hover:bg-blue-700">
+                        {data.buttonCta}
+                      </button>
                     </div>
-                  )}
-                <h2 className="text-xl font-bold text-gray-800 dark:text-white mb-2">{data.title || "Title of lead magnet"}</h2>
-                <p className="text-gray-900 text-center mb-4  dark:text-white">{parse(description || "Description")}</p>
-                <button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full transition-colors">
-                 {data.buttonCta}
-                </button>
-              </div>
-           
-              </div>
-              <p className="mt-4 py-1 text-xs tracking-wide text-center text-gray-500 dark:text-gray-400">
-              Lead magnet page/slide
-            </p>
 
-</div>
-
-
-
-
-  </TabsContent>
-  
-</Tabs>
-
-
-        
+                    <p className="mt-2 py-1 text-xs tracking-wide text-gray-500 dark:text-gray-400">
+                      Overlay popup on posts
+                    </p>
+                  </div>
+                </TabsContent>
+                <TabsContent
+                  value="preview_2"
+                  className="flex items-center justify-center"
+                >
+                  <div>
+                    <div className="flex max-w-xs flex-col items-center rounded-3xl bg-white  p-5 text-left dark:bg-gray-600">
+                      <div className="justify-left flex flex-col  items-start gap-y-2">
+                        {data.thumbnail ? (
+                          <Image
+                            src={r2Asset(data.thumbnailFile)}
+                            width={150}
+                            height={200}
+                            alt="Thumbnail"
+                            className="mb-4 h-32 w-32 rounded-full object-cover shadow-sm"
+                          />
+                        ) : (
+                          <div></div>
+                        )}
+                        <h3 className="text-xl font-bold tracking-normal text-gray-800 dark:text-white">
+                          {data.title || "Title of lead magnet"}
+                        </h3>
+                        <p className="items-start text-sm text-gray-600 dark:text-gray-200">
+                          {data.heroDescription || "Description"}
+                        </p>
+                        <button className="mt-2 rounded-full bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700">
+                          View
+                        </button>
+                      </div>
+                    </div>
+                    <p className="mt-4 py-1 text-center text-xs tracking-wide text-gray-500 dark:text-gray-400">
+                      Card that appears on homepage
+                    </p>
+                  </div>
+                </TabsContent>
+                <TabsContent
+                  value="preview_3"
+                  className="flex items-center justify-center"
+                >
+                  <div>
+                    <div className="flex w-full flex-col items-center space-x-2 rounded-sm bg-white p-4 dark:bg-gray-700   ">
+                      <div className="mx-auto flex flex-col items-center">
+                        {data.thumbnail ? (
+                          <Image
+                            src={r2Asset(data.thumbnailFile)}
+                            width={150}
+                            height={200}
+                            alt="Thumbnail"
+                            className="mb-4 h-32 w-32 rounded-full object-cover shadow-sm"
+                          />
+                        ) : (
+                          <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-gray-200">
+                            <span className="text-xl font-medium text-gray-500 dark:text-gray-300">
+                              S
+                            </span>
+                          </div>
+                        )}
+                        <h2 className="mb-2 text-xl font-bold text-gray-800 dark:text-white">
+                          {data.title || "Title of lead magnet"}
+                        </h2>
+                        <p className="mb-4 text-center text-gray-900  dark:text-white">
+                          {parse(description || "Description")}
+                        </p>
+                        <button className="rounded-full bg-blue-500 px-4 py-2 font-bold text-white transition-colors hover:bg-blue-600">
+                          {data.buttonCta}
+                        </button>
+                      </div>
+                    </div>
+                    <p className="mt-4 py-1 text-center text-xs tracking-wide text-gray-500 dark:text-gray-400">
+                      Lead magnet page/slide
+                    </p>
+                  </div>
+                </TabsContent>
+              </Tabs>
+            </div>
+          </div>
         </div>
-        </div>
-      </div>
       </div>
     </form>
   );
@@ -534,7 +576,6 @@ function CreateSiteFormButton({ type }: { type: string }) {
     <>
       <button
         type="submit"
-     
         className={cn(
           "flex h-10 w-full items-center justify-center space-x-2 rounded-md border text-sm transition-all focus:outline-none",
           pending

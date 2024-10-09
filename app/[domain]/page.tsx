@@ -64,7 +64,7 @@ export default async function SiteHomePage({
               {banners.length > 0 && (
                 <>
                   <h3 className="mb-5 text-xs font-semibold uppercase tracking-widest  text-slate-600 dark:text-gray-500">
-                  Announcements
+                    Announcements
                   </h3>
 
                   <div className="flex flex-col gap-y-5">
@@ -116,7 +116,7 @@ export default async function SiteHomePage({
                   <div className="grid grid-cols-1">
                     {leads.map((lead, index) => (
                       <div key={`lead-${index}`}>
-                        <Link href={`/resources/${lead.id}`}>
+                        <Link href={`/resources/${lead.slug}`}>
                           <div className="ease mb-5 rounded-3xl bg-slate-100 p-6 transition-all hover:bg-slate-200  dark:bg-gray-700  hover:dark:bg-gray-600  md:w-full">
                             {lead.thumbnailFile && (
                               <Image

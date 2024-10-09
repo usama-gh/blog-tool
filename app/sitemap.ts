@@ -1,5 +1,9 @@
 import { headers } from "next/headers";
-import { getPostsForSite } from "@/lib/fetchers";
+import {
+  getPostsForSite,
+  getSiteAllLeads,
+  getSiteStaticPages,
+} from "@/lib/fetchers";
 
 export default async function Sitemap() {
   const headersList = headers();
@@ -10,14 +14,24 @@ export default async function Sitemap() {
     "vercel.pub";
 
   const posts = await getPostsForSite(domain);
+  const leads = await getSiteAllLeads(domain);
+  const pages = await getSiteStaticPages(domain);
 
   return [
     {
       url: `https://${domain}`,
       lastModified: new Date(),
     },
+    ...pages.map((page) => ({
+      url: `https://${domain}/page/${page.slug}`,
+      lastModified: new Date(),
+    })),
     ...posts.map(({ slug }) => ({
       url: `https://${domain}/${slug}`,
+      lastModified: new Date(),
+    })),
+    ...leads.map((lead) => ({
+      url: `https://${domain}/resources/${lead.slug}`,
       lastModified: new Date(),
     })),
   ];

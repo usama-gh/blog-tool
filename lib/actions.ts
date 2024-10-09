@@ -740,12 +740,25 @@ export const createSiteLead = async (data: LeadData) => {
     };
   }
 
+  const existingLead = await prisma.lead.findFirst({
+    where: {
+      slug: data.slug,
+      siteId: data.siteId,
+    },
+  });
+  if (existingLead) {
+    return {
+      error: `Lead with slug ${data.slug} already exists.`,
+    };
+  }
+
   try {
     // creating site lead
     const response = await prisma.lead.create({
       data: {
         name: data.name,
         title: data.title,
+        slug: data.slug,
         description: data.description,
         buttonCta: data.buttonCta,
         file: data.url,
@@ -795,18 +808,21 @@ export const updateSiteLead = withLeadAuth(
       };
     }
 
-    // const isFileChange = lead.fileName !== fileName;
-
-    // if (isFileChange) {
-    //   if (!process.env.BLOB_READ_WRITE_TOKEN) {
-    //     return {
-    //       error:
-    //         "Missing BLOB_READ_WRITE_TOKEN token. Note: Vercel Blob is currently in beta – ping @steventey on Twitter for access.",
-    //     };
-    //   }
-    //   // delete old file from vercel blob
-    //   await del(lead.file as string);
-    // }
+    // check if slug is updated
+    if (data.slug !== lead.slug) {
+      // check weather current user has any other page with same slug
+      const existingLead = await prisma.lead.findFirst({
+        where: {
+          slug: data.slug,
+          siteId: data.siteId,
+        },
+      });
+      if (existingLead) {
+        return {
+          error: `Lead with slug ${data.slug} already exists.`,
+        };
+      }
+    }
 
     try {
       const response = await prisma.lead.update({
@@ -816,6 +832,7 @@ export const updateSiteLead = withLeadAuth(
         data: {
           name: data.name,
           title: data.title,
+          slug: data.slug,
           description: data.description,
           buttonCta: data.buttonCta,
           file: data.url,
@@ -865,6 +882,7 @@ export const updateSiteLead = withLeadAuth(
 
       revalidateTag(`${lead.siteId}-leads`);
       revalidateTag(`${lead.id}-lead`);
+      revalidateTag(`${lead.slug}-lead`);
       return response;
     } catch (error: any) {
       return {
@@ -889,6 +907,7 @@ export const updateLeadImage = withLeadAuth(
       });
       await revalidateTag(`${lead.siteId}-leads`);
       await revalidateTag(`${lead.id}-lead`);
+      await revalidateTag(`${lead.slug}-lead`);
       return response;
     } catch (error: any) {
       return {

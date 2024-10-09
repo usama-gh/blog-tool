@@ -81,6 +81,7 @@ model Lead {
   id              String          @id @default(cuid())
   name            String          @db.Text
   title           String          @db.Text
+  slug            String          @default("")
   description     String?         @db.Text
   heroDescription String?         @db.Text
   thumbnail       String?         @db.Text // original filename of the thumbnail
