@@ -1,10 +1,5 @@
 {
-  "crons": [
-    {
-      "path": "/api/reset-views",
-      "schedule": "0 0 1 * *"
-    }
-  ],
+
   "headers": [
     {
       "source": "/api/(.*)",

@@ -6,22 +6,22 @@ import { NextResponse } from "next/server";
 export const dynamic = "force-dynamic"; // Force dynamic (server) route instead of static page
 
 export async function GET() {
-  try {
-    await prisma.vistor.updateMany({
-      where: {},
-      data: {
-        views: 0,
-      },
-    });
+  // try {
+  //   await prisma.vistor.updateMany({
+  //     where: {},
+  //     data: {
+  //       views: 0,
+  //     },
+  //   });
 
-    const visitors = await prisma.vistor.findMany();
+  //   const visitors = await prisma.vistor.findMany();
 
-    visitors.forEach((visit) => {
-      revalidateTag(`${visit.userId}-states`);
-    });
+  //   visitors.forEach((visit) => {
+  //     revalidateTag(`${visit.userId}-states`);
+  //   });
 
-    return new NextResponse("Views Reset", { status: 200 });
-  } catch (error: any) {
-    return new NextResponse(error.message, { status: 500 });
-  }
+  //   return new NextResponse("Views Reset", { status: 200 });
+  // } catch (error: any) {
+  //   return new NextResponse(error.message, { status: 500 });
+  // }
 }
