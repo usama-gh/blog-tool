@@ -19,7 +19,7 @@ async function Leads({ params }: { params: { id: string } }) {
             Banners
           </h1>
           <p className="mt-3 text-base font-normal text-slate-800 dark:text-gray-400">
-            Showcase your links, annoucements or anything else
+            Showcase your links, announcement or anything else
           </p>
         </div>
         <PageButton btnText="Create">
