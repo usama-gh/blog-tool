@@ -16,10 +16,10 @@ async function Leads({ params }: { params: { id: string } }) {
       <div className="mb-5 flex flex-col items-center justify-between space-y-4 sm:flex-row sm:space-y-0">
         <div className="">
           <h1 className="font-inter truncate text-lg font-bold dark:text-white sm:w-auto sm:text-2xl">
-            Marketing Banners
+            Banners
           </h1>
           <p className="mt-3 text-base font-normal text-slate-800 dark:text-gray-400">
-            Showcase your recent products lounch, announcements or anything
+            Showcase your links, annoucements or anything else
           </p>
         </div>
         <PageButton btnText="Create">
