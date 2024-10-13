@@ -1,7 +1,7 @@
 "use client";
 
 import { toast } from "sonner";
-import { Info } from "lucide-react";
+import { Info,ChevronRight } from "lucide-react";
 import { createSiteLead, updateLeadImage, updateSiteLead } from "@/lib/actions";
 import { useRouter } from "next/navigation";
 // ts-ignore because experimental_useFormStatus is not in the types
@@ -20,6 +20,7 @@ import { LeadData } from "@/types";
 import { triggerEvent } from "@/components/posthug";
 import { Switch } from "@/components/ui/switch";
 import parse from "html-react-parser";
+import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Carousel,
@@ -149,16 +150,25 @@ export default function LeadModal({
         await handleAction();
       }}
       id="our_modal"
-      className="flex w-full flex-col justify-start rounded-md bg-white dark:bg-black md:max-w-6xl md:border md:border-gray-200 md:shadow dark:md:border-gray-700 lg:flex-row"
+      className="flex w-full max-h-[90vh]  overflow-y-auto flex-col justify-start rounded-md bg-white dark:bg-black md:max-w-6xl md:border md:border-gray-200 md:shadow dark:md:border-gray-700"
     >
-      <div className="relative flex flex-col space-y-4 p-5 md:p-10 lg:min-w-[500px]">
-        <h2 className="font-inter mb-2 text-2xl font-bold dark:text-white">
+
+      <div className="w-full px-5 py-5 flex justify-between items-center">
+      <h2 className="font-inter  text-2xl font-bold dark:text-white">
           {type} your lead magnet
         </h2>
+        <div>
+              <CreateSiteFormButton type={type} />
+            </div>
+      </div>
+      <div className="flex flex-col lg:flex-row">
+      <div className="relative flex flex-col gap-y-4 p-5 md:p-6 lg:min-w-[500px] border border-gray-200">
+     
 
         <Tabs defaultValue="basic info" className="w-[400px]">
           <TabsList>
             <TabsTrigger value="basic info">Basic Info</TabsTrigger>
+            <TabsTrigger value="landingpage">Landing Page</TabsTrigger>
             <TabsTrigger value="more details">Delivery</TabsTrigger>
           </TabsList>
 
@@ -242,14 +252,32 @@ export default function LeadModal({
               ></textarea>
             </div>
 
-            <div className="flex flex-col space-y-2">
+            <div>
+
+
+            <TabsList className="mt-2 bg-transparent">  
+            <TabsTrigger value="landingpage"><Button variant="outline" size="icon">
+      <ChevronRight className="h-4 w-4" />
+    </Button></TabsTrigger>
+            </TabsList>
+
+              </div>
+
+            
+          
+
+        
+         
+          </TabsContent>
+          <TabsContent value="landingpage">
+          <div className="flex flex-col space-y-2">
               <label
                 htmlFor="description"
                 className="pt-3 text-xs font-medium  text-slate-500 dark:text-gray-400"
               >
-                Body
+                Landing Page (Markdown)
               </label>
-              <span className="h-full max-h-[300px] overflow-y-auto">
+              <span className="h-full max-h-[700px] overflow-y-auto">
                 <NovelEditor
                   text={description}
                   setText={setDescription}
@@ -257,6 +285,12 @@ export default function LeadModal({
                 />
               </span>
             </div>
+            <TabsList className="mt-2 bg-transparent">  
+            <TabsTrigger value="more details"><Button variant="outline" size="icon">
+      <ChevronRight className="h-4 w-4" />
+    </Button></TabsTrigger>
+            </TabsList>
+
           </TabsContent>
           <TabsContent value="more details" className="flex flex-col space-y-4">
             <div className="flex flex-col">
@@ -438,7 +472,7 @@ export default function LeadModal({
                   htmlFor="btnCta"
                   className="block text-xs font-medium text-slate-500 dark:text-gray-400"
                 >
-                  Featured
+                  Featured on homepage?
                 </label>
                 <Switch
                   defaultChecked={data.featured}
@@ -450,9 +484,7 @@ export default function LeadModal({
             </div>
 
             {/* <div className="flex items-center justify-end rounded-b-lg border-t border-slate-200 bg-slate-50 p-3 dark:border-gray-700 dark:bg-gray-800 md:px-10"> */}
-            <div className="pt-4">
-              <CreateSiteFormButton type={type} />
-            </div>
+           
             {/* </div> */}
           </TabsContent>
         </Tabs>
@@ -481,7 +513,7 @@ export default function LeadModal({
                         {data.name || "Text"}
                       </span>
                       <button className="rounded-full bg-blue-600 px-4 py-2 text-white hover:bg-blue-700">
-                        {data.buttonCta}
+                        {data.buttonCta || "Try Now"}
                       </button>
                     </div>
 
@@ -553,7 +585,7 @@ export default function LeadModal({
                           {parse(description || "Description")}
                         </p>
                         <button className="rounded-full bg-blue-500 px-4 py-2 font-bold text-white transition-colors hover:bg-blue-600">
-                          {data.buttonCta}
+                          {data.buttonCta || "Try Now"}
                         </button>
                       </div>
                     </div>
@@ -567,6 +599,7 @@ export default function LeadModal({
           </div>
         </div>
       </div>
+      </div>
     </form>
   );
 }
@@ -577,7 +610,7 @@ function CreateSiteFormButton({ type }: { type: string }) {
       <button
         type="submit"
         className={cn(
-          "flex h-10 w-full items-center justify-center space-x-2 rounded-md border text-sm transition-all focus:outline-none",
+          "flex px-3 h-10 w-full items-center justify-center space-x-2 rounded-md border text-sm transition-all focus:outline-none",
           pending
             ? "cursor-not-allowed border-slate-200 bg-slate-100 text-slate-400 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300"
             : "border-black bg-black text-white hover:bg-white hover:text-black dark:border-gray-700 dark:hover:border-gray-600 dark:hover:bg-black dark:hover:text-white dark:active:bg-gray-800",
