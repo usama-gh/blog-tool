@@ -74,6 +74,9 @@ export default async function SiteLeadPage({
 
   return (
     <>
+    <div className="container mx-auto max-w-3xl pb-12">
+
+   
       <div className="animate-fade absolute left-0 top-0 z-30 mx-auto flex w-full w-screen items-center justify-between	bg-gradient-to-b from-[#000000a8] via-[#00000075] to-transparent px-2 pb-5 pt-2 lg:px-2">
         <div className="flex items-center gap-x-2">
           <div className="flex items-center gap-x-2">
@@ -115,7 +118,7 @@ export default async function SiteLeadPage({
       </div>
 
     
-      <div className="flex flex-col items-center justify-center gap-4 px-12 py-20 min-h-screen">
+      <div className="flex flex-col items-center justify-center gap-4 px-12 py-20 ">
                     {lead.thumbnailFile && (
                       <Image
                         className="rounded-lg"
@@ -132,12 +135,17 @@ export default async function SiteLeadPage({
                         {lead.heroDescription}
                       </p>
                     )}
-                    {parse(lead.description as string)}
+                        </div>
 
-                    <LeadDownload postId="" lead={lead} />
-                  </div>
+                        <div className="text-left">
+                        {parse(lead.description as string)}
 
+<LeadDownload postId="" lead={lead} />
+                        </div>
+                   
+              
 
+</div>
     </>
   );
 }

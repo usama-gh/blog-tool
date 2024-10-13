@@ -169,7 +169,7 @@ export const LeadDownload = ({
             handleDownload(e);
           }}
         >
-          <div className="mt-5 flex w-full items-center gap-3 rounded-xl bg-blue-100 px-8 py-6 shadow-xl dark:bg-gray-900 ">
+          <div className="mt-5 flex w-full items-center justify-center  gap-3 rounded-xl bg-blue-100 px-8 py-6 shadow-xl dark:bg-gray-900 ">
             {!showName && (
               <div className="flex flex-col items-center gap-3 lg:flex-row">
                 <p className="text-md pr-2 tracking-tight">Enter your email</p>
