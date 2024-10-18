@@ -1,5 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getToken } from "next-auth/jwt";
+import { Ratelimit } from "@upstash/ratelimit";
+import { kv } from "@vercel/kv";
+
+const ratelimit = new Ratelimit({
+  redis: kv,
+  // 5 requests from the same IP in 10 seconds
+  limiter: Ratelimit.slidingWindow(5, "10 s"),
+});
 
 export const config = {
   matcher: [
@@ -15,7 +23,15 @@ export const config = {
 };
 
 export default async function middleware(req: NextRequest) {
+  const ip = req.ip ?? "127.0.0.1";
   const url = req.nextUrl;
+  const { success, pending, limit, reset, remaining } = await ratelimit.limit(
+    ip,
+  );
+
+  if (!success) {
+    return NextResponse.rewrite(new URL(`/app/blocked`, req.url));
+  }
 
   // Get hostname of request (e.g. demo.vercel.pub, demo.localhost:3000)
   let hostname = req.headers
