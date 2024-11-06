@@ -137,7 +137,7 @@ export default async function SiteLeadPage({
                     )}
                         </div>
 
-                        <div className="text-left">
+                        <div className="text-left [&>*]:rounded-xl [&>*]:text-lg [&>*]:mb-6 ">
                         {parse(lead.description as string)}
 
 <LeadDownload postId="" lead={lead} />
