@@ -29,7 +29,7 @@ export const TiptapExtensions = [
     },
     listItem: {
       HTMLAttributes: {
-        class: "leading-normal -mb-2",
+        class: "leading-normal",
       },
     },
     blockquote: {
