@@ -90,7 +90,12 @@ export default async function StaticPages({
             {page.name}
           </h2>
           <div className="my-5 rounded-3xl bg-white dark:bg-gray-800  border border-slate-100 dark:border-gray-800 p-12">
+          <div className="[&>*]:rounded-xl [&>*]:text-lg [&>*]:mb-6lg:px-0 px-6 prose-md w-full prose h-fit mx-auto prose-slate dark:prose-invert sm:prose-lg text-slate-600 dark:text-gray-100 tracking-normal ">
+          <div className="[&>h1]:mb-2 [&>h1]:tracking-tight [&>h1]:leading-snug [&>h2]:tracking-tight">
           {parse(page.body as string)}
+            </div>
+            </div>
+    
           </div>
         
         </div>
