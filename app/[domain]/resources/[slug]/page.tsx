@@ -137,10 +137,13 @@ export default async function SiteLeadPage({
                     )}
                         </div>
 
-                        <div className="text-left [&>*]:rounded-xl [&>*]:text-lg [&>*]:mb-6 ">
-                        {parse(lead.description as string)}
+                        <div className="[&>*]:rounded-xl [&>*]:text-lg [&>*]:mb-6lg:px-0 px-6 prose-md w-full prose h-fit mx-auto prose-slate dark:prose-invert sm:prose-lg text-slate-600 dark:text-gray-100 tracking-normal ">
+                          <div className="[&>h1]:mb-2 [&>h1]:tracking-tight [&>h1]:leading-snug [&>h2]:tracking-tight">
+                          {parse(lead.description as string)}
 
 <LeadDownload postId="" lead={lead} />
+                          </div>  
+                      
                         </div>
                    
               
