@@ -70,7 +70,7 @@ export default async function SiteHomePage({
                   <div className="flex flex-col gap-y-5">
                     {banners.map((banner, index) => (
                       <div key={`lead-${index}`}>
-                        <div className="group ease rounded-3xl  relative flex items-center bg-slate-100 p-2 transition-all hover:bg-slate-200  dark:bg-gray-700  hover:dark:bg-gray-600  md:w-full">
+                        <div className="group ease rounded-3xl  relative flex items-start bg-slate-100 p-2 transition-all hover:bg-slate-200  dark:bg-gray-700  hover:dark:bg-gray-600  md:w-full">
                           {banner.thumbnailFile && (
                             <Image
                               width={50}
