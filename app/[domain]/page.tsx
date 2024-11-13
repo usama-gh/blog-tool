@@ -13,7 +13,7 @@ import {
 import Image from "next/image";
 import { Subscribe } from "@/components/subscribe";
 import parse from "html-react-parser";
-import { Mail } from "lucide-react";
+import { Mail,ExternalLink } from "lucide-react";
 import UserHeader from "@/components/user-header";
 import UserFooter from "@/components/user-footer";
 
@@ -37,7 +37,7 @@ export default async function SiteHomePage({
 
   return (
     <>
-      <div className="mx-auto max-w-6xl">
+      <div className="mx-auto max-w-7xl">
         <UserHeader data={data} pages={pages} slug="" />
 
         <div className="flex flex-wrap items-start gap-5 px-4 sm:flex-nowrap">
@@ -64,39 +64,53 @@ export default async function SiteHomePage({
               {banners.length > 0 && (
                 <>
                   <h3 className="mb-5 text-xs font-semibold uppercase tracking-widest  text-slate-600 dark:text-gray-500">
-                    Announcements
+                    Links
                   </h3>
 
                   <div className="flex flex-col gap-y-5">
                     {banners.map((banner, index) => (
                       <div key={`lead-${index}`}>
-                        <div className="ease rounded-3xl bg-slate-100 p-6 transition-all hover:bg-slate-200  dark:bg-gray-700  hover:dark:bg-gray-600  md:w-full">
+                        <div className="group ease rounded-3xl  relative flex items-center bg-slate-100 p-2 transition-all hover:bg-slate-200  dark:bg-gray-700  hover:dark:bg-gray-600  md:w-full">
                           {banner.thumbnailFile && (
                             <Image
-                              width={80}
-                              height={80}
-                              className="mb-3 rounded-lg object-cover"
+                              width={50}
+                              height={50}
+                              className=" group-hover:blur-sm rounded-lg object-cover"
                               src={r2Asset(banner.thumbnailFile)}
                               alt="Thumbnail"
                             />
                           )}
-                          <div className="flex w-full flex-col items-start justify-center gap-y-2  text-left">
-                            <h2 className="text-xl font-bold tracking-tight text-slate-600  dark:text-white ">
+                          <div className="flex p-3 w-full flex-col items-start justify-center   text-left">
+
+                          <ExternalLink
+                  size={"1.5rem"}
+                  strokeWidth={2}
+                  className="mb-2 group-hover:blur-sm float-right absolute right-4 top-4 text-slate-400 dark:text-gray-100"
+                />
+
+
+                            <h2 className="group-hover:blur-sm text-base font-bold tracking-tight text-slate-600  dark:text-white ">
                               {banner.name}
                             </h2>
 
-                            <span className="line-clamp-3 w-full text-base leading-6 text-slate-500 dark:text-gray-300">
+                            <span className="group-hover:blur-sm line-clamp-2 w-full text-sm leading-6 text-slate-500 dark:text-gray-300">
                               {parse(banner.body)}
                             </span>
-                            {banner.showBtn && (
+                            
+                          </div>
+
+                            
+                          {banner.showBtn && (
+                            <div className="hidden group-hover:block absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
                               <a
                                 href={banner.btnLink!}
                                 className="mt-2 w-auto rounded-full border border-slate-500 px-4 py-1 text-center text-sm text-slate-500 hover:border-slate-700 hover:text-slate-600 dark:border-gray-400 dark:bg-transparent dark:text-gray-400 dark:hover:border-gray-300 dark:hover:text-gray-300"
                               >
                                 {banner.btnText}
                               </a>
+                              </div>
                             )}
-                          </div>
+                           
                         </div>
                       </div>
                     ))}

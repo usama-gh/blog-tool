@@ -83,7 +83,7 @@ export default async function StaticPages({
 
   return (
     <>
-      <div className="mx-auto max-w-6xl">
+      <div className="mx-auto max-w-7xl">
         <UserHeader data={data} pages={pages} slug={slug} />
         <div className="px-6">
           <h2 className="mb-12 text-center text-center text-4xl font-bold">
