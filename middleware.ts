@@ -14,7 +14,25 @@ export const config = {
   ],
 };
 
+
 export default async function middleware(req: NextRequest) {
+
+  const userAgent = req.headers.get('user-agent') || '';
+
+  // List of known bot keywords to detect
+  const botKeywords = [
+    'bot', 'crawl', 'slurp', 'spider', 'WhatsApp', 'TelegramBot', 'Slackbot', 
+    'Viber', 'Discordbot', 'SkypeUriPreview'
+  ];
+
+  // Check if the User-Agent string contains any bot keyword
+  if (botKeywords.some(keyword => userAgent.toLowerCase().includes(keyword.toLowerCase()))) {
+    console.log('Bot detected:', userAgent);
+    // If it's a bot, respond without performing any sensitive actions
+    return new NextResponse('Bot detected, no action taken', { status: 200 });
+  }
+
+  
   const url = req.nextUrl;
 
   // Get hostname of request (e.g. demo.vercel.pub, demo.localhost:3000)
