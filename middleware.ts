@@ -9,8 +9,9 @@ export const config = {
      * 2. /_next (Next.js internals)
      * 3. /_static (inside /public)
      * 4. all root files inside /public (e.g. /favicon.ico)
+     * 5. Paths containing `.php` (these should be blocked)
      */
-    "/((?!api/|_next/|_static/|_vercel|[\\w-]+\\.\\w+).*)",
+    "/((?!api/|_next/|_static/|_vercel|[\\w-]+\\.\\w+|.*\\.php$).*)",
   ],
 };
 
@@ -32,7 +33,7 @@ export default async function middleware(req: NextRequest) {
     return new NextResponse('Bot detected, no action taken', { status: 200 });
   }
 
-  
+
   const url = req.nextUrl;
 
   // Get hostname of request (e.g. demo.vercel.pub, demo.localhost:3000)
